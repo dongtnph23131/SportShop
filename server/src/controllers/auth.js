@@ -1,6 +1,7 @@
 import Acount from "../models/acount"
 import bcrypt from "bcryptjs";
-import { signupValidators } from "../validators/auth";
+import jwt from "jsonwebtoken"
+import { signinValidators, signupValidators } from "../validators/auth";
 export const signup = async (req, res) => {
     try {
         const { firstName,lastName, email, password } = req.body;
@@ -11,7 +12,7 @@ export const signup = async (req, res) => {
                 message: errors,
             });
         }
-        const userExist = await User.findOne({ email });
+        const userExist = await Acount.findOne({ email });
         if (userExist) {
             return res.status(400).json({
                 messsage: "Email đã tồn tại",
@@ -36,6 +37,44 @@ export const signup = async (req, res) => {
     }
     catch (error) {
         return res.status(400).json({
+            message: error.message
+        })
+    }
+}
+export const signin = async (req, res) => {
+    try {
+        const { email, password } = req.body
+        const { error } = signinValidators.validate(req.body, { abortEarly: false });
+        if (error) {
+            const errors = error.details.map((err) => err.message);
+            return res.status(400).json({
+                message: errors,
+            });
+        }
+        const user = await Acount.findOne({ email: email })
+        if (!user) {
+            return res.status(400).json({
+                message: "Tài khoản không tồn tại"
+            })
+        }
+        const isMatch = await bcrypt.compare(password, user.password)
+        if (!isMatch) {
+            return res.status(400).json({
+                message: "Mật khẩu không đúng"
+            })
+        }
+        const token = jwt.sign({ id: user._id }, "dongtimo", {
+            expiresIn: '1d'
+        })
+        user.password = undefined
+        return res.status(200).json({
+            message: "Đăng nhập thành công",
+            user,
+            token
+        })
+    }
+    catch (error) {
+        res.status(400).json({
             message: error.message
         })
     }
