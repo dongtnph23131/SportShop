@@ -2,7 +2,7 @@ import React from 'react'
 import { Navigate, createBrowserRouter } from "react-router-dom";
 import WebsiteLayout from './components/WebsiteLayout';
 import Home from './components/Home';
-export const routers  = createBrowserRouter ([
+export const router  = createBrowserRouter ([
     {
         path:"/",
         element:<WebsiteLayout></WebsiteLayout>,

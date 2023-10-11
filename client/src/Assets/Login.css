@@ -1,0 +1,100 @@
+.bivaco-login-1 {
+    position: fixed;
+    width: 100%;
+    justify-content: center;
+    align-items: center;
+    display: flex;
+    height: 100%;
+    z-index: 999;
+    background-color: rgb(0 0 0 / 80%);
+    top:0px;
+}
+.clm.bgr-login-1 {
+    height: 100%;
+    padding: 50px;
+    border-radius: 10px;
+    background: #fff;
+    box-shadow: rgb(165 165 250 / 55%) 0px 13px 27px -5px, rgb(5 0 219 / 30%) 0px 8px 16px -8px;
+    position: relative;
+}
+ .sign-in {
+    background: var(--bg-primary);
+    z-index: 1000;
+    border-radius: 4px;
+    width: 400px;
+}
+.content {
+    padding: 0px 8px;
+}
+.bivaco-login-1 .form {
+    padding: 25px 10px 7.5px;
+}
+.bivaco-login-1 .form input.form-group {
+    margin-bottom: 10px;
+    border: 1px solid #eee;
+    padding: 10px 15px;
+    width: 100%;
+    border-radius: 6px;
+}
+.inputBox button {
+    width: auto;
+    margin-top: 10px;
+    font-size: 12px;
+    margin-right: 14px;
+    border-radius: 4px;
+    font-weight: 600;
+    padding-left: 30px;
+    padding-right: 30px;
+    height: 40px;
+    border: none;
+}
+
+.login-btn {
+    color: #fff;
+    background: #164F63;
+}
+.inputBox {
+    display: flex;
+}
+.bivaco-login-1 .content h5 {
+    text-align: center;
+    font-family: 'Baumans', cursive;
+    font-size: 38px;
+    font-weight: 700;
+    padding-bottom: 25px;
+}
+
+
+.bivaco-login-1 .content h5 span{
+    font-size: 45px;
+    font-weight: 500;
+    color: #4FB68D;
+}
+
+
+.content p {
+    display: block;
+    font-size: 1.3rem;
+    color: #525a64;
+    text-align: center;
+}
+
+
+.clone-login {
+    position: absolute;
+    top: 0;
+    right: -1px;
+    background: #164F63;
+    padding: 10px 10px;
+    text-align: center;
+    border-radius: 0px 10px 0px 0px;
+    cursor: pointer;
+}
+
+.clone-login a {
+    color: #fff;
+}
+
+.form-login {
+    display: none;
+}
