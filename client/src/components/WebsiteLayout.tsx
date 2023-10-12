@@ -11,6 +11,7 @@ import "../Assets/utilities.css"
 import "../Assets/Footer.css"
 import "../Assets/Home.css"
 import "../Assets/Login.css"
+import "../Assets/style.css"
 // End css 
 
 
@@ -18,7 +19,7 @@ const WebsiteLayout = () => {
   return (
     <div>
         <Header></Header>
-        <Outlet/>
+         <Outlet/>
         <Footer></Footer>
     </div>
   )
