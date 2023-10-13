@@ -11,14 +11,13 @@ const productSchema = mongoose.Schema(
             type: String,
             require: true
         },
-        brand: {
+        status: {
             type: String,
-            require: true
         },
-        price: {
-            type: Number,
-            require: true
-        }
+        collectionId: {
+            type: mongoose.Types.ObjectId,
+            ref: 'Collection',
+        },
     },
     { timestamps: true, versionKey: false }
 );
