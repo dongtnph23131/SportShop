@@ -1,60 +1,8 @@
-import React, { useState } from 'react';
-// import Login from './Login'
-
-
+import React from 'react';
 const Header = () => {
-
-  const [isFormVisible, setIsFormVisible] = useState(false);
-
-  const toggleForm = (event: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => {
-    event.preventDefault(); 
-    setIsFormVisible(!isFormVisible);
-  };
-  const toggleForm2 = (event: React.MouseEvent<HTMLAnchorElement>) => {
-    event.preventDefault(); 
-    setIsFormVisible(!isFormVisible);
-  };
-
   return (
 
     <div>
-       
-        
-        <form action="" className={`form-login ${isFormVisible ? 'active' : ''}`}>
-            <section className="bivaco-login-1">
-                    <div className="ctnr-fluid">
-                        <div className="row">
-                            <div className="clm bgr-login-1 d-flex w-100 h-100v ai-center js-center">
-                                <div className="clone-login">
-                                    <a href="" onClick={toggleForm2}>X</a>
-                                </div>
-                                <div className="sign-in">
-                                    <div className="content">
-                                        <h5>Sports <span>Shop</span></h5>
-                                        <h6 className="ta-center">ĐĂNG KÝ</h6>
-                                        <div className="form"> 
-                                            <input className="form-group" name="name" type="text" placeholder="Tên" />
-                                            <input id="inputPhoneNumber" name="phoneNumber" className="form-group" type="text"  placeholder="Số điện thoại *" />
-                                            <input className="form-group" name="email" type="email" placeholder="Email" /> 
-                                            <input className="form-group" name="password" type="password"  placeholder="Mật khẩu *" /> 
-                                            
-                                            <div className="inputBox"> 
-                                                <button className="login-btn w-100 fw-600">
-                                                    LOGIN
-                                                </button>
-                                                <button className="login-btn w-100 fw-600">
-                                                    REGISTER
-                                                </button>
-                                            </div> 
-                                        </div>
-                                        <p>Nếu đã có tài khoản, vui lòng nhập SĐT và mật khẩu để đăng nhập.</p>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-            </section>
-        </form> 
 
 
          <header>
@@ -116,7 +64,7 @@ const Header = () => {
             <div className="hd4-right flex-1">
               <ul className="hd4-right__title d-flex js-right ai-center">
                 <li className='Login'>
-                  <a href=""  id="loginLink" onClick={toggleForm} > Đăng nhập / Đăng ký</a>
+                  <a href=""  id="loginLink" > Đăng nhập / Đăng ký</a>
                 </li>
                 <li>
                   <a href="">

@@ -3,6 +3,8 @@ import { Navigate, createBrowserRouter } from "react-router-dom";
 import WebsiteLayout from './components/WebsiteLayout';
 import Home from './components/Home';
 import Cart from './components/Cart';
+import Signin from './components/Signin';
+import Signup from './components/Signup';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -23,6 +25,8 @@ export const routers  = createBrowserRouter ([
         ]
 
     },
-    
 
+    {path: "/signin", element: <Signin/>},
+    
+    {path:"/signup" , element:<Signup></Signup>}
  ])
