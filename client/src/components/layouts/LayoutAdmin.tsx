@@ -23,7 +23,7 @@ const MainLayout = () => {
   } = theme.useToken();
 
   return (
-    <Layout className='h-screen'>
+    <Layout style={{height : "100vh", overflow: "hidden"}}>
       <Sider className='' trigger={null} collapsible collapsed={collapsed}>
         <div className="demo-logo-vertical" />
         <Menu
