@@ -198,3 +198,6 @@ button{
         margin: 15px;
     }
 }
+.error{
+    color: red;
+}

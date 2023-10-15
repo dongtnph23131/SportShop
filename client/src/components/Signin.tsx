@@ -1,50 +1,88 @@
-import React from 'react'
-
+import Swal from "sweetalert2"
+import * as yup from 'yup'
+import { yupResolver } from '@hookform/resolvers/yup';
+import { useForm } from 'react-hook-form';
+import { useSigninMutation } from '../api/auth';
+import Cookies from "js-cookie";
+import { useNavigate } from "react-router-dom";
+const schema = yup.object().shape({
+    email: yup.string().email('Email chưa đúng địng dạng').required('Email không được để trống'),
+    password: yup.string().required('Password không được để trống').min(6, 'Password ít nhất 6 kí tự'),
+});
 const Signin = () => {
-  return (
-    <div className='body'>
-      <div className="login-box">
-        <div className="login-header">
-            <h4>Welcome to Sportshop</h4>
-            <p>We are happy to have you back!</p>
-            <h4>SIGNIN</h4>
-        </div>
-        <div className="input-box">
-            <input type="text" className="input-field" placeholder='Email or phone' id="email" required />
-        </div>
-        <div className="input-box">
-            <input type="password" className="input-field" placeholder='Password' id="password"  required />
-        </div>
-        <div className="forgot">
-            
-            <section>
-                <a href="#" className="forgot-link">Forgot password?</a>
-            </section>
-        </div>
-        <div className="input-box">
-            <input type="submit" className="input-submit" />
-        </div>
-        <div className="middle-text">
-            <hr />
-            <p className="or-text">Or</p>
-        </div>
-        <div className="social-sign-in">
-            <button className="input-google">
-            <i className="fab fa-google"></i>
+    const { register, handleSubmit, formState: { errors } } = useForm({
+        resolver: yupResolver(schema),
+    });
+    const [signin, { isLoading }] = useSigninMutation()
+    const navigate:any=useNavigate()
+    const onSignin = async (data: any) => {
+        const response: any = await signin(data)
+        if (!response?.error) {            
+            Swal.fire(
+                'Good job!',
+                'Đăng nhập thành công',
+                'success'
+            )
+            Cookies.set('token', response.data.token)
+            Cookies.set('user', JSON.stringify(response.data.user))
+            setTimeout(() => {
+                navigate('/home')
+            }, 1000)
+        }
+        else {
+            Swal.fire({
+                icon: 'error',
+                title: response?.error.data.message
+            })
+        }
 
-                 <p>Sign In with Google</p>
-            </button>
-            <button className="input-twitter">
-            <i className="fab fa-twitter"></i>
+    }
+    return (
+        <div className='body'>
+            <form onSubmit={handleSubmit(onSignin)}>
+                <div className="login-box">
+                    <div className="login-header">
+                        <h4>Welcome to Sportshop</h4>
+                        <p>We are happy to have you back!</p>
+                        <h4>SIGNIN</h4>
+                    </div>
+                    <div className="input-box">
+                        <input {...register('email')} type="text" className="input-field" placeholder='Email' id="email" />
+                        <p className='error'>{errors.email ? errors?.email.message : ""}</p>
+                    </div>
+                    <div className="input-box">
+                        <input {...register('password')} type="password" className="input-field" placeholder='Password' id="password" />
+                        <p className='error'>{errors.password ? errors?.password.message : ""}</p>
+                    </div>
+                    <div className="forgot">
 
-            </button>
+                        <section>
+                            <a href="#" className="forgot-link">Forgot password?</a>
+                        </section>
+                    </div>
+                    <div className="input-box">
+                        <input type="submit" className="input-submit" />
+                    </div>
+                    <div className="middle-text">
+                        <hr />
+                        <p className="or-text">Or</p>
+                    </div>
+                    <div className="social-sign-in">
+                        <button className="input-google">
+                            <i className="fab fa-google"></i>
+                            <p>Sign In with Google</p>
+                        </button>
+                        <button className="input-twitter">
+                            <i className="fab fa-twitter"></i>
+
+                        </button>
+                    </div>
+                    <div className="sign-up">
+                        <p>Don't have account <a href="#">Sign up</a></p>
+                    </div>
+                </div>
+            </form>
         </div>
-        <div className="sign-up">
-            <p>Don't have account <a href="#">Sign up</a></p>
-        </div>
-    </div>
-    </div>
-  )
+    )
 }
-
 export default Signin
