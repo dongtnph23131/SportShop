@@ -9,6 +9,12 @@ import MainLayout from './components/layouts/LayoutAdmin';
 import ProductPage from './components/pages/admin/products/ProductPage';
 import ProductAdd from './components/pages/admin/products/ProductAdd';
 import Dashboard from './components/pages/admin/Dashboard';
+import Forgot from './components/Forgot';
+import Detail from './components/Detail';
+import Shops from './components/Shops';
+import Contact from './components/Contact';
+import Blog from './components/Blog';
+import About from './components/About';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -25,7 +31,13 @@ export const routers  = createBrowserRouter ([
                 ),
                 
             },
-            {path: "/cart", element: <Cart/>}
+            {path: "/cart", element: <Cart/>},
+            {path: "/detail", element: <Detail/>},
+            {path:"/shops",element:<Shops></Shops>},
+            {path:"/contact",element:<Contact/>},
+            {path:"/blog",element:<Blog/>},
+            {path:"/about",element:<About/>}
+
         ]
 
     },
@@ -42,5 +54,7 @@ export const routers  = createBrowserRouter ([
 
     {path: "/signin", element: <Signin/>},
     
-    {path:"/signup" , element:<Signup></Signup>}
+    {path:"/signup" , element:<Signup></Signup>},
+    {path:"/forgot" , element:<Forgot></Forgot>},
+
  ])

@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100,200;300;400;500;600;700;800;900&display=swap');
+/* @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100,200;300;400;500;600;700;800;900&display=swap'); */
 
 * {
     margin: 0;
@@ -540,7 +540,7 @@ footer .copyright {
 /* Shop Page */
 
 #page-header {
-    background-image: url(img/banner/b1.jpg);
+    background-image: url(../Assets/b1.jpg);
     width: 100%;
     height: 40vh;
     background-size: cover;
@@ -614,6 +614,11 @@ footer .copyright {
     display: block;
     padding: 5px 10px;
     margin-bottom: 10px;
+    height: 47px;
+    margin-right: 20px;
+}
+.box-qlt {
+    display: flex;
 }
 
 #prodetails .single-pro-details input {
@@ -640,7 +645,7 @@ footer .copyright {
 /* Blog Page */
 
 #page-header2 {
-    background-image: url(img/banner/b19.jpg);
+    background-image: url(../Assets/b1.jpg);
     width: 100%;
     height: 40vh;
     background-size: cover;
@@ -723,7 +728,7 @@ footer .copyright {
 /* About */
 
 #page-header3 {
-    background-image: url(img/about/banner.png);
+    background-image: url(../Assets/b1.jpg);
     width: 100%;
     height: 40vh;
     background-size: cover;
@@ -993,6 +998,49 @@ footer .copyright {
     font-size: 13px;
 }
 
+.forgot-s .login-header h4 {
+    font-size: 22px;
+    text-align: center;
+    margin-bottom: 20px;
+    margin-top: 20px;
+}
+
+
+
+.ttnh table tr input {
+    width: 100%;
+    height: 37px;
+    margin-bottom: 10px;
+    padding-left: 10px;
+}
+.ttnh table tr textarea {
+    width: 100%;
+    height: 85px;
+}
+.infomation-title svg {
+    height: 24px;
+    width: 24px;
+    min-width: 24px;
+    margin-right: 12px;
+    transform: translateY(-2px);
+    color: #313131;
+}
+.infomation-title {
+    font-weight: 600;
+    font-size: 21px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+}
+.delivery-title {
+    font-weight: 600;
+    font-size: 15px;
+    display: flex;
+    justify-content: flex-start;
+    align-items: center;
+    margin-bottom: 12px;
+}
 /* Media Query */
 @media (max-width: 799px) {
     .section-p1 {

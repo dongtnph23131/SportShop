@@ -136,7 +136,7 @@ h6,
 .h6,
 .healine {
   margin: 0;
-  font-family: var(--font-heading-family);
+  /* font-family: var(--font-heading-family); */
   word-break: break-word;
   line-height: 1.3;
 }
