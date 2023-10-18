@@ -22,6 +22,7 @@
 }
  .login-header h4{
     font-size: 34px;
+    text-align: center;
 }
 .login-box{
     position: relative;
@@ -46,6 +47,7 @@
 }
 .login-header p{
     color: #555;
+    text-align: center;
 }
 .input-box{
     position: relative;
@@ -66,7 +68,6 @@
     font-size: 1em;
     color: #333;
     padding-left: 15px;
-    margin-bottom: 25px;
     border: 1px solid #ddd;
     border-radius: 3px;
     outline: none;
