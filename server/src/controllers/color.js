@@ -1,12 +1,12 @@
-import Size from "../models/size";
-import { sizeValidators } from "../validators/size";
+import Color from "../models/color";
+import { colorValidators } from "../validators/color";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Size.find()
+    const data = await Color.find()
     if (data.length == 0) {
       return res.json({
-        message: "Không có kích thước",
+        message: "Không có màu sắc",
       });
     }
     return res.json(data);
@@ -15,13 +15,13 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const size = await Size.findById(id)
-    if (size.length === 0) {
+    const color = await Color.findById(id)
+    if (color.length === 0) {
       return res.status(200).json({
-        message: "Không có kích thước",
+        message: "Không có màu sắc",
       });
     }
-    return res.status(200).json(size);
+    return res.status(200).json(color);
   } catch (error) {
     return res.status(400).json({
       message: error,
@@ -31,20 +31,20 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { error } = sizeValidators.validate(body);
+    const { error } = colorValidators.validate(body);
     if (error) {
       return res.json({
         message: error.details.map((item) => item.message),
       });
     }
-    const data = await Size.create(body);
+    const data = await Color.create(body);
     if (data.length === 0) {
       return res.status(400).json({
-        message: "Thêm kích thước thất bại",
+        message: "Thêm màu sắc thất bại",
       });
     }
     return res.status(200).json({
-      message: "Thêm kích thước thành công",
+      message: "Thêm màu sắc thành công",
       data,
     });
   } catch (error) {
@@ -55,9 +55,9 @@ export const create = async (req, res) => {
 };
 export const remove = async (req, res) => {
   try {
-    const data = await Size.findByIdAndDelete(req.params.id);
+    const data = await Color.findByIdAndDelete(req.params.id);
     return res.json({
-      message: "Xóa kích thước thành công",
+      message: "Xóa màu sắc thành công",
       data,
     });
   } catch (error) {
@@ -68,7 +68,7 @@ export const remove = async (req, res) => {
 };
 export const update = async (req, res) => {
   try {
-    const data = await Size.findOneAndUpdate(
+    const data = await Color.findOneAndUpdate(
       { _id: req.params.id },
       req.body,
       {
@@ -77,11 +77,11 @@ export const update = async (req, res) => {
     );
     if (!data) {
       return res.status(400).json({
-        message: "Cập nhật kích thước thất bại",
+        message: "Cập nhật màu sắc thất bại",
       });
     }
     return res.json({
-      message: "Cập nhật kích thước thành công",
+      message: "Cập nhật màu sắc thành công",
       data,
     });
   } catch (error) {

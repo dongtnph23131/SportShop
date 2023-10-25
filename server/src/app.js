@@ -6,6 +6,7 @@ import authRouter from "./routers/auth";
 import productRouter from "./routers/product"
 import categoryRouter from "./routers/category"
 import sizeRouter from "./routers/size"
+import colorRouter from "./routers/color"
 
 dotenv.config()
 const app = express();
@@ -17,6 +18,8 @@ app.use('/api',authRouter)
 app.use('/api',productRouter)
 app.use('/api', categoryRouter)
 app.use('/api',sizeRouter)
+app.use('/api',colorRouter)
+
 
 mongoose.connect(process.env.URL_DATABASE);
 
