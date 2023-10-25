@@ -5,6 +5,10 @@ export const productValidators = joi.object({
         "string.empty": "Tên sản phẩm không được để trống",
         "any.required": 'Trường tên sản phẩm là bắt buộc',
     }),
+    categoryId: joi.string().required().messages({
+        "string.empty": "Tên danh mục không được để trống",
+        "any.required": 'Trường tên là bắt buộc',
+    }),
     size: joi.string().required().messages({
         "string.empty": "Kích thước sản phẩm không được để trống",
         "any.required": 'Trường kích thước là bắt buộc',
