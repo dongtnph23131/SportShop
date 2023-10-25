@@ -1,5 +1,5 @@
-import Product from "../models/Products/product";
-// import { productValidators } from "../validators/product";
+import Product from "../models/product";
+import { productValidators } from "../validators/product";
 
 export const getAll = async (req, res) => {
     const { _limit = 10, _sort = "createAt", _order = "asc", _page = 1 } = req.query;
@@ -10,10 +10,8 @@ export const getAll = async (req, res) => {
             [_sort]: _order == "desc" ? -1 : 1,
         },
     };
-
     try {
         const data = await Product.paginate({}, options);
-
         if (data.length == 0) {
             return res.json({
                 message: "Không có sản phẩm nào",
@@ -29,7 +27,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
     try {
         const id = req.params.id;
-        const data = await Product.findOne({ _id: id });
+        const data = await Product.findOne({ _id: id }).populate("categoryId", "-__v");
         if (data.length === 0) {
             return res.status(200).json({
                 message: "Không có sản phẩm",
@@ -45,12 +43,12 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
     try {
         const body = req.body;
-        // const { error } = productValidators.validate(body);
-        // if (error) {
-        //     return res.json({
-        //         message: error.details[0].message,
-        //     });
-        // }
+        const { error } = productValidators.validate(body);
+        if (error) {
+            return res.json({
+                message: error.details[0].message,
+            });
+        }
         const product = await Product.create(body);
         if (product.length === 0) {
             return res.status(400).json({

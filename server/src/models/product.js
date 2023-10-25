@@ -7,16 +7,29 @@ const productSchema = mongoose.Schema(
             type: String,
             require: true,
         },
-        description: {
+        size: {
             type: String,
             require: true
         },
-        status: {
+        color: {
             type: String,
+            require: true
         },
-        collectionId: {
-            type: mongoose.Types.ObjectId,
-            ref: 'Collection',
+        quantity: {
+            type: Number,
+            require: true
+        },
+        brand: {
+            type: String,
+            require: true
+        },
+        price: {
+            type: Number,
+            require: true
+        },
+        description: {
+            type: String,
+            require: true
         },
     },
     { timestamps: true, versionKey: false }
