@@ -51,13 +51,11 @@ export const create = async (req, res) => {
             });
         }
         const product = await Product.create(body);
-
         await Category.findByIdAndUpdate(product.categoryId, {
             $addToSet: {
                 products: product._id,
             },
         });
-
         if (product.length === 0) {
             return res.status(400).json({
                 message: "Thêm sản phẩm thất bại",

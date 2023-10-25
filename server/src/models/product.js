@@ -11,11 +11,11 @@ const productSchema = mongoose.Schema(
             type: mongoose.Types.ObjectId,
             ref: 'Category',
         },
-        size: {
+        sizes: {
             type: String,
             require: true
         },
-        color: {
+        colors: {
             type: String,
             require: true
         },
