@@ -29,14 +29,9 @@ const normFile = (e: any) => {
 const ProductAdd = () => {
   const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
   return (
-    <div>
-      <h2>Thêm sản phẩm</h2>
-      <Checkbox
-        checked={componentDisabled}
-        onChange={(e) => setComponentDisabled(e.target.checked)}
-      >
-        Form disabled
-      </Checkbox>
+    <div style={{overflow: "auto"}}>
+      <h2 style={{fontSize:"30px" , fontWeight: "bold", marginBottom: "20px"}}>Thêm sản phẩm</h2>
+
       <Form
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
@@ -44,15 +39,8 @@ const ProductAdd = () => {
         disabled={componentDisabled}
         style={{ maxWidth: 600 }}
       >
-        <Form.Item label="Checkbox" name="disabled" valuePropName="checked">
-          <Checkbox>Checkbox</Checkbox>
-        </Form.Item>
-        <Form.Item label="Radio">
-          <Radio.Group>
-            <Radio value="apple"> Apple </Radio>
-            <Radio value="pear"> Pear </Radio>
-          </Radio.Group>
-        </Form.Item>
+       
+        
         <Form.Item label="Input">
           <Input />
         </Form.Item>
@@ -88,9 +76,7 @@ const ProductAdd = () => {
             ]}
           />
         </Form.Item>
-        <Form.Item label="DatePicker">
-          <DatePicker />
-        </Form.Item>
+     
         <Form.Item label="RangePicker">
           <RangePicker />
         </Form.Item>

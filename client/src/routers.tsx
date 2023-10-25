@@ -15,6 +15,7 @@ import Shops from './components/Shops';
 import Contact from './components/Contact';
 import Blog from './components/Blog';
 import About from './components/About';
+import AllCategories from './components/pages/admin/categories/AllCategories';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -45,8 +46,11 @@ export const routers  = createBrowserRouter ([
         path: "/admin", element: <MainLayout/>,
         children: [
             {index: true, element: <Dashboard/>},
+            {path: "dashboard", element: <Dashboard/>},
             {path: "products", element: <ProductPage/>},
             {path: "products/add", element: <ProductAdd/>},
+            {path: "categories", element: <AllCategories/>},
+            {path: "categories/ add",}
         ]
         
     },
