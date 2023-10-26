@@ -12,15 +12,17 @@ import {
     persistStore,
 } from 'redux-persist';
 import authApi from "../api/auth";
+import acountApi from "../api/acount";
 const persistConfig = {
     key: 'root',
     storage,
     whitelist: []
 }
 const rootReducer = combineReducers({
-   [authApi.reducerPath]:authApi.reducer
+   [authApi.reducerPath]:authApi.reducer,
+   [acountApi.reducerPath]:acountApi.reducer
 })
-const middleware=[authApi.middleware]
+const middleware=[authApi.middleware,acountApi.middleware]
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({
     reducer: persistedReducer,

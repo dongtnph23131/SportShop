@@ -2,9 +2,16 @@ import Acount from "../models/acount";
 import nodemailer from "nodemailer"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
-import { resetPasswordVilidators } from "../validators/acount";
+import { forgotPasswordValidators, resetPasswordVilidators } from "../validators/acount";
 export const forgotPassword = async (req, res) => {
     try {
+        const { error } = forgotPasswordValidators.validate(req.body, { abortEarly: false });
+        if (error) {
+            const errors = error.details.map((err) => err.message);
+            return res.status(400).json({
+                message: errors,
+            });
+        }
         const email = req.body.email
         const user = await Acount.findOne({ email: email })
         if (!user) {
