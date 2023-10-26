@@ -13,7 +13,7 @@ import {
 import { Layout, Menu, Button, theme } from 'antd';
 import { Link, Outlet } from 'react-router-dom';
 
-const { Header, Sider, Content } = Layout;
+const { Header, Sider } = Layout;
 const { SubMenu } = Menu; // Import SubMenu from antd
 
 const MainLayout = () => {
@@ -88,16 +88,7 @@ const MainLayout = () => {
             }}
           />
         </Header>
-        <Content
-          style={{
-            margin: '24px 16px',
-            padding: 24,
-            minHeight: 280,
-            background: colorBgContainer,
-          }}
-        >
-         <Outlet/>
-        </Content>
+         <Outlet/> 
       </Layout>
     </Layout>
   );
