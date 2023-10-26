@@ -18,3 +18,10 @@ export const resetPasswordVilidators = joi.object({
     }),
 
 });
+export const forgotPasswordValidators= joi.object({
+    email: joi.string().email().required().messages({
+        "string.empty": "Email không được để trống",
+        "any.required": 'Trường email là bắt buộc',
+        "string.email": "Email không đúng định dạng",
+    }),
+});
