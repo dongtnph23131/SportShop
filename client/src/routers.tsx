@@ -15,6 +15,8 @@ import Shops from './components/Shops';
 import Contact from './components/Contact';
 import Blog from './components/Blog';
 import About from './components/About';
+import ForgotToken from './components/ForgotToken';
+import ForgotSuccessfully from './components/ForgotSuccessfully';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -56,5 +58,8 @@ export const routers  = createBrowserRouter ([
     
     {path:"/signup" , element:<Signup></Signup>},
     {path:"/forgot" , element:<Forgot></Forgot>},
+    {path:"/forgottoken" ,element:<ForgotToken/>},
+    {path:"/forgotSucces" ,element:<ForgotSuccessfully/>}
+
 
  ])
