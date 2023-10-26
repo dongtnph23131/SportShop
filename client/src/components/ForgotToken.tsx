@@ -9,8 +9,11 @@ const ForgotToken = () => {
                     <div className="login-header">
                         <h4>NHẬP MÃ XÁC MINH</h4>
                     </div>
-                    <div className="input-box">
+                    <div className="input-box input__forgotpassword">
                         <input type="text" className="input-field" placeholder='Nhập mã xác minh' id="email" />
+                        <input type="text" className="input-field" placeholder='Nhập mật khẩu mới' id="password" />
+                        <input type="text" className="input-field" placeholder='Xác nhận mật khẩu mới' id="confirmPassword" />
+
                     </div>
                   
                     <div className="input-box">
