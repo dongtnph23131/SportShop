@@ -3,7 +3,7 @@ import { colorValidators } from "../validators/color";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Color.find()
+    const data = await Color.find().populate("products")
     if (data.length == 0) {
       return res.json({
         message: "Không có màu sắc",
@@ -15,7 +15,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const color = await Color.findById(id)
+    const color = await Color.findById(id).populate("products")
     if (color.length === 0) {
       return res.status(200).json({
         message: "Không có màu sắc",

@@ -10,15 +10,22 @@ const productSchema = mongoose.Schema(
         categoryId: {
             type: mongoose.Types.ObjectId,
             ref: 'Category',
-        },
-        sizes: {
-            type: String,
             require: true
         },
-        colors: {
-            type: String,
-            require: true
-        },
+        sizes: [
+            {
+                type: mongoose.Types.ObjectId,
+                ref: 'Size',
+                required: true
+            }
+        ],
+        colors: [
+            {
+                type: mongoose.Types.ObjectId,
+                ref: 'Color',
+                required: true
+            }
+        ],
         quantity: {
             type: Number,
             require: true
