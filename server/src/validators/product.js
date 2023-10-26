@@ -10,9 +10,11 @@ export const productValidators = joi.object({
         "any.required": 'Trường tên là bắt buộc',
     }),
     sizes: joi.array().items(joi.string()).required().messages({
+        "string.empty": "Kích thước sản phẩm không được để trống",
         "any.required": 'Trường kích thước là bắt buộc',
     }),
     colors: joi.array().items(joi.string()).required().messages({
+        "string.empty": "Màu sắc sản phẩm không được để trống",
         "any.required": 'Trường màu sắc là bắt buộc',
     }),
     quantity: joi.number().required().messages({

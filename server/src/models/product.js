@@ -5,11 +5,12 @@ const productSchema = mongoose.Schema(
     {
         name: {
             type: String,
-            required: true,
+            require: true,
         },
         categoryId: {
             type: mongoose.Types.ObjectId,
             ref: 'Category',
+            require: true
         },
         sizes: [
             {
@@ -27,19 +28,19 @@ const productSchema = mongoose.Schema(
         ],
         quantity: {
             type: Number,
-            required: true
+            require: true
         },
         brand: {
             type: String,
-            required: true
+            require: true
         },
         price: {
             type: Number,
-            required: true
+            require: true
         },
         description: {
             type: String,
-            required: true
+            require: true
         },
     },
     { timestamps: true, versionKey: false }
