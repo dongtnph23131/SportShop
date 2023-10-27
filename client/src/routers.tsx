@@ -17,6 +17,9 @@ import Blog from './components/Blog';
 import About from './components/About';
 import ForgotToken from './components/ForgotToken';
 import ForgotSuccessfully from './components/ForgotSuccessfully';
+import AllCategories from './components/pages/admin/categories/AllCategories';
+import AddCategories from './components/pages/admin/categories/AddCategories';
+import EditCategories from './components/pages/admin/categories/EditCategories';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -49,6 +52,9 @@ export const routers  = createBrowserRouter ([
             {index: true, element: <Dashboard/>},
             {path: "products", element: <ProductPage/>},
             {path: "products/add", element: <ProductAdd/>},
+            {path: "categories", element: <AllCategories/>},
+            {path: "categories/add", element: <AddCategories/>},
+            {path: "categories/:id/edit", element: <EditCategories/>},
         ]
         
     },
