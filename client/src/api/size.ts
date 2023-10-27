@@ -4,14 +4,14 @@ export const getSizes = () => {
   return instance.get("/sizes");
 };
 export const getSizeById = (_id: number | string) => {
-  return instance.get(`/size/${_id}`);
+  return instance.get(`/sizes/${_id}`);
 };
 export const addSize = (Size: ISize) => {
-  return instance.post("/size", Size);
+  return instance.post("/sizes", Size);
 };
 export const updateSize = (Size: ISize) => {
-  return instance.patch(`/size/${Size._id}`, Size);
+  return instance.patch(`/sizes/${Size._id}`, Size);
 };
 export const deleteSize = (_id: number | string) => {
-  return instance.delete(`/size/${_id}`);
+  return instance.delete(`/sizes/${_id}`);
 };

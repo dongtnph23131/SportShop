@@ -23,6 +23,9 @@ import EditCategories from './components/pages/admin/categories/EditCategories';
 import AllColors from './components/pages/admin/Colors/AllColors';
 import AddColors from './components/pages/admin/Colors/AddColors';
 import EditColors from './components/pages/admin/Colors/EditColors';
+import AllSizes from './components/pages/admin/Sizes/AllSizes';
+import AddSizes from './components/pages/admin/Sizes/AddSizes';
+import EditSizes from './components/pages/admin/Sizes/EditSizes';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -61,6 +64,10 @@ export const routers  = createBrowserRouter ([
             {path: "colors", element: <AllColors/>},
             {path: "colors/add", element: <AddColors/>},
             {path: "colors/:id/edit", element: <EditColors/>},
+            
+            {path: "sizes", element: <AllSizes/>},
+            {path: "sizes/add", element: <AddSizes/>},
+            {path: "sizes/:id/edit", element: <EditSizes/>},
         ]
         
     },
