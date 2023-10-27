@@ -37,8 +37,7 @@ export const get = async (req, res) => {
     const id = req.params.id;
     const data = await Product.findOne({ _id: id })
       .populate("categoryId", "-__v")
-      .populate("sizeId", "-__v")
-      .populate("colorId", "-__v");
+      .populate({ path: 'items' })
     if (data.length === 0) {
       return res.status(200).json({
         message: "Không có sản phẩm",
@@ -54,41 +53,29 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { error } = productValidators.validate(body);
+    const { name, description, categoryId } = body
+    const { error } = productValidators.validate({ name, description, categoryId });
     if (error) {
       return res.json({
-        message: error.details[0].message,
+        message: error.details.map((item) => item.message),
       });
     }
-    const product = await Product.create(body);
-    const { sizes, colors, categoryId } = req.body;
-    // Sử dụng Promise.all để đợi cả hai tác vụ hoàn thành trước khi tiếp tục
-    await Promise.all([
-      Category.findByIdAndUpdate(categoryId, {
-        $addToSet: { products: product._id },
-      }),
-      // Lặp qua danh sách sizes và thêm sản phẩm vào mỗi size
-      ...sizes.map((sizeId) =>
-        Size.findByIdAndUpdate(sizeId, {
-          $addToSet: { products: product._id },
-        })
-      ),
-      // Lặp qua danh sách colors và thêm sản phẩm vào mỗi color
-      ...colors.map((colorId) =>
-        Color.findByIdAndUpdate(colorId, {
-          $addToSet: { products: product._id },
-        })
-      ),
-    ]);
-    if (product.length === 0) {
+    const items = body.items
+    if (!body.items | body.items.length === 0) {
       return res.status(400).json({
-        message: "Thêm sản phẩm thất bại",
-      });
+        message: 'Cần thêm thuộc tính sản phẩm'
+      })
     }
+    const product = await Product.create(body)
+    await Category.findByIdAndUpdate(product.categoryId, {
+      $addToSet: {
+        products: product._id
+      }
+    })
     return res.status(200).json({
-      message: "Thêm sản phẩm thành công",
-      product,
-    });
+      message: 'Thêm sản phẩm thành công',
+      product
+    })
   } catch (error) {
     return res.status(400).json({
       message: error.message,

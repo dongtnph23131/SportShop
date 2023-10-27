@@ -5,43 +5,43 @@ const productSchema = mongoose.Schema(
     {
         name: {
             type: String,
-            require: true,
+            required: true,
         },
         categoryId: {
             type: mongoose.Types.ObjectId,
             ref: 'Category',
-            require: true
-        },
-        sizes: [
-            {
-                type: mongoose.Types.ObjectId,
-                ref: 'Size',
-                required: true
-            }
-        ],
-        colors: [
-            {
-                type: mongoose.Types.ObjectId,
-                ref: 'Color',
-                required: true
-            }
-        ],
-        quantity: {
-            type: Number,
-            require: true
-        },
-        brand: {
-            type: String,
-            require: true
-        },
-        price: {
-            type: Number,
-            require: true
+            required: true
         },
         description: {
             type: String,
-            require: true
+            required: true
         },
+        items: [
+            {
+                colorId: {
+                    type: mongoose.Types.ObjectId,
+                    ref: 'Color',
+                    required: true
+                },
+                sizeId: {
+                    type: mongoose.Types.ObjectId,
+                    ref: 'Size',
+                    required: true
+                },
+                price: {
+                    type: Number,
+                    required: true
+                },
+                img: {
+                    type: String,
+                    required: true
+                },
+                quantity: {
+                    type: Number,
+                    required: true
+                }
+            }
+        ]
     },
     { timestamps: true, versionKey: false }
 );
