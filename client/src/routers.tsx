@@ -20,6 +20,12 @@ import ForgotSuccessfully from './components/ForgotSuccessfully';
 import AllCategories from './components/pages/admin/categories/AllCategories';
 import AddCategories from './components/pages/admin/categories/AddCategories';
 import EditCategories from './components/pages/admin/categories/EditCategories';
+import AllColors from './components/pages/admin/Colors/AllColors';
+import AddColors from './components/pages/admin/Colors/AddColors';
+import EditColors from './components/pages/admin/Colors/EditColors';
+import AllSizes from './components/pages/admin/Sizes/AllSizes';
+import AddSizes from './components/pages/admin/Sizes/AddSizes';
+import EditSizes from './components/pages/admin/Sizes/EditSizes';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -55,6 +61,13 @@ export const routers  = createBrowserRouter ([
             {path: "categories", element: <AllCategories/>},
             {path: "categories/add", element: <AddCategories/>},
             {path: "categories/:id/edit", element: <EditCategories/>},
+            {path: "colors", element: <AllColors/>},
+            {path: "colors/add", element: <AddColors/>},
+            {path: "colors/:id/edit", element: <EditColors/>},
+            
+            {path: "sizes", element: <AllSizes/>},
+            {path: "sizes/add", element: <AddSizes/>},
+            {path: "sizes/:id/edit", element: <EditSizes/>},
         ]
         
     },
