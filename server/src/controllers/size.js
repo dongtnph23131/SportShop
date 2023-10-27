@@ -3,7 +3,7 @@ import { sizeValidators } from "../validators/size";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Size.find().populate("products")
+    const data = await Size.find()
     if (data.length == 0) {
       return res.json({
         message: "Không có kích thước",
@@ -15,7 +15,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const size = await Size.findById(id).populate("products")
+    const size = await Size.findById(id)
     if (size.length === 0) {
       return res.status(200).json({
         message: "Không có kích thước",
