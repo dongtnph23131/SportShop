@@ -48,29 +48,47 @@ const MainLayout = () => {
               <Link to='/admin/categories'>All Categories</Link>
             </Menu.Item>
             <Menu.Item key="5">
-              <Link to='/admin/categoties/add'>Add Category</Link>
+              <Link to='/admin/categories/add'>Add Category</Link>
             </Menu.Item>
             {/* Add more sub-menu items as needed */}
           </SubMenu>
-          <SubMenu key="sub3" icon={<AiOutlineShoppingCart />} title="Order">
+          <SubMenu key="sub3" icon={<AiTwotoneContacts />} title="Sizes">
             <Menu.Item key="6">
-              <Link to='/admin/orders'>All order</Link>
+              <Link to='/admin/sizes'>All Sizes</Link>
             </Menu.Item>
             <Menu.Item key="7">
+              <Link to='/admin/sizes/add'>Add Size</Link>
+            </Menu.Item>
+            {/* Add more sub-menu items as needed */}
+          </SubMenu>
+          <SubMenu key="sub4" icon={<AiTwotoneContacts />} title="Colors">
+            <Menu.Item key="8">
+              <Link to='/admin/colors'>All Colors</Link>
+            </Menu.Item>
+            <Menu.Item key="9">
+              <Link to='/admin/colors/add'>Add Color</Link>
+            </Menu.Item>
+            {/* Add more sub-menu items as needed */}
+          </SubMenu>
+          <SubMenu key="sub5" icon={<AiOutlineShoppingCart />} title="Order">
+            <Menu.Item key="10">
+              <Link to='/admin/orders'>All order</Link>
+            </Menu.Item>
+            <Menu.Item key="11">
               <Link to='/admin/categoties/add'>Add Category</Link>
             </Menu.Item>
             {/* Add more sub-menu items as needed */}
           </SubMenu>
-          <SubMenu key="sub4" icon={<AiOutlineShop />} title="Inventory">
-            <Menu.Item key="8">
+          <SubMenu key="sub6" icon={<AiOutlineShop />} title="Inventory">
+            <Menu.Item key="12">
               <Link to=''>warehouse</Link>
             </Menu.Item>
-            <Menu.Item key="9">
+            <Menu.Item key="13">
               <Link to=''> Inventory</Link>
             </Menu.Item>
             {/* Add more sub-menu items as needed */}
           </SubMenu>
-          <Menu.Item key="10" icon={<AiFillTags />}>
+          <Menu.Item key="14" icon={<AiFillTags />}>
             <Link to=''>Discount</Link>
           </Menu.Item>
         </Menu>
