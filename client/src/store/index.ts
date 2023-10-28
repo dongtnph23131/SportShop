@@ -13,6 +13,7 @@ import {
 } from 'redux-persist';
 import authApi from "../api/auth";
 import acountApi from "../api/acount";
+import productApi from "../api/product";
 const persistConfig = {
     key: 'root',
     storage,
@@ -20,9 +21,10 @@ const persistConfig = {
 }
 const rootReducer = combineReducers({
    [authApi.reducerPath]:authApi.reducer,
-   [acountApi.reducerPath]:acountApi.reducer
+   [acountApi.reducerPath]:acountApi.reducer,
+   [productApi.reducerPath]:productApi.reducer
 })
-const middleware=[authApi.middleware,acountApi.middleware]
+const middleware=[authApi.middleware,acountApi.middleware,productApi.middleware]
 const persistedReducer = persistReducer(persistConfig, rootReducer)
 const store = configureStore({
     reducer: persistedReducer,
