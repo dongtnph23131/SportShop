@@ -1,4 +1,4 @@
-exports.authorization = async (req, res, next) => {
+export const authorization = async (req, res, next) => {
     try {
         const user = req.user
         if (!(user.role == "admin")) {
