@@ -16,10 +16,6 @@ const childProductSchema = new mongoose.Schema({
         ref: 'Size',
         required: true
     },
-    price: {
-        type: Number,
-        required: true
-    },
     img: {
         type: String,
         required: true
@@ -33,4 +29,4 @@ const childProductSchema = new mongoose.Schema({
     versionKey:false
 })
 
-export default mongoose.model('childProduct',childProductSchema)
+export default mongoose.model('ChildProduct',childProductSchema)
