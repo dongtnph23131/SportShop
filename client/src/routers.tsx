@@ -17,6 +17,7 @@ import Blog from './components/Blog';
 import About from './components/About';
 import ForgotToken from './components/ForgotToken';
 import ForgotSuccessfully from './components/ForgotSuccessfully';
+import Profile from './components/profile';
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -38,7 +39,8 @@ export const routers  = createBrowserRouter ([
             {path:"/shops",element:<Shops></Shops>},
             {path:"/contact",element:<Contact/>},
             {path:"/blog",element:<Blog/>},
-            {path:"/about",element:<About/>}
+            {path:"/about",element:<About/>},
+            {path:"/profile" , element:<Profile/>}
 
         ]
 

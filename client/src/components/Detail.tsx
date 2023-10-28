@@ -62,6 +62,19 @@ const Detail = () => {
             </select>
             <input type="number" value="1" />
           </div>
+          <div className="color-detaile">
+            <span>Color:</span>
+            <ul>
+              
+              <li><a href="">Xanh</a></li>
+              
+              <li><a href="">Đỏ</a></li>
+              
+              <li><a href="">Đen</a></li>
+              
+              <li><a href="">Xám</a></li>
+            </ul>
+          </div>
           <button className="normal">Add to Cart </button>
           <h4>Product Details</h4>
           <span>
