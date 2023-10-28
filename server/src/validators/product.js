@@ -13,4 +13,8 @@ export const productValidators = joi.object({
         "string.empty": "Mô tả không được để trống",
         "any.required": 'Trường mô tả là bắt buộc',
     }),
+    photoDescription:joi.string().required().messages({
+        "string.empty": "Ảnh mô tả không được để trống",
+        "any.required": 'Trường ảnh mô tả là bắt buộc',
+    }),
 });

@@ -1,6 +1,6 @@
-const User=require('../models/user')
-const jwt=require('jsonwebtoken')
-exports.authenticate = async (req, res,next) => {
+import Acount from "../models/acount"
+import jwt from "jsonwebtoken"
+export const authenticate = async (req, res,next) => {
     try {
         if (!req.headers.authorization) {
             return res.status(203).json({
@@ -9,7 +9,7 @@ exports.authenticate = async (req, res,next) => {
         }
         const token=req.headers.authorization.split(" ")[1]
         const {id}=jwt.verify(token,"dongtimo")
-        const user=await User.findById(id)
+        const user=await Acount.findById(id)
         if(!user){
             return res.status(203).json({
                 message:"Không tìm thấy người dùng"
