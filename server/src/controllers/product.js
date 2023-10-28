@@ -50,8 +50,8 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { name, description, categoryId, photoDescription } = body
-    const { error } = productValidators.validate({ name, description, categoryId, photoDescription });
+    const { name, description, categoryId, photoDescription,price } = body
+    const { error } = productValidators.validate({ name, description, categoryId, photoDescription,price });
     if (error) {
       return res.json({
         message: error.details.map((item) => item.message),

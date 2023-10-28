@@ -13,6 +13,12 @@ export const productValidators = joi.object({
         "string.empty": "Mô tả không được để trống",
         "any.required": 'Trường mô tả là bắt buộc',
     }),
+    price:joi.number().min(0).required().messages({
+        "number.empty": "Giá không được để trống",
+        "any.required": 'Trường giá là bắt buộc',
+        "number.base":"Gía là số",
+        "number.min":"Gía là số dương"
+    }),
     photoDescription:joi.string().required().messages({
         "string.empty": "Ảnh mô tả không được để trống",
         "any.required": 'Trường ảnh mô tả là bắt buộc',
