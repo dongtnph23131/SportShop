@@ -2,21 +2,22 @@ import { Link } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Button, Space, Table, message } from "antd";
 import type { ColumnsType } from "antd/es/table";
-import { deleteCategories, getCategories } from "../../../../api/category";
-import { ICategory } from "../../../../interfaces/categort";
+import { deleteSize, getSizes } from "../../../../api/size";
+import { ISize } from "../../../../interfaces/size";
 
-const AllCategories = () => {
-  const [categories, setCategories] = useState<ICategory[]>([]);
+
+const AllSizes = () => {
+  const [sizes, setsizes] = useState<ISize[]>([]);
   const [data, setData] = useState<DataType[]>([]);
 
-  const removeCategory = (key: string | number) => {
-    deleteCategories(key)
+  const removeSize = (key: string | number) => {
+    deleteSize(key)
       .then(() => {
-        message.success("Xóa danh mục thành công!", 2);
-        return getCategories(); // Lấy dữ liệu mới sau khi xóa
+        message.success("Xóa size thành công!", 2);
+        return getSizes(); // Lấy dữ liệu mới sau khi xóa
       })
       .then((response) => {
-        setCategories(response.data);
+        setsizes(response.data);
         setData(response.data.map((item) => ({ key: item._id, name: item.name })));
       })
       .catch((error) => {
@@ -24,9 +25,9 @@ const AllCategories = () => {
       });
   };
   useEffect(() => {
-    getCategories()
+    getSizes()
       .then((response) => {
-        setCategories(response.data);
+        setsizes(response.data);
         setData(response.data.map((item) => ({ key: item._id, name: item.name })));
       })
       .catch((error) => {
@@ -41,7 +42,7 @@ const AllCategories = () => {
 
   const columns: ColumnsType<DataType> = [
     {
-      title: "Category Name",
+      title: "Size Name",
       dataIndex: "name",
       key: "name",
       width: "60%",
@@ -52,14 +53,14 @@ const AllCategories = () => {
       render: (record) => (
         <Space size="middle">
           <Button type="primary">
-            <Link to={`/admin/categories/${record.key}/edit`}>Update</Link>
+            <Link to={`/admin/sizes/${record.key}/edit`}>Update</Link>
           </Button>
           <Button
-            style={{ backgroundColor: "red" }}
+            style={{ backgroundSize: "red" }}
             type="primary"
             onClick={() => {
               if (window.confirm("Bạn có chắc chắn muốn xóa?")) {
-                removeCategory(record.key);
+                removeSize(record.key);
               }
             }}
           >
@@ -75,4 +76,4 @@ const AllCategories = () => {
   );
 };
 
-export default AllCategories;
+export default AllSizes;

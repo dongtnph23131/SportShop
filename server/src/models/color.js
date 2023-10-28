@@ -5,10 +5,6 @@ const colorSchema = mongoose.Schema({
         type: String,
         required: true
     },
-    products: [{
-        type: mongoose.Types.ObjectId,
-        ref: "Product",
-    }]
 });
 
 export default mongoose.model("Color", colorSchema); 
