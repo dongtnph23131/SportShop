@@ -10,7 +10,10 @@
 }
 
 
-
+.hd4-right__title li a img {
+  width: 39px;
+  margin-left: 15px;
+}
 
 .header3-top {
   background: var(--bg-more);

@@ -17,6 +17,7 @@ import Blog from './components/Blog';
 import About from './components/About';
 import ForgotToken from './components/ForgotToken';
 import ForgotSuccessfully from './components/ForgotSuccessfully';
+import Profile from './components/Profile';
 import AllCategories from './components/pages/admin/categories/AllCategories';
 import AddCategories from './components/pages/admin/categories/AddCategories';
 import EditCategories from './components/pages/admin/categories/EditCategories';
@@ -26,6 +27,7 @@ import EditColors from './components/pages/admin/Colors/EditColors';
 import AllSizes from './components/pages/admin/Sizes/AllSizes';
 import AddSizes from './components/pages/admin/Sizes/AddSizes';
 import EditSizes from './components/pages/admin/Sizes/EditSizes';
+
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -47,7 +49,8 @@ export const routers  = createBrowserRouter ([
             {path:"/shops",element:<Shops></Shops>},
             {path:"/contact",element:<Contact/>},
             {path:"/blog",element:<Blog/>},
-            {path:"/about",element:<About/>}
+            {path:"/about",element:<About/>},
+            {path:"/profile" , element:<Profile/>}
 
         ]
 
