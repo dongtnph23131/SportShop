@@ -1,22 +1,25 @@
 import React, { useState } from "react";
-import Slider from 'antd/lib/slider'; 
+import Slider from 'antd/lib/slider';
+import { useGetAllProductsQuery } from "../api/product";
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [ishandleSortVisible, setIsSortVisible] = useState(false);
-
+  const [sort, setSort] = useState<String>()
+  const [order, setOrder] = useState<String>()
+  const { data: products, isLoading } = useGetAllProductsQuery({ sort, order})
   const handleFilterClick = () => {
-    setIsFilterVisible(!isFilterVisible);
+    setIsFilterVisible(true);
   };
 
   const handleSortClick = () => {
     setIsSortVisible(!ishandleSortVisible);
   };
   const handleHideFilter = (e: React.MouseEvent<HTMLAnchorElement>) => {
-    e.preventDefault(); // Prevent the default behavior of an anchor tag
+    e.preventDefault();
     setIsFilterVisible(false);
   };
 
-  const [range, setRange] = useState([0, 50]); // Giá trị mặc định cho khoảng slider
+  const [range, setRange] = useState([0, 50]);
 
   const handleRangeChange = (value: number) => {
     setRange([value, range[1]]);
@@ -52,8 +55,6 @@ const Shops = () => {
                     <div style={{ width: "300px" }}>
                       <Slider
                         range
-                        min={0}
-                        max={100}
                         step={1}
                         value={range}
                         onChange={handleRangeChange}
@@ -65,43 +66,17 @@ const Shops = () => {
                   </div>
 
                   <div className="subcate">
-                    <span>Subcategories</span>
                     <select className="select-sub">
-                        <option value="">Moana Bryan (9)</option>
-                        <option value="">Moana Bryan (9)</option>
-                        <option value="">Moana Bryan (9)</option>
+                      <option value="">Moana Bryan (9)</option>
+                      <option value="">Moana Bryan (9)</option>
+                      <option value="">Moana Bryan (9)</option>
                     </select>
-                    
+
                   </div>
 
                   <div className="box-item-stores">
                     <span>Storess</span>
                     <div className="box-checkbox-filter">
-                      <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
-
-                      <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
-
-                      <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
-
-                      <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
-
-                      <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
-
                       <div className="boxs-mos">
                         <input type="checkbox" name="" id="" />
                         <label htmlFor="">Moana Bryan (9)</label>
@@ -122,20 +97,47 @@ const Shops = () => {
               <div className="box-sort-shops">
                 <div className="item-sort-shops">
                   <ul className="items-sort-ul">
-                    <li>
-                      <a href="">best stores</a>
+                    <li onClick={()=>{
+                      setSort('price')
+                      setOrder('asc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>Giá tăng dần</p>
                     </li>
-                    <li>
-                      <a href="">best stores</a>
+                    <li onClick={()=>{
+                      setSort('price')
+                      setOrder('desc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>Giá giảm dần</p>
                     </li>
-                    <li>
-                      <a href="">best stores</a>
+                    <li onClick={()=>{
+                      setSort('name')
+                      setOrder('asc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>A-Z</p>
                     </li>
-                    <li>
-                      <a href="">best stores</a>
+                    <li onClick={()=>{
+                      setSort('name')
+                      setOrder('desc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>Z-A</p>
                     </li>
-                    <li>
-                      <a href="">best stores</a>
+                    <li onClick={()=>{
+                      setSort('createdAt')
+                      setOrder('desc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>Mới nhất</p>
+                    </li>
+                    <li onClick={()=>{
+                      setSort('createdAt')
+                      setOrder('asc')
+                      setIsSortVisible(false)
+                    }}>
+                      <p>Cũ nhất</p>
                     </li>
                   </ul>
                 </div>
@@ -144,119 +146,26 @@ const Shops = () => {
           </div>
         </div>
         <div className="pro-container">
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
+          {products?.map((product: any, index: any) => {
+            return <div className="pro" key={index + 1}>
+              <img src={`${product.photoDescription}`} alt="" />
+              <div className="des">
+                <span>adidas</span>
+                <h5>{product.name}</h5>
+                <div className="star">
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                  <i className="fas fa-star"></i>
+                </div>
+                <h4>${product.price}</h4>
               </div>
-              <h4>$78</h4>
+              <a href="#">
+                <i className="fab fa-opencart cart"></i>
+              </a>
             </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
+          })}
         </div>
       </section>
     </div>

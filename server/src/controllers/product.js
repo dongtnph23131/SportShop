@@ -4,27 +4,36 @@ import { productValidators } from "../validators/product";
 import ChildProduct from "../models/childProduct";
 
 export const getAll = async (req, res) => {
-  const {
-    _limit = 10,
-    _sort = "createAt",
-    _order = "asc",
-    _page = 1,
-  } = req.query;
-  const options = {
-    page: _page,
-    limit: _limit,
-    sort: {
-      [_sort]: _order == "desc" ? -1 : 1,
-    },
-  };
   try {
-    const data = await Product.paginate({}, options);
-    if (data.length == 0) {
-      return res.json({
-        message: "Không có sản phẩm nào",
+    const { _limit = 100, _sort = "createAt", _page = 1, _order = "asc", q, categories } = req.query
+    const options = {
+      page: _page,
+      limit: _limit,
+      sort: {
+        [_sort]: _order === "desc" ? -1 : 1
+      },
+      populate: [{ path: "categoryId", select: "name" }]
+    }
+    let searchQuery = q ? {
+      name: { $regex: q, $options: "i" }
+    } : {}
+
+    if (categories) {
+      searchQuery = {
+        ...searchQuery, categoryId: {
+          $in: categories.split('.')
+        }
+      }
+    }
+    const data = await Product.paginate(searchQuery, options)
+    if (q) {
+      data.docs.forEach(async (element) => {
+        const productItem = await Book.findById(element._id)
+        productItem.numberSearch++;
+        await productItem.save()
       });
     }
-    return res.json(data);
+    return res.status(200).json(data.docs)
   } catch (error) {
     return res.status(400).json({
       message: error.message,
@@ -34,7 +43,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await ChildProduct.find({ productId: id }).populate('productId','-__v').populate('colorId','-__v').populate('sizeId','-__v')
+    const data = await ChildProduct.find({ productId: id }).populate('productId', '-__v').populate('colorId', '-__v').populate('sizeId', '-__v')
     if (data.length === 0) {
       return res.status(200).json({
         message: "Không có sản phẩm",
@@ -50,8 +59,8 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { name, description, categoryId, photoDescription,price } = body
-    const { error } = productValidators.validate({ name, description, categoryId, photoDescription,price });
+    const { name, description, categoryId, photoDescription, price } = body
+    const { error } = productValidators.validate({ name, description, categoryId, photoDescription, price });
     if (error) {
       return res.json({
         message: error.details.map((item) => item.message),
@@ -67,7 +76,7 @@ export const create = async (req, res) => {
     const itemData = items.map((item) => {
       return ChildProduct.create({ ...item, productId: product._id })
     })
-    const itemProduct=await Promise.all(itemData)
+    const itemProduct = await Promise.all(itemData)
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
         products: product._id
