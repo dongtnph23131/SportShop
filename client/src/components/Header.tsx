@@ -1,5 +1,9 @@
 import React from 'react';
+import Cookies from "js-cookie";
 const Header = () => {
+  const user= Cookies.get('user')
+  console.log(user);
+  
   return (
 
     <div>
