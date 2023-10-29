@@ -1,17 +1,3 @@
-<<<<<<< HEAD
-import React from 'react'
-
-type Props = {}
-
-const AddCategories = (props: Props) => {
-  return (
-    <div>AddCategories</div>
-  )
-}
-
-export default AddCategories
-=======
-
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import { addCategory, getCategories } from "../../../../api/category";
@@ -71,4 +57,3 @@ const AddCategories = () => {
 };
 
 export default AddCategories;
->>>>>>> 0971d6eee391ee3bfdc595481f65e6597eb8c5d4

@@ -1,12 +1,18 @@
-import React, { useState } from "react";
+
+import React, { useEffect, useState } from "react";
 // import Slider from 'antd/lib/slider';
 import { useGetAllProductsQuery } from "../api/product";
+import { getCategories } from "../api/category";
+import { useNavigate } from "react-router-dom";
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [ishandleSortVisible, setIsSortVisible] = useState(false);
   const [sort, setSort] = useState<String>()
   const [order, setOrder] = useState<String>()
-  const { data: products, isLoading } = useGetAllProductsQuery({ sort, order})
+  const [categories, setCategories] = useState<any>([])
+  const [dataCategories, setDataCategories] = useState<any>([])
+  const navigate=useNavigate()
+  const { data: products, isLoading } = useGetAllProductsQuery({ sort, order,dataCategories })
   const handleFilterClick = () => {
     setIsFilterVisible(true);
   };
@@ -24,7 +30,11 @@ const Shops = () => {
   // const handleRangeChange = (value: number) => {
   //   setRange([value, range[1]]);
   // };
-
+  useEffect(() => {
+    getCategories().then(data => {
+      setCategories(data.data)
+    })
+  }, [])
   return (
     <div>
       <section id="page-header">
@@ -66,23 +76,31 @@ const Shops = () => {
                   </div> */}
 
                   <div className="subcate">
-                    <select className="select-sub">
-                      <option value="">Moana Bryan (9)</option>
-                      <option value="">Moana Bryan (9)</option>
-                      <option value="">Moana Bryan (9)</option>
-                    </select>
+                    <div className="select-sub">
+                      {categories.map((item: any) => {
+                        return <div onClick={() => {
+                          setDataCategories([...dataCategories, { _id: item._id, name: item.name }])
+                          setCategories(categories.filter((category: any) => category._id !== item._id))
+                        }} key={item._id}>{item.name}</div>
+                      })}
+                    </div>
 
                   </div>
 
                   <div className="box-item-stores">
                     <span>Storess</span>
                     <div className="box-checkbox-filter">
-                      <div className="boxs-mos">
-                        <button>
-                          <i className="fas fa-trash-alt"></i>
-                        </button>
-                        <label htmlFor="">Moana Bryan (9)</label>
-                      </div>
+                      {dataCategories.map((item: any) => {
+                        return <div key={item._id} className="boxs-mos">
+                          <button>
+                            <i onClick={()=>{
+                               setCategories([...categories, { _id: item._id, name: item.name }])
+                               setDataCategories(dataCategories.filter((category:any) => category._id !== item._id))
+                            }} className="fas fa-trash-alt"></i>
+                          </button>
+                          <label htmlFor="">{item.name}</label>
+                        </div>
+                      })}
                     </div>
                   </div>
 
@@ -99,42 +117,42 @@ const Shops = () => {
               <div className="box-sort-shops">
                 <div className="item-sort-shops">
                   <ul className="items-sort-ul">
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('price')
                       setOrder('asc')
                       setIsSortVisible(false)
                     }}>
                       <p>Giá tăng dần</p>
                     </li>
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('price')
                       setOrder('desc')
                       setIsSortVisible(false)
                     }}>
                       <p>Giá giảm dần</p>
                     </li>
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('name')
                       setOrder('asc')
                       setIsSortVisible(false)
                     }}>
                       <p>A-Z</p>
                     </li>
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('name')
                       setOrder('desc')
                       setIsSortVisible(false)
                     }}>
                       <p>Z-A</p>
                     </li>
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('createdAt')
                       setOrder('desc')
                       setIsSortVisible(false)
                     }}>
                       <p>Mới nhất</p>
                     </li>
-                    <li onClick={()=>{
+                    <li onClick={() => {
                       setSort('createdAt')
                       setOrder('asc')
                       setIsSortVisible(false)
@@ -149,7 +167,9 @@ const Shops = () => {
         </div>
         <div className="pro-container">
           {products?.map((product: any, index: any) => {
-            return <div className="pro" key={index + 1}>
+            return <div onClick={()=>{
+                navigate(`/products/${product._id}`)
+            }} className="pro" key={index + 1}>
               <img src={`${product.photoDescription}`} alt="" />
               <div className="des">
                 <span>adidas</span>
