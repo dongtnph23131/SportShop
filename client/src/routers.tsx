@@ -27,6 +27,8 @@ import EditColors from './components/pages/admin/Colors/EditColors';
 import AllSizes from './components/pages/admin/Sizes/AllSizes';
 import AddSizes from './components/pages/admin/Sizes/AddSizes';
 import EditSizes from './components/pages/admin/Sizes/EditSizes';
+import Changepassword from './components/Changepassword';
+import OrderClient from './components/OrderClient';
 
 export const routers  = createBrowserRouter ([
     {
@@ -50,9 +52,10 @@ export const routers  = createBrowserRouter ([
             {path:"/contact",element:<Contact/>},
             {path:"/blog",element:<Blog/>},
             {path:"/about",element:<About/>},
-            {path:"/profile" , element:<Profile/>}
-
-        ]
+            {path:"/profile" , element:<Profile/>}  ,
+            {path:"/changepassword",element:<Changepassword/>},
+            {path:"/OrderClient" , element:<OrderClient/>}
+        ]   
 
     },
     {
@@ -67,7 +70,6 @@ export const routers  = createBrowserRouter ([
             {path: "colors", element: <AllColors/>},
             {path: "colors/add", element: <AddColors/>},
             {path: "colors/:id/edit", element: <EditColors/>},
-            
             {path: "sizes", element: <AllSizes/>},
             {path: "sizes/add", element: <AddSizes/>},
             {path: "sizes/:id/edit", element: <EditSizes/>},
@@ -77,7 +79,6 @@ export const routers  = createBrowserRouter ([
     
 
     {path: "/signin", element: <Signin/>},
-    
     {path:"/signup" , element:<Signup></Signup>},
     {path:"/forgot" , element:<Forgot></Forgot>},
     {path:"/forgottoken" ,element:<ForgotToken/>},
