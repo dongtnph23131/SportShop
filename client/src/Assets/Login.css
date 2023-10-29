@@ -75,6 +75,9 @@
 .input-box input[type="password"]{
     margin-bottom: 10px;
 }
+.input__forgotpassword input{
+    margin-bottom: 20px;
+}
 .input-box .input-field:focus{
     border: 2px solid #8749F2;
 }

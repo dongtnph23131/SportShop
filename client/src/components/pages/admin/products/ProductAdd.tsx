@@ -27,7 +27,6 @@ const normFile = (e: any) => {
 };
 
 const ProductAdd = () => {
-  const [componentDisabled, setComponentDisabled] = useState<boolean>(true);
   return (
     <div style={{overflow: "auto"}}>
       <h2 style={{fontSize:"30px" , fontWeight: "bold", marginBottom: "20px"}}>Thêm sản phẩm</h2>
@@ -36,7 +35,6 @@ const ProductAdd = () => {
         labelCol={{ span: 4 }}
         wrapperCol={{ span: 14 }}
         layout="horizontal"
-        disabled={componentDisabled}
         style={{ maxWidth: 600 }}
       >
        

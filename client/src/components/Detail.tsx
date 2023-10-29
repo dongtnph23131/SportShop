@@ -53,14 +53,31 @@ const Detail = () => {
           <h4>Men's Fashion T Shirt</h4>
           <h2> Price:$139.00</h2>
           <div className="box-qlt">
-            <select>
-              <option>Select Size</option>
-              <option>XL</option>
-              <option>XXL</option>
-              <option>Small</option>
-              <option>Large</option>
-            </select>
-            <input type="number" value="1" />
+            <span>SIZE:</span>
+              <ul>
+                  
+                  <li><a href="">Xanh</a></li>
+                  
+                  <li><a href="">Đỏ</a></li>
+                  
+                  <li><a href="">Đen</a></li>
+                  
+                  <li><a href="">Xám</a></li>
+                </ul>
+              Số lượng:  <input type="number" value="1" />
+          </div>
+          <div className="color-detaile">
+            <span>Color:</span>
+            <ul>
+              
+              <li><a href="">Xanh</a></li>
+              
+              <li><a href="">Đỏ</a></li>
+              
+              <li><a href="">Đen</a></li>
+              
+              <li><a href="">Xám</a></li>
+            </ul>
           </div>
           <button className="normal">Add to Cart </button>
           <h4>Product Details</h4>

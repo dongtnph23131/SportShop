@@ -22,7 +22,11 @@ const Header = () => {
                 </svg>
               </button>
               <div className="hd4-left__logo">
+                <a href="/home" style={{color: 'black' }}>
+
                 Sports <span>Shop</span>
+
+                </a>
               </div>
               <button
                 className="hd4-left-right__toggle"
@@ -70,15 +74,21 @@ const Header = () => {
                   <a href="">
                     <span>Giỏ hàng / </span>
                     <span>0 ₫</span>
-                    <svg className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-vubbuv" focusable="false" aria-hidden="true" viewBox="0 0 24 24" data-testid="ShoppingBasketOutlinedIcon">
-                                <path d="M22 9h-4.79l-4.38-6.56c-.19-.28-.51-.42-.83-.42s-.64.14-.83.43L6.79 9H2c-.55 0-1 .45-1 1 0 .09.01.18.04.27l2.54 9.27c.23.84 1 1.46 1.92 1.46h13c.92 0 1.69-.62 1.93-1.46l2.54-9.27L23 10c0-.55-.45-1-1-1zM12 4.8 14.8 9H9.2L12 4.8zM18.5 19l-12.99.01L3.31 11H20.7l-2.2 8zM12 13c-1.1 0-2 .9-2 2s.9 2 2 2 2-.9 2-2-.9-2-2-2z"></path>
-                            </svg>
+                  <img src="../../src/Assets/cart.gif" alt="" />
                   </a>
-                  <ul className="hd4-cart--dropdown p-absolute">
-                    <li>
-                      <p>Chưa có sản phẩm trong giỏ hàng.</p>
-                    </li>
-                  </ul>
+                  <div className="hd4-cart--dropdown p-absolute row">
+                      <div className="img-cart-header-product col-lg-5">
+                        <img src="../../src/Assets/b1.jpg" alt="" />
+                      </div>
+                      <div className='inserts-product-header col-lg-7'>
+                        <span>Giá : <p>600.000 VND</p></span>
+                        <button className='check-giohangs'>
+                          <img src="../../src/Assets/cart3.gif" alt="" />
+                          Xem giỏ hàng
+                        </button>
+                      </div>
+                      
+                  </div>
                 </li>
               </ul>
             </div>
@@ -101,63 +111,7 @@ const Header = () => {
                   </svg>
                 </a>
                 <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                  <ul className="hd3__submenu d-flex">
-                    <li>
-                      <a href="">MÁY KINH VĨ</a>
-                    </li>
-                    <li>
-                      <a href="">BỘ ĐÀM</a>
-                      <ul className="hd3-submenu__sub">
-                        <li>
-                          <a href="">Bộ Đàm JBL</a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Motorola </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Kenwood </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Spender </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm HYT </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Icom </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="">PHỤ KIỆN TRẮC ĐỊA</a>
-                      <ul className="hd3-submenu__sub">
-                        <li>
-                          <a href="">Thước Dây - Thước Cuộn - Thước Thép</a>
-                        </li>
-                        <li>
-                          <a href="">Bánh Xe Đo Khoảng Cách</a>
-                        </li>
-                        <li>
-                          <a href="">Hòm - Chân - Đế Máy</a>
-                        </li>
-                        <li>
-                          <a href="">Gương Sào Kẹp Máy Toàn Đạc</a>
-                        </li>
-                        <li>
-                          <a href="">Mia - Mốc - Bọt Thủy</a>
-                        </li>
-                        <li>
-                          <a href="">Pin - Sạc - Adapter</a>
-                        </li>
-                        <li>
-                          <a href="">Cáp USB Trút Dữ Liệu Máy Toàn Đạc</a>
-                        </li>
-                        <li>
-                          <a href="">Phụ Kiện Khác</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+              
                 </div>
               </li>
               <li>
@@ -312,32 +266,7 @@ const Header = () => {
                     />
                   </svg>
                 </a>
-                <ul className="hd3__submenu2 p-absolute">
-                  <li>
-                    <a href="">Cho Thuê Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Thuê Máy Toàn Đạc Điện Tử</a>
-                  </li>
-                  <li>
-                    <a href="">Sửa Máy Thủy Bình Giá Rẻ</a>
-                  </li>
-                  <li>
-                    <a href="">Sửa Chữa Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Kiểm Định Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Cho Thuê GNSS RTK</a>
-                  </li>
-                  <li>
-                    <a href="">Khóa Học Đào Tạo Sử Dụng Máy Toàn Đạc Hà Nội</a>
-                  </li>
-                  <li>
-                    <a href="">Chính Sách Vận Chuyển Và Trả Hàng - Bảo Hành</a>
-                  </li>
-                </ul>
+              
               </li>
               <li>
                 <a href=""
@@ -352,14 +281,7 @@ const Header = () => {
                     />
                   </svg>
                 </a>
-                <ul className="hd3__submenu2 p-absolute">
-                  <li>
-                    <a href="">Bài Viết Về Máy Thủy Bình</a>
-                  </li>
-                  <li>
-                    <a href="">Bài Viết Về Máy Toàn Đạc</a>
-                  </li>
-                </ul>
+              
               </li>
             </ul>
           </nav>

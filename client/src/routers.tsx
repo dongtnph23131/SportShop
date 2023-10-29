@@ -16,6 +16,20 @@ import Contact from './components/Contact';
 import Blog from './components/Blog';
 import About from './components/About';
 import AllCategories from './components/pages/admin/categories/AllCategories';
+import ForgotToken from './components/ForgotToken';
+import ForgotSuccessfully from './components/ForgotSuccessfully';
+import Profile from './components/Profile';
+import AddCategories from './components/pages/admin/categories/AddCategories';
+import EditCategories from './components/pages/admin/categories/EditCategories';
+import AllColors from './components/pages/admin/Colors/AllColors';
+import AddColors from './components/pages/admin/Colors/AddColors';
+import EditColors from './components/pages/admin/Colors/EditColors';
+import AllSizes from './components/pages/admin/Sizes/AllSizes';
+import AddSizes from './components/pages/admin/Sizes/AddSizes';
+import EditSizes from './components/pages/admin/Sizes/EditSizes';
+import Changepassword from './components/Changepassword';
+import OrderClient from './components/OrderClient';
+
 export const routers  = createBrowserRouter ([
     {
         path:"/",
@@ -37,9 +51,11 @@ export const routers  = createBrowserRouter ([
             {path:"/shops",element:<Shops></Shops>},
             {path:"/contact",element:<Contact/>},
             {path:"/blog",element:<Blog/>},
-            {path:"/about",element:<About/>}
-
-        ]
+            {path:"/about",element:<About/>},
+            {path:"/profile" , element:<Profile/>}  ,
+            {path:"/changepassword",element:<Changepassword/>},
+            {path:"/OrderClient" , element:<OrderClient/>}
+        ]   
 
     },
     {
@@ -50,15 +66,25 @@ export const routers  = createBrowserRouter ([
             {path: "products", element: <ProductPage/>},
             {path: "products/add", element: <ProductAdd/>},
             {path: "categories", element: <AllCategories/>},
-            {path: "categories/ add",}
+            {path: "categories/ add",},
+            {path: "categories/add", element: <AddCategories/>},
+            {path: "categories/:id/edit", element: <EditCategories/>},
+            {path: "colors", element: <AllColors/>},
+            {path: "colors/add", element: <AddColors/>},
+            {path: "colors/:id/edit", element: <EditColors/>},
+            {path: "sizes", element: <AllSizes/>},
+            {path: "sizes/add", element: <AddSizes/>},
+            {path: "sizes/:id/edit", element: <EditSizes/>},
         ]
         
     },
     
 
     {path: "/signin", element: <Signin/>},
-    
     {path:"/signup" , element:<Signup></Signup>},
     {path:"/forgot" , element:<Forgot></Forgot>},
+    {path:"/forgottoken" ,element:<ForgotToken/>},
+    {path:"/forgotSucces" ,element:<ForgotSuccessfully/>}
+
 
  ])
