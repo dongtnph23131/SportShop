@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import Slider from 'antd/lib/slider';
+// import Slider from 'antd/lib/slider';
 import { useGetAllProductsQuery } from "../api/product";
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -19,11 +19,11 @@ const Shops = () => {
     setIsFilterVisible(false);
   };
 
-  const [range, setRange] = useState([0, 50]);
+  // const [range, setRange] = useState([0, 50]);
 
-  const handleRangeChange = (value: number) => {
-    setRange([value, range[1]]);
-  };
+  // const handleRangeChange = (value: number) => {
+  //   setRange([value, range[1]]);
+  // };
 
   return (
     <div>
@@ -49,21 +49,21 @@ const Shops = () => {
                       </a>
                     </span>
                   </div>
-                  <div className="danger-shops">
+                  {/* <div className="danger-shops">
                     <span>Price range ($)</span>
 
-                    <div style={{ width: "300px" }}>
+                     <div style={{ width: "300px" }}>
                       <Slider
                         range
                         step={1}
                         value={range}
                         onChange={handleRangeChange}
                       />
-                    </div>
+                    </div> 
                     <p>
                       Khoảng giá trị: {range[0]} - {range[1]}
                     </p>
-                  </div>
+                  </div> */}
 
                   <div className="subcate">
                     <select className="select-sub">
@@ -78,7 +78,9 @@ const Shops = () => {
                     <span>Storess</span>
                     <div className="box-checkbox-filter">
                       <div className="boxs-mos">
-                        <input type="checkbox" name="" id="" />
+                        <button>
+                          <i className="fas fa-trash-alt"></i>
+                        </button>
                         <label htmlFor="">Moana Bryan (9)</label>
                       </div>
                     </div>

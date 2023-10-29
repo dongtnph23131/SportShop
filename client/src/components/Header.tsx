@@ -76,11 +76,19 @@ const Header = () => {
                     <span>0 ₫</span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                   </a>
-                  <ul className="hd4-cart--dropdown p-absolute">
-                    <li>
-                      <p>Chưa có sản phẩm trong giỏ hàng.</p>
-                    </li>
-                  </ul>
+                  <div className="hd4-cart--dropdown p-absolute row">
+                      <div className="img-cart-header-product col-lg-5">
+                        <img src="../../src/Assets/b1.jpg" alt="" />
+                      </div>
+                      <div className='inserts-product-header col-lg-7'>
+                        <span>Giá : <p>600.000 VND</p></span>
+                        <button className='check-giohangs'>
+                          <img src="../../src/Assets/cart3.gif" alt="" />
+                          Xem giỏ hàng
+                        </button>
+                      </div>
+                      
+                  </div>
                 </li>
               </ul>
             </div>
@@ -103,63 +111,7 @@ const Header = () => {
                   </svg>
                 </a>
                 <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                  <ul className="hd3__submenu d-flex">
-                    <li>
-                      <a href="">MÁY KINH VĨ</a>
-                    </li>
-                    <li>
-                      <a href="">BỘ ĐÀM</a>
-                      <ul className="hd3-submenu__sub">
-                        <li>
-                          <a href="">Bộ Đàm JBL</a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Motorola </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Kenwood </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Spender </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm HYT </a>
-                        </li>
-                        <li>
-                          <a href=""> Bộ Đàm Icom </a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="">PHỤ KIỆN TRẮC ĐỊA</a>
-                      <ul className="hd3-submenu__sub">
-                        <li>
-                          <a href="">Thước Dây - Thước Cuộn - Thước Thép</a>
-                        </li>
-                        <li>
-                          <a href="">Bánh Xe Đo Khoảng Cách</a>
-                        </li>
-                        <li>
-                          <a href="">Hòm - Chân - Đế Máy</a>
-                        </li>
-                        <li>
-                          <a href="">Gương Sào Kẹp Máy Toàn Đạc</a>
-                        </li>
-                        <li>
-                          <a href="">Mia - Mốc - Bọt Thủy</a>
-                        </li>
-                        <li>
-                          <a href="">Pin - Sạc - Adapter</a>
-                        </li>
-                        <li>
-                          <a href="">Cáp USB Trút Dữ Liệu Máy Toàn Đạc</a>
-                        </li>
-                        <li>
-                          <a href="">Phụ Kiện Khác</a>
-                        </li>
-                      </ul>
-                    </li>
-                  </ul>
+              
                 </div>
               </li>
               <li>
@@ -314,32 +266,7 @@ const Header = () => {
                     />
                   </svg>
                 </a>
-                <ul className="hd3__submenu2 p-absolute">
-                  <li>
-                    <a href="">Cho Thuê Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Thuê Máy Toàn Đạc Điện Tử</a>
-                  </li>
-                  <li>
-                    <a href="">Sửa Máy Thủy Bình Giá Rẻ</a>
-                  </li>
-                  <li>
-                    <a href="">Sửa Chữa Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Kiểm Định Máy Trắc Địa</a>
-                  </li>
-                  <li>
-                    <a href="">Cho Thuê GNSS RTK</a>
-                  </li>
-                  <li>
-                    <a href="">Khóa Học Đào Tạo Sử Dụng Máy Toàn Đạc Hà Nội</a>
-                  </li>
-                  <li>
-                    <a href="">Chính Sách Vận Chuyển Và Trả Hàng - Bảo Hành</a>
-                  </li>
-                </ul>
+              
               </li>
               <li>
                 <a href=""
@@ -354,14 +281,7 @@ const Header = () => {
                     />
                   </svg>
                 </a>
-                <ul className="hd3__submenu2 p-absolute">
-                  <li>
-                    <a href="">Bài Viết Về Máy Thủy Bình</a>
-                  </li>
-                  <li>
-                    <a href="">Bài Viết Về Máy Toàn Đạc</a>
-                  </li>
-                </ul>
+              
               </li>
             </ul>
           </nav>
