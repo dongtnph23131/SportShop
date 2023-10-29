@@ -62,6 +62,7 @@ export const routers  = createBrowserRouter ([
         path: "/admin", element: <MainLayout/>,
         children: [
             {index: true, element: <Dashboard/>},
+            {path: "dashboard" , element: <Dashboard/>},
             {path: "products", element: <ProductPage/>},
             {path: "products/add", element: <ProductAdd/>},
             {path: "categories", element: <AllCategories/>},
