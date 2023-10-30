@@ -15,10 +15,10 @@ import Shops from './components/Shops';
 import Contact from './components/Contact';
 import Blog from './components/Blog';
 import About from './components/About';
+import AllCategories from './components/pages/admin/categories/AllCategories';
 import ForgotToken from './components/ForgotToken';
 import ForgotSuccessfully from './components/ForgotSuccessfully';
 import Profile from './components/Profile';
-import AllCategories from './components/pages/admin/categories/AllCategories';
 import AddCategories from './components/pages/admin/categories/AddCategories';
 import EditCategories from './components/pages/admin/categories/EditCategories';
 import AllColors from './components/pages/admin/Colors/AllColors';
@@ -49,7 +49,7 @@ export const routers  = createBrowserRouter ([
                 
             },
             {path: "/cart", element: <Cart/>},
-            {path: "/detail", element: <Detail/>},
+            {path: "/products/:id", element: <Detail/>},
             {path:"/shops",element:<Shops></Shops>},
             {path:"/contact",element:<Contact/>},
             {path:"/blog",element:<Blog/>},
@@ -64,9 +64,11 @@ export const routers  = createBrowserRouter ([
         path: "/admin", element: <MainLayout/>,
         children: [
             {index: true, element: <Dashboard/>},
+            {path: "dashboard", element: <Dashboard/>},
             {path: "products", element: <ProductPage/>},
             {path: "products/add", element: <ProductAdd/>},
             {path: "categories", element: <AllCategories/>},
+            {path: "categories/ add",},
             {path: "categories/add", element: <AddCategories/>},
             {path: "categories/:id/edit", element: <EditCategories/>},
             {path: "colors", element: <AllColors/>},

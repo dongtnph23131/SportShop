@@ -1,4 +1,3 @@
-
 import { useNavigate } from "react-router-dom";
 import { Button, Form, Input, message } from "antd";
 import { addCategory, getCategories } from "../../../../api/category";

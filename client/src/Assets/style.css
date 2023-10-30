@@ -1,3 +1,7 @@
+
+
+
+
 /* @import url('https://fonts.googleapis.com/css2?family=Spartan:wght@100,200;300;400;500;600;700;800;900&display=swap'); */
 
 * {
@@ -146,7 +150,9 @@ p {
 .subcate .select-sub {
     display: block;
     width: 100%;
-    padding: 10px;
+    overflow-y:auto;
+    height: 70px;
+    padding: 15px;
     border-radius: 5px;
     border: 1px solid #cdcdcd;
 }

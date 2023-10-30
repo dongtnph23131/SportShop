@@ -77,6 +77,10 @@ export const create = async (req, res) => {
       return ChildProduct.create({ ...item, productId: product._id })
     })
     const itemProduct = await Promise.all(itemData)
+    const childproducts=itemProduct.map(item=>item._id)
+    await Product.findByIdAndUpdate(product._id,{
+      childproducts
+    })
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
         products: product._id

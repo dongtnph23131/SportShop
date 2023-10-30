@@ -24,6 +24,12 @@ const productSchema = mongoose.Schema(
             type: String,
             required: true
         },
+        childproducts:[
+            {
+                type:mongoose.Types.ObjectId,
+                ref:'ChildProduct'
+            }
+        ]
     },
     { timestamps: true, versionKey: false }
 );
