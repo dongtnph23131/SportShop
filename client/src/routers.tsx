@@ -29,6 +29,8 @@ import AddSizes from './components/pages/admin/Sizes/AddSizes';
 import EditSizes from './components/pages/admin/Sizes/EditSizes';
 import Changepassword from './components/Changepassword';
 import OrderClient from './components/OrderClient';
+import { Pagination } from 'antd';
+import CustomPagination from './components/include/CustomPagination';
 
 export const routers  = createBrowserRouter ([
     {
@@ -82,7 +84,7 @@ export const routers  = createBrowserRouter ([
     {path:"/signup" , element:<Signup></Signup>},
     {path:"/forgot" , element:<Forgot></Forgot>},
     {path:"/forgottoken" ,element:<ForgotToken/>},
-    {path:"/forgotSucces" ,element:<ForgotSuccessfully/>}
-
+    {path:"/forgotSucces" ,element:<ForgotSuccessfully/>},
+    {path:"/test" ,element:<CustomPagination/>},
 
  ])

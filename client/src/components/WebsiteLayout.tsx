@@ -13,6 +13,7 @@ import "../Assets/Home.css"
 import "../Assets/Login.css"
 import "../Assets/style.css"
 import "../Assets/changerPass.css"
+import "../Assets/search.css"
 // End css 
 
 
