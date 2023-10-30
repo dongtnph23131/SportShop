@@ -4,6 +4,7 @@ import React, { useEffect, useState } from "react";
 import { useGetAllProductsQuery } from "../api/product";
 import { getCategories } from "../api/category";
 import { useNavigate } from "react-router-dom";
+import { Pagination } from 'antd';
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [ishandleSortVisible, setIsSortVisible] = useState(false);
@@ -189,6 +190,8 @@ const Shops = () => {
             </div>
           })}
         </div>
+
+        <Pagination defaultCurrent={1} total={50} />
       </section>
     </div>
   );
