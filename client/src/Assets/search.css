@@ -1,0 +1,125 @@
+
+
+.box-search-click {
+    border: 1px solid black;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 9;
+}
+
+.box-allserch.container {
+    position: absolute;
+    top: 40%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.story-searched {
+    width: 100%;
+    height: 100%;
+}
+
+.input-searched input {
+    height: 45px;
+    width: 35%;
+    border: 1px solid black;
+    border-radius: 5px;
+    padding-left: 15px;
+}
+
+.input-searched p {
+    margin-left: 30px;
+    color: #fff;
+}
+
+.box-search-click:before {
+    position: absolute;
+    content: "";
+    background: #000;
+    opacity: 0.5;
+    width: 100%;
+    height: 100%;
+}
+
+.box-allserch .row {
+    background: #fff;
+    width: 90%;
+    margin: 0 auto;
+    border-radius: 10px;
+}
+
+.col-item-3search {
+    padding: 30px;
+    border-radius: 10px;
+    margin-bottom: 25px;
+}
+
+.box-itemsearch {
+    text-align: center;
+    border: 1px solid #eee;
+    padding: 25px;
+}
+
+.search-items-name {
+    font-size: 17px;
+    text-transform: uppercase;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    display: inline-block;
+}
+
+.search-addCart {
+    background: #4FB68D;
+    width: 100px;
+    height: 30px;
+    margin: 0 auto;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: none;
+    color: #fff;
+    font-size: 16px;
+    font-weight: 600;
+}
+
+span.text-searchs {
+    font-size: 18px;
+    padding: 20px;
+    text-align: center;
+    font-weight: 600;
+}
+
+.input-searched input {
+    height: 45px;
+    width: 35%;
+    border: none;
+    padding-left: 15px;
+    background: #eee;
+    border-radius: 25px;
+}
+
+.input-searched {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: #fff;
+    width: 90%;
+    margin: 0 auto;
+    padding: 10px;
+}
+
+.remo-search {
+    position: absolute;
+    right: 55px;
+    border: none;
+    border-radius: 100%;
+    width: 25px;
+    height: 25px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #4FB68D;
+    color: #fff;
+}
