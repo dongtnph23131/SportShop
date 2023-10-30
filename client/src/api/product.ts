@@ -20,7 +20,15 @@ const productApi = createApi({
             },
             providesTags: ['Product']
         }),
+        addProduct:builder.mutation<any,any>({
+            query:(data)=>({
+                url:'/products',
+                method:'POST',
+                body:data,
+            }),
+            invalidatesTags:['Product']
+        })
     })
 })
-export const {useGetAllProductsQuery,useGetProductQuery } = productApi
+export const {useGetAllProductsQuery,useGetProductQuery,useAddProductMutation } = productApi
 export default productApi
