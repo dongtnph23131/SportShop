@@ -94,6 +94,8 @@ const Detail = () => {
             <ul>
               {colors?.map((item: any) => {
                 return <li style={{ backgroundColor: `${item._id == colorId ? '#4FB68D' : ''}` }} onClick={() => {
+                  setSizeId('')
+                  setColorId(item._id)
                   const data = product.filter((itemProduct: any) => {
                     return itemProduct.colorId._id === item._id
                   })
@@ -103,7 +105,6 @@ const Detail = () => {
                     return accumulator + currentValue.quantity
                   }, 0))
                   setImage(data[0].img)
-                  setColorId(item._id)
                   setSizes(data.map((item: any) => item.sizeId))
                 }} key={item._id}><a>{item.name}</a></li>
               })}
