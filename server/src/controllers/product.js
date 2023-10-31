@@ -11,6 +11,7 @@ export const getAll = async (req, res) => {
       _page = 1,
       _order = "asc",
       categories,
+      q
     } = req.query;
     const options = {
       page: _page,
@@ -20,7 +21,9 @@ export const getAll = async (req, res) => {
       },
       populate: [{ path: "categoryId", select: "name" }],
     };
-
+    let searchQuery = q ? {
+      name: { $regex: q, $options: "i" }
+    } : {}
     if (categories) {
       searchQuery = {
         ...searchQuery,
