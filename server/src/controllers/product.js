@@ -1,49 +1,52 @@
 import Product from "../models/product";
 import Category from "../models/category";
-import { productValidators } from "../validators/product";
-import ChildProduct from "../models/childProduct";
+import { productCreateBodySchema } from "../validators/product";
+import ProductVariant from "../models/productVariant";
 
 export const getAll = async (req, res) => {
   try {
-    const { _limit = 100, _sort = "createAt", _page = 1, _order = "asc", q, categories } = req.query
+    const {
+      _limit = 100,
+      _sort = "createAt",
+      _page = 1,
+      _order = "asc",
+      categories,
+    } = req.query;
     const options = {
       page: _page,
       limit: _limit,
       sort: {
-        [_sort]: _order === "desc" ? -1 : 1
+        [_sort]: _order === "desc" ? -1 : 1,
       },
-      populate: [{ path: "categoryId", select: "name" }]
-    }
-    let searchQuery = q ? {
-      name: { $regex: q, $options: "i" }
-    } : {}
+      populate: [{ path: "categoryId", select: "name" }],
+    };
 
     if (categories) {
       searchQuery = {
-        ...searchQuery, categoryId: {
-          $in: categories.split('.')
-        }
-      }
+        ...searchQuery,
+        categoryId: {
+          $in: categories.split("."),
+        },
+      };
     }
-    const data = await Product.paginate(searchQuery, options)
-    if (q) {
-      data.docs.forEach(async (element) => {
-        const productItem = await Book.findById(element._id)
-        productItem.numberSearch++;
-        await productItem.save()
-      });
-    }
-    return res.status(200).json(data.docs)
+
+    const data = await Product.paginate(searchQuery, options);
+
+    return res.status(200).json(data.docs);
   } catch (error) {
     return res.status(400).json({
       message: error.message,
     });
   }
 };
+
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await ChildProduct.find({ productId: id }).populate('productId', '-__v').populate('colorId', '-__v').populate('sizeId', '-__v')
+    const data = await ChildProduct.find({ productId: id })
+      .populate("productId", "-__v")
+      .populate("colorId", "-__v")
+      .populate("sizeId", "-__v");
     if (data.length === 0) {
       return res.status(200).json({
         message: "Không có sản phẩm",
@@ -56,53 +59,68 @@ export const get = async (req, res) => {
     });
   }
 };
+
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { name, description, categoryId, photoDescription, price } = body
-    const { error } = productValidators.validate({ name, description, categoryId, photoDescription, price });
-    if (error) {
-      return res.json({
-        message: error.details.map((item) => item.message),
-      });
-    }
-    const items = body.items
-    if (!body.items | body.items.length === 0) {
-      return res.status(400).json({
-        message: 'Cần thêm thuộc tính sản phẩm'
+    const { name, description, categoryId, options, variants } =
+      productCreateBodySchema.parse(body);
+
+    const product = await Product.create({
+      name,
+      description,
+      categoryId,
+      options,
+    });
+
+    const productVariants = await Promise.all(
+      variants.map((variant) => {
+        return ProductVariant.create({
+          name: variant.name,
+          price: variant.price,
+          inventory: variant.inventory,
+          options: variant.options,
+          productId: product._id,
+        });
       })
-    }
-    const product = await Product.create(body)
-    const itemData = items.map((item) => {
-      return ChildProduct.create({ ...item, productId: product._id })
-    })
-    const itemProduct = await Promise.all(itemData)
-    const childproducts=itemProduct.map(item=>item._id)
-    await Product.findByIdAndUpdate(product._id,{
-      childproducts
-    })
+    );
+
+    const productVariantIds = productVariants.map((item) => item._id);
+
+    const newProduct = await Product.findByIdAndUpdate(product._id, {
+      productVariants: productVariantIds,
+    });
+    await newProduct.save();
+
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
-        products: product._id
-      }
-    })
+        products: product._id,
+      },
+    });
+
     return res.status(200).json({
-      message: 'Thêm sản phẩm thành công',
-      product,
-      itemProduct
-    })
+      message: "Thêm sản phẩm thành công",
+      product: newProduct,
+      productVariants,
+    });
   } catch (error) {
-    return res.status(400).json({
+    console.error(error.message);
+    return res.status(500).json({
       message: error.message,
     });
   }
 };
+
 export const remove = async (req, res) => {
   try {
-    const data = await Product.findByIdAndDelete(req.params.id);
+    await Product.findByIdAndDelete(req.params.id);
+
+    await ProductVariant.deleteMany({
+      productId: req.params.id,
+    });
+
     return res.json({
       message: "Xóa sản phẩm thành công",
-      data,
     });
   } catch (error) {
     return res.status(400).json({
@@ -110,6 +128,7 @@ export const remove = async (req, res) => {
     });
   }
 };
+
 export const update = async (req, res) => {
   try {
     const data = await Product.findOneAndUpdate(

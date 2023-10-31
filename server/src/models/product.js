@@ -2,36 +2,37 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 const productSchema = mongoose.Schema(
-    {
-        name: {
-            type: String,
-            required: true,
-        },
-        categoryId: {
-            type: mongoose.Types.ObjectId,
-            ref: 'Category',
-            required: true
-        },
-        price: {
-            type: Number,
-            required: true,
-        },
-        description: {
-            type: String,
-            required: true
-        },
-        photoDescription: {
-            type: String,
-            required: true
-        },
-        childproducts:[
-            {
-                type:mongoose.Types.ObjectId,
-                ref:'ChildProduct'
-            }
-        ]
+  {
+    slug: { type: String, slug: "name" },
+    name: {
+      type: String,
+      required: true,
     },
-    { timestamps: true, versionKey: false }
+    description: {
+      type: String,
+    },
+    categoryId: {
+      type: mongoose.Types.ObjectId,
+      ref: "Category",
+      required: true,
+    },
+    options: [
+      {
+        name: {
+          type: String,
+          require: true,
+        },
+        values: [String],
+      },
+    ],
+    productVariants: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "ProductVariant",
+      },
+    ],
+  },
+  { timestamps: true, versionKey: false }
 );
 productSchema.plugin(mongoosePaginate);
 

@@ -1,26 +1,43 @@
-import joi from "joi";
+import { z } from "zod";
 
-export const productValidators = joi.object({
-    name: joi.string().required().messages({
-        "string.empty": "Tên sản phẩm không được để trống",
-        "any.required": 'Trường tên sản phẩm là bắt buộc',
-    }),
-    categoryId: joi.string().required().messages({
-        "string.empty": "Tên danh mục không được để trống",
-        "any.required": 'Trường tên danh mục là bắt buộc',
-    }),
-    description: joi.string().required().messages({
-        "string.empty": "Mô tả không được để trống",
-        "any.required": 'Trường mô tả là bắt buộc',
-    }),
-    price:joi.number().min(0).required().messages({
-        "number.empty": "Giá không được để trống",
-        "any.required": 'Trường giá là bắt buộc',
-        "number.base":"Gía là số",
-        "number.min":"Gía là số dương"
-    }),
-    photoDescription:joi.string().required().messages({
-        "string.empty": "Ảnh mô tả không được để trống",
-        "any.required": 'Trường ảnh mô tả là bắt buộc',
-    }),
+export const productCreateBodySchema = z.object({
+  name: z.string().min(1, "Tên sản phẩm không được để trống"),
+  description: z.string(),
+  categoryId: z.string().min(1, "Danh mục không được để trống!"),
+  options: z.array(
+    z.object({
+      name: z.string(),
+      values: z.array(z.string()),
+    })
+  ),
+  variants: z.array(
+    z.object({
+      name: z.string(),
+      price: z.number(),
+      inventory: z.number(),
+      options: z.array(z.string()),
+    })
+  ),
+});
+
+export const productUpdateBodySchema = z.object({
+  id: z.string(),
+  name: z.string().min(1, "Tên sản phẩm không được để trống"),
+  description: z.string(),
+  categoryId: z.string().min(1, "Danh mục không được để trống!"),
+  options: z.array(
+    z.object({
+      name: z.string(),
+      values: z.array(z.string()),
+    })
+  ),
+  variants: z.array(
+    z.object({
+      id: z.string(),
+      name: z.string(),
+      price: z.number(),
+      inventory: z.number(),
+      options: z.array(z.string()),
+    })
+  ),
 });
