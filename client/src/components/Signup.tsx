@@ -71,7 +71,7 @@ const Signup = () => {
                     <div className="forgot">
 
                         <section>
-                            <a href="#" className="forgot-link">Forgot password?</a>
+                            <a href="/forgot" className="forgot-link">Forgot password?</a>
                         </section>
                     </div>
                     <div className="input-box">
