@@ -21,15 +21,8 @@ import ForgotSuccessfully from './components/ForgotSuccessfully';
 import Profile from './components/Profile';
 import AddCategories from './components/pages/admin/categories/AddCategories';
 import EditCategories from './components/pages/admin/categories/EditCategories';
-import AllColors from './components/pages/admin/Colors/AllColors';
-import AddColors from './components/pages/admin/Colors/AddColors';
-import EditColors from './components/pages/admin/Colors/EditColors';
-import AllSizes from './components/pages/admin/Sizes/AllSizes';
-import AddSizes from './components/pages/admin/Sizes/AddSizes';
-import EditSizes from './components/pages/admin/Sizes/EditSizes';
 import Changepassword from './components/Changepassword';
 import OrderClient from './components/OrderClient';
-import { Pagination } from 'antd';
 import CustomPagination from './components/include/CustomPagination';
 
 export const routers  = createBrowserRouter ([
@@ -71,12 +64,6 @@ export const routers  = createBrowserRouter ([
             {path: "categories/ add",},
             {path: "categories/add", element: <AddCategories/>},
             {path: "categories/:id/edit", element: <EditCategories/>},
-            {path: "colors", element: <AllColors/>},
-            {path: "colors/add", element: <AddColors/>},
-            {path: "colors/:id/edit", element: <EditColors/>},
-            {path: "sizes", element: <AllSizes/>},
-            {path: "sizes/add", element: <AddSizes/>},
-            {path: "sizes/:id/edit", element: <EditSizes/>},
         ]
         
     },
@@ -88,5 +75,4 @@ export const routers  = createBrowserRouter ([
     {path:"/forgottoken" ,element:<ForgotToken/>},
     {path:"/forgotSucces" ,element:<ForgotSuccessfully/>},
     {path:"/test" ,element:<CustomPagination/>},
-
  ])

@@ -60,24 +60,6 @@ const MainLayout = () => {
             </Menu.Item>
             {/* Add more sub-menu items as needed */}
           </SubMenu>
-          <SubMenu key="sub3" icon={<AiTwotoneContacts />} title="Sizes">
-            <Menu.Item key="6">
-              <Link to="/admin/sizes">All Sizes</Link>
-            </Menu.Item>
-            <Menu.Item icon={<AiOutlinePlus />} key="7">
-              <Link to="/admin/sizes/add">Add Size</Link>
-            </Menu.Item>
-            {/* Add more sub-menu items as needed */}
-          </SubMenu>
-          <SubMenu key="sub4" icon={<AiOutlineBgColors />} title="Colors">
-            <Menu.Item key="8">
-              <Link to="/admin/colors">All Colors</Link>
-            </Menu.Item>
-            <Menu.Item icon={<AiOutlinePlus />} key="9">
-              <Link to="/admin/colors/add">Add Color</Link>
-            </Menu.Item>
-            {/* Add more sub-menu items as needed */}
-          </SubMenu>
           <SubMenu key="sub5" icon={<AiOutlineShoppingCart />} title="Order">
             <Menu.Item key="10">
               <Link to="/admin/orders">All order</Link>
@@ -85,7 +67,6 @@ const MainLayout = () => {
             <Menu.Item key="11">
               <Link to="/admin/categoties/add">Add Category</Link>
             </Menu.Item>
-            {/* Add more sub-menu items as needed */}
           </SubMenu>
           <SubMenu key="sub6" icon={<AiOutlineShop />} title="Inventory">
             <Menu.Item key="12">
@@ -94,7 +75,6 @@ const MainLayout = () => {
             <Menu.Item key="13">
               <Link to=""> Inventory</Link>
             </Menu.Item>
-            {/* Add more sub-menu items as needed */}
           </SubMenu>
           <Menu.Item key="14" icon={<AiFillTags />}>
             <Link to="">Discount</Link>
