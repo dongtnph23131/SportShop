@@ -63,8 +63,7 @@ export const routers  = createBrowserRouter ([
             {path: "categories/:id/edit", element: <EditCategories/>},
             {path: "colors", element: <AllColors/>},
             {path: "colors/add", element: <AddColors/>},
-            {path: "colors/:id/edit", element: <EditColors/>},
-            
+            {path: "colors/:id/edit", element: <EditColors/>}, 
             {path: "sizes", element: <AllSizes/>},
             {path: "sizes/add", element: <AddSizes/>},
             {path: "sizes/:id/edit", element: <EditSizes/>},
