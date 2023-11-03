@@ -33,6 +33,8 @@ import { Separator } from "@/components/ui/separator";
 import { ProductOptions } from "./product-options-section";
 import { ProductVariants } from "./product-variants-section";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { useProductCreateMutation } from "@/services/products/product-create-mutation";
+import { toast } from "sonner";
 // import { isArrayOfFile } from "@/lib/utils";
 
 const formSchema = z.object({
@@ -64,17 +66,35 @@ export type Inputs = z.infer<typeof formSchema> & { images: string[] };
 
 export function AddProductForm() {
   const router = useRouter();
+  const createProductMutation = useProductCreateMutation();
 
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
       options: [{ name: "", values: [] }],
-      collectionId: "",
+      collectionId: "6544e045600c0b773f05e11b",
     },
   });
 
   async function onSubmit(data: Inputs) {
-    console.log({ data });
+    createProductMutation.mutate(
+      {
+        name: data.name,
+        description: data.description,
+        categoryId: data.collectionId,
+        options: data.options,
+        variants: data.variants.map((item) => ({
+          ...item,
+          options: item.options.map((option) => option.value),
+        })),
+      },
+      {
+        onSuccess: () => {
+          router.push("/products");
+          toast.success("Thêm sản phẩm thành công!");
+        },
+      }
+    );
   }
 
   return (
