@@ -23,10 +23,9 @@ import {
 } from "@/components/ui/select";
 import { Textarea } from "@/components/ui/textarea";
 import { Icons } from "@/components/icons";
-// import { FileDialog, FileWithPreview } from "./file-dialog";
-// import { Zoom } from "./zoom-image";
-// import { generateReactHelpers } from "@uploadthing/react/hooks";
-// import { OurFileRouter } from "@/server/uploadthing";
+import { FileDialog, FileWithPreview } from "./file-dialog";
+import { Zoom } from "./zoom-image";
+import { generateReactHelpers } from "@uploadthing/react/hooks";
 import { useRouter } from "next/router";
 import { z } from "zod";
 import { Separator } from "@/components/ui/separator";
@@ -35,7 +34,8 @@ import { ProductVariants } from "./product-variants-section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProductCreateMutation } from "@/services/products/product-create-mutation";
 import { toast } from "sonner";
-// import { isArrayOfFile } from "@/lib/utils";
+import { isArrayOfFile } from "@/lib/utils";
+import { OurFileRouter } from "@/lib/uploadthing";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -64,9 +64,15 @@ const formSchema = z.object({
 
 export type Inputs = z.infer<typeof formSchema> & { images: string[] };
 
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+
 export function AddProductForm() {
   const router = useRouter();
-  const createProductMutation = useProductCreateMutation();
+  const addProductMutation = useProductCreateMutation();
+
+  const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
+
+  const { isUploading, startUpload } = useUploadThing("imageUploader");
 
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
@@ -77,7 +83,18 @@ export function AddProductForm() {
   });
 
   async function onSubmit(data: Inputs) {
-    createProductMutation.mutate(
+    const images = isArrayOfFile(data.images)
+      ? await startUpload(data.images).then((res) => {
+          const formattedImages = res?.map((image) => ({
+            id: image.key,
+            name: image.key.split("_")[1] ?? image.key,
+            url: image.url,
+          }));
+          return formattedImages ?? null;
+        })
+      : null;
+
+    addProductMutation.mutate(
       {
         name: data.name,
         description: data.description,
@@ -87,6 +104,12 @@ export function AddProductForm() {
           ...item,
           options: item.options.map((option) => option.value),
         })),
+        images:
+          images?.map((image) => ({
+            name: image.name,
+            url: image.url,
+            publicId: image.id,
+          })) ?? [],
       },
       {
         onSuccess: () => {
@@ -104,7 +127,6 @@ export function AddProductForm() {
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <Separator />
-
         <div>
           <h1 className="font-semibold text-lg">General information</h1>
           <p className="text-sm text-slate-500 mb-4">
@@ -188,7 +210,7 @@ export function AddProductForm() {
 
         <Separator />
 
-        {/* <div>
+        <div>
           <h1 className="font-semibold text-lg">Image</h1>
           <p className="text-sm text-slate-500 mb-4">
             Add images to this product.
@@ -226,19 +248,18 @@ export function AddProductForm() {
               message={form.formState.errors.images?.message}
             />
           </FormItem>
-        </div> */}
-
+        </div>
         <Button
           type="submit"
           className="w-fit"
-          // disabled={addProductMutation.isLoading}
+          disabled={addProductMutation.isPending}
         >
-          {/* {addProductMutation.isLoading && (
+          {addProductMutation.isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
               aria-hidden="true"
             />
-          )} */}
+          )}
           Add Product
           <span className="sr-only">Add Product</span>
         </Button>

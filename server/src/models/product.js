@@ -11,16 +11,32 @@ const productSchema = mongoose.Schema(
     description: {
       type: String,
     },
+    images: [
+      {
+        name: {
+          type: String,
+          require: true,
+        },
+        url: {
+          type: String,
+          require: true,
+        },
+        publicId: {
+          type: String,
+          require: true,
+        },
+      },
+    ],
     categoryId: {
       type: mongoose.Types.ObjectId,
       ref: "Category",
       required: true,
     },
     minPrice: {
-      type: Number
+      type: Number,
     },
     maxPrice: {
-      type: Number
+      type: Number,
     },
     options: [
       {

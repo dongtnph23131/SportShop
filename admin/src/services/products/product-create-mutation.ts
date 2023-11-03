@@ -12,6 +12,11 @@ export type ProductCreateVariables = {
     inventory: number;
     options: string[];
   }[];
+  images: {
+    name: string;
+    url: string;
+    publicId: string;
+  }[];
 };
 
 export async function createProduct(body: ProductCreateVariables) {
