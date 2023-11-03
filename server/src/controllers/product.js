@@ -46,10 +46,8 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await ChildProduct.find({ productId: id })
-      .populate("productId", "-__v")
-      .populate("colorId", "-__v")
-      .populate("sizeId", "-__v");
+    const data = await Product.findById(id).populate('productVariants', '-__v')
+
     if (data.length === 0) {
       return res.status(200).json({
         message: "Không có sản phẩm",
@@ -68,14 +66,22 @@ export const create = async (req, res) => {
     const body = req.body;
     const { name, description, categoryId, options, variants } =
       productCreateBodySchema.parse(body);
-
+    const numberPrice = variants.map((variant) => {
+      return variant.price
+    });
+    const minPrice = Math.min(...numberPrice)
+    const maxPrice = Math.max(...numberPrice)
     const product = await Product.create({
       name,
       description,
       categoryId,
       options,
     });
-
+    await Product.findByIdAndUpdate(product._id, {
+      minPrice, maxPrice
+    }, {
+      new: true
+    })
     const productVariants = await Promise.all(
       variants.map((variant) => {
         return ProductVariant.create({
@@ -92,8 +98,10 @@ export const create = async (req, res) => {
 
     const newProduct = await Product.findByIdAndUpdate(product._id, {
       productVariants: productVariantIds,
+    }, {
+      new: true
     });
-    await newProduct.save();
+    await newProduct.save({ validateBeforeSave: false });
 
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {

@@ -16,6 +16,12 @@ const productSchema = mongoose.Schema(
       ref: "Category",
       required: true,
     },
+    minPrice: {
+      type: Number
+    },
+    maxPrice: {
+      type: Number
+    },
     options: [
       {
         name: {
