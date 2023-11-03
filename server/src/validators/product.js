@@ -18,6 +18,13 @@ export const productCreateBodySchema = z.object({
       options: z.array(z.string()),
     })
   ),
+  images: z.array(
+    z.object({
+      name: z.string(),
+      url: z.string(),
+      publicId: z.string(),
+    })
+  ),
 });
 
 export const productUpdateBodySchema = z.object({

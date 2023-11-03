@@ -11,7 +11,7 @@ export const getAll = async (req, res) => {
       _page = 1,
       _order = "asc",
       categories,
-      q
+      q,
     } = req.query;
     const options = {
       page: _page,
@@ -21,9 +21,11 @@ export const getAll = async (req, res) => {
       },
       populate: [{ path: "categoryId", select: "name" }],
     };
-    let searchQuery = q ? {
-      name: { $regex: q, $options: "i" }
-    } : {}
+    let searchQuery = q
+      ? {
+          name: { $regex: q, $options: "i" },
+        }
+      : {};
     if (categories) {
       searchQuery = {
         ...searchQuery,
@@ -46,7 +48,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await Product.findById(id).populate('productVariants', '-__v')
+    const data = await Product.findById(id).populate("productVariants", "-__v");
 
     if (data.length === 0) {
       return res.status(200).json({
@@ -64,24 +66,30 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { name, description, categoryId, options, variants } =
+    const { name, description, categoryId, options, variants, images } =
       productCreateBodySchema.parse(body);
     const numberPrice = variants.map((variant) => {
-      return variant.price
+      return variant.price;
     });
-    const minPrice = Math.min(...numberPrice)
-    const maxPrice = Math.max(...numberPrice)
+    const minPrice = Math.min(...numberPrice);
+    const maxPrice = Math.max(...numberPrice);
     const product = await Product.create({
       name,
       description,
       categoryId,
       options,
+      images,
     });
-    await Product.findByIdAndUpdate(product._id, {
-      minPrice, maxPrice
-    }, {
-      new: true
-    })
+    await Product.findByIdAndUpdate(
+      product._id,
+      {
+        minPrice,
+        maxPrice,
+      },
+      {
+        new: true,
+      }
+    );
     const productVariants = await Promise.all(
       variants.map((variant) => {
         return ProductVariant.create({
@@ -96,11 +104,15 @@ export const create = async (req, res) => {
 
     const productVariantIds = productVariants.map((item) => item._id);
 
-    const newProduct = await Product.findByIdAndUpdate(product._id, {
-      productVariants: productVariantIds,
-    }, {
-      new: true
-    });
+    const newProduct = await Product.findByIdAndUpdate(
+      product._id,
+      {
+        productVariants: productVariantIds,
+      },
+      {
+        new: true,
+      }
+    );
     await newProduct.save({ validateBeforeSave: false });
 
     await Category.findByIdAndUpdate(product.categoryId, {
