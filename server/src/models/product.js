@@ -3,7 +3,7 @@ import mongoosePaginate from "mongoose-paginate-v2";
 
 const productSchema = mongoose.Schema(
   {
-    slug: { type: String, slug: "name" },
+    slug: { type: String },
     name: {
       type: String,
       required: true,
@@ -47,7 +47,7 @@ const productSchema = mongoose.Schema(
         values: [String],
       },
     ],
-    productVariants: [
+    productVariantIds: [
       {
         type: mongoose.Types.ObjectId,
         ref: "ProductVariant",
