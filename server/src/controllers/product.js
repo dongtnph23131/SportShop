@@ -1,9 +1,6 @@
 import Product from "../models/product";
 import Category from "../models/category";
-import {
-  productCreateBodySchema,
-  productUpdateBodySchema,
-} from "../validators/product";
+import { productCreateBodySchema } from "../validators/product";
 import ProductVariant from "../models/productVariant";
 
 export const getAll = async (req, res) => {
@@ -22,12 +19,12 @@ export const getAll = async (req, res) => {
       sort: {
         [_sort]: _order === "desc" ? -1 : 1,
       },
-      populate: [{ path: "categoryId" }, { path: "productVariantIds" }],
+      populate: [{ path: "categoryId", select: "name" }],
     };
     let searchQuery = q
       ? {
-          name: { $regex: q, $options: "i" },
-        }
+        name: { $regex: q, $options: "i" },
+      }
       : {};
     if (categories) {
       searchQuery = {
@@ -50,10 +47,8 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const data = await Product.findOne({ slug: req.params.slug }).populate([
-      "productVariantIds",
-      "categoryId",
-    ]);
+    const id = req.params.id;
+    const data = await Product.findById(id).populate("productVariantIds", "-__v");
 
     if (data.length === 0) {
       return res.status(200).json({
@@ -71,7 +66,7 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { slug, name, description, categoryId, options, variants, images } =
+    const { name, description, categoryId, options, variants, images } =
       productCreateBodySchema.parse(body);
     const numberPrice = variants.map((variant) => {
       return variant.price;
@@ -79,7 +74,6 @@ export const create = async (req, res) => {
     const minPrice = Math.min(...numberPrice);
     const maxPrice = Math.max(...numberPrice);
     const product = await Product.create({
-      slug,
       name,
       description,
       categoryId,
@@ -123,7 +117,7 @@ export const create = async (req, res) => {
 
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
-        products: product._id,
+       products: product._id,
       },
     });
 
@@ -160,47 +154,21 @@ export const remove = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
-    const { slug, name, description, categoryId, options, images, variants } =
-      productUpdateBodySchema.parse(req.body);
-
     const data = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      {
-        slug,
-        name,
-        description,
-        categoryId,
-        options,
-        images,
-      },
+      req.body,
       {
         new: true,
       }
     );
-
     if (!data) {
       return res.status(400).json({
         message: "Cập nhật sản phẩm thất bại",
       });
     }
-
-    for (const variant of variants) {
-      await ProductVariant.findOneAndUpdate(
-        { _id: variant.id },
-        {
-          name: variant.name,
-          price: variant.price,
-          inventory: variant.inventory,
-          options: variant.options,
-        },
-        {
-          new: true,
-        }
-      );
-    }
-
     return res.json({
       message: "Cập nhật sản phẩm thành công",
+      data,
     });
   } catch (error) {
     return res.status(400).json({

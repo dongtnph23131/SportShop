@@ -1,6 +1,11 @@
 import React from "react";
-
+import Cookies from "js-cookie";
+import { useAddItemCartMutation, useGetCartOfUserQuery, useRemoveItemCartMutation } from "../api/cart";
 const Cart = () => {
+  const token = Cookies.get('token')
+  const { data: carts } = useGetCartOfUserQuery(token)
+  const [addCart] = useAddItemCartMutation()
+  const [removeItemCart]=useRemoveItemCartMutation()
   return (
     <div>
       <section id="page-header3" className="about-header">
@@ -21,54 +26,29 @@ const Cart = () => {
             </tr>
           </thead>
           <tbody>
-            <tr>
-              <td>
-                <a href="">
-                  <i className="far fa-times-circle"></i>
-                </a>
-              </td>
-              <td>
-                <img src="../../src/Assets/product2.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>$118.19</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>$118.19</td>
-            </tr>
-            <tr>
-              <td>
-                <a href="">
-                  <i className="far fa-times-circle"></i>
-                </a>
-              </td>
-              <td>
-                <img src="../../src/Assets/product2.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>$118.19</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>$118.19</td>
-            </tr>
-            <tr>
-              <td>
-                <a href="">
-                  <i className="far fa-times-circle"></i>
-                </a>
-              </td>
-              <td>
-                <img src="../../src/Assets/product2.jpg" alt="" />
-              </td>
-              <td>Cartoon Astronaut T-Shirts</td>
-              <td>$118.19</td>
-              <td>
-                <input type="number" value="1" />
-              </td>
-              <td>$118.19</td>
-            </tr>
+            {carts?.map((cartItem: any) => {
+              return <tr key={cartItem._id}>
+                <td>
+                  <a href="">
+                    <i className="far fa-times-circle"></i>
+                  </a>
+                </td>
+                <td>
+                  <img src={`${cartItem?.productIds?.images[0].url}`} alt="" />
+                </td>
+                <td>{cartItem?.productIds?.name}  --  {cartItem?.productVariantIds?.name}</td>
+                <td>${cartItem?.productVariantIds?.price}</td>
+                <button className="normal" onClick={() => removeItemCart({ productVariantIds: cartItem?.productVariantIds?._id, token })}>-</button>
+                <td>
+                  <input type="number" value={`${cartItem?.quantity}`} onChange={(e)=>{
+                    console.log(e.target.value);
+                    
+                  }}/>
+                </td>
+                <button className="normal" onClick={() => addCart({ productVariantIds: cartItem?.productVariantIds?._id, token })}>+</button>
+                <td>${cartItem?.productVariantIds?.price * Number(cartItem?.quantity)}</td>
+              </tr>
+            })}
           </tbody>
         </table>
       </section>
@@ -87,7 +67,7 @@ const Cart = () => {
               <input type="text" placeholder="địa chỉ " />
             </tr>
             <tr>
-              <textarea type="text" placeholder="ghi chú giao hàng " />
+              <textarea placeholder="ghi chú giao hàng " />
             </tr>
           </table>
           <button className="normal">Proceed to checkout</button>
@@ -173,7 +153,7 @@ const Cart = () => {
                     </span>
                   </label>
                 </div>
-               
+
               </div>
             </div>
           </div>

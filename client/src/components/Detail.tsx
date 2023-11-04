@@ -10,24 +10,24 @@ const Detail = () => {
       <section id="prodetails" className="section-p1">
         <div className="single-pro-image">
           <img
-            src={`${product ? `${product.image}` : ``}`}
+            src={`${product ? `${product.images[0].url}` : ``}`}
             width="100%"
             id="MainImg"
             alt=""
           />
 
-          {/* <div className="small-img-group">
-            {images?.map((item: any) => {
-              return <div key={item._id} className="small-img-col">
+          <div className="small-img-group">
+            {product?.images?.map((item: any,index:any) => {
+              return <div key={index+1} className="small-img-col">
                 <img
-                  src={`${item.img}`}
+                  src={`${item.url}`}
                   width="100%"
                   className="small-img"
                   alt=""
                 />
               </div>
             })}
-          </div> */}
+          </div>
         </div>
 
         <div className="single-pro-details">
