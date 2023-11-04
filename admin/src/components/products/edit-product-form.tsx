@@ -1,12 +1,16 @@
 import * as React from "react";
 import Image from "next/image";
+import { useRouter } from "next/router";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { generateReactHelpers } from "@uploadthing/react/hooks";
 import { useForm } from "react-hook-form";
+import { toast } from "sonner";
 
+import { isArrayOfFile } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -17,6 +21,7 @@ import { Input } from "@/components/ui/input";
 import {
   Select,
   SelectContent,
+  SelectGroup,
   SelectItem,
   SelectTrigger,
   SelectValue,
@@ -24,19 +29,17 @@ import {
 import { Textarea } from "@/components/ui/textarea";
 import { Icons } from "@/components/icons";
 import { FileDialog, FileWithPreview } from "./file-dialog";
-import { Zoom } from "./zoom-image";
-import { generateReactHelpers } from "@uploadthing/react/hooks";
-import { useRouter } from "next/router";
 import { z } from "zod";
+import { Zoom } from "./zoom-image";
 import { Separator } from "@/components/ui/separator";
 import { ProductOptions } from "./product-options-section";
 import { ProductVariants } from "./product-variants-section";
-import { zodResolver } from "@hookform/resolvers/zod";
-import { useProductCreateMutation } from "@/services/products/product-create-mutation";
-import { toast } from "sonner";
-import { isArrayOfFile } from "@/lib/utils";
 import { OurFileRouter } from "@/lib/uploadthing";
+import { Product } from "@/types/base";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
+import { useProductUpdateMutation } from "@/services/products/product-update-mutation";
+
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -55,32 +58,66 @@ const formSchema = z.object({
   ),
   variants: z.array(
     z.object({
+      id: z.string(),
       name: z.string(),
       price: z.number(),
       inventory: z.number(),
-      options: z.array(z.object({ name: z.string(), value: z.string() })),
+      options: z.array(z.string()),
     })
   ),
 });
 
-export type Inputs = z.infer<typeof formSchema> & { images: string[] };
+type Inputs = z.infer<typeof formSchema> & { images: string[] };
 
-const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+interface UpdateProductFormProps {
+  product: Product;
+}
 
-export function AddProductForm() {
+export function UpdateProductForm({ product }: UpdateProductFormProps) {
   const router = useRouter();
-  const addProductMutation = useProductCreateMutation();
+  const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
+  const updateProductMutation = useProductUpdateMutation({
+    onSuccess: () => {
+      router.push("/products");
+    },
+  });
+
   const { data: categories } = useCategoriesQuery();
 
-  const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
+  React.useEffect(() => {
+    if (product.images && product.images.length > 0) {
+      setFiles(
+        product.images.map((image) => {
+          const file = new File([], image.url, {
+            type: "image",
+          });
+          const fileWithPreview = Object.assign(file, {
+            preview: image.url,
+          });
+
+          return fileWithPreview;
+        })
+      );
+    }
+  }, [product]);
 
   const { isUploading, startUpload } = useUploadThing("imageUploader");
 
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      options: [{ name: "", values: [] }],
-      collectionId: "6545efe34ecac8e22c9c8251",
+      collectionId: product.categoryId._id,
+      options: product.options.map((option) => ({
+        name: option.name,
+        values: option.values,
+      })),
+      variants: product.productVariantIds.map((variant) => ({
+        id: variant._id,
+        name: variant.name,
+        price: variant.price,
+        inventory: variant.inventory,
+        options: variant.options,
+      })),
     },
   });
 
@@ -96,31 +133,21 @@ export function AddProductForm() {
         })
       : null;
 
-    addProductMutation.mutate(
-      {
-        slug: data.name.toLocaleLowerCase().split(" ").join("-"),
-        name: data.name,
-        description: data.description,
-        categoryId: data.collectionId,
-        options: data.options,
-        variants: data.variants.map((item) => ({
-          ...item,
-          options: item.options.map((option) => option.value),
-        })),
-        images:
-          images?.map((image) => ({
-            name: image.name,
-            url: image.url,
-            publicId: image.id,
-          })) ?? [],
-      },
-      {
-        onSuccess: () => {
-          router.push("/products");
-          toast.success("Thêm sản phẩm thành công!");
-        },
-      }
-    );
+    updateProductMutation.mutate({
+      id: product._id,
+      slug: data.name.toLocaleLowerCase().split(" ").join("-"),
+      name: data.name,
+      description: data.description,
+      categoryId: data.collectionId,
+      images:
+        images?.map((image) => ({
+          name: image.name,
+          url: image.url,
+          publicId: image.id,
+        })) ?? [],
+      options: data.options,
+      variants: data.variants,
+    });
   }
 
   return (
@@ -130,6 +157,7 @@ export function AddProductForm() {
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <Separator />
+
         <div>
           <h1 className="font-semibold text-lg">General information</h1>
           <p className="text-sm text-slate-500 mb-4">
@@ -144,6 +172,7 @@ export function AddProductForm() {
                   aria-invalid={!!form.formState.errors.name}
                   placeholder="Type product name here."
                   {...form.register("name")}
+                  defaultValue={product.name}
                 />
               </FormControl>
               <UncontrolledFormMessage
@@ -157,6 +186,7 @@ export function AddProductForm() {
                 <Textarea
                   placeholder="Type product description here."
                   {...form.register("description")}
+                  defaultValue={product.description ?? ""}
                 />
               </FormControl>
               <UncontrolledFormMessage
@@ -192,9 +222,7 @@ export function AddProductForm() {
                       </SelectContent>
                     </Select>
                   </FormControl>
-                  <UncontrolledFormMessage
-                    message={form.formState.errors.collectionId?.message}
-                  />
+                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -221,7 +249,6 @@ export function AddProductForm() {
           <p className="text-sm text-slate-500 mb-4">
             Add images to this product.
           </p>
-
           <FormItem className="flex w-full flex-col gap-1.5">
             <FormLabel>Images</FormLabel>
             {files?.length ? (
@@ -255,19 +282,16 @@ export function AddProductForm() {
             />
           </FormItem>
         </div>
-        <Button
-          type="submit"
-          className="w-fit"
-          disabled={addProductMutation.isPending}
-        >
-          {addProductMutation.isPending && (
+
+        <Button disabled={updateProductMutation.isPending}>
+          {updateProductMutation.isPending && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
               aria-hidden="true"
             />
           )}
-          Add Product
-          <span className="sr-only">Add Product</span>
+          Update Product
+          <span className="sr-only">Update product</span>
         </Button>
       </form>
     </Form>

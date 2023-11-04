@@ -16,14 +16,14 @@ export const get = async (req, res) => {
   try {
     const id = req.params.id;
     const category = await Category.findById(id).populate("products");
-    if (category.length === 0) {
+    if (!category) {
       return res.status(200).json({
         message: "Không có danh mục",
       });
     }
     return res.status(200).json(category);
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       message: error,
     });
   }
@@ -38,7 +38,7 @@ export const create = async (req, res) => {
       });
     }
     const data = await Category.create(body);
-    if (data.length === 0) {
+    if (!data) {
       return res.status(400).json({
         message: "Thêm danh mục thất bại",
       });
@@ -48,7 +48,7 @@ export const create = async (req, res) => {
       data,
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       message: error,
     });
   }

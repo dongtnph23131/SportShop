@@ -1,6 +1,9 @@
 import Product from "../models/product";
 import Category from "../models/category";
-import { productCreateBodySchema } from "../validators/product";
+import {
+  productCreateBodySchema,
+  productUpdateBodySchema,
+} from "../validators/product";
 import ProductVariant from "../models/productVariant";
 
 export const getAll = async (req, res) => {
@@ -19,10 +22,7 @@ export const getAll = async (req, res) => {
       sort: {
         [_sort]: _order === "desc" ? -1 : 1,
       },
-      populate: [
-        { path: "categoryId", select: "name" },
-        { path: "productVariantIds" },
-      ],
+      populate: [{ path: "categoryId" }, { path: "productVariantIds" }],
     };
     let searchQuery = q
       ? {
@@ -50,8 +50,10 @@ export const getAll = async (req, res) => {
 
 export const get = async (req, res) => {
   try {
-    const id = req.params.id;
-    const data = await Product.findById(id);
+    const data = await Product.findOne({ slug: req.params.slug }).populate([
+      "productVariantIds",
+      "categoryId",
+    ]);
 
     if (data.length === 0) {
       return res.status(200).json({
@@ -158,21 +160,47 @@ export const remove = async (req, res) => {
 
 export const update = async (req, res) => {
   try {
+    const { slug, name, description, categoryId, options, images, variants } =
+      productUpdateBodySchema.parse(req.body);
+
     const data = await Product.findOneAndUpdate(
       { _id: req.params.id },
-      req.body,
+      {
+        slug,
+        name,
+        description,
+        categoryId,
+        options,
+        images,
+      },
       {
         new: true,
       }
     );
+
     if (!data) {
       return res.status(400).json({
         message: "Cập nhật sản phẩm thất bại",
       });
     }
+
+    for (const variant of variants) {
+      await ProductVariant.findOneAndUpdate(
+        { _id: variant.id },
+        {
+          name: variant.name,
+          price: variant.price,
+          inventory: variant.inventory,
+          options: variant.options,
+        },
+        {
+          new: true,
+        }
+      );
+    }
+
     return res.json({
       message: "Cập nhật sản phẩm thành công",
-      data,
     });
   } catch (error) {
     return res.status(400).json({

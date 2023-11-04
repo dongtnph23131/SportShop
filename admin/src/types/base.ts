@@ -1,5 +1,6 @@
 export interface Product {
   _id: string;
+  slug: string;
   name: string;
   description: string;
   images: Image[];
@@ -24,6 +25,7 @@ export interface Variant {
 export interface Category {
   _id: string;
   name: string;
+  updatedAt: string;
 }
 
 export interface Option {

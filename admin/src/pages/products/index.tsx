@@ -29,7 +29,9 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
 import { useProductsQuery } from "@/services/products/products-query";
 import { Product } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -38,6 +40,11 @@ import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
   const { data: products } = useProductsQuery();
+  const deleteProductMutation = useProductDeleteMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
 
   const columns: ColumnDef<Product>[] = [
     // {
@@ -71,7 +78,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "collection",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Collection" />
+        <DataTableColumnHeader column={column} title="Category" />
       ),
       cell: ({ row }) => {
         return (
@@ -110,10 +117,14 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/admin/products/${row.original._id}`}>Edit</Link>
+              <Link href={`/products/${encodeURIComponent(row.original.slug)}`}>
+                Edit
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/store/products/${row.original._id}`}>View</Link>
+              <Link href={`/products/${encodeURIComponent(row.original.slug)}`}>
+                View
+              </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
@@ -133,7 +144,11 @@ const Page: NextPageWithLayout = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => {}}>
+                    <AlertDialogAction
+                      onClick={() => {
+                        deleteProductMutation.mutate({ id: row.original._id });
+                      }}
+                    >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>

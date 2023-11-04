@@ -20,8 +20,8 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
       Icon: Tag,
     },
     {
-      name: "Collections",
-      href: "/collections",
+      name: "Categories",
+      href: "/categories",
       Icon: Folder,
     },
     {

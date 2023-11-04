@@ -21,8 +21,6 @@ export async function createProduct(body: ProductCreateVariables) {
 type ProjectCreateData = Awaited<ReturnType<typeof createProduct>>;
 
 export const useProductCreateMutation = ({
-  onSuccess,
-  onError,
   ...options
 }: Omit<
   UseMutationOptions<ProjectCreateData, any, ProductCreateVariables>,

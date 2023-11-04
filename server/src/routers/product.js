@@ -5,10 +5,9 @@ import { authorization } from "../middlewares/authorization";
 
 const router = express.Router();
 router.get("/products", getAll);
-router.get("/products/:id", get);
-// router.post("/products",authenticate,authorization, create);
+router.get("/products/:slug", get);
 router.post("/products", create);
 router.delete("/products/:id", remove);
-router.patch("/products/:id", authenticate, authorization, update);
+router.put("/products/:id", update);
 
 export default router;

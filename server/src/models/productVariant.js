@@ -15,10 +15,6 @@ const ProductVariantSchema = mongoose.Schema(
       type: Number,
       require: true,
     },
-    image: {
-      type: String,
-      require: true,
-    },
     options: [String],
     productId: {
       type: mongoose.Types.ObjectId,
