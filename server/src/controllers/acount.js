@@ -1,4 +1,4 @@
-import Acount from "../models/acount";
+import Customer from "../models/customer";
 import nodemailer from "nodemailer"
 import bcrypt from "bcryptjs"
 import jwt from "jsonwebtoken"
@@ -13,7 +13,7 @@ export const forgotPassword = async (req, res) => {
             });
         }
         const email = req.body.email
-        const user = await Acount.findOne({ email: email })
+        const user = await Customer.findOne({ email: email })
         if (!user) {
             return res.status(400).json({
                 message: "Email chưa được đăng ký"
@@ -70,7 +70,7 @@ export const resetPassword = async (req, res) => {
             });
         }
         const code=req.body.code;
-        const user = await Acount.findOne({
+        const user = await Customer.findOne({
             passwordResetToken: code,
             passwordResetExpires: { $gt: Date.now() }
         })

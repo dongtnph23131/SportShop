@@ -107,7 +107,7 @@ export const create = async (req, res) => {
     const newProduct = await Product.findByIdAndUpdate(
       product._id,
       {
-        productVariants: productVariantIds,
+        productVariantIds: productVariantIds,
       },
       {
         new: true,
