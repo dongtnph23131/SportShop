@@ -36,6 +36,7 @@ import { useProductCreateMutation } from "@/services/products/product-create-mut
 import { toast } from "sonner";
 import { isArrayOfFile } from "@/lib/utils";
 import { OurFileRouter } from "@/lib/uploadthing";
+import { useCategoriesQuery } from "@/services/categories/categories-query";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -69,6 +70,9 @@ const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 export function AddProductForm() {
   const router = useRouter();
   const addProductMutation = useProductCreateMutation();
+  const { data: categories } = useCategoriesQuery();
+
+  console.log({ categories });
 
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
 
@@ -78,7 +82,6 @@ export function AddProductForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       options: [{ name: "", values: [] }],
-      collectionId: "6544e045600c0b773f05e11b",
     },
   });
 
@@ -178,11 +181,11 @@ export function AddProductForm() {
                         <SelectValue placeholder={field.value} />
                       </SelectTrigger>
                       <SelectContent>
-                        {/* {data?.collections.map((collection) => (
+                        {categories?.map((collection) => (
                           <SelectItem key={collection.id} value={collection.id}>
                             {collection.name}
                           </SelectItem>
-                        ))} */}
+                        ))}
                       </SelectContent>
                     </Select>
                   </FormControl>

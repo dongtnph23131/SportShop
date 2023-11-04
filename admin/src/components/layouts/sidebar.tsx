@@ -48,7 +48,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
             <Button
               key={index}
               variant={
-                router.asPath.split("?")[0].split("/").slice(0, 3).join("/") ===
+                router.asPath.split("?")[0].split("/").slice(0, 2).join("/") ===
                 tab.href
                   ? "default"
                   : "ghost"
