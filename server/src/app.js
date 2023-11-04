@@ -7,6 +7,7 @@ import productRouter from "./routers/product";
 import categoryRouter from "./routers/category";
 import acounRouter from "./routers/acount";
 import uploadRouter from "./routers/upload";
+import cartRouter from "./routers/cart"
 dotenv.config();
 const app = express();
 
@@ -18,6 +19,7 @@ app.use("/api", productRouter);
 app.use("/api", categoryRouter);
 app.use("/api", acounRouter);
 app.use("/api", uploadRouter);
+app.use('/api',cartRouter)
 
 mongoose.connect(process.env.URL_DATABASE);
 

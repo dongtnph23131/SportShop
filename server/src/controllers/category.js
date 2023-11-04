@@ -3,27 +3,31 @@ import { categoryValidators } from "../validators/category";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Category.find();
+    const data = await Category.find().populate("productIds")
     if (data.length == 0) {
       return res.json({
         message: "Không có danh mục",
       });
     }
-    return res.json(data);
-  } catch (error) {}
+    return res.status(200).json(data);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
 };
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const category = await Category.findById(id).populate("products");
-    if (!category) {
+    const category = await Category.findById(id).populate("products")
+    if (category.length === 0) {
       return res.status(200).json({
         message: "Không có danh mục",
       });
     }
     return res.status(200).json(category);
   } catch (error) {
-    return res.status(500).json({
+    return res.status(400).json({
       message: error,
     });
   }
@@ -38,7 +42,7 @@ export const create = async (req, res) => {
       });
     }
     const data = await Category.create(body);
-    if (!data) {
+    if (data.length === 0) {
       return res.status(400).json({
         message: "Thêm danh mục thất bại",
       });
@@ -48,7 +52,7 @@ export const create = async (req, res) => {
       data,
     });
   } catch (error) {
-    return res.status(500).json({
+    return res.status(400).json({
       message: error,
     });
   }
