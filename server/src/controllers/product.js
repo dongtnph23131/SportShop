@@ -19,7 +19,10 @@ export const getAll = async (req, res) => {
       sort: {
         [_sort]: _order === "desc" ? -1 : 1,
       },
-      populate: [{ path: "categoryId", select: "name" }],
+      populate: [
+        { path: "categoryId", select: "name" },
+        { path: "productVariantIds" },
+      ],
     };
     let searchQuery = q
       ? {
@@ -48,7 +51,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await Product.findById(id).populate("productVariants", "-__v");
+    const data = await Product.findById(id);
 
     if (data.length === 0) {
       return res.status(200).json({
@@ -66,7 +69,7 @@ export const get = async (req, res) => {
 export const create = async (req, res) => {
   try {
     const body = req.body;
-    const { name, description, categoryId, options, variants, images } =
+    const { slug, name, description, categoryId, options, variants, images } =
       productCreateBodySchema.parse(body);
     const numberPrice = variants.map((variant) => {
       return variant.price;
@@ -74,6 +77,7 @@ export const create = async (req, res) => {
     const minPrice = Math.min(...numberPrice);
     const maxPrice = Math.max(...numberPrice);
     const product = await Product.create({
+      slug,
       name,
       description,
       categoryId,

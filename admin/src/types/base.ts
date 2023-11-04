@@ -1,14 +1,13 @@
 export interface Product {
-  id: string;
+  _id: string;
   name: string;
   description: string;
   images: Image[];
-  categoryId: string;
+  categoryId: { _id: string; name: string };
   options: Option[];
   maxPrice: number;
   minPrice: number;
-  category: Category;
-  variants: Variant[];
+  productVariantIds: Variant[];
 }
 
 export interface Variant {
@@ -16,22 +15,26 @@ export interface Variant {
   price: number;
   inventory: number;
   options: string[];
+  _id: string;
+  productId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Category {
-  id: string;
+  _id: string;
   name: string;
 }
 
 export interface Option {
   name: string;
   values: string[];
-  id: string;
+  _id: string;
 }
 
 export interface Image {
   name: string;
   url: string;
   publicId: string;
-  id: string;
+  _id: string;
 }

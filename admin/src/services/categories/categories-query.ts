@@ -1,8 +1,9 @@
+import { API_URL } from "@/lib/contants";
 import { Category } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch("/api/categories");
+  const response = await fetch(`${API_URL}/api/categories`);
 
   if (!response.ok) throw Error();
 

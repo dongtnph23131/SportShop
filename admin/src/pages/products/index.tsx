@@ -76,7 +76,7 @@ const Page: NextPageWithLayout = () => {
       cell: ({ row }) => {
         return (
           <div className="flex space-x-2">
-            <Badge variant="outline">{row.original.category.name}</Badge>
+            <Badge variant="outline">{row.original.categoryId.name}</Badge>
           </div>
         );
       },
@@ -87,12 +87,12 @@ const Page: NextPageWithLayout = () => {
         <DataTableColumnHeader column={column} title="Inventory" />
       ),
       cell: ({ row }) => {
-        const inventory = row.original.variants.reduce(
+        const inventory = row.original.productVariantIds.reduce(
           (acc, item) => item.inventory + acc,
           0
         );
 
-        return `${inventory} in stock for ${row.original.variants.length} variant(s)`;
+        return `${inventory} in stock for ${row.original.productVariantIds.length} variant(s)`;
       },
     },
     {
@@ -110,10 +110,10 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/admin/products/${row.original.id}`}>Edit</Link>
+              <Link href={`/admin/products/${row.original._id}`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
-              <Link href={`/store/products/${row.original.id}`}>View</Link>
+              <Link href={`/store/products/${row.original._id}`}>View</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>

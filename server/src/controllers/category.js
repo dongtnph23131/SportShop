@@ -3,7 +3,7 @@ import { categoryValidators } from "../validators/category";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Category.find().populate("products")
+    const data = await Category.find();
     if (data.length == 0) {
       return res.json({
         message: "Không có danh mục",
@@ -15,7 +15,7 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const category = await Category.findById(id).populate("products")
+    const category = await Category.findById(id).populate("products");
     if (category.length === 0) {
       return res.status(200).json({
         message: "Không có danh mục",

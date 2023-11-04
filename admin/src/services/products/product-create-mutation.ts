@@ -1,23 +1,9 @@
 import { API_URL } from "@/lib/contants";
+import { productCreateBodySchema } from "@/lib/validations/product";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
+import { z } from "zod";
 
-export type ProductCreateVariables = {
-  name: string;
-  description: string;
-  categoryId: string;
-  options: { name: string; values: string[] }[];
-  variants: {
-    name: string;
-    price: number;
-    inventory: number;
-    options: string[];
-  }[];
-  images: {
-    name: string;
-    url: string;
-    publicId: string;
-  }[];
-};
+export type ProductCreateVariables = z.infer<typeof productCreateBodySchema>;
 
 export async function createProduct(body: ProductCreateVariables) {
   const response = await fetch(`${API_URL}/api/products`, {

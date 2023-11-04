@@ -82,6 +82,7 @@ export function AddProductForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       options: [{ name: "", values: [] }],
+      collectionId: "6545efe34ecac8e22c9c8251",
     },
   });
 
@@ -99,6 +100,7 @@ export function AddProductForm() {
 
     addProductMutation.mutate(
       {
+        slug: data.name.toLocaleLowerCase().split(" ").join("-"),
         name: data.name,
         description: data.description,
         categoryId: data.collectionId,
@@ -182,7 +184,10 @@ export function AddProductForm() {
                       </SelectTrigger>
                       <SelectContent>
                         {categories?.map((collection) => (
-                          <SelectItem key={collection.id} value={collection.id}>
+                          <SelectItem
+                            key={collection._id}
+                            value={collection._id}
+                          >
                             {collection.name}
                           </SelectItem>
                         ))}
