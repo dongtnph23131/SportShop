@@ -32,6 +32,10 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { toast } from "sonner";
+import { useCategoriesQuery } from "@/services/categories/categories-query";
+import { Category } from "@/types/base";
+import { useCategoryDeleteMutation } from "@/services/categories/category-delete-mutation";
+import { queryClient } from "@/lib/react-query";
 
 interface Collection {
   name: string;
@@ -48,93 +52,98 @@ interface Collection {
 }
 
 const Page: NextPageWithLayout = () => {
-  // const columns: ColumnDef<
-  //   RouterOutputs["admin"]["collections"]["get"]["collections"][number]
-  // >[] = [
-  //   {
-  //     accessorKey: "name",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Name" />
-  //     ),
-  //     cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
-  //   },
-  //   {
-  //     accessorKey: "createdAt",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Created At" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       return format(new Date(row.original.createdAt), "dd MMM yyyy");
-  //     },
-  //   },
-  //   {
-  //     accessorKey: "updatedAt",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Updated At" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       return format(new Date(row.original.updatedAt), "dd MMM yyyy");
-  //     },
-  //   },
-  //   {
-  //     accessorKey: "id",
-  //     header: ({ column }) => (
-  //       <DataTableColumnHeader column={column} title="Products" />
-  //     ),
-  //     cell: ({ row }) => {
-  //       return row.original.products.length;
-  //     },
-  //   },
-  //   {
-  //     id: "actions",
-  //     cell: ({ row }) => (
-  //       <DropdownMenu>
-  //         <DropdownMenuTrigger asChild>
-  //           <Button
-  //             aria-label="Open menu"
-  //             variant="ghost"
-  //             className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-  //           >
-  //             <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-  //           </Button>
-  //         </DropdownMenuTrigger>
-  //         <DropdownMenuContent align="end" className="w-[160px]">
-  //           <DropdownMenuItem asChild>
-  //             <Link href={`/admin/collections/${row.original.id}`}>Edit</Link>
-  //           </DropdownMenuItem>
-  //           <DropdownMenuItem asChild>
-  //             <AlertDialog>
-  //               <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-  //                 Delete
-  //               </AlertDialogTrigger>
-  //               <AlertDialogContent>
-  //                 <AlertDialogHeader>
-  //                   <AlertDialogTitle>
-  //                     Are you absolutely sure?
-  //                   </AlertDialogTitle>
-  //                   <AlertDialogDescription>
-  //                     This action cannot be undone. This will permanently delete
-  //                     your account and remove your data from our servers.
-  //                   </AlertDialogDescription>
-  //                 </AlertDialogHeader>
-  //                 <AlertDialogFooter>
-  //                   <AlertDialogCancel>Cancel</AlertDialogCancel>
-  //                   <AlertDialogAction
-  //                     onClick={() => {
-  //                       deleteCollectionMutation.mutate(row.original.id);
-  //                     }}
-  //                   >
-  //                     Continue
-  //                   </AlertDialogAction>
-  //                 </AlertDialogFooter>
-  //               </AlertDialogContent>
-  //             </AlertDialog>
-  //           </DropdownMenuItem>
-  //         </DropdownMenuContent>
-  //       </DropdownMenu>
-  //     ),
-  //   },
-  // ];
+  const { data: categories } = useCategoriesQuery();
+  const deleteCategoryMutation = useCategoryDeleteMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["categories"] });
+    },
+  });
+
+  const columns: ColumnDef<Category>[] = [
+    {
+      accessorKey: "name",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Name" />
+      ),
+      cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
+    },
+    {
+      accessorKey: "createdAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Created At" />
+      ),
+      cell: ({ row }) => {
+        return format(new Date(row.original.createdAt), "dd MMM yyyy");
+      },
+    },
+    {
+      accessorKey: "updatedAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Updated At" />
+      ),
+      cell: ({ row }) => {
+        return format(new Date(row.original.updatedAt), "dd MMM yyyy");
+      },
+    },
+    {
+      accessorKey: "id",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Products" />
+      ),
+      cell: ({ row }) => {
+        return row.original.productIds.length;
+      },
+    },
+    {
+      id: "actions",
+      cell: ({ row }) => (
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button
+              aria-label="Open menu"
+              variant="ghost"
+              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
+            >
+              <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end" className="w-[160px]">
+            <DropdownMenuItem asChild>
+              <Link href={`#`}>Edit</Link>
+            </DropdownMenuItem>
+            <DropdownMenuItem asChild>
+              <AlertDialog>
+                <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
+                  Delete
+                </AlertDialogTrigger>
+                <AlertDialogContent>
+                  <AlertDialogHeader>
+                    <AlertDialogTitle>
+                      Are you absolutely sure?
+                    </AlertDialogTitle>
+                    <AlertDialogDescription>
+                      This action cannot be undone. This will permanently delete
+                      your account and remove your data from our servers.
+                    </AlertDialogDescription>
+                  </AlertDialogHeader>
+                  <AlertDialogFooter>
+                    <AlertDialogCancel>Cancel</AlertDialogCancel>
+                    <AlertDialogAction
+                      onClick={() => {
+                        deleteCategoryMutation.mutate({ id: row.original._id });
+                      }}
+                    >
+                      Continue
+                    </AlertDialogAction>
+                  </AlertDialogFooter>
+                </AlertDialogContent>
+              </AlertDialog>
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+      ),
+    },
+  ];
 
   return (
     <>
@@ -147,11 +156,11 @@ const Page: NextPageWithLayout = () => {
             </CardDescription>
           </CardHeader>
           <Button asChild>
-            <Link href="/admin/collections/add">New Collection</Link>
+            <Link href="/categories/add">New Collection</Link>
           </Button>
         </div>
         <CardContent>
-          {/* <DataTable columns={columns} data={data?.collections ?? []} /> */}
+          <DataTable columns={columns} data={categories ?? []} />
         </CardContent>
       </Card>
     </>

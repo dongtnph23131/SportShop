@@ -26,6 +26,8 @@ export interface Category {
   _id: string;
   name: string;
   updatedAt: string;
+  createdAt: string;
+  productIds: string[];
 }
 
 export interface Option {
