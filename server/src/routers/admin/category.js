@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Category from "../../models/category";
 import { categoryCreateEditSchema } from "../../validators/category";
+import Product from "../../models/product";
 import slugify from "@sindresorhus/slugify";
 
 const router = Router();
@@ -83,11 +84,18 @@ router.put("/:slug", async (req, res) => {
 
 router.delete("/:slug", async (req, res) => {
   try {
-    const data = await Category.findOneAndDelete({ slug: req.params.slug });
+    const category = await Category.findOneAndDelete({ slug: req.params.slug });
+
+    await Product.findOneAndUpdate(
+      {
+        categoryId: category._id,
+      },
+      { categoryId: null }
+    );
 
     return res.json({
       message: "Xóa danh mục thành công",
-      data,
+      data: category,
     });
   } catch (error) {
     return res.status(500).json({

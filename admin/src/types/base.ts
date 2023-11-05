@@ -4,7 +4,7 @@ export interface Product {
   name: string;
   description: string;
   images: Image[];
-  categoryId: { _id: string; name: string };
+  categoryId: { _id: string; name: string } | null;
   options: Option[];
   maxPrice: number;
   minPrice: number;
