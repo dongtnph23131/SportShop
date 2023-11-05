@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useAddItemCartMutation, useGetCartOfUserQuery, useRemoveItemCartMutation } from "../api/cart";
 const Cart = () => {
   const token = Cookies.get('token')
-  const { data: carts } = useGetCartOfUserQuery(token)
+  const { data: carts } = useGetCartOfUserQuery(token)  
   const [addCart] = useAddItemCartMutation()
   const [removeItemCart]=useRemoveItemCartMutation()
   return (
