@@ -5,7 +5,7 @@ import { authorization } from "../middlewares/authorization";
 
 const router = express.Router();
 router.get("/products", getAll);
-router.get("/products/:slug", get);
+router.get("/products/:id", get);
 router.post("/products", create);
 router.delete("/products/:id", remove);
 router.put("/products/:id", update);

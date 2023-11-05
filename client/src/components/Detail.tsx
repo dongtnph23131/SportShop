@@ -1,10 +1,18 @@
 
-import { useParams } from "react-router-dom";
+import { json, useParams } from "react-router-dom";
 import { useGetProductQuery } from "../api/product";
+import { useEffect, useState } from "react";
 
 const Detail = () => {
   const { id } = useParams()
   const { data: product, isLoading } = useGetProductQuery(id)
+  const [options, setOptions] = useState<any>([])
+  useEffect(() => {
+    console.log(product);
+
+  }, [product])
+  console.log(options);
+
   return (
     <div>
       <section id="prodetails" className="section-p1">
@@ -17,8 +25,8 @@ const Detail = () => {
           />
 
           <div className="small-img-group">
-            {product?.images?.map((item: any,index:any) => {
-              return <div key={index+1} className="small-img-col">
+            {product?.images?.map((item: any, index: any) => {
+              return <div key={index + 1} className="small-img-col">
                 <img
                   src={`${item.url}`}
                   width="100%"
@@ -36,17 +44,17 @@ const Detail = () => {
 
           <h2> Price: {product ? `${product.minPrice}-${product.maxPrice}` : ``} $</h2>
           {/* <p>Số lượng : {quantity}</p> */}
-          {product?.options.map((productItem: any,index:any) => {
-            return <div key={index+1} className="box-qlt">
+          {product?.options.map((productItem: any, index: any) => {
+            return <div key={index + 1} className="box-qlt">
               <span>{productItem.name}:</span>
               <ul>
-                {productItem?.values.map((item: any, index: any) => {
-                  return <li key={index + 1}><a>{item}</a></li>
+                {productItem?.values.map((item: any, indexItem: any) => {
+                  return <li key={indexItem + 1}><a>{item}</a></li>
                 })}
               </ul>
             </div>
           })}
-          Số lượng:  <input type="number" value="1" />
+          {/* Số lượng:  <input type="number" value="1" /> */}
           <button className="normal">Add to Cart </button>
           <h4>Descriptions</h4>
           <span>

@@ -149,7 +149,7 @@ const Shops = () => {
             return <div onClick={()=>{
                 navigate(`/products/${product._id}`)
             }} className="pro" key={index + 1}>
-              <img src={`${product.photoDescription}`} alt="" />
+              <img src={`${product?.images[0].url}`} alt="" />
               <div className="des">
                 <span>adidas</span>
                 <h5>{product.name}</h5>

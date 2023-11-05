@@ -9,7 +9,7 @@ export const addCart = async (req, res) => {
         const cart = await Cart.findOne({ customerId: user.id }).populate("items", "-__v")
         console.log(cart);
         const productVariant = await ProductVariant.findById(productVariantIds)
-        if (!cart || cart.items.length===0) {
+        if (!cart || cart.items.length === 0) {
             const cartItem = await CartItem.create({ productVariantIds, productIds: productVariant.productId, customerId: user._id })
             const cartOfUser = await Cart.create({ customerId: user._id })
             await Cart.findByIdAndUpdate(cartOfUser._id, {
@@ -65,10 +65,54 @@ export const removeItem = async (req, res) => {
         }
         else {
             await CartItem.findByIdAndDelete(cartItem._id)
-            await Cart.findOneAndUpdate({customerId: user.id},{
+            await Cart.findOneAndUpdate({ customerId: user.id }, {
                 $pull: {
                     items: cartItem._id
                 }
+            })
+            return res.status(200).json({
+                message: 'Thành công'
+            })
+        }
+    } catch (error) {
+        return res.status(400).json({
+            message: error.message,
+        });
+    }
+};
+export const updateItem = async (req, res) => {
+    try {
+        const { productVariantIds, quantity } = req.body
+        if (quantity < 0) {
+            return res.status(400).json({
+                message: 'Số lượng sản phẩm > 0'
+            })
+        }
+        const user = req.user;
+        const cart = await Cart.findOne({ customerId: user.id }).populate("items", "-__v")
+        const itemExistCart = await cart.items.find((item) => item.productVariantIds == productVariantIds)
+        if(!itemExistCart){
+            return res.status(400).json({
+                message:'Không có sản phẩm này trong giỏ hàng'
+            })
+        }
+        const cartItem = await CartItem.findOne({ customerId: user._id, productVariantIds: itemExistCart.productVariantIds })
+        if (quantity === 0) {
+            await CartItem.findByIdAndDelete(cartItem._id)
+            await Cart.findOneAndUpdate({ customerId: user.id }, {
+                $pull: {
+                    items: cartItem._id
+                }
+            })
+            return res.status(200).json({
+                message: 'Thành công'
+            })
+        }
+        else {
+            await CartItem.findByIdAndUpdate(cartItem._id, {
+                quantity
+            }, {
+                new: true
             })
             return res.status(200).json({
                 message: 'Thành công'
