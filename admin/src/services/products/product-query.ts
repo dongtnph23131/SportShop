@@ -3,7 +3,7 @@ import { Product } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export async function getProduct({ slug }: { slug: string }): Promise<Product> {
-  const response = await fetch(`${API_URL}/api/products/${slug}`);
+  const response = await fetch(`${API_URL}/api/admin/products/${slug}`);
 
   if (!response.ok) throw Error();
 

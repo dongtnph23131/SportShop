@@ -7,19 +7,23 @@ import productRouter from "./routers/product";
 import categoryRouter from "./routers/category";
 import acounRouter from "./routers/acount";
 import uploadRouter from "./routers/upload";
-import cartRouter from "./routers/cart"
+import cartRouter from "./routers/cart";
+import { adminRoutes } from "./routers/admin";
 dotenv.config();
 const app = express();
 
 app.use(express.json());
 app.use(cors());
 
+//Admin routes
+app.use("/api/admin", adminRoutes);
+
 app.use("/api", authRouter);
 app.use("/api", productRouter);
 app.use("/api", categoryRouter);
 app.use("/api", acounRouter);
 app.use("/api", uploadRouter);
-app.use('/api',cartRouter)
+app.use("/api", cartRouter);
 
 mongoose.connect(process.env.URL_DATABASE);
 
