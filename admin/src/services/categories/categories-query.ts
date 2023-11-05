@@ -3,7 +3,7 @@ import { Category } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(`${API_URL}/api/categories`);
+  const response = await fetch(`${API_URL}/api/admin/categories`);
 
   if (!response.ok) throw Error();
 

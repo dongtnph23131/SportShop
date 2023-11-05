@@ -24,6 +24,7 @@ export interface Variant {
 
 export interface Category {
   _id: string;
+  slug: string;
   name: string;
   updatedAt: string;
   createdAt: string;

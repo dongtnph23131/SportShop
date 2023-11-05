@@ -109,7 +109,7 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`#`}>Edit</Link>
+              <Link href={`/categories/${row.original.slug}`}>Edit</Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <AlertDialog>
@@ -130,7 +130,9 @@ const Page: NextPageWithLayout = () => {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={() => {
-                        deleteCategoryMutation.mutate({ id: row.original._id });
+                        deleteCategoryMutation.mutate({
+                          slug: row.original.slug,
+                        });
                       }}
                     >
                       Continue

@@ -1,3 +1,4 @@
+import { useRouter } from "next/router";
 import { NextPageWithLayout } from "@/pages/_app";
 import LayoutAdmin from "@/components/layouts";
 import {
@@ -9,11 +10,19 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
-import { useRouter } from "next/router";
-import AddCategoryForm from "@/components/categories/add-category-form";
+import { useCategoryQuery } from "@/services/categories/category-query";
+import EditCategoryForm from "@/components/categories/edit-category-form";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
+  const slug = router.query.slug as string;
+
+  const { data: category } = useCategoryQuery(
+    { slug },
+    { enabled: Boolean(slug) }
+  );
+
+  console.log({ category });
 
   return (
     <>
@@ -23,15 +32,15 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Categories
+        Back to Collections
       </Button>
 
       <Card className="mt-2">
         <CardHeader>
-          <CardTitle>Add Categories</CardTitle>
+          <CardTitle>Edit collection</CardTitle>
         </CardHeader>
         <CardContent>
-          <AddCategoryForm />
+          {category ? <EditCategoryForm collection={category} /> : "Loading..."}
         </CardContent>
       </Card>
     </>

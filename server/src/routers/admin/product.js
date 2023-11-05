@@ -125,7 +125,7 @@ router.post("/", async (req, res) => {
 
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
-        products: product._id,
+        productIds: product._id,
       },
     });
 

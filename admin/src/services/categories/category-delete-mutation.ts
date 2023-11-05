@@ -1,8 +1,12 @@
 import { API_URL } from "@/lib/contants";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 
-export async function deleteCategory(body: { id: string }) {
-  const response = await fetch(`${API_URL}/api/categories/${body.id}`, {
+interface CategoryVariables {
+  slug: string;
+}
+
+export async function deleteCategory(body: CategoryVariables) {
+  const response = await fetch(`${API_URL}/api/admin/categories/${body.slug}`, {
     method: "DELETE",
   });
 
@@ -15,10 +19,10 @@ type CategoryDeleteData = Awaited<ReturnType<typeof deleteCategory>>;
 export const useCategoryDeleteMutation = ({
   ...options
 }: Omit<
-  UseMutationOptions<CategoryDeleteData, any, { id: string }>,
+  UseMutationOptions<CategoryDeleteData, any, CategoryVariables>,
   "mutationFn"
 > = {}) => {
-  return useMutation<CategoryDeleteData, any, { id: string }>({
+  return useMutation<CategoryDeleteData, any, CategoryVariables>({
     mutationFn: deleteCategory,
     ...options,
   });
