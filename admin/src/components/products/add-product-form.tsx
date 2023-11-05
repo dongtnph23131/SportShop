@@ -37,6 +37,7 @@ import { toast } from "sonner";
 import { isArrayOfFile } from "@/lib/utils";
 import { OurFileRouter } from "@/lib/uploadthing";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
+import slugify from "@sindresorhus/slugify";
 
 const formSchema = z.object({
   name: z.string().min(1, {
@@ -70,6 +71,7 @@ const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 export function AddProductForm() {
   const router = useRouter();
   const addProductMutation = useProductCreateMutation();
+  const [upload, setUpload] = React.useState(false);
   const { data: categories } = useCategoriesQuery();
 
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
@@ -85,6 +87,7 @@ export function AddProductForm() {
   });
 
   async function onSubmit(data: Inputs) {
+    setUpload(true);
     const images = isArrayOfFile(data.images)
       ? await startUpload(data.images).then((res) => {
           const formattedImages = res?.map((image) => ({
@@ -95,10 +98,11 @@ export function AddProductForm() {
           return formattedImages ?? null;
         })
       : null;
+    setUpload(true);
 
     addProductMutation.mutate(
       {
-        slug: data.name.toLocaleLowerCase().split(" ").join("-"),
+        slug: slugify(data.name),
         name: data.name,
         description: data.description,
         categoryId: data.collectionId,
@@ -258,9 +262,9 @@ export function AddProductForm() {
         <Button
           type="submit"
           className="w-fit"
-          disabled={addProductMutation.isPending}
+          disabled={addProductMutation.isPending || upload}
         >
-          {addProductMutation.isPending && (
+          {(addProductMutation.isPending || upload) && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
               aria-hidden="true"
