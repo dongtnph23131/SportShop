@@ -1,4 +1,5 @@
 import Category from "../models/category";
+import Product from "../models/product";
 import { categoryValidators } from "../validators/category";
 
 export const getAll = async (req, res) => {
@@ -18,14 +19,18 @@ export const getAll = async (req, res) => {
 };
 export const get = async (req, res) => {
   try {
-    const id = req.params.id;
-    const category = await Category.findById(id).populate("products")
-    if (category.length === 0) {
-      return res.status(200).json({
-        message: "Không có danh mục",
-      });
+    const categoryId = req.params.id;
+    const { _limit = 100, _page = 1, _sort = "createAt", _order = "asc" } = req.query
+    const options = {
+      limit: _limit,
+      page: _page,
+      sort: {
+        [_sort]: _order === 'desc' ? -1 : 1
+      },
+      populate: [{ path: "categoryId" }]
     }
-    return res.status(200).json(category);
+    const data = await Product.paginate({ categoryId: categoryId }, options)
+    return res.status(200).json(data.docs)
   } catch (error) {
     return res.status(400).json({
       message: error,
