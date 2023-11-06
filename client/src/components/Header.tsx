@@ -1,13 +1,16 @@
 
 import React, { useEffect, useState } from "react";
 import { getCategories } from "../api/category";
+import axios from "axios";
 const Header = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([])
+  const [productSearch, setProductSearch] = useState<any>([])
+  const [isLoading, setIsLoading] = useState(false)
   const handleSearchClick = () => {
     setIsSearchVisible(true);
   };
-  const handleHideSearch = (e: any) => {    
+  const handleHideSearch = (e: any) => {
     e.preventDefault();
     setIsSearchVisible(false);
   };
@@ -23,7 +26,18 @@ const Header = () => {
           <div className="box-search-click">
             <div className="box-allserch container">
               <div className="input-searched">
-                <input type="text" placeholder="search..."/>
+                <input type="text" placeholder="search..." onChange={async (event) => {
+                  if (event.target.value != '') {
+                    setIsLoading(true)
+                    await axios.get(`http://localhost:8080/api/products?q=${event.target.value ? event.target.value : ''}`).then((data) => {                      
+                      setProductSearch(data.data)
+                    })
+                    setIsLoading(false)
+                  }
+                  else{
+                    setProductSearch([])
+                  }
+                }} />
                 <button className="remo-search" onClick={handleHideSearch}>
                   X
                 </button>
@@ -33,13 +47,15 @@ const Header = () => {
                   Từ khóa nổi bật ngày hôm nay
                 </span>
                 <div className="col-lg-3 col-item-3search ">
-                  <div className="box-itemsearch">
-                    <img src="../../src/Assets/product2.jpg" alt="" />
-                    <div className="contentSearch-item">
-                      <span className="search-items-name">Product1</span>
-                      <button className="search-addCart">buy</button>
+                  {productSearch?.map((item: any) => {
+                    return <div key={item._id} className="box-itemsearch">
+                      <img src={`${item.images[0].url}`} alt="" />
+                      <div className="contentSearch-item">
+                        <span className="search-items-name">{item.name}</span>
+                        <button className="search-addCart">buy</button>
+                      </div>
                     </div>
-                  </div>
+                  })}
                 </div>
               </div>
             </div>
