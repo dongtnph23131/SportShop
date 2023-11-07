@@ -29,7 +29,7 @@ const Profile = () => {
                         <i className="bi bi-person-vcard-fill"></i>
                     </div>
                     <div className="content1">
-                        <a href="">Thông tin cá nhân</a>
+                        <a href="/profileDetail">Thông tin cá nhân</a>
                         <p>Cung cấp thông tin cá nhân và cách chúng tôi có thể liên hệ với bạn</p>
                     </div>
                 </div>
