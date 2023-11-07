@@ -9,6 +9,7 @@ import acounRouter from "./routers/acount";
 import uploadRouter from "./routers/upload";
 import cartRouter from "./routers/cart";
 import { adminRoutes } from "./routers/admin";
+import orderRouter from "./routers/order"
 dotenv.config();
 const app = express();
 
@@ -24,7 +25,7 @@ app.use("/api", categoryRouter);
 app.use("/api", acounRouter);
 app.use("/api", uploadRouter);
 app.use("/api", cartRouter);
-
+app.use('/api',orderRouter)
 mongoose.connect(process.env.URL_DATABASE);
 
 export const viteNodeApp = app;
