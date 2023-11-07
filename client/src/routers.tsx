@@ -18,6 +18,7 @@ import Changepassword from './components/Changepassword';
 import OrderClient from './components/OrderClient';
 import CustomPagination from './components/include/CustomPagination';
 import CategoryDetail from './components/CategoryDetail';
+import ProfileDetail from './components/ProfileDetail';
 
 export const routers  = createBrowserRouter ([
     {
@@ -42,6 +43,7 @@ export const routers  = createBrowserRouter ([
             {path:"/blog",element:<Blog/>},
             {path:"/about",element:<About/>},
             {path:"/profile" , element:<Profile/>}  ,
+            {path: "/profileDetail", element: <ProfileDetail/>},
             {path:"/changepassword",element:<Changepassword/>},
             {path:"/OrderClient" , element:<OrderClient/>},
             {path:'categories/:id',element:<CategoryDetail/>}
