@@ -25,8 +25,8 @@ const CategoryDetail = () => {
     }, [sort, order, page])
     return (
         <div>
-            <h4>Danh mục / {`${products ? `${products[0]?.categoryId?.name}` : ``}`}</h4>
-            <div className="sort-shops">
+            <h4 className="brackham"><span className="ctnr">Danh mục / {`${products ? `${products[0]?.categoryId?.name}` : ``}`}</span></h4>
+            <div className="sort-shops ctnr">
                 <span onClick={handleSortClick}>Sort</span>
                 {ishandleSortVisible && (
                     <div className="box-sort-shops">

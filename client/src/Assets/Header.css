@@ -228,6 +228,105 @@ button.check-giohangs img {
   height: 35px;
 }
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+li.signin-up {
+    /* position: relative; */
+    padding-right: 45px;
+}
+
+ul.all-signinout {
+    position: absolute;
+    width: 135px;
+    background: #fff;
+    z-index: 9999;
+    display: none;
+}
+
+ul.hd4-right__title.d-flex.js-right.ai-center {
+    position: relative;
+}
+
+ul.all-signinout li {
+    /* padding: 11px 20px; */
+    margin: unset;
+    cursor: pointer;
+    border-bottom: 1px solid #cdcdcd;
+}
+ul.all-signinout li:hover {
+    background: #cdcdcd;
+}
+.all-signinout li a {
+    padding: 0px 20px;
+}
+li.signin-up:hover .all-signinout {
+    display: block;
+}
+
+.avart-sgin {
+  height: 35px;
+  width: 35px;
+}
+
+.avart-sgin img {
+  width: 100%;
+  border-radius: 100%;
+  height: 100%;
+}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 button.check-giohangs {
   border: none;
   background: #fff;
