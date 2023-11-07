@@ -3,6 +3,7 @@ import { orderSchema } from "../validators/order";
 
 export const create = async (req, res) => {
   try {
+    const user=req.user
     const body = req.body;
     const {
       fullName,
@@ -14,7 +15,7 @@ export const create = async (req, res) => {
       typePayment,
       items,
     } = orderSchema.parse(body);
-    const order = await Order.create(body);
+    const order = await Order.create({...body,customerId:user._id});
     return res.status(200).json({
       message: "Đặt hàng thành công",
       order,
