@@ -21,7 +21,7 @@ const cartApi = createApi({
                 return {
                     url: '/add-to-cart',
                     method: 'POST',
-                    body: {productVariantIds},
+                    body: { productVariantIds },
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -34,7 +34,33 @@ const cartApi = createApi({
                 return {
                     url: '/remove-item-cart',
                     method: 'PATCH',
-                    body: {productVariantIds},
+                    body: { productVariantIds },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            },
+            invalidatesTags: ['Cart']
+        }),
+        updateItemCart: builder.mutation({
+            query: ({ productVariantIds, token, quantity }) => {
+                return {
+                    url: '/update-item-cart',
+                    method: 'PATCH',
+                    body: { productVariantIds, quantity },
+                    headers: {
+                        Authorization: `Bearer ${token}`,
+                    },
+                }
+            },
+            invalidatesTags: ['Cart']
+        }),
+        removeItem: builder.mutation({
+            query: ({ cartItemId, token }) => {
+                return {
+                    url: '/remove-item',
+                    method: 'PATCH',
+                    body: { cartItemId },
                     headers: {
                         Authorization: `Bearer ${token}`,
                     },
@@ -44,5 +70,5 @@ const cartApi = createApi({
         }),
     })
 })
-export const { useGetCartOfUserQuery,useAddItemCartMutation,useRemoveItemCartMutation } = cartApi
+export const { useGetCartOfUserQuery, useAddItemCartMutation, useRemoveItemCartMutation, useUpdateItemCartMutation, useRemoveItemMutation } = cartApi
 export default cartApi
