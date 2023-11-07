@@ -26,6 +26,6 @@ const addressSchema = mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
-order.plugin(mongoosePaginate);
+addressSchema.plugin(mongoosePaginate);
 
 export default mongoose.model("Address", addressSchema);

@@ -2,7 +2,7 @@ import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
 export const ORDER_STATUS = ["pending", "confirmed", "completed", "canceled"];
-
+export const ORDER_PAYMENT = ["online", "direct"];
 const orderSchema = mongoose.Schema(
   {
     customerId: {
@@ -44,13 +44,20 @@ const orderSchema = mongoose.Schema(
     },
     coupon_price: {
       type: Number,
-      require: true,
+      default: 0,
     },
-    type: {
+    typePayment: {
       type: String,
+      enum: ORDER_PAYMENT,
+      require: true,
     },
     items: [
       {
+        productId: {
+          type: mongoose.Types.ObjectId,
+          require: true,
+          ref: "Product",
+        },
         productVariantId: {
           type: mongoose.Types.ObjectId,
           require: true,
@@ -65,6 +72,6 @@ const orderSchema = mongoose.Schema(
   },
   { timestamps: true, versionKey: false }
 );
-order.plugin(mongoosePaginate);
+orderSchema.plugin(mongoosePaginate);
 
 export default mongoose.model("Order", orderSchema);

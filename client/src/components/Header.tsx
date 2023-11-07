@@ -1,7 +1,11 @@
 import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
 import { getCategories } from "../api/category";
 import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const [user,setUser]=useState<any>(Cookies.get('user'))
+  const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([]);
   const [productSearch, setProductSearch] = useState<any>([]);
@@ -51,14 +55,23 @@ const Header = () => {
                 </button>
               </div>
               <div className="row">
-                <span className="text-searchs">
-                  Từ khóa nổi bật ngày hôm nay
-                </span>
-                  {productSearch?.map((item: any) => {
-
-                    return (
-                <div className="col-lg-3 col-item-3search ">
-
+                {productSearch.length === 0 ? (
+                  <span className="text-searchs">
+                    Hãy nhập nội dung tìm kiếm
+                  </span>
+                ) : (
+                  ""
+                )}
+                {productSearch?.map((item: any) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        navigate(`/products/${item._id}`);
+                        setIsSearchVisible(false);
+                        setProductSearch([]);
+                      }}
+                      className="col-lg-3 col-item-3search "
+                    >
                       <div key={item._id} className="box-itemsearch">
                         <img src={`${item.images[0].url}`} alt="" />
                         <div className="contentSearch-item">
@@ -66,10 +79,9 @@ const Header = () => {
                           <button className="search-addCart">buy</button>
                         </div>
                       </div>
-                </div>
-
-                    );
-                  })}
+                    </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -111,12 +123,9 @@ const Header = () => {
           </div>
           <div className="hd4-mid flex-1">
             <form action="" className="hd4-mid__search d-flex ai-center">
-              {/* <input
-                
-                type="search"
-                placeholder="Tìm theo tên sản phẩm"
-              /> */}
-              <div className="iputed-search" onClick={handleSearchClick}>Tìm kiếm ...</div>
+              <div className="iputed-search" onClick={handleSearchClick}>
+                Tìm kiếm ...
+              </div>
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -130,35 +139,45 @@ const Header = () => {
           </div>
           <div className="hd4-right flex-1">
             <ul className="hd4-right__title d-flex js-right ai-center">
-              <li className="signin-up">
-                <div className="avart-sgin">
-                  <img src="http://localhost:5173/src/Assets/f3.png" alt="" />
-                </div>
-                <ul className="all-signinout">
-                  <li>
-                    <a>poforlio</a>
+              {user ? (
+                <>
+                  <li className="signin-up">
+                    <div className="avart-sgin">
+                      <img src={user.avatar} alt="" />
+                    </div>
+                    <ul className="all-signinout">
+                      <li>
+                        <a>Thông tin cá nhân</a>
+                      </li>
+                      <li onClick={()=>{
+                        Cookies.remove('user')
+                        Cookies.remove('token')
+                        setUser('')
+                        navigate('/')
+                      }}>
+                        <a>Đăng xuất</a>
+                      </li>
+                    </ul>
                   </li>
-                  <li>
-                    <a>đăng xuất</a>
+                </>
+              ) : (
+                <>
+                  <li className="Login">
+                    <a href="/signin" id="loginLink">
+                      {" "}
+                      Đăng nhập
+                    </a>
                   </li>
-                </ul>
-              </li>
-              <li className="Login">
-                <a href="/signin" id="loginLink">
-                  {" "}
-                  Đăng nhập
-                </a>
-              </li>
-              <li className="Login">
-                <a href="/signup" id="signupLink">
-                  {" "}
-                  / Đăng ký
-                </a>
-              </li>
+                  <li className="Login">
+                    <a href="/signup" id="signupLink">
+                      {" "}
+                      / Đăng ký
+                    </a>
+                  </li>
+                </>
+              )}
               <li>
                 <a href="" className="qtyli-cart">
-                  {/* <span>Giỏ hàng / </span>
-                  <span>0 ₫</span> */}
                   <span className="qlty">3</span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
