@@ -111,11 +111,12 @@ const Header = () => {
           </div>
           <div className="hd4-mid flex-1">
             <form action="" className="hd4-mid__search d-flex ai-center">
-              <input
-                onClick={handleSearchClick}
+              {/* <input
+                
                 type="search"
                 placeholder="Tìm theo tên sản phẩm"
-              />
+              /> */}
+              <div className="iputed-search" onClick={handleSearchClick}>Tìm kiếm ...</div>
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -155,9 +156,10 @@ const Header = () => {
                 </a>
               </li>
               <li>
-                <a href="">
+                <a href="" className="qtyli-cart">
                   {/* <span>Giỏ hàng / </span>
                   <span>0 ₫</span> */}
+                  <span className="qlty">3</span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
                 <div className="hd4-cart--dropdown p-absolute row">
