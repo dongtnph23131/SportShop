@@ -1,12 +1,11 @@
-
 import React, { useEffect, useState } from "react";
 import { getCategories } from "../api/category";
 import axios from "axios";
 const Header = () => {
   const [isSearchVisible, setIsSearchVisible] = useState(false);
-  const [categories, setCategories] = useState<any>([])
-  const [productSearch, setProductSearch] = useState<any>([])
-  const [isLoading, setIsLoading] = useState(false)
+  const [categories, setCategories] = useState<any>([]);
+  const [productSearch, setProductSearch] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const handleSearchClick = () => {
     setIsSearchVisible(true);
   };
@@ -15,10 +14,10 @@ const Header = () => {
     setIsSearchVisible(false);
   };
   useEffect(() => {
-    getCategories().then(data => {
-      setCategories(data.data)
-    })
-  }, [])
+    getCategories().then((data) => {
+      setCategories(data.data);
+    });
+  }, []);
   return (
     <div>
       <header>
@@ -26,18 +25,27 @@ const Header = () => {
           <div className="box-search-click">
             <div className="box-allserch container">
               <div className="input-searched">
-                <input type="text" placeholder="search..." onChange={async (event) => {
-                  if (event.target.value != '') {
-                    setIsLoading(true)
-                    await axios.get(`http://localhost:8080/api/products?q=${event.target.value ? event.target.value : ''}`).then((data) => {                      
-                      setProductSearch(data.data)
-                    })
-                    setIsLoading(false)
-                  }
-                  else{
-                    setProductSearch([])
-                  }
-                }} />
+                <input
+                  type="text"
+                  placeholder="search..."
+                  onChange={async (event) => {
+                    if (event.target.value != "") {
+                      setIsLoading(true);
+                      await axios
+                        .get(
+                          `http://localhost:8080/api/products?q=${
+                            event.target.value ? event.target.value : ""
+                          }`
+                        )
+                        .then((data) => {
+                          setProductSearch(data.data);
+                        });
+                      setIsLoading(false);
+                    } else {
+                      setProductSearch([]);
+                    }
+                  }}
+                />
                 <button className="remo-search" onClick={handleHideSearch}>
                   X
                 </button>
@@ -46,17 +54,22 @@ const Header = () => {
                 <span className="text-searchs">
                   Từ khóa nổi bật ngày hôm nay
                 </span>
-                <div className="col-lg-3 col-item-3search ">
                   {productSearch?.map((item: any) => {
-                    return <div key={item._id} className="box-itemsearch">
-                      <img src={`${item.images[0].url}`} alt="" />
-                      <div className="contentSearch-item">
-                        <span className="search-items-name">{item.name}</span>
-                        <button className="search-addCart">buy</button>
+
+                    return (
+                <div className="col-lg-3 col-item-3search ">
+
+                      <div key={item._id} className="box-itemsearch">
+                        <img src={`${item.images[0].url}`} alt="" />
+                        <div className="contentSearch-item">
+                          <span className="search-items-name">{item.name}</span>
+                          <button className="search-addCart">buy</button>
+                        </div>
                       </div>
-                    </div>
-                  })}
                 </div>
+
+                    );
+                  })}
               </div>
             </div>
           </div>
@@ -98,11 +111,12 @@ const Header = () => {
           </div>
           <div className="hd4-mid flex-1">
             <form action="" className="hd4-mid__search d-flex ai-center">
-              <input
-                onClick={handleSearchClick}
+              {/* <input
+                
                 type="search"
                 placeholder="Tìm theo tên sản phẩm"
-              />
+              /> */}
+              <div className="iputed-search" onClick={handleSearchClick}>Tìm kiếm ...</div>
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -116,6 +130,19 @@ const Header = () => {
           </div>
           <div className="hd4-right flex-1">
             <ul className="hd4-right__title d-flex js-right ai-center">
+              <li className="signin-up">
+                <div className="avart-sgin">
+                  <img src="http://localhost:5173/src/Assets/f3.png" alt="" />
+                </div>
+                <ul className="all-signinout">
+                  <li>
+                    <a>poforlio</a>
+                  </li>
+                  <li>
+                    <a>đăng xuất</a>
+                  </li>
+                </ul>
+              </li>
               <li className="Login">
                 <a href="/signin" id="loginLink">
                   {" "}
@@ -129,9 +156,10 @@ const Header = () => {
                 </a>
               </li>
               <li>
-                <a href="">
-                  <span>Giỏ hàng / </span>
-                  <span>0 ₫</span>
+                <a href="" className="qtyli-cart">
+                  {/* <span>Giỏ hàng / </span>
+                  <span>0 ₫</span> */}
+                  <span className="qlty">3</span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
                 <div className="hd4-cart--dropdown p-absolute row">
@@ -170,19 +198,21 @@ const Header = () => {
                   <div className="hd3-sub ctnr p-absolute left-0 w-100"></div>
                 </li>
                 {categories?.map((category: any) => {
-                  return <li key={category?._id}>
-                    <a href={`/categories/${category._id}`}>
-                      {category.name}
-                      <svg
-                        xmlns="http://www.w3.org/2000/svg"
-                        height="1em"
-                        viewBox="0 0 512 512"
-                      >
-                        <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                      </svg>
-                    </a>
-                    <div className="hd3-sub ctnr p-absolute left-0 w-100"></div>
-                  </li>
+                  return (
+                    <li key={category?._id}>
+                      <a href={`/categories/${category._id}`}>
+                        {category.name}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 0 512 512"
+                        >
+                          <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                        </svg>
+                      </a>
+                      <div className="hd3-sub ctnr p-absolute left-0 w-100"></div>
+                    </li>
+                  );
                 })}
               </ul>
             </nav>

@@ -14,7 +14,17 @@
     left: 50%;
     transform: translate(-50%, -50%);
 }
-
+.box-itemsearch img {
+    height: 200px;
+}
+.iputed-search {
+    width: 100%;
+    line-height: 38px;
+    height: 38px;
+    border: 1px solid #cdcdcd;
+    padding-left: 20px;
+    cursor: pointer;
+}
 .story-searched {
     width: 100%;
     height: 100%;
