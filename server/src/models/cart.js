@@ -1,7 +1,3 @@
-
-
-
-
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
@@ -16,8 +12,8 @@ const cartSchema = mongoose.Schema(
       {
         type: mongoose.Types.ObjectId,
         require: true,
-        ref: 'CartItem'
-      }
+        ref: "CartItem",
+      },
     ],
   },
   { timestamps: true, versionKey: false }

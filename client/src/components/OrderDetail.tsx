@@ -1,7 +1,10 @@
-import React from "react";
+import { useParams } from "react-router-dom";
 import "../../src/Assets/orderDetail.css";
+import { useGetOneOrderQuery } from "../api/order";
 
 const OrderDetail = () => {
+  const { id }: any = useParams();
+  const { data } = useGetOneOrderQuery(id);
   return (
     <div>
       <div className="account-page__content">
@@ -9,47 +12,50 @@ const OrderDetail = () => {
           <div className="thank-box">
             <div className="detail-order">
               <h1 className="detail-order-heading">
-                Thông tin đơn hàng #24357265526
+                Thông tin đơn hàng #{data?.order?._id}
               </h1>
-              <div className="detail-order-status"> Đã bị hủy</div>
+              <div className="detail-order-status"> {data?.order?.status}</div>
             </div>
             <div className="detail-order-info">
               <ul className="detail-order-info__list">
                 <li>
                   <div className="detail-order-info__title">Ngày đặt hàng:</div>
                   <div className="detail-order-info__content">
-                    23:01 08.11.2023
+                    {data?.order?.createdAt}
                   </div>
                 </li>
                 <li>
                   <div className="detail-order-info__title">Tên người nhận</div>
                   <div className="detail-order-info__content">
-                    nguyễn thế bảo
+                    {data?.order?.fullName}
                   </div>
                 </li>
                 <li>
                   <div className="detail-order-info__title">Địa chỉ Email:</div>
                   <div className="detail-order-info__content">
-                    tranngocdong2042003@gmail.com
+                    {data?.order?.email}
                   </div>
                 </li>
                 <li>
                   <div className="detail-order-info__title">Số điện thoại:</div>
-                  <div className="detail-order-info__content">0988252613</div>
+                  <div className="detail-order-info__content">
+                    {data?.order?.phone}
+                  </div>
                 </li>
                 <li>
                   <div className="detail-order-info__title">
                     Phương thức thanh toán:
                   </div>
-                  <div className="detail-order-info__content">COD</div>
+                  <div className="detail-order-info__content">
+                    {data?.order?.typePayment}
+                  </div>
                 </li>
                 <li>
                   <div className="detail-order-info__title">
                     Địa chỉ giao hàng:
                   </div>
                   <div className="detail-order-info__content">
-                    xom4-thủy xuân tiên- chương mỹ - hà nội, Thị trấn Xuân Mai,
-                    Huyện Chương Mỹ, Hà Nội
+                    {data?.order?.address}
                   </div>
                 </li>
                 <li>
@@ -60,13 +66,10 @@ const OrderDetail = () => {
             </div>
             <div className="grid detail-order-button">
               <div className="grid__column">
-                <div
-                  className="order-date"
-                
-                ></div>
+                <div className="order-date"></div>
               </div>
             </div>
-            <table className="table" >
+            <table className="table">
               <thead>
                 <tr>
                   <th>Tên sản phẩm</th> <th>Số lượng</th>
@@ -76,40 +79,44 @@ const OrderDetail = () => {
                 </tr>
               </thead>
               <tbody>
-                <tr>
-                  <td className="text--left">
-                    <div>
-                      <div className="detail-order-item__thumbnail">
-                        <img src="https://media.coolmate.me/cdn-cgi/image/width=255,height=380,quality=80,format=auto/uploads/April2022/DSC08244_copy.jpg" />
-                      </div>
-                      <div className="detail-order-item__title">
-                        T-Shirt The Future Is Yours <br />
-                      </div>
-                    </div>
-                  </td>
-                  <td>2</td>
-                  <td>
-                    149.000đ
-                    <del>329.000đ</del>
-                  </td>
-                  <td>M</td> <td >298.000đ</td>
-                </tr>
+                {data?.order?.items?.map((item: any) => {
+                  return (
+                    <tr>
+                      <td className="text--left">
+                        <div>
+                          <div className="detail-order-item__thumbnail">
+                            <img src={item?.productId?.images[0]?.url} />
+                          </div>
+                          <div className="detail-order-item__title">
+                           {item?.productId?.name} <br />
+                          </div>
+                        </div>
+                      </td>
+                      <td>{item.quantity}</td>
+                      <td>
+                        ${item?.productVariantId?.price}
+                        {/* <del>329.000đ</del> */}
+                      </td>
+                      <td>{item?.productVariantId?.name}</td> <td>${item?.quantity *item?.productVariantId?.price }</td>
+                    </tr>
+                  );
+                })}
               </tbody>
               <tfoot>
                 <tr>
-                  <td colspan="4">Mã giảm giá</td> <td></td>
+                  <td colSpan={4}>Mã giảm giá</td> <td></td>
                 </tr>
                 <tr>
-                  <td colspan="4">Tổng giá trị sản phẩm</td> <td>298.000đ</td>
+                  <td colSpan={4}>Tổng giá trị sản phẩm</td> <td>${data?.order?.totalPrice}</td>
                 </tr>
                 <tr>
-                  <td colspan="4">Tổng khuyến mãi</td> <td>0đ</td>
+                  <td colSpan={4}>Tổng khuyến mãi</td> <td>${data?.order?.couponPrice}</td>
                 </tr>
                 <tr>
-                  <td colspan="4">Phí giao hàng</td> <td>0đ</td>
+                  <td colSpan={4}>Phí giao hàng</td> <td>${data?.order?.shippingPrice}</td>
                 </tr>
                 <tr className="total_payment">
-                  <td colspan="4">Tổng thanh toán</td> <td>298.000đ</td>
+                  <td colSpan={4}>Tổng thanh toán</td> <td>${data?.order?.totalPrice}</td>
                 </tr>
               </tfoot>
             </table>

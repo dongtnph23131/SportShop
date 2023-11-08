@@ -1,4 +1,4 @@
-import {z} from "zod";
+import { z } from "zod";
 export const orderSchema = z.object({
   fullName: z.string(),
   email: z.string().email(),

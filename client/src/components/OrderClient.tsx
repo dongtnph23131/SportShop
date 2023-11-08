@@ -1,31 +1,97 @@
-import React from "react";
-import "../../src/Assets/orderClient.css"
-
-
+import "../../src/Assets/orderClient.css";
+import Cookies from "js-cookie";
+import { useGetOrderByUserQuery } from "../api/order";
+import { NavLink } from "react-router-dom";
 const OrderClient = () => {
+  const token = Cookies.get("token");
+  const { data: orders } = useGetOrderByUserQuery(token);
+
   return (
     <div>
       <div className="box-oder-carts">
-      
-
         <div className="account-page__content">
-          
-          <div><h3 className="account-page-title">
-        Lịch sử đơn hàng
-    </h3> <div><div ><div  className="account-page__label">
-        Đơn hàng của bạn<span >: 1 đơn hàng</span></div> <div className="orders-body mgt--10"><div className="orders-wrapper"><a href="" className="order"><div className="order-header"><div><p className="order-title">
-                            #24357265526
-                        </p> <p className="order-date" >
-                            08.11.2023
-                        </p></div> <div className="order-status-badge order-status-badge-canceled">   <span>Đã huỷ</span></div></div> <div className="order-body"><div><div className="order-item"><div className="order-item-thumbnail"><a href="/product/ao-thun-oversize-in-the-future-is-yours-clean-vietnam-mau-trang" target="_blank"><img src="https://media.coolmate.me/cdn-cgi/image/width=160,height=181,quality=80/image/April2022/DSC08244_copy.jpg" alt="T-Shirt The Future Is Yours" /></a></div> <div className="order-item-info"><a  className="order-item-title">
-            T-Shirt The Future Is Yours
-        </a> <div className="order-item-variant-label">
-            M
-        </div> <div className="order-item-quantity">
-            x 2
-        </div> <div className="order-item-price">
-            149.000đ
-        </div></div> </div></div></div> <div className="order-footer"><div className="order-footer__left"></div> <div className="order-footer__right"><div><b>298.000đ</b></div> </div></div></a></div> </div> </div></div></div></div>
+          <div>
+            <h3 className="account-page-title">Lịch sử đơn hàng</h3>{" "}
+            {orders?.orders?.map((item: any) => {
+              return (
+                <NavLink to={`/orderDetail/${item._id}`}  key={item._id}>
+                  <div>
+                    <div>
+                      <div className="account-page__label">
+                        Đơn hàng của bạn
+                        <span>: {orders?.orders?.length} đơn hàng</span>
+                      </div>{" "}
+                      <div className="orders-body mgt--10">
+                        <div className="orders-wrapper">
+                          <a href="" className="order">
+                            <div className="order-header">
+                              <div>
+                                <p className="order-title"># {item._id}</p>{" "}
+                                <p className="order-date">{item.createdAt}</p>
+                              </div>{" "}
+                              <div className="order-status-badge order-status-badge-canceled">
+                                {" "}
+                                <span>{item.status}</span>
+                              </div>
+                            </div>{" "}
+                            {item.items.map((itemOrder: any) => {
+                              return (
+                                <div key={itemOrder._id}>
+                                  <div className="order-body">
+                                    <div>
+                                      <div className="order-item">
+                                        <div className="order-item-thumbnail">
+                                          <a
+                                            href="/product/ao-thun-oversize-in-the-future-is-yours-clean-vietnam-mau-trang"
+                                            target="_blank"
+                                          >
+                                            <img
+                                              src={
+                                                itemOrder?.productId?.images[0]
+                                                  .url
+                                              }
+                                              alt="T-Shirt The Future Is Yours"
+                                            />
+                                          </a>
+                                        </div>{" "}
+                                        <div className="order-item-info">
+                                          <a className="order-item-title">
+                                            {itemOrder.productId.name}
+                                          </a>{" "}
+                                          <div className="order-item-variant-label">
+                                            {itemOrder.productVariantId.name}
+                                          </div>{" "}
+                                          <div className="order-item-quantity">
+                                            x {itemOrder.quantity}
+                                          </div>{" "}
+                                          <div className="order-item-price">
+                                            $ {itemOrder.productVariantId.price}
+                                          </div>
+                                        </div>{" "}
+                                      </div>
+                                    </div>
+                                  </div>{" "}
+                                  <div className="order-footer">
+                                    <div className="order-footer__left"></div>{" "}
+                                    <div className="order-footer__right">
+                                      <div>
+                                        <b>${item.totalPrice}</b>
+                                      </div>{" "}
+                                    </div>
+                                  </div>
+                                </div>
+                              );
+                            })}
+                          </a>
+                        </div>{" "}
+                      </div>{" "}
+                    </div>
+                  </div>
+                </NavLink>
+              );
+            })}
+          </div>
+        </div>
       </div>
     </div>
   );
