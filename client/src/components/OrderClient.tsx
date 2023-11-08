@@ -1,143 +1,31 @@
 import React from "react";
-import { Table } from "antd";
-import type { ColumnsType, TableProps } from "antd/es/table";
+import "../../src/Assets/orderClient.css"
 
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
-interface DataType {
-  key: React.Key;
-  name: string;
-  age: number;
-  address: string;
-}
 
-const columns: ColumnsType<DataType> = [
-  {
-    title: "Sản phẩm",
-    dataIndex: "name",
-    filters: [
-      {
-        text: "Joe",
-        value: "Joe",
-      },
-      {
-        text: "Jim",
-        value: "Jim",
-      },
-      {
-        text: "Submenu",
-        value: "Submenu",
-        children: [
-          {
-            text: "Green",
-            value: "Green",
-          },
-          {
-            text: "Black",
-            value: "Black",
-          },
-        ],
-      },
-    ],
-
-    onFilter: (value: string, record) => record.name.indexOf(value) === 0,
-    sorter: (a, b) => a.name.length - b.name.length,
-    sortDirections: ["descend"],
-  },
-
-  {
-    title: 'Images',
-    dataIndex: 'image',
-    render: (text, record) => (
-      <img src="../../src/Assets/banner-2.jpg" style={{ width: '100px', height: '100px' }} />
-    ),
-  },
-
-  {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: "Age",
-    dataIndex: "age",
-    defaultSortOrder: "descend",
-    sorter: (a, b) => a.age - b.age,
-  },
-  {
-    title: "Address",
-    dataIndex: "address",
-    filters: [
-      {
-        text: "London",
-        value: "London",
-      },
-      {
-        text: "New York",
-        value: "New York",
-      },
-    ],
-    onFilter: (value: string, record) => record.address.indexOf(value) === 0,
-  },
-];
-
-const data = [
-  {
-    key: "1",
-    name: "John Brown",
-    age: 32,
-    address: "New York No. 1 Lake Park",
-  },
-  {
-    key: "2",
-    name: "Jim Green",
-    age: 42,
-    address: "London No. 1 Lake Park",
-  },
-  {
-    key: "3",
-    name: "Joe Black",
-    age: 32,
-    address: "Sydney No. 1 Lake Park",
-  },
-  {
-    key: "4",
-    name: "Jim Red",
-    age: 32,
-    address: "London No. 2 Lake Park",
-  },
-];
-
-const onChange: TableProps<DataType>["onChange"] = (
-  pagination,
-  filters,
-  sorter,
-  extra
-) => {
-  console.log("params", pagination, filters, sorter, extra);
-};
 const OrderClient = () => {
   return (
     <div>
       <div className="box-oder-carts">
-        <Table columns={columns} dataSource={data} onChange={onChange} />;
+      
+
+        <div className="account-page__content">
+          
+          <div><h3 className="account-page-title">
+        Lịch sử đơn hàng
+    </h3> <div><div ><div  className="account-page__label">
+        Đơn hàng của bạn<span >: 1 đơn hàng</span></div> <div className="orders-body mgt--10"><div className="orders-wrapper"><a href="" className="order"><div className="order-header"><div><p className="order-title">
+                            #24357265526
+                        </p> <p className="order-date" >
+                            08.11.2023
+                        </p></div> <div className="order-status-badge order-status-badge-canceled">   <span>Đã huỷ</span></div></div> <div className="order-body"><div><div className="order-item"><div className="order-item-thumbnail"><a href="/product/ao-thun-oversize-in-the-future-is-yours-clean-vietnam-mau-trang" target="_blank"><img src="https://media.coolmate.me/cdn-cgi/image/width=160,height=181,quality=80/image/April2022/DSC08244_copy.jpg" alt="T-Shirt The Future Is Yours" /></a></div> <div className="order-item-info"><a  className="order-item-title">
+            T-Shirt The Future Is Yours
+        </a> <div className="order-item-variant-label">
+            M
+        </div> <div className="order-item-quantity">
+            x 2
+        </div> <div className="order-item-price">
+            149.000đ
+        </div></div> </div></div></div> <div className="order-footer"><div className="order-footer__left"></div> <div className="order-footer__right"><div><b>298.000đ</b></div> </div></div></a></div> </div> </div></div></div></div>
       </div>
     </div>
   );

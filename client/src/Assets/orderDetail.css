@@ -1,0 +1,134 @@
+.detail-order-status {
+    font-size: 14px;
+    padding: 5px 12px;
+    background-color: transparent;
+    color: #2f5acf;
+    border-radius: 23px;
+    border: 1px solid #2f5acf;
+    font-weight: 400;
+    width: -moz-fit-content;
+    width: fit-content;
+    white-space: nowrap;
+}
+
+.detail-order {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+h1.detail-order-heading {
+    font-size: 25px;
+    font-weight: 600;
+}
+
+.detail-order-info {
+    display: flex;
+}
+
+ul.detail-order-info__list {
+    list-style-type: none;
+    padding: 0;
+    line-height: 1.8em;
+    margin: 0;
+}
+
+ul.detail-order-info__list li {
+    display: flex;
+}
+
+.detail-order-info__title {
+    width: 30%;
+}
+
+.detail-order-info__content {
+    width: 70%;
+}
+
+table.table {
+    width: 100%;
+    border-spacing: 0;
+    background: #d9d9d9;
+    border-radius: 16px;
+    margin: 1rem 0;
+    background-color: #fff;
+}
+
+.thank-box .table thead {
+    position: relative;
+    z-index: 1;
+}
+
+.table thead tr th {
+    color: #fff;
+    background-color: #2f5acf;
+    font-weight: 500;
+    padding-top: 1.25rem;
+    padding-bottom: 1.25rem;
+    font-size: 1.125rem;
+     
+}
+.table thead tr th:first-child {
+    border-radius: 0.5rem 0 0 0.5rem;
+}
+.table thead tr th:last-child {
+    border-radius: 0 0.625rem 0.625rem 0;
+}
+.detail-order-item__thumbnail {
+    max-width: 70px;
+    max-height: 110px;
+    overflow: hidden;
+    margin-right: 10px;
+    position: relative;
+    border-radius: 10px;
+    border: 1px solid #9fb1e1;
+}
+
+td.text--left div {
+    display: flex;
+    align-items: center;
+}
+
+tbody tr {}
+
+tbody tr td {
+}
+
+td {
+}
+
+td {
+    /* padding-top: 1.25rem; */
+    /* padding-bottom: 1.25rem; */
+}
+
+tbody tr td {
+    height: 30px !important;
+    line-height: 100px!important;
+}
+
+del {color: #cdcdcd;margin-left: 10px;}
+.thank-box .table tfoot td {
+    text-align: left;
+    background-color: #fff!important;
+    border-bottom: 1px solid #d9d9d9;
+    padding: 21px 20px;
+}
+.thank-box .table tfoot tr:last-child td:first-child {
+    border-radius: 0 0 0 16px;
+}
+.thank-box .table tfoot tr.total_payment td {
+    background-color: #000!important;
+    color: #fff;
+    padding: 0.875rem 1.5rem;
+}
+.thank-box .table tfoot tr:last-child td {
+    border-bottom: 1px solid #d9d9d9!important;
+}
+.thank-box .table tfoot tr:last-child td:last-child {
+    border-radius: 0 0 16px 0;
+}
+
+table.table thead tr th {
+    font-size: 15px;
+}
