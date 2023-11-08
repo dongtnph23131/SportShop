@@ -1,0 +1,125 @@
+.account-page__content {
+    flex: 1;
+    background-color: #fff;
+    padding: 3.625rem 3.875rem;
+    border-radius: .5rem;
+    overflow: hidden
+    
+}
+.account-page-title {
+    font-size: 2.25em;
+    font-weight: 400;
+    margin-bottom: 1.125rem;
+    font-family: CriteriaCF;
+}
+.account-page__label {
+    font-size: 18px;
+    color: rgba(0,0,0,.5333333333);
+}
+
+.orders-body.mgt--10 {
+    margin-top: 10px;
+}
+
+a.order {
+    background-color: transparent;
+    text-decoration: none;
+    color: inherit;
+    transition: all .2s;
+};
+    
+    
+.order-header{
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    background-color: #2f5acf;
+    border-radius: 0.5rem;
+    padding: 10px 30px;
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+.order-header {
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    color: white;
+    background-color: #2f5acf;
+    border-radius: 0.5rem;
+    padding: 10px 30px;
+    position: relative;
+    z-index: 2;
+    box-sizing: border-box;
+}
+
+.order-header p {
+    font-weight: bold;
+    font-size: 1.1rem;
+    color: #fff;
+    margin: 5px 0px !important;
+}
+
+.order-status-badge.order-status-badge-canceled {}
+
+.order-status-badge.order-status-badge-canceled {
+    display: block;
+    padding: 0.375rem 0.75rem;
+    background-color: white;
+    text-align: center;
+    font-size: 12px;
+    border-radius: 1.5rem;
+    font-weight: 500;
+    color: #000;
+}
+
+.order-body {
+    border: 1px solid #d9d9d9;
+    background-color: rgb(232, 232, 232);
+    margin-top: -16px;
+    position: relative;
+    z-index: 1;
+    padding-top: 16px;
+}
+
+.order-item {
+    padding: 1rem 30px;
+    display: flex;
+    width: 100%;
+    position: relative;
+}
+
+.order-item-info {
+    padding-left: 30px;
+}
+
+a.order-item-title {
+    font-size: 20px;
+    color: #000;
+    font-weight: 600;
+}
+
+.order-item-thumbnail {
+}
+
+.order-item-thumbnail a img {
+    height: 145px;
+}
+
+    .order-footer {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    border: 1px solid #d9d9d9;
+    background-color: rgba(0, 0, 0, 0.1);
+    padding: 0.5rem 30px 0.5rem;
+    border-radius: 0 0 0.5rem 0.5rem;
+    position: relative;
+    z-index: 1;
+    box-sizing: border-box;
+}

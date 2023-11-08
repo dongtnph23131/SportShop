@@ -19,6 +19,7 @@ import OrderClient from './components/OrderClient';
 import CustomPagination from './components/include/CustomPagination';
 import CategoryDetail from './components/CategoryDetail';
 import ProfileDetail from './components/ProfileDetail';
+import OrderDetail from './components/orderDetail';
 
 export const routers  = createBrowserRouter ([
     {
@@ -46,7 +47,9 @@ export const routers  = createBrowserRouter ([
             {path: "/profileDetail", element: <ProfileDetail/>},
             {path:"/changepassword",element:<Changepassword/>},
             {path:"/OrderClient" , element:<OrderClient/>},
-            {path:'categories/:id',element:<CategoryDetail/>}
+            {path:'categories/:id',element:<CategoryDetail/>},
+            {path:'orderDetail',element:< OrderDetail/>}
+
         ]   
 
     },
