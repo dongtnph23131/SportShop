@@ -82,8 +82,12 @@ const Page: NextPageWithLayout = () => {
       ),
       cell: ({ row }) => {
         return (
-          <div className="flex space-x-2">
-            <Badge variant="outline">{row.original.categoryId.name}</Badge>
+          <div>
+            {row.original.categoryId ? (
+              <Badge variant="outline">{row.original.categoryId.name}</Badge>
+            ) : (
+              "-"
+            )}
           </div>
         );
       },

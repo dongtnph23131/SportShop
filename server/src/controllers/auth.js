@@ -67,7 +67,7 @@ export const signin = async (req, res) => {
       });
     }
     const token = jwt.sign({ id: user._id }, "dongtimo", {
-      expiresIn: "1d",
+      expiresIn: "365d",
     });
     user.password = undefined;
     return res.status(200).json({

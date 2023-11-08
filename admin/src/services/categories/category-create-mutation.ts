@@ -4,7 +4,7 @@ import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 export type CategoryCreateVariables = { name: string };
 
 export async function createCategory(body: CategoryCreateVariables) {
-  const response = await fetch(`${API_URL}/api/categories`, {
+  const response = await fetch(`${API_URL}/api/admin/categories`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {

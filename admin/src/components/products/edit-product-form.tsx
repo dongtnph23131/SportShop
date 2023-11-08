@@ -38,6 +38,7 @@ import { OurFileRouter } from "@/lib/uploadthing";
 import { Product } from "@/types/base";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import { useProductUpdateMutation } from "@/services/products/product-update-mutation";
+import slugify from "@sindresorhus/slugify";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
@@ -76,6 +77,7 @@ interface UpdateProductFormProps {
 export function UpdateProductForm({ product }: UpdateProductFormProps) {
   const router = useRouter();
   const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
+  const [upload, setUpload] = React.useState(false);
   const updateProductMutation = useProductUpdateMutation({
     onSuccess: () => {
       router.push("/products");
@@ -122,6 +124,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
   });
 
   async function onSubmit(data: Inputs) {
+    setUpload(true);
     const images = isArrayOfFile(data.images)
       ? await startUpload(data.images).then((res) => {
           const formattedImages = res?.map((image) => ({
@@ -132,10 +135,11 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
           return formattedImages ?? null;
         })
       : null;
+    setUpload(false);
 
     updateProductMutation.mutate({
       id: product._id,
-      slug: data.name.toLocaleLowerCase().split(" ").join("-"),
+      slug: slugify(data.name),
       name: data.name,
       description: data.description,
       categoryId: data.collectionId,
@@ -283,8 +287,8 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
           </FormItem>
         </div>
 
-        <Button disabled={updateProductMutation.isPending}>
-          {updateProductMutation.isPending && (
+        <Button disabled={updateProductMutation.isPending || upload}>
+          {(updateProductMutation.isPending || upload) && (
             <Icons.spinner
               className="mr-2 h-4 w-4 animate-spin"
               aria-hidden="true"

@@ -4,7 +4,7 @@ export interface Product {
   name: string;
   description: string;
   images: Image[];
-  categoryId: { _id: string; name: string };
+  categoryId: { _id: string; name: string } | null;
   options: Option[];
   maxPrice: number;
   minPrice: number;
@@ -24,6 +24,7 @@ export interface Variant {
 
 export interface Category {
   _id: string;
+  slug: string;
   name: string;
   updatedAt: string;
   createdAt: string;
@@ -41,4 +42,31 @@ export interface Image {
   url: string;
   publicId: string;
   _id: string;
+}
+
+export enum OrderStatus {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+}
+
+export enum OrderStatus {
+  ONLINE = "online",
+  DIRECT = "direct",
+}
+
+export interface Order {
+  _id: string;
+  fullName: string;
+  email: string;
+  phone: number;
+  address: string;
+  status: OrderStatus;
+  shippingPrice: number;
+  totalPrice: number;
+  couponPrice: number;
+  typePayment: OrderStatus;
+  createdAt: string;
+  updatedAt: string;
 }

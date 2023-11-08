@@ -9,7 +9,7 @@ const Shops = () => {
   const [sort, setSort] = useState<String>()
   const [order, setOrder] = useState<String>()
   const [categories, setCategories] = useState<any>([])
-  const [page,setPage]=useState<Number>(1)
+  const [page,setPage]=useState<any>(1)
   const [dataCategories, setDataCategories] = useState<any>([])
   const navigate=useNavigate()
   const { data: products, isLoading } = useGetAllProductsQuery({ sort, order,dataCategories,page, limit:4 })
@@ -168,7 +168,7 @@ const Shops = () => {
             </div>
           })}
         </div>
-        <Pagination defaultCurrent={1} onChange={(value)=>setPage(value)} total={productsNoPage?.length} pageSize={4} />
+        <Pagination defaultCurrent={page} onChange={(value)=>setPage(value)} total={productsNoPage?.length} pageSize={4} />
       </section>
     </div>
   );

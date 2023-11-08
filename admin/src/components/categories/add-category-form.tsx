@@ -42,8 +42,6 @@ export default function AddCategoryForm() {
   });
 
   async function onSubmit(data: Inputs) {
-    console.log({ data });
-
     addCollectionMutation.mutate({
       name: data.name,
     });

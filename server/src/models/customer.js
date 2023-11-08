@@ -26,9 +26,12 @@ const customerSchema = new mongoose.Schema(
     phone: {
       type: Number,
     },
-    address: {
-      type: [String],
-    },
+    addressIds: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Address",
+      },
+    ],
     passwordResetToken: {
       type: String,
     },

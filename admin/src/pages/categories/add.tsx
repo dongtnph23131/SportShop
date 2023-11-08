@@ -10,7 +10,7 @@ import {
 import { Button } from "@/components/ui/button";
 import { ArrowLeft } from "lucide-react";
 import { useRouter } from "next/router";
-import AddCategoryForm from "@/components/products/add-category-form";
+import AddCategoryForm from "@/components/categories/add-category-form";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();

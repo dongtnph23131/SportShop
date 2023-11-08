@@ -6,7 +6,7 @@ import { z } from "zod";
 export type ProductCreateVariables = z.infer<typeof productCreateBodySchema>;
 
 export async function createProduct(body: ProductCreateVariables) {
-  const response = await fetch(`${API_URL}/api/products`, {
+  const response = await fetch(`${API_URL}/api/admin/products`, {
     method: "POST",
     body: JSON.stringify(body),
     headers: {

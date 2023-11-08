@@ -2,7 +2,7 @@ import { API_URL } from "@/lib/contants";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 export async function deleteProduct(body: { id: string }) {
-  const response = await fetch(`${API_URL}/api/products/${body.id}`, {
+  const response = await fetch(`${API_URL}/api/admin/products/${body.id}`, {
     method: "DELETE",
   });
 

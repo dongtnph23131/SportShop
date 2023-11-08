@@ -1,7 +1,15 @@
-
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
+import Cookies from "js-cookie";
+import { getCategories } from "../api/category";
+import axios from "axios";
+import { useNavigate } from "react-router-dom";
 const Header = () => {
+  const [user,setUser]=useState<any>(Cookies.get('user'))
+  const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
+  const [categories, setCategories] = useState<any>([]);
+  const [productSearch, setProductSearch] = useState<any>([]);
+  const [isLoading, setIsLoading] = useState(false);
   const handleSearchClick = () => {
     setIsSearchVisible(true);
   };
@@ -9,6 +17,11 @@ const Header = () => {
     e.preventDefault();
     setIsSearchVisible(false);
   };
+  useEffect(() => {
+    getCategories().then((data) => {
+      setCategories(data.data);
+    });
+  }, []);
   return (
     <div>
       <header>
@@ -16,24 +29,59 @@ const Header = () => {
           <div className="box-search-click">
             <div className="box-allserch container">
               <div className="input-searched">
-                <input type="text" placeholder="search..." />
+                <input
+                  type="text"
+                  placeholder="search..."
+                  onChange={async (event) => {
+                    if (event.target.value != "") {
+                      setIsLoading(true);
+                      await axios
+                        .get(
+                          `http://localhost:8080/api/products?q=${
+                            event.target.value ? event.target.value : ""
+                          }`
+                        )
+                        .then((data) => {
+                          setProductSearch(data.data);
+                        });
+                      setIsLoading(false);
+                    } else {
+                      setProductSearch([]);
+                    }
+                  }}
+                />
                 <button className="remo-search" onClick={handleHideSearch}>
                   X
                 </button>
               </div>
               <div className="row">
-                <span className="text-searchs">
-                  Từ khóa nổi bật ngày hôm nay
-                </span>
-                <div className="col-lg-3 col-item-3search ">
-                  <div className="box-itemsearch">
-                    <img src="../../src/Assets/product2.jpg" alt="" />
-                    <div className="contentSearch-item">
-                      <span className="search-items-name">Product1</span>
-                      <button className="search-addCart">buy</button>
+                {productSearch.length === 0 ? (
+                  <span className="text-searchs">
+                    Hãy nhập nội dung tìm kiếm
+                  </span>
+                ) : (
+                  ""
+                )}
+                {productSearch?.map((item: any) => {
+                  return (
+                    <div
+                      onClick={() => {
+                        navigate(`/products/${item._id}`);
+                        setIsSearchVisible(false);
+                        setProductSearch([]);
+                      }}
+                      className="col-lg-3 col-item-3search "
+                    >
+                      <div key={item._id} className="box-itemsearch">
+                        <img src={`${item.images[0].url}`} alt="" />
+                        <div className="contentSearch-item">
+                          <span className="search-items-name">{item.name}</span>
+                          <button className="search-addCart">buy</button>
+                        </div>
+                      </div>
                     </div>
-                  </div>
-                </div>
+                  );
+                })}
               </div>
             </div>
           </div>
@@ -75,11 +123,9 @@ const Header = () => {
           </div>
           <div className="hd4-mid flex-1">
             <form action="" className="hd4-mid__search d-flex ai-center">
-              <input
-                onClick={handleSearchClick}
-                type="search"
-                placeholder="Tìm sản phẩm, thương hiệu và tên shop"
-              />
+              <div className="iputed-search" onClick={handleSearchClick}>
+                Tìm kiếm ...
+              </div>
               <button type="submit">
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
@@ -93,22 +139,46 @@ const Header = () => {
           </div>
           <div className="hd4-right flex-1">
             <ul className="hd4-right__title d-flex js-right ai-center">
-              <li className="Login">
-                <a href="/signin" id="loginLink">
-                  {" "}
-                  Đăng nhập 
-                </a>
-              </li>
-              <li className="Login">
-                <a href="/signup" id="signupLink">
-                  {" "}
-                  / Đăng ký
-                </a>
-              </li>
+              {user ? (
+                <>
+                  <li className="signin-up">
+                    <div className="avart-sgin">
+                      <img src={user.avatar} alt="" />
+                    </div>
+                    <ul className="all-signinout">
+                      <li>
+                        <a>Thông tin cá nhân</a>
+                      </li>
+                      <li onClick={()=>{
+                        Cookies.remove('user')
+                        Cookies.remove('token')
+                        setUser('')
+                        navigate('/')
+                      }}>
+                        <a>Đăng xuất</a>
+                      </li>
+                    </ul>
+                  </li>
+                </>
+              ) : (
+                <>
+                  <li className="Login">
+                    <a href="/signin" id="loginLink">
+                      {" "}
+                      Đăng nhập
+                    </a>
+                  </li>
+                  <li className="Login">
+                    <a href="/signup" id="signupLink">
+                      {" "}
+                      / Đăng ký
+                    </a>
+                  </li>
+                </>
+              )}
               <li>
-                <a href="">
-                  <span>Giỏ hàng / </span>
-                  <span>0 ₫</span>
+                <a href="" className="qtyli-cart">
+                  <span className="qlty">3</span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
                 <div className="hd4-cart--dropdown p-absolute row">
@@ -134,8 +204,8 @@ const Header = () => {
             <nav>
               <ul className="hd3-navbar__nav p-relative d-flex js-center">
                 <li>
-                  <a href="">
-                    MÔN THỂ THAO
+                  <a href="/shops">
+                    All
                     <svg
                       xmlns="http://www.w3.org/2000/svg"
                       height="1em"
@@ -146,159 +216,23 @@ const Header = () => {
                   </a>
                   <div className="hd3-sub ctnr p-absolute left-0 w-100"></div>
                 </li>
-                <li>
-                  <a href="">
-                    ĐỒ NAM
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                  <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                    <ul className="hd3__submenu d-flex fw-wrap">
-                      <li>
-                        <a href="">MÁY TOÀN ĐẠC LEICA</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY TOÀN ĐẠC NIKON</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY TOÀN ĐẠC SOKKIA</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY TOÀN ĐẠC TOPCON</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY TOÀN ĐẠC GEOMAX</a>
-                      </li>
-                      <li>
-                        <a href="">THUÊ MÁY TOÀN ĐẠC CŨ</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="">
-                    ĐỒ NỮ
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                  <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                    <ul className="hd3__submenu d-flex fw-wrap">
-                      <li>
-                        <a href="">MÁY THỦY BÌNH BÁN CHẠY</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH SOKKIA</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH LEICA</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH TOPCON</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH NILON</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH BOSCH</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH PENTAX</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY THỦY BÌNH GEOMAX</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="">
-                    ĐỒNG PHỤC
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                  <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                    <ul className="hd3__submenu d-flex">
-                      <li>
-                        <a href="">MÁY ĐỊNH VỊ GPS GARMIN</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY GPS RTK</a>
-                        <ul className="hd3-submenu__sub">
-                          <li>
-                            <a href="">Máy RTK Efix </a>
-                          </li>
-                          <li>
-                            <a href="">Máy RTK Foif</a>
-                          </li>
-                          <li>
-                            <a href="">Máy RTK CHCNAV</a>
-                          </li>
-                        </ul>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="">
-                    GIÀY
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                  <div className="hd3-sub ctnr p-absolute left-0 w-100">
-                    <ul className="hd3__submenu d-flex">
-                      <li>
-                        <a href="">MÁY CÂN BẰNG LASER</a>
-                      </li>
-                      <li>
-                        <a href="">MÁY ĐO KHOẢNG CÁCH SNDWAY</a>
-                      </li>
-                    </ul>
-                  </div>
-                </li>
-                <li>
-                  <a href="">
-                    PHỤ KIỆN
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                </li>
-                <li>
-                  <a href="">
-                    LIÊN HỆ
-                    <svg
-                      xmlns="http://www.w3.org/2000/svg"
-                      height="1em"
-                      viewBox="0 0 512 512"
-                    >
-                      <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
-                    </svg>
-                  </a>
-                </li>
+                {categories?.map((category: any) => {
+                  return (
+                    <li key={category?._id}>
+                      <a href={`/categories/${category._id}`}>
+                        {category.name}
+                        <svg
+                          xmlns="http://www.w3.org/2000/svg"
+                          height="1em"
+                          viewBox="0 0 512 512"
+                        >
+                          <path d="M233.4 406.6c12.5 12.5 32.8 12.5 45.3 0l192-192c12.5-12.5 12.5-32.8 0-45.3s-32.8-12.5-45.3 0L256 338.7 86.6 169.4c-12.5-12.5-32.8-12.5-45.3 0s-12.5 32.8 0 45.3l192 192z" />
+                        </svg>
+                      </a>
+                      <div className="hd3-sub ctnr p-absolute left-0 w-100"></div>
+                    </li>
+                  );
+                })}
               </ul>
             </nav>
           </div>
