@@ -1,5 +1,3 @@
-import React from "react";
-
 const About = () => {
   return (
     <div>
@@ -8,34 +6,44 @@ const About = () => {
         <p>Get to know us and discover the difference.</p>
       </section>
 
-
-
       <section id="about-head" className="section-p1">
         <img src="../../src/Assets/about.jpg" alt="" />
         <div>
-            <h2>Who We Are?</h2>
-            <p>Welcome to Cara, a fashion-forward clothing brand that embraces individuality and self-expression. Our passion for fashion drives us to create high-quality, on-trend pieces that allow you to showcase your unique style. From bold prints to statement accessories, we believe that fashion should be fun and accessible to everyone. Join us on our journey to inspire confidence and creativity through fashion. Get to know us and discover the difference.</p>
+          <h2>Who We Are?</h2>
+          <p>
+            Welcome to Cara, a fashion-forward clothing brand that embraces
+            individuality and self-expression. Our passion for fashion drives us
+            to create high-quality, on-trend pieces that allow you to showcase
+            your unique style. From bold prints to statement accessories, we
+            believe that fashion should be fun and accessible to everyone. Join
+            us on our journey to inspire confidence and creativity through
+            fashion. Get to know us and discover the difference.
+          </p>
 
-            <abbr title="">Create stunning images with as much or as little control as you like thanks to a choice of basic and Creative modes.</abbr>
+          <abbr title="">
+            Create stunning images with as much or as little control as you like
+            thanks to a choice of basic and Creative modes.
+          </abbr>
 
-            <br></br>
-
-            <marquee bgcolor="#ccc" loop="-1" scrollamount="5" width="100%">Create stunning images with as much or as little control as you like thanks to a choice of basic and Creative modes.</marquee>
+          <br></br>
         </div>
-    </section>
+      </section>
 
-
-    <section id="about-app" className="section-p1">
-        <h1>Download Our<a href="#">App</a></h1>
+      <section id="about-app" className="section-p1">
+        <h1>
+          Download Our<a href="#">App</a>
+        </h1>
         <div className="video">
-        <video autoPlay muted loop>
-          <source src="../../src/Assets/Y2meta.app-TVC _ Bộ Quần Áo Thể Thao Bóng Chuyền _HARRY_ _ CP Sport-(1080p).mp4" type="video/mp4" />
-        </video>
+          <video autoPlay muted loop>
+            <source
+              src="../../src/Assets/Y2meta.app-TVC _ Bộ Quần Áo Thể Thao Bóng Chuyền _HARRY_ _ CP Sport-(1080p).mp4"
+              type="video/mp4"
+            />
+          </video>
         </div>
-    </section>
+      </section>
 
-
-    <section id="feature" className="section-p1">
+      <section id="feature" className="section-p1">
         <div className="fe-box">
           <img src="../../src/Assets/f1.png" alt="" />
           <h6>Free Shipping</h6>
@@ -61,7 +69,6 @@ const About = () => {
           <h6>F24/Support</h6>
         </div>
       </section>
-    
     </div>
   );
 };

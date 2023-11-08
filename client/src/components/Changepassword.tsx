@@ -1,4 +1,3 @@
-import React from 'react';
 const ChangePassword = () => {
   return (
     <div className="card login-form">

@@ -1,19 +1,9 @@
 import React from "react";
 
 const Home = () => {
-
-
   return (
     <div>
-    
-
-      <section id="hero">
-        {/* <h4>Trade-in-offer</h4>
-        <h2>Super value deals</h2>
-        <h1>On all products</h1>
-        <p>Save more with coupons & up to 70% off!</p>
-        <button>Shop Now</button> */}
-      </section>
+      <section id="hero"></section>
 
       <section id="feature" className="section-p1">
         <div className="fe-box">
@@ -395,8 +385,6 @@ const Home = () => {
           <h3>New Trendy Prints</h3>
         </div>
       </section>
-
-     
     </div>
   );
 };

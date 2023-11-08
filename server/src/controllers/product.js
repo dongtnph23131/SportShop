@@ -23,8 +23,8 @@ export const getAll = async (req, res) => {
     };
     let searchQuery = q
       ? {
-        name: { $regex: q, $options: "i" },
-      }
+          name: { $regex: q, $options: "i" },
+        }
       : {};
     if (categories) {
       searchQuery = {
@@ -48,7 +48,10 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const id = req.params.id;
-    const data = await Product.findById(id).populate("productVariantIds", "-__v");
+    const data = await Product.findById(id).populate(
+      "productVariantIds",
+      "-__v"
+    );
 
     if (data.length === 0) {
       return res.status(200).json({
@@ -117,7 +120,7 @@ export const create = async (req, res) => {
 
     await Category.findByIdAndUpdate(product.categoryId, {
       $addToSet: {
-       products: product._id,
+        products: product._id,
       },
     });
 

@@ -1,8 +1,8 @@
-import React, { useState } from "react";
+import { useState } from "react";
 
 type Props = {};
 
-const ProfileDetail = (props: Props) => {
+const ProfileDetail = () => {
   const [activeTab, setActiveTab] = useState("profile"); // Sử dụng state để lưu trạng thái tab hiện tại
 
   const handleTabClick = (tabName: string) => {
@@ -136,7 +136,10 @@ const ProfileDetail = (props: Props) => {
                               <label htmlFor="">Đặt làm địa chỉ mặc định</label>
                             </div>
                             <div className="group__btn__close">
-                              <button className="btn__backAdress" onClick={closeAddAddressPopup}>
+                              <button
+                                className="btn__backAdress"
+                                onClick={closeAddAddressPopup}
+                              >
                                 Đóng
                               </button>
                               <button className="btn__addAdr">Thêm</button>

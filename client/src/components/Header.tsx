@@ -3,13 +3,18 @@ import Cookies from "js-cookie";
 import { getCategories } from "../api/category";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
+import { useGetCartOfUserQuery } from "../api/cart";
 const Header = () => {
-  const [user,setUser]=useState<any>(Cookies.get('user'))
+  const [token, setToken] = useState<any>(Cookies.get("token"));
+  const [firstName, setFirstName] = useState<any>(Cookies.get("firstName"));
+  const [lastName, setLastName] = useState<any>(Cookies.get("lastName"));
+  const [avatar, setAvatar] = useState<any>(Cookies.get("avatar"));
   const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([]);
   const [productSearch, setProductSearch] = useState<any>([]);
   const [isLoading, setIsLoading] = useState(false);
+  const { data: carts } = useGetCartOfUserQuery(token);
   const handleSearchClick = () => {
     setIsSearchVisible(true);
   };
@@ -139,25 +144,38 @@ const Header = () => {
           </div>
           <div className="hd4-right flex-1">
             <ul className="hd4-right__title d-flex js-right ai-center">
-              {user ? (
+              {token ? (
                 <>
                   <li className="signin-up">
                     <div className="avart-sgin">
-                      <img src={user.avatar} alt="" />
+                      <img src={avatar} alt="" />
                     </div>
                     <ul className="all-signinout">
                       <li>
                         <a>Thông tin cá nhân</a>
                       </li>
-                      <li onClick={()=>{
-                        Cookies.remove('user')
-                        Cookies.remove('token')
-                        setUser('')
-                        navigate('/')
-                      }}>
+                      <li
+                        onClick={() => {
+                          Cookies.remove("email");
+                          Cookies.remove("firstName");
+                          Cookies.remove("lastName");
+                          Cookies.remove("avatar");
+                          Cookies.remove("token");
+                          setAvatar("");
+                          setFirstName("");
+                          setLastName("");
+                          setToken("");
+                          navigate("/");
+                        }}
+                      >
                         <a>Đăng xuất</a>
                       </li>
                     </ul>
+                  </li>
+                  <li className="Login">
+                    <a>
+                      {firstName} {lastName}
+                    </a>
                   </li>
                 </>
               ) : (
@@ -177,24 +195,18 @@ const Header = () => {
                 </>
               )}
               <li>
-                <a href="" className="qtyli-cart">
-                  <span className="qlty">3</span>
+                <a href="/cart" className="qtyli-cart">
+                  <span className="qlty">
+                    {token
+                      ? carts?.reduce(
+                          (accumulator: any, currentValue: any) =>
+                            accumulator + currentValue.quantity,
+                          0
+                        )
+                      : "0"}
+                  </span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
-                <div className="hd4-cart--dropdown p-absolute row">
-                  <div className="img-cart-header-product col-lg-5">
-                    <img src="../../src/Assets/b1.jpg" alt="" />
-                  </div>
-                  <div className="inserts-product-header col-lg-7">
-                    <span>
-                      Giá : <p>600.000 VND</p>
-                    </span>
-                    <button className="check-giohangs">
-                      <img src="../../src/Assets/cart3.gif" alt="" />
-                      Xem giỏ hàng
-                    </button>
-                  </div>
-                </div>
               </li>
             </ul>
           </div>

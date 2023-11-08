@@ -1,4 +1,3 @@
-
 /*_______________________________________________________________________*/
 /* Header */
 .form-login {
@@ -8,7 +7,6 @@
 .form-login.active {
   display: block;
 }
-
 
 .hd4-right__title li a img {
   width: 39px;
@@ -194,7 +192,6 @@
 /*_______________________________________________________________________*/
 /* Navbar */
 
-
 .box-qlt ul li {
   padding: 5px 19px;
   border-radius: 5px;
@@ -215,70 +212,32 @@
   color: #000;
 }
 
-.box-qlt ul li:hover {}
-
 .box-qlt ul li:hover {
-  background: #4FB68D;
 }
 
-.color-detaile ul li:hover {}
+.box-qlt ul li:hover {
+  background: #4fb68d;
+}
+
+.color-detaile ul li:hover {
+}
 
 button.check-giohangs img {
   width: 35px;
   height: 35px;
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 li.signin-up {
-    /* position: relative; */
-    padding-right: 45px;
+  /* position: relative; */
+  padding-right: 45px;
 }
 
 ul.all-signinout {
-    position: absolute;
-    width: 135px;
-    background: #fff;
-    z-index: 9999;
-    display: none;
+  position: absolute;
+  width: 135px;
+  background: #fff;
+  z-index: 9999;
+  display: none;
 }
 .qlty {
   position: absolute;
@@ -296,23 +255,23 @@ ul.all-signinout {
   position: relative;
 }
 ul.hd4-right__title.d-flex.js-right.ai-center {
-    position: relative;
+  position: relative;
 }
 
 ul.all-signinout li {
-    /* padding: 11px 20px; */
-    margin: unset;
-    cursor: pointer;
-    border-bottom: 1px solid #cdcdcd;
+  /* padding: 11px 20px; */
+  margin: unset;
+  cursor: pointer;
+  border-bottom: 1px solid #cdcdcd;
 }
 ul.all-signinout li:hover {
-    background: #cdcdcd;
+  background: #cdcdcd;
 }
 .all-signinout li a {
-    padding: 0px 20px;
+  padding: 0px 20px;
 }
 li.signin-up:hover .all-signinout {
-    display: block;
+  display: block;
 }
 
 .avart-sgin {
@@ -325,21 +284,6 @@ li.signin-up:hover .all-signinout {
   border-radius: 100%;
   height: 100%;
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 button.check-giohangs {
   border: none;
@@ -495,22 +439,18 @@ button.check-giohangs {
   transform: unset;
 }
 
-
 .hd3-navbar__nav :hover .hd3-sub {
-    visibility: initial;
-    z-index: 9;
-    background: #fff;
+  visibility: initial;
+  z-index: 9;
+  background: #fff;
 }
 
 .hd3-navbar__nav .hd3-sub {
-    visibility: hidden;
+  visibility: hidden;
 }
 
-
-
-
 .hd4-left__logo {
-  font-family: 'Baumans', cursive;
+  font-family: "Baumans", cursive;
   font-size: 38px;
   font-weight: 700;
 }
@@ -518,13 +458,8 @@ button.check-giohangs {
 .hd4-left__logo span {
   font-size: 25px;
   font-weight: 500;
-  color: #4FB68D;
+  color: #4fb68d;
 }
-
-
-
-
-
 
 @media (min-width: 576px) {
   :root {
@@ -630,31 +565,10 @@ button.check-giohangs {
   }
 }
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 /*_______________________________________________________________________*/
 /* Header sidebar */
 header {
-    box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
+  box-shadow: rgba(100, 100, 111, 0.2) 0px 7px 29px 0px;
 }
 .hd4-sidebar__bg {
   opacity: 0;
@@ -759,7 +673,6 @@ header {
   opacity: 0.5;
   transform: translateY(0);
 }
-
 
 .hd4-sidebar-left__submenu li {
   padding: 0 0 0 1rem;
@@ -931,7 +844,7 @@ header {
 }
 
 .hd4-right__title li svg {
-    width: 27px;
+  width: 27px;
   margin: 0 0 0 1rem;
 }
 

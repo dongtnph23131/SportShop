@@ -1,4 +1,4 @@
-import { json, useParams } from "react-router-dom";
+import {useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
@@ -9,7 +9,7 @@ const Detail = () => {
   const { data: product, isLoading } = useGetProductQuery(id);
   const [quantity, setQuantity] = useState(1);
   const [addItemToCart] = useAddItemCartMutation();
-  const [selectedAttributes, setSelectedAttributes] = useState({});
+  const [selectedAttributes, setSelectedAttributes] = useState<any>({});
   console.log(selectedAttributes);
 
   useEffect(() => {
@@ -28,15 +28,13 @@ const Detail = () => {
   };
   const handleAddToCart = async () => {
     if (product) {
-      console.log(product);
-      
       const productVariantId = product.productVariantIds;
-      const selectedVariant = productVariantId.find((item) =>
+      const selectedVariant = productVariantId.find((item:any) =>
         Object.keys(selectedAttributes).every((option) =>
           item.options.includes(selectedAttributes[option])
         )
       );
-      console.log("SelectedVariant",selectedVariant);
+      console.log("SelectedVariant", selectedVariant);
 
       if (selectedVariant) {
         const cart = {
@@ -56,7 +54,7 @@ const Detail = () => {
       }
     }
   };
-  const handleAttributeChange = (attributeName, value) => {
+  const handleAttributeChange = (attributeName:any, value:any) => {
     setSelectedAttributes({
       ...selectedAttributes,
       [attributeName]: value,

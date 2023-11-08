@@ -4,7 +4,7 @@ import { categoryValidators } from "../validators/category";
 
 export const getAll = async (req, res) => {
   try {
-    const data = await Category.find().populate("productIds")
+    const data = await Category.find().populate("productIds");
     if (data.length == 0) {
       return res.json({
         message: "Không có danh mục",
@@ -20,17 +20,22 @@ export const getAll = async (req, res) => {
 export const get = async (req, res) => {
   try {
     const categoryId = req.params.id;
-    const { _limit = 100, _page = 1, _sort = "createAt", _order = "asc" } = req.query
+    const {
+      _limit = 100,
+      _page = 1,
+      _sort = "createAt",
+      _order = "asc",
+    } = req.query;
     const options = {
       limit: _limit,
       page: _page,
       sort: {
-        [_sort]: _order === 'desc' ? -1 : 1
+        [_sort]: _order === "desc" ? -1 : 1,
       },
-      populate: [{ path: "categoryId" }]
-    }
-    const data = await Product.paginate({ categoryId: categoryId }, options)
-    return res.status(200).json(data.docs)
+      populate: [{ path: "categoryId" }],
+    };
+    const data = await Product.paginate({ categoryId: categoryId }, options);
+    return res.status(200).json(data.docs);
   } catch (error) {
     return res.status(400).json({
       message: error,
