@@ -42,7 +42,7 @@ const orderSchema = mongoose.Schema(
       type: Number,
       require: true,
     },
-    coupon_price: {
+    couponPrice: {
       type: Number,
       default: 0,
     },

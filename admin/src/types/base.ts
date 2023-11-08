@@ -43,3 +43,30 @@ export interface Image {
   publicId: string;
   _id: string;
 }
+
+export enum OrderStatus {
+  PENDING = "pending",
+  CONFIRMED = "confirmed",
+  COMPLETED = "completed",
+  CANCELED = "canceled",
+}
+
+export enum OrderStatus {
+  ONLINE = "online",
+  DIRECT = "direct",
+}
+
+export interface Order {
+  _id: string;
+  fullName: string;
+  email: string;
+  phone: number;
+  address: string;
+  status: OrderStatus;
+  shippingPrice: number;
+  totalPrice: number;
+  couponPrice: number;
+  typePayment: OrderStatus;
+  createdAt: string;
+  updatedAt: string;
+}
