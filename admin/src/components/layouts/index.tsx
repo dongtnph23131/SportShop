@@ -1,17 +1,17 @@
 import { ReactElement } from "react";
+import { BellRing } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { Input } from "@/components/ui/input";
-import { BellRing } from "lucide-react";
 import { Button } from "@/components/ui/button";
 
 export default function LayoutAdmin(page: ReactElement) {
   return (
-    <div className="flex h-screen w-full">
-      <div className="min-w-[240px] max-w-[240px] p-4 h-screen overflow-y-auto border-r">
+    <div className="h-screen w-full relative">
+      <div className="min-w-[240px] max-w-[240px] p-4 h-screen overflow-y-auto border-r fixed">
         <Sidebar />
       </div>
-      <div className="flex flex-1 flex-col">
-        <div className="min-h-[56px] max-h-[56px] px-6 border-gray-200 flex w-full items-center justify-between border-b ">
+      <div className="absolute left-[240px] right-0">
+        <div className="min-h-[56px] max-h-[56px] px-6 border-gray-200 flex w-full items-center justify-between border-b sticky top-0 z-50 bg-white">
           <div className="flex flex-1 items-center justify-between space-x-4">
             <Input
               type="search"
@@ -23,7 +23,7 @@ export default function LayoutAdmin(page: ReactElement) {
             </Button>
           </div>
         </div>
-        <main className="py-6 px-6 bg-gray-50 overflow-y-auto h-full">
+        <main className="py-6 px-6 bg-gray-50 min-h-[calc(100vh-56px)]">
           {page}
         </main>
       </div>
