@@ -1,8 +1,9 @@
 import Order from "../models/order";
 import Product from "../models/product";
 import ProductVariant from "../models/productVariant";
+import CartItem from "../models/cartItem";
 import { orderSchema } from "../validators/order";
-
+import Cart from "../models/cart";
 export const create = async (req, res) => {
   try {
     const user = req.user;
@@ -18,6 +19,12 @@ export const create = async (req, res) => {
       items,
     } = orderSchema.parse(body);
     const order = await Order.create({ ...body, customerId: user._id });
+    await CartItem.deleteMany({
+      customerId: user._id,
+    });
+    const cart = await Cart.findOne({ customerId: user._id });
+    cart.items = [];
+    await cart.save({ validateBeforeSave: false });
     return res.status(200).json({
       message: "Đặt hàng thành công",
       order,

@@ -1,9 +1,64 @@
 import Cookies from "js-cookie";
 import { useGetCartOfUserQuery } from "../api/cart";
 import CartItem from "./pages/client/Ui/CartItem";
+import * as yup from "yup";
+import { useForm } from "react-hook-form";
+import { yupResolver } from "@hookform/resolvers/yup";
+import { useCreateOrderMutation } from "../api/order";
+import { message } from "antd";
+import { useNavigate } from "react-router-dom";
+const schema = yup.object().shape({
+  fullName: yup.string().required("Họ tên không được để trống"),
+  phone: yup.string().required("Số điện thoại k được để trống"),
+  address: yup.string().required("Địa chỉ không được để trống"),
+  node: yup.string(),
+  typePayment: yup.string().required("Chọn hình thức thanh toán"),
+  email: yup.string(),
+});
 const Cart = () => {
+  const navigate = useNavigate();
+  const {
+    register,
+    handleSubmit,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const token = Cookies.get("token");
   const { data: carts } = useGetCartOfUserQuery(token);
+
+  const total = carts?.reduce(
+    (accumulator: any, currentValue: any) =>
+      accumulator +
+      currentValue.productVariantIds.price * currentValue.quantity,
+    0
+  );
+
+  const onAddOrder = async (data: any) => {
+    if (carts?.length === 0) {
+      alert("Giỏ hàng trống");
+      return;
+    }
+    const items = carts.map((item: any) => {
+      return {
+        productId: item.productIds._id,
+        productVariantId: item.productVariantIds._id,
+        quantity: item.quantity,
+      };
+    });
+    const order = {
+      ...data,
+      totalPrice: total,
+      shippingPrice: 0,
+      items,
+      email: Cookies.get("email"),
+    };
+    await createOrder({ token, order }).then((data: any) => {
+      message.success(data.data.message);
+      navigate("OrderClient");
+    });
+  };
   return (
     <div>
       <section id="page-header3" className="about-header">
@@ -48,115 +103,153 @@ const Cart = () => {
           ) : (
             <>{carts.message}</>
           )}
-          <section id="cart-add" className="section-p1">
-            <div id="subtotal" className="ttnh">
-              <h3>Thông tin nhận hàng</h3>
-              <table>
-                <tr>
-                  <input type="text" placeholder="họ tên" />
-                </tr>
-                <tr>
-                  <input type="text" placeholder="số điện thoại" />
-                </tr>
-                <tr>
-                  <input type="text" placeholder="địa chỉ " />
-                </tr>
-                <tr>
-                  <textarea placeholder="ghi chú giao hàng " />
-                </tr>
-              </table>
-              <button className="normal">Proceed to checkout</button>
-            </div>
+          <form onSubmit={handleSubmit(onAddOrder)}>
+            <section id="cart-add" className="section-p1">
+              <div id="subtotal" className="ttnh">
+                <h3>Thông tin nhận hàng</h3>
+                <table>
+                  <tr>
+                    <input
+                      {...register("fullName")}
+                      type="text"
+                      defaultValue={
+                        `${Cookies.get("firstName")}` +
+                        " " +
+                        `${Cookies.get("lastName")}`
+                      }
+                      placeholder="Họ tên"
+                    />
+                  </tr>
+                  <p className="error">
+                    {errors.fullName ? errors?.fullName.message : ""}
+                  </p>
+                  <tr>
+                    <input
+                      disabled
+                      {...register("email")}
+                      value={Cookies.get("email")}
+                      type="text"
+                      placeholder="Email"
+                    />
+                  </tr>
+                  <tr></tr>
+                  <tr>
+                    <input
+                      {...register("phone")}
+                      type="text"
+                      placeholder="Số điện thoại"
+                    />
+                  </tr>
+                  <p className="error">
+                    {errors.phone ? errors?.phone.message : ""}
+                  </p>
+                  <tr>
+                    <input
+                      {...register("address")}
+                      type="text"
+                      placeholder="Địa chỉ "
+                    />
+                  </tr>
+                  <p className="error">
+                    {errors.address ? errors?.address.message : ""}
+                  </p>
+                  <tr>
+                    <textarea
+                      {...register("node")}
+                      placeholder="Ghi chú giao hàng "
+                    />
+                  </tr>
+                  <p className="error">
+                    {errors.node ? errors?.node.message : ""}
+                  </p>
+                </table>
+                <button className="normal">Proceed to checkout</button>
+              </div>
 
-            <div id="subtotal">
-              <h3>Cart Totals</h3>
-              <table>
-                <tr>
-                  <td>Cart Subtotal</td>
-                  <td>$ 335</td>
-                </tr>
-                <tr>
-                  <td>Shipping</td>
-                  <td>Free</td>
-                </tr>
-                <tr>
-                  <td>quantily</td>
-                  <td>5</td>
-                </tr>
-                <tr>
-                  <td>
-                    <strong>Total</strong>
-                  </td>
-                  <td>
-                    <strong>$ 335</strong>
-                  </td>
-                </tr>
-              </table>
+              <div id="subtotal">
+                <h3>Cart Totals</h3>
+                <table>
+                  <tr>
+                    <td>Cart Subtotal</td>
+                    <td>$ {total ? total : ""}</td>
+                  </tr>
+                  <tr>
+                    <td>Shipping</td>
+                    <td>$ 0</td>
+                  </tr>
+                  <tr>
+                    <td>Quantity</td>
+                    <td>
+                      {token
+                        ? carts?.reduce(
+                            (accumulator: any, currentValue: any) =>
+                              accumulator + currentValue.quantity,
+                            0
+                          )
+                        : ""}
+                    </td>
+                  </tr>
+                  <tr>
+                    <td>
+                      <strong>Total</strong>
+                    </td>
+                    <td>
+                      <strong>$ {total + 0}</strong>
+                    </td>
+                  </tr>
+                </table>
 
-              <div className="">
-                <div className="infomation-item payment-method">
-                  <h2 className="infomation-title">
-                    <svg
-                      className="bi bi-wallet2"
-                      fill="currentColor"
-                      height="16"
-                      viewBox="0 0 16 16"
-                      width="16"
-                      xmlns="http://www.w3.org/2000/svg"
-                    >
-                      <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"></path>
-                    </svg>
-                    <span>Phương Thức Thanh Toán</span>
-                  </h2>
-                  <div className="infomation-content">
-                    <div className="delivery-type-item">
-                      <input
-                        type="radio"
-                        className="ng-untouched ng-pristine ng-valid"
-                      />
-                      <label className="radio"></label>
-                      <label>
-                        <span className="delivery-title">
-                          Thanh toán khi nhận hàng
-                        </span>
-                        <span className="delivery-desc">
-                          <p>
-                            Trả góp 0% với các ngân hàng liên kết và trả thẳng
-                          </p>
-                        </span>
-                      </label>
-                    </div>
-                    <div className="delivery-type-item">
-                      <input
-                        type="radio"
-                        className="ng-untouched ng-pristine ng-valid"
-                      />
-                      <label className="radio"></label>
-                      <label>
-                        <span className="delivery-title">
-                          Thanh toán tiền mặt tại cửa hàng
-                        </span>
-                        <span className="delivery-desc">
-                          <p>Đang cập nhật nội dung!</p>
-                          <div
-                            style={{
-                              position: "absolute",
-                              left: "-74px",
-                              top: "-12px",
-                            }}
-                          >
-                            <div className="gtx-trans-icon">&nbsp;</div>
-                          </div>
-                        </span>
-                      </label>
+                <div className="">
+                  <div className="infomation-item payment-method">
+                    <h2 className="infomation-title">
+                      <svg
+                        className="bi bi-wallet2"
+                        fill="currentColor"
+                        height="16"
+                        viewBox="0 0 16 16"
+                        width="16"
+                        xmlns="http://www.w3.org/2000/svg"
+                      >
+                        <path d="M12.136.326A1.5 1.5 0 0 1 14 1.78V3h.5A1.5 1.5 0 0 1 16 4.5v9a1.5 1.5 0 0 1-1.5 1.5h-13A1.5 1.5 0 0 1 0 13.5v-9a1.5 1.5 0 0 1 1.432-1.499L12.136.326zM5.562 3H13V1.78a.5.5 0 0 0-.621-.484L5.562 3zM1.5 4a.5.5 0 0 0-.5.5v9a.5.5 0 0 0 .5.5h13a.5.5 0 0 0 .5-.5v-9a.5.5 0 0 0-.5-.5h-13z"></path>
+                      </svg>
+                      <span>Phương Thức Thanh Toán</span>
+                    </h2>
+                    <div className="infomation-content">
+                      <div className="delivery-type-item">
+                        <input
+                          value={"direct"}
+                          {...register("typePayment")}
+                          type="radio"
+                          className="ng-untouched ng-pristine ng-valid"
+                        />
+                        <label>
+                          <span className="delivery-title">
+                            Thanh toán khi nhận hàng
+                          </span>
+                        </label>
+                      </div>
+                      <div className="delivery-type-item">
+                        <input
+                          value={"online"}
+                          {...register("typePayment")}
+                          type="radio"
+                          className="ng-untouched ng-pristine ng-valid"
+                        />
+                        <label>
+                          <span className="delivery-title">
+                            Thanh toán online
+                          </span>
+                        </label>
+                      </div>
+                      <p className="error">
+                        {errors.typePayment ? errors?.typePayment.message : ""}
+                      </p>
                     </div>
                   </div>
                 </div>
               </div>
-
-              <button className="normal">Proceed to checkout</button>
-            </div>
-          </section>
+            </section>
+          </form>
         </>
       )}
     </div>

@@ -7,7 +7,7 @@ export const getAll = async (req, res) => {
   try {
     const {
       _limit = 100,
-      _sort = "createAt",
+      _sort = "createdAt",
       _page = 1,
       _order = "asc",
       categories,

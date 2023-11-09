@@ -70,7 +70,7 @@ const Shops = () => {
                         return (
                           <div
                             onClick={() => {
-                              setPage(1)
+                              setPage(1);
                               setDataCategories([
                                 ...dataCategories,
                                 { _id: item._id, name: item.name },
@@ -99,7 +99,7 @@ const Shops = () => {
                             <button>
                               <i
                                 onClick={() => {
-                                  setPage(1)
+                                  setPage(1);
                                   setCategories([
                                     ...categories,
                                     { _id: item._id, name: item.name },
@@ -139,7 +139,7 @@ const Shops = () => {
                         setSort("maxPrice");
                         setOrder("asc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>Giá tăng dần</p>
@@ -149,7 +149,7 @@ const Shops = () => {
                         setSort("maxPrice");
                         setOrder("desc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>Giá giảm dần</p>
@@ -159,7 +159,7 @@ const Shops = () => {
                         setSort("name");
                         setOrder("asc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>A-Z</p>
@@ -169,7 +169,7 @@ const Shops = () => {
                         setSort("name");
                         setOrder("desc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>Z-A</p>
@@ -179,7 +179,7 @@ const Shops = () => {
                         setSort("createdAt");
                         setOrder("desc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>Mới nhất</p>
@@ -189,7 +189,7 @@ const Shops = () => {
                         setSort("createdAt");
                         setOrder("asc");
                         setIsSortVisible(false);
-                        setPage(1)
+                        setPage(1);
                       }}
                     >
                       <p>Cũ nhất</p>
