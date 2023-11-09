@@ -41,6 +41,12 @@ const customerSchema = new mongoose.Schema(
     passwordChangeAt: {
       type: String,
     },
+    orderIds: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     timestamps: true,
