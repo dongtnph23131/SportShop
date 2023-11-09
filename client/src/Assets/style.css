@@ -1932,3 +1932,6 @@ footer .copyright {
     padding: 20px;
   }
 }
+.selected{
+  background-color: #088178;
+}

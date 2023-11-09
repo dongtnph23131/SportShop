@@ -1,4 +1,4 @@
-import {useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
@@ -10,39 +10,22 @@ const Detail = () => {
   const [quantity, setQuantity] = useState(1);
   const [addItemToCart] = useAddItemCartMutation();
   const [selectedAttributes, setSelectedAttributes] = useState<any>({});
-  console.log(selectedAttributes);
-
-  useEffect(() => {
-    console.log(product);
-  }, [product]);
-
-  const increaseQuantity = () => {
-    if (quantity < 999) {
-      setQuantity(quantity + 1);
-    }
-  };
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
-    }
-  };
   const handleAddToCart = async () => {
-    if (product) {
+    if (!selectedAttributes) {
+      alert("Hãy chọn thuộc tính sản phẩm");
+      return;
+    } else if (product) {
       const productVariantId = product.productVariantIds;
-      const selectedVariant = productVariantId.find((item:any) =>
+      const selectedVariant = productVariantId.find((item: any) =>
         Object.keys(selectedAttributes).every((option) =>
           item.options.includes(selectedAttributes[option])
         )
       );
-      console.log("SelectedVariant", selectedVariant);
-
       if (selectedVariant) {
         const cart = {
           token: Cookies.get("token"),
           productVariantIds: selectedVariant._id,
-          productId: selectedVariant.productId,
         };
-        console.log("Cart", cart);
         try {
           await addItemToCart(cart);
           alert("Sản phẩm đã được thêm vào giỏ hàng.");
@@ -50,11 +33,11 @@ const Detail = () => {
           console.error(error);
         }
       } else {
-        alert("Vui lòng chọn thuộc tính sản phẩm.");
+        alert("Thuộc tính ko tồn tại !");
       }
     }
   };
-  const handleAttributeChange = (attributeName:any, value:any) => {
+  const handleAttributeChange = (attributeName: any, value: any) => {
     setSelectedAttributes({
       ...selectedAttributes,
       [attributeName]: value,
@@ -95,18 +78,6 @@ const Detail = () => {
             {" "}
             Price: {product ? `${product.minPrice}-${product.maxPrice}` : ``} $
           </h2>
-          {/* <div className="bdetail_no">
-            <span>Số lượng</span>
-            <button onClick={decreaseQuantity}>-</button>
-            <input
-              type="text"
-              name="idsoluong"
-              id="idsoluong"
-              value={quantity}
-              className="bd_book_no"
-            />
-            <button onClick={increaseQuantity}>+</button>
-          </div> */}
           {product?.options.map((productItem: any, index: any) => {
             return (
               <div key={index + 1} className="box-qlt">
@@ -116,12 +87,14 @@ const Detail = () => {
                     const isSelected =
                       selectedAttributes[productItem.name] === item;
                     return (
-                      <li key={indexItem + 1}>
+                      <li
+                        className={isSelected ? "selected" : ""}
+                        key={indexItem + 1}
+                      >
                         <a
                           onClick={() =>
                             handleAttributeChange(productItem.name, item)
                           }
-                          className={isSelected ? "selected" : ""}
                         >
                           {item}
                         </a>
@@ -132,7 +105,6 @@ const Detail = () => {
               </div>
             );
           })}
-          {/* Số lượng:  <input type="number" value="1" /> */}
           <button className="normal" onClick={handleAddToCart}>
             Add to Cart{" "}
           </button>

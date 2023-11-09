@@ -24,7 +24,24 @@ const orderApi = createApi({
       },
       providesTags: ["Order"],
     }),
+    createOrder: builder.mutation({
+      query: ({ token, order }) => {
+        return {
+          url: "/orders",
+          body: { ...order },
+          method: "POST",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
-export const { useGetOrderByUserQuery, useGetOneOrderQuery } = orderApi;
+export const {
+  useGetOrderByUserQuery,
+  useGetOneOrderQuery,
+  useCreateOrderMutation,
+} = orderApi;
 export default orderApi;
