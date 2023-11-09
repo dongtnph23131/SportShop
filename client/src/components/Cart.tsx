@@ -56,7 +56,7 @@ const Cart = () => {
     };
     await createOrder({ token, order }).then((data: any) => {
       message.success(data.data.message);
-      navigate("OrderClient");
+      navigate("/OrderClient");
     });
   };
   return (

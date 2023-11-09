@@ -9,18 +9,18 @@ const OrderClient = () => {
   return (
     <div>
       <div className="box-oder-carts">
-        <div className="account-page__content">
+        <div className="account-page__content"></div>
           <div>
             <h3 className="account-page-title">Lịch sử đơn hàng</h3>{" "}
+            <div className="account-page__label">
+              Đơn hàng của bạn
+              <span>: {orders?.orders?.length} đơn hàng</span>
+            </div>{" "}
             {orders?.orders?.map((item: any) => {
               return (
-                <NavLink to={`/orderDetail/${item._id}`}  key={item._id}>
+                <NavLink to={`/orderDetail/${item._id}`} key={item._id}>
                   <div>
                     <div>
-                      <div className="account-page__label">
-                        Đơn hàng của bạn
-                        <span>: {orders?.orders?.length} đơn hàng</span>
-                      </div>{" "}
                       <div className="orders-body mgt--10">
                         <div className="orders-wrapper">
                           <a href="" className="order">
