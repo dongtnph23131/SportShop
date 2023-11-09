@@ -2,6 +2,7 @@ import Order from "../models/order";
 import Product from "../models/product";
 import ProductVariant from "../models/productVariant";
 import { orderSchema } from "../validators/order";
+import Customer from "../models/customer";
 
 export const create = async (req, res) => {
   try {
@@ -17,7 +18,15 @@ export const create = async (req, res) => {
       typePayment,
       items,
     } = orderSchema.parse(body);
+
     const order = await Order.create({ ...body, customerId: user._id });
+
+    await Customer.findByIdAndUpdate(user._id, {
+      $addToSet: {
+        orderIds: order._id,
+      },
+    });
+
     return res.status(200).json({
       message: "Đặt hàng thành công",
       order,

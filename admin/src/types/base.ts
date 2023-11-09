@@ -70,16 +70,17 @@ export interface Order {
   createdAt: string;
   updatedAt: string;
   customerId: string;
-  // items: {
-  //   productId: string;
-  //   productVariantId: string;
-  //   quantity: number;
-  //   _id: string;
-  // }[];
+  items: {
+    productId: string;
+    productVariantId: string;
+    quantity: number;
+    _id: string;
+  }[];
 }
 
 export interface Customer {
   addressIds: string[];
+  orderIds: string[];
   _id: string;
   firstName: string;
   lastName: string;

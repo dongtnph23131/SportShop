@@ -6,7 +6,9 @@ interface Input {
   id: string;
 }
 
-export type OrderResponse = Order & { customerId: Customer } & {
+export type OrderResponse = Omit<Order, "customerId" | "items"> & {
+  customerId: Customer;
+} & {
   items: {
     productId: Product;
     productVariantId: ProductVariant;
