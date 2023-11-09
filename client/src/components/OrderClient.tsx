@@ -9,7 +9,7 @@ const OrderClient = () => {
   return (
     <div>
       <div className="box-oder-carts">
-        <div className="account-page__content"></div>
+        <div className="account-page__content">
           <div>
             <h3 className="account-page-title">Lịch sử đơn hàng</h3>{" "}
             <div className="account-page__label">
