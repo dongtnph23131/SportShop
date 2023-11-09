@@ -101,14 +101,7 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/products/${encodeURIComponent(row.original._id)}`}>
-                Edit
-              </Link>
-            </DropdownMenuItem>
-            <DropdownMenuItem asChild>
-              <Link href={`/products/${encodeURIComponent(row.original._id)}`}>
-                View
-              </Link>
+              <Link href={`/orders/${row.original._id}`}>View</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
