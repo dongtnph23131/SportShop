@@ -73,48 +73,38 @@ p {
 .bo .bow1 .bow1-child {
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(
-    90deg,
-    rgba(26, 84, 158, 1) 0%,
-    rgba(62, 149, 216, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(26, 84, 158, 1) 0%,
+      rgba(62, 149, 216, 1) 100%);
   padding: 0 15px;
 }
 
 .bo .bow1:nth-child(2) .bow1-child {
   background: rgb(17, 145, 176);
-  background: linear-gradient(
-    90deg,
-    rgba(17, 145, 176, 1) 0%,
-    rgba(78, 211, 190, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(17, 145, 176, 1) 0%,
+      rgba(78, 211, 190, 1) 100%);
 }
 
 .bo .bow1:nth-child(3) .bow1-child {
   background: rgb(227, 114, 20);
-  background: linear-gradient(
-    90deg,
-    rgba(227, 114, 20, 1) 0%,
-    rgba(245, 177, 42, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(227, 114, 20, 1) 0%,
+      rgba(245, 177, 42, 1) 100%);
 }
 
 .bo .bow1:nth-child(4) .bow1-child {
   background: rgb(163, 39, 85);
-  background: linear-gradient(
-    90deg,
-    rgba(163, 39, 85, 1) 0%,
-    rgba(222, 40, 80, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(163, 39, 85, 1) 0%,
+      rgba(222, 40, 80, 1) 100%);
 }
 
 .bo .bow1:nth-child(5) .bow1-child {
   background: rgb(26, 84, 158);
-  background: linear-gradient(
-    90deg,
-    rgba(26, 84, 158, 1) 0%,
-    rgba(62, 149, 216, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(26, 84, 158, 1) 0%,
+      rgba(62, 149, 216, 1) 100%);
 }
 
 .icon {
@@ -162,8 +152,7 @@ p {
   border: 1px solid #cdcdcd;
 }
 
-.box-container-filter {
-}
+.box-container-filter {}
 
 .color-detaile {
   display: flex;
@@ -224,14 +213,17 @@ p {
   padding-top: 31px;
   border: 1px solid #cdcdcd;
 }
+
 h4.brackham {
   background: #eee;
   line-height: 35px;
 }
+
 .brackham span {
   display: inline-block;
   padding-left: 80px;
 }
+
 .sort-shops span {
   padding: 5px 20px;
   background: #4fb68d;
@@ -1655,6 +1647,7 @@ footer .copyright {
   background-color: #000;
   color: #fff;
 }
+
 .btn__addAdr {
   width: 150px;
   height: 31px;
@@ -1665,6 +1658,61 @@ footer .copyright {
   border: none;
   border-radius: 20px;
 }
+
+.update-password-popup {
+  position: fixed;
+  top: 0;
+  left: 0;
+  z-index: 12;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.7);
+}
+
+.main_updatePassword {
+  display: flex;
+  box-sizing: border-box;
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 50vw;
+  transform: translate(-50%, -50%);
+  background-color: #fff;
+  padding: 2rem;
+  border-radius: 16px;
+  flex-direction: column;
+}
+
+.chane__password input {
+  width: 100%;
+  padding: 10px;
+  margin: 10px 0px;
+  border-radius: 5px;
+}
+
+.btn__updatePassword {
+  width: 150px;
+  height: 31px;
+  font-size: 14px;
+  display: flex;
+  justify-content: center;
+  background-color: #2f5acf;
+  border: none;
+  border-radius: 20px;
+  color: #fff;
+}
+
+.rowsInputUpdatePass {
+  position: relative;
+}
+
+.rowsInputUpdatePass label {
+  position: absolute;
+  right: 20px;
+  top: 20px;
+  cursor: pointer;
+}
+
 /* Media Query */
 @media (max-width: 799px) {
   .section-p1 {
@@ -1932,6 +1980,7 @@ footer .copyright {
     padding: 20px;
   }
 }
-.selected{
+
+.selected {
   background-color: #088178;
 }
