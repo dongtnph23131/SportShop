@@ -152,7 +152,7 @@ const Header = () => {
                     </div>
                     <ul className="all-signinout">
                       <li>
-                        <a>Thông tin cá nhân</a>
+                        <a href="/profileDetail">Thông tin cá nhân</a>
                       </li>
                       <li
                         onClick={() => {
