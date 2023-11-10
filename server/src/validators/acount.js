@@ -24,3 +24,20 @@ export const forgotPasswordValidators = joi.object({
     "string.email": "Email không đúng định dạng",
   }),
 });
+export const updatePasswordVilidators = joi.object({
+  currentPassword: joi.string().min(6).required().messages({
+    "string.empty": "Mật khẩu không được để trống",
+    "any.required": "Trường mật khẩu là bắt buộc",
+    "string.min": "Mật khẩu phải có ít nhất 6 ký tự",
+  }),
+  password: joi.string().min(6).required().messages({
+    "string.empty": "Mật khẩu không được để trống",
+    "any.required": "Trường mật khẩu là bắt buộc",
+    "string.min": "Mật khẩu phải có ít nhất 6 ký tự",
+  }),
+  confirmPassword: joi.string().valid(joi.ref("password")).required().messages({
+    "any.only": "Mật khẩu không khớp",
+    "string.empty": "Cần nhập lại mật khẩu",
+    "any.required": "Bắt buộc nhập lại mật khẩu",
+  }),
+});

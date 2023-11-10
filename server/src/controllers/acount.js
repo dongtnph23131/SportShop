@@ -5,6 +5,7 @@ import jwt from "jsonwebtoken";
 import {
   forgotPasswordValidators,
   resetPasswordVilidators,
+  updatePasswordVilidators,
 } from "../validators/acount";
 export const forgotPassword = async (req, res) => {
   try {
@@ -100,6 +101,53 @@ export const resetPassword = async (req, res) => {
     });
   } catch (error) {
     res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+export const updatePassword = async (req, res) => {
+  try {
+    const user = req.user;
+    const { error } = updatePasswordVilidators.validate(req.body, {
+      abortEarly: false,
+    });
+    if (error) {
+      const errors = error.details.map((err) => err.message);
+      return res.status(400).json({
+        message: errors,
+      });
+    }
+    const isMatch = await bcrypt.compare(
+      req.body.currentPassword,
+      user.password
+    );
+    if (!isMatch) {
+      return res.status(400).json({
+        message: "Mật khẩu hiện tại không đúng",
+      });
+    }
+    const token = jwt.sign({ id: user._id }, "dongtimo", {
+      expiresIn: "365d",
+    });
+    const hashPassword = await bcrypt.hash(req.body.password, 10);
+    const newUser = await Customer.findByIdAndUpdate(
+      user._id,
+      {
+        password: hashPassword,
+        passwordChangeAt: Date.now(),
+      },
+      {
+        new: true,
+      }
+    );
+    user.password = undefined;
+    return res.status(200).json({
+      message: "Đổi mật khẩu thành công",
+      newUser,
+      token,
+    });
+  } catch (error) {
+    return res.status(400).json({
       message: error.message,
     });
   }

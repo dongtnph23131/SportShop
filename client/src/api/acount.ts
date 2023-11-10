@@ -20,8 +20,23 @@ const acountApi = createApi({
         };
       },
     }),
+    updatePassword: builder.mutation({
+      query: ({ value, token }) => {
+        return {
+          url: `/updatePassword`,
+          method: "PATCH",
+          body: value,
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+    }),
   }),
 });
-export const { useForgotPasswordMutation, useResettPasswordMutation } =
-  acountApi;
+export const {
+  useForgotPasswordMutation,
+  useResettPasswordMutation,
+  useUpdatePasswordMutation,
+} = acountApi;
 export default acountApi;
