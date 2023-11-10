@@ -1,20 +1,47 @@
+import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
-
-type Props = {};
-
+import { useForm } from "react-hook-form";
+import * as yup from "yup";
+import { useUpdatePasswordMutation } from "../api/acount";
+import Swal from "sweetalert2";
+import Cookies from "js-cookie";
+const schema = yup.object().shape({
+  currentPassword: yup
+    .string()
+    .required("Mật khẩu hiện tại k để trống")
+    .min(6, "Mật khẩu hiện tại ít nhất 6 kí tự"),
+  password: yup
+    .string()
+    .required("Mật khẩu mới k để trống")
+    .min(6, "Mật khẩu mới ít nhất 6 kí tự"),
+  confirmPassword: yup
+    .string()
+    .oneOf([yup.ref("password"), "Nhập lại mật khẩu chưa đúng"])
+    .required("Cần nhập lại mật khẩu")
+    .min(6, "Nhập lại mật khẩu mới ít nhất 6 kí tự"),
+});
 const ProfileDetail = () => {
-  const [activeTab, setActiveTab] = useState("profile"); // Sử dụng state để lưu trạng thái tab hiện tại
+  const token = Cookies.get("token");
+  const [updatePassword] = useUpdatePasswordMutation();
+  const [activeTab, setActiveTab] = useState("profile");
   const [isUpdatePasswordPopupOpen, setIsUpdatePasswordPopupOpen] =
     useState(false);
-  const [passwordVisibilityOld, setPasswordVisibilityOld] = useState(false);
-  const [passwordVisibilityNew, setPasswordVisibilityNew] = useState(false);
+  const [passwordVisibilityOld, setPasswordVisibilityOld] = useState(true);
+  const [passwordVisibilityNew, setPasswordVisibilityNew] = useState(true);
   const [passwordVisibilityConfirm, setPasswordVisibilityConfirm] =
-    useState(false);
+    useState(true);
   const handleTabClick = (tabName: string) => {
-    setActiveTab(tabName); // Cập nhật trạng thái tab khi click
+    setActiveTab(tabName);
   };
   const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
-
+  const {
+    register,
+    handleSubmit,
+    reset,
+    formState: { errors },
+  } = useForm({
+    resolver: yupResolver(schema),
+  });
   const openAddAddressPopup = () => {
     setIsAddAddressPopupOpen(true);
   };
@@ -40,6 +67,25 @@ const ProfileDetail = () => {
   const togglePasswordVisibilityConfirm = () => {
     setPasswordVisibilityConfirm((prevVisibility) => !prevVisibility);
   };
+  const onUpdatePassword = async (value: any) => {
+    const data: any = await updatePassword({ value, token });
+    if (data?.data) {
+      Swal.fire("Good job!", "Đổi mật khẩu thành công", "success");
+      Cookies.set("token", data.data.token);
+      Cookies.set("email", data.data.newUser.email);
+      Cookies.set("firstName", data.data.newUser.firstName);
+      Cookies.set("lastName", data.data.newUser.lastName);
+      Cookies.set("avatar", data.data.newUser.avatar);
+      reset()
+      setIsUpdatePasswordPopupOpen(false)
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: data.error.data.message,
+      });
+    }
+  };
+
   return (
     <div>
       <div className="box__profileDetail">
@@ -119,21 +165,29 @@ const ProfileDetail = () => {
                         >
                           Cập nhật
                         </button>
-                        {/* Password update popup */}
                         {isUpdatePasswordPopupOpen && (
                           <div className="update-password-popup">
                             <div className="main_updatePassword">
                               <h3>Đổi mật khẩu</h3>
-                              <form action="" className="chane__password">
+                              <form
+                                onSubmit={handleSubmit(onUpdatePassword)}
+                                className="chane__password"
+                              >
                                 <div className="rowsInputUpdatePass">
                                   <input
+                                    {...register("currentPassword")}
                                     type={
                                       passwordVisibilityOld
-                                        ? "text"
-                                        : "password"
+                                        ? "password"
+                                        : "text"
                                     }
                                     placeholder="Nhập mật khẩu cũ"
                                   />
+                                  <p className="error">
+                                    {errors.currentPassword
+                                      ? errors?.currentPassword.message
+                                      : ""}
+                                  </p>
                                   <label
                                     htmlFor="togglePasswordOld"
                                     onClick={togglePasswordVisibilityOld}
@@ -147,13 +201,19 @@ const ProfileDetail = () => {
                                 </div>
                                 <div className="rowsInputUpdatePass">
                                   <input
+                                    {...register("password")}
                                     type={
                                       passwordVisibilityNew
-                                        ? "text"
-                                        : "password"
+                                        ? "password"
+                                        : "text"
                                     }
                                     placeholder="Nhập mật khẩu mới"
                                   />
+                                  <p className="error">
+                                    {errors.password
+                                      ? errors?.password.message
+                                      : ""}
+                                  </p>
                                   <label
                                     htmlFor="togglePasswordNew"
                                     onClick={togglePasswordVisibilityNew}
@@ -167,13 +227,19 @@ const ProfileDetail = () => {
                                 </div>
                                 <div className="rowsInputUpdatePass">
                                   <input
+                                    {...register("confirmPassword")}
                                     type={
                                       passwordVisibilityConfirm
-                                        ? "text"
-                                        : "password"
+                                        ? "password"
+                                        : "text"
                                     }
                                     placeholder="Xác nhận mật khẩu mới"
                                   />
+                                  <p className="error">
+                                    {errors.confirmPassword
+                                      ? errors?.confirmPassword.message
+                                      : ""}
+                                  </p>
                                   <label
                                     htmlFor="togglePasswordConfirm"
                                     onClick={togglePasswordVisibilityConfirm}
@@ -185,18 +251,18 @@ const ProfileDetail = () => {
                                     )}
                                   </label>
                                 </div>
+                                <div className="group__btn__close">
+                                  <button
+                                    className="btn__backAdress"
+                                    onClick={closeUpdatePasswordPopup}
+                                  >
+                                    Đóng
+                                  </button>
+                                  <button type="submit" className="btn__updatePassword">
+                                    Cập nhật Mật khẩu
+                                  </button>
+                                </div>
                               </form>
-                              <div className="group__btn__close">
-                                <button
-                                  className="btn__backAdress"
-                                  onClick={closeUpdatePasswordPopup}
-                                >
-                                  Đóng
-                                </button>
-                                <button className="btn__updatePassword">
-                                  Cập nhật Mật khẩu
-                                </button>
-                              </div>
                             </div>
                           </div>
                         )}
