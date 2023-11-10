@@ -5,7 +5,7 @@ const router = express.Router();
 
 // Define routes
 router.get("/profile",getAllUser );
-router.get("/profile/:customerI",getUserById );
+router.get("/profile/:customerId",getUserById );
 
 
 export default router;
