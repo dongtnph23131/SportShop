@@ -4,7 +4,12 @@ type Props = {};
 
 const ProfileDetail = () => {
   const [activeTab, setActiveTab] = useState("profile"); // Sử dụng state để lưu trạng thái tab hiện tại
-
+  const [isUpdatePasswordPopupOpen, setIsUpdatePasswordPopupOpen] =
+    useState(false);
+  const [passwordVisibilityOld, setPasswordVisibilityOld] = useState(false);
+  const [passwordVisibilityNew, setPasswordVisibilityNew] = useState(false);
+  const [passwordVisibilityConfirm, setPasswordVisibilityConfirm] =
+    useState(false);
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName); // Cập nhật trạng thái tab khi click
   };
@@ -16,6 +21,24 @@ const ProfileDetail = () => {
 
   const closeAddAddressPopup = () => {
     setIsAddAddressPopupOpen(false);
+  };
+  const openUpdatePasswordPopup = () => {
+    setIsUpdatePasswordPopupOpen(true);
+  };
+
+  const closeUpdatePasswordPopup = () => {
+    setIsUpdatePasswordPopupOpen(false);
+  };
+  const togglePasswordVisibilityOld = () => {
+    setPasswordVisibilityOld((prevVisibility) => !prevVisibility);
+  };
+
+  const togglePasswordVisibilityNew = () => {
+    setPasswordVisibilityNew((prevVisibility) => !prevVisibility);
+  };
+
+  const togglePasswordVisibilityConfirm = () => {
+    setPasswordVisibilityConfirm((prevVisibility) => !prevVisibility);
   };
   return (
     <div>
@@ -90,9 +113,93 @@ const ProfileDetail = () => {
                             ****************
                           </div>
                         </div>
-                        <button className="btn__update update__sign">
+                        <button
+                          className="btn__update update__sign"
+                          onClick={openUpdatePasswordPopup}
+                        >
                           Cập nhật
                         </button>
+                        {/* Password update popup */}
+                        {isUpdatePasswordPopupOpen && (
+                          <div className="update-password-popup">
+                            <div className="main_updatePassword">
+                              <h3>Đổi mật khẩu</h3>
+                              <form action="" className="chane__password">
+                                <div className="rowsInputUpdatePass">
+                                  <input
+                                    type={
+                                      passwordVisibilityOld
+                                        ? "text"
+                                        : "password"
+                                    }
+                                    placeholder="Nhập mật khẩu cũ"
+                                  />
+                                  <label
+                                    htmlFor="togglePasswordOld"
+                                    onClick={togglePasswordVisibilityOld}
+                                  >
+                                    {passwordVisibilityOld ? (
+                                      <i className="fa-solid fa-eye-slash"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-eye"></i>
+                                    )}
+                                  </label>
+                                </div>
+                                <div className="rowsInputUpdatePass">
+                                  <input
+                                    type={
+                                      passwordVisibilityNew
+                                        ? "text"
+                                        : "password"
+                                    }
+                                    placeholder="Nhập mật khẩu mới"
+                                  />
+                                  <label
+                                    htmlFor="togglePasswordNew"
+                                    onClick={togglePasswordVisibilityNew}
+                                  >
+                                    {passwordVisibilityNew ? (
+                                      <i className="fa-solid fa-eye-slash"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-eye"></i>
+                                    )}
+                                  </label>
+                                </div>
+                                <div className="rowsInputUpdatePass">
+                                  <input
+                                    type={
+                                      passwordVisibilityConfirm
+                                        ? "text"
+                                        : "password"
+                                    }
+                                    placeholder="Xác nhận mật khẩu mới"
+                                  />
+                                  <label
+                                    htmlFor="togglePasswordConfirm"
+                                    onClick={togglePasswordVisibilityConfirm}
+                                  >
+                                    {passwordVisibilityConfirm ? (
+                                      <i className="fa-solid fa-eye-slash"></i>
+                                    ) : (
+                                      <i className="fa-solid fa-eye"></i>
+                                    )}
+                                  </label>
+                                </div>
+                              </form>
+                              <div className="group__btn__close">
+                                <button
+                                  className="btn__backAdress"
+                                  onClick={closeUpdatePasswordPopup}
+                                >
+                                  Đóng
+                                </button>
+                                <button className="btn__updatePassword">
+                                  Cập nhật Mật khẩu
+                                </button>
+                              </div>
+                            </div>
+                          </div>
+                        )}
                       </div>
                     </div>
                   </div>
