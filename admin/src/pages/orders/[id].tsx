@@ -1,17 +1,4 @@
-import { DataTable } from "@/components/data-table/data-table";
-import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import LayoutAdmin from "@/components/layouts";
-import {
-  AlertDialog,
-  AlertDialogAction,
-  AlertDialogCancel,
-  AlertDialogContent,
-  AlertDialogDescription,
-  AlertDialogFooter,
-  AlertDialogHeader,
-  AlertDialogTitle,
-  AlertDialogTrigger,
-} from "@/components/ui/alert-dialog";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -22,23 +9,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuSeparator,
-  DropdownMenuShortcut,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu";
-import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useOrdersQuery } from "@/services/orders/orders-query";
-import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
-import { Order, OrderStatus, Product } from "@/types/base";
-import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import { ColumnDef } from "@tanstack/react-table";
+import {
+  Order,
+  OrderDeliveryStatus,
+  OrderPaymentStatus,
+  OrderStatus,
+  Product,
+} from "@/types/base";
 import { format } from "date-fns";
-import Link from "next/link";
 import {
   TableHead,
   TableRow,
@@ -51,6 +30,19 @@ import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
 import { useProductChangeStatusMutation } from "@/services/orders/order-change-status-mutation";
+import { API_URL } from "@/lib/contants";
+import { toast } from "sonner";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -68,9 +60,44 @@ const Page: NextPageWithLayout = () => {
         <>
           <div className="grid grid-cols-2 gap-2">
             <Card>
-              <CardHeader>
-                <CardTitle>Order information</CardTitle>
-              </CardHeader>
+              <div className="flex justify-between p-6">
+                <CardHeader className="p-0">
+                  <CardTitle>Order information</CardTitle>
+                </CardHeader>
+                {order.status === OrderStatus.PENDING && (
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                      <div className="h-1.5 w-1.5 self-center rounded-full bg-yellow-400"></div>
+                      <span className="ml-2 text-sm">Pending</span>
+                    </div>
+                    <Button
+                      variant={"destructive"}
+                      onClick={async () => {
+                        const res = await fetch(
+                          `${API_URL}/api/admin/orders/${order._id}/cancel`,
+                          { method: "POST" }
+                        );
+
+                        if (!res.ok) {
+                          const error = await res.text();
+                          toast.error(error);
+                          return;
+                        }
+
+                        toast.success("Successfully canceled this order");
+                      }}
+                    >
+                      Cancel
+                    </Button>
+                  </div>
+                )}
+                {order.status === OrderStatus.COMPLETED && (
+                  <div className="flex items-center">
+                    <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
+                    <span className="ml-2 text-sm">Completed</span>
+                  </div>
+                )}
+              </div>
 
               <CardContent>
                 <dl className="divide-y divide-gray-100">
@@ -79,7 +106,7 @@ const Page: NextPageWithLayout = () => {
                       ID:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      {order._id}
+                      {order.orderId}
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -87,7 +114,10 @@ const Page: NextPageWithLayout = () => {
                       Date:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      {format(new Date(order.createdAt), "dd MMM yyyy")}
+                      {format(
+                        new Date(order.createdAt),
+                        "dd MMM yyyy hh:mm aaaa"
+                      )}
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -95,7 +125,17 @@ const Page: NextPageWithLayout = () => {
                       Status:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <Badge>{order.status}</Badge>
+                      <Badge
+                        variant={
+                          order.status === OrderStatus.COMPLETED
+                            ? "success"
+                            : order.status === OrderStatus.CANCELED
+                            ? "destructive"
+                            : "default"
+                        }
+                      >
+                        {order.status}
+                      </Badge>
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -185,93 +225,161 @@ const Page: NextPageWithLayout = () => {
             </CardContent>
           </Card>
 
-          <Card className="mt-4">
-            <CardHeader>
-              <CardTitle>Summary</CardTitle>
-            </CardHeader>
-            <CardContent>
-              <div className="max-w-3xl border border-gray-300 rounded-md p-4">
-                <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="font-medium leading-6 text-gray-900">
-                    Subtotal:
-                  </dt>
-                  <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+          <div className="grid grid-cols-2 gap-4">
+            <Card className="mt-4">
+              <div className="flex justify-between p-6">
+                <CardHeader className="p-0">
+                  <CardTitle>Payment</CardTitle>
+                </CardHeader>
+                {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
+                  <div className="flex items-center gap-2">
+                    <div className="flex items-center">
+                      <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
+                      <span className="ml-2 text-sm">Not Paid</span>
+                    </div>
+                    <Button
+                      variant={"outline"}
+                      onClick={async () => {
+                        const res = await fetch(
+                          `${API_URL}/api/admin/orders/${order._id}/pay`,
+                          { method: "POST" }
+                        );
+
+                        if (!res.ok) {
+                          const error = await res.text();
+                          toast.error(error);
+                          return;
+                        }
+
+                        toast.success("Successfully mask as paid");
+                      }}
+                    >
+                      Paid
+                    </Button>
+                  </div>
+                )}
+                {order.paymentStatus === OrderPaymentStatus.PAID && (
+                  <div className="flex items-center">
+                    <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
+                    <span className="ml-2 text-sm">Paid</span>
+                  </div>
+                )}
+              </div>
+              <CardContent>
+                <div className="mt-4 flex items-center justify-between text-sm">
+                  <dt className="leading-6 text-gray-900">Subtotal:</dt>
+                  <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {order.totalPrice}
                   </dd>
                 </div>
-                <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="font-medium leading-6 text-gray-900">
-                    Discount:
-                  </dt>
-                  <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <div className="mt-4 flex items-center justify-between text-sm">
+                  <dt className="leading-6 text-gray-900">Discount:</dt>
+                  <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {order.couponPrice}
                   </dd>
                 </div>
-                <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="font-medium leading-6 text-gray-900">
-                    Shipping:
-                  </dt>
-                  <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <div className="mt-4 flex items-center justify-between text-sm">
+                  <dt className="leading-6 text-gray-900">Shipping:</dt>
+                  <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {order.shippingPrice}
                   </dd>
                 </div>
-                <div className="px-4 py-2 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="font-medium leading-6 text-gray-900">
-                    Total:
-                  </dt>
-                  <dd className="mt-1 leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                <div className="mt-4 flex items-center justify-between text-lg">
+                  <dt className="font-semibold leading-6">Total:</dt>
+                  <dd className="font-semibold leading-6 sm:col-span-2 sm:mt-0">
                     {order.totalPrice - order.couponPrice - order.shippingPrice}
                   </dd>
                 </div>
-              </div>
-            </CardContent>
-            <CardFooter className="flex gap-2 items-center">
-              <Button
-                variant="destructive"
-                onClick={() =>
-                  mutate(
-                    { id: order._id, status: OrderStatus.CANCELED },
-                    {
-                      onSuccess: () => {
-                        router.push("/orders");
-                      },
-                    }
-                  )
-                }
-              >
-                Cancel
-              </Button>
-              <Button
-                variant="outline"
-                onClick={() =>
-                  mutate(
-                    { id: order._id, status: OrderStatus.CONFIRMED },
-                    {
-                      onSuccess: () => {
-                        router.push("/orders");
-                      },
-                    }
-                  )
-                }
-              >
-                Confirm
-              </Button>
-              <Button
-                onClick={() =>
-                  mutate(
-                    { id: order._id, status: OrderStatus.COMPLETED },
-                    {
-                      onSuccess: () => {
-                        router.push("/orders");
-                      },
-                    }
-                  )
-                }
-              >
-                Complete
-              </Button>
-            </CardFooter>
-          </Card>
+              </CardContent>
+            </Card>
+            <Card className="mt-4">
+              <CardHeader>
+                <CardTitle>Shipping</CardTitle>
+              </CardHeader>
+              <CardContent>
+                <div className="mt-4 flex items-center justify-between text-sm mb-4">
+                  <dt className="leading-6 text-gray-900">Status:</dt>
+                  <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {order.deliveryStatus}
+                  </dd>
+                </div>
+                {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
+                  <Dialog>
+                    <DialogTrigger asChild>
+                      <Button
+                      // onClick={async () => {
+                      //   const res = await fetch(
+                      //     `${API_URL}/api/admin/orders/${order._id}/pay`,
+                      //     { method: "POST" }
+                      //   );
+
+                      //   if (!res.ok) {
+                      //     const error = await res.text();
+                      //     toast.error(error);
+                      //     return;
+                      //   }
+
+                      //   toast.success("Successfully mask as paid");
+                      // }}
+                      >
+                        Create Delivery
+                      </Button>
+                    </DialogTrigger>
+                    <DialogContent>
+                      <DialogHeader>
+                        <DialogTitle>Create delivery</DialogTitle>
+                      </DialogHeader>
+                      <div className="grid gap-4 py-4">
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="weight" className="text-right">
+                            Khối lượng
+                          </Label>
+                          <Input
+                            id="weight"
+                            type="number"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Giao hàng bằng
+                          </Label>
+                          <Input
+                            id="username"
+                            defaultValue="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Số tiền thu hộ
+                          </Label>
+                          <Input
+                            id="username"
+                            defaultValue="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                        <div className="grid grid-cols-4 items-center gap-4">
+                          <Label htmlFor="username" className="text-right">
+                            Ghi chú
+                          </Label>
+                          <Input
+                            id="username"
+                            defaultValue="@peduarte"
+                            className="col-span-3"
+                          />
+                        </div>
+                      </div>
+                      <DialogFooter>
+                        <Button type="submit">Giao hàng</Button>
+                      </DialogFooter>
+                    </DialogContent>
+                  </Dialog>
+                )}
+              </CardContent>
+            </Card>
+          </div>
         </>
       ) : (
         "Loading"

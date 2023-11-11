@@ -76,7 +76,11 @@ const Page: NextPageWithLayout = () => {
                 </TableHeader>
                 <TableBody>
                   {customer.orderIds.map((item) => (
-                    <TableRow key={item._id}>
+                    <TableRow
+                      key={item._id}
+                      onClick={() => router.push(`/orders/${item._id}`)}
+                    >
+                      <TableCell>{item.orderId}</TableCell>
                       <TableCell>{item.items.length}</TableCell>
                       <TableCell>
                         {format(new Date(item.createdAt), "dd MMM yyyy hh:mm")}

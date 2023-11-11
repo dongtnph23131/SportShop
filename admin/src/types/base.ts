@@ -45,15 +45,27 @@ export interface Image {
 }
 
 export enum OrderStatus {
-  PENDING = "pending",
-  CONFIRMED = "confirmed",
-  COMPLETED = "completed",
-  CANCELED = "canceled",
+  PENDING = "Pending",
+  COMPLETED = "Completed",
+  CANCELED = "Canceled",
 }
 
-export enum OrderStatus {
-  ONLINE = "online",
-  DIRECT = "direct",
+export enum PaymentType {
+  ONLINE = "Online",
+  DIRECT = "Direct",
+}
+
+export enum OrderPaymentStatus {
+  NOT_PAID = "Not paid",
+  PAID = "Paid",
+  CANCELED = "Canceled",
+}
+
+export enum OrderDeliveryStatus {
+  NOT_SHIPPED = "Not shipped",
+  SHIPPING = "Shipping",
+  SHIPPED = "Shipped",
+  CANCELED = "Canceled",
 }
 
 export interface Order {
@@ -62,11 +74,15 @@ export interface Order {
   email: string;
   phone: number;
   address: string;
+  deliveryStatus: OrderDeliveryStatus;
+  paymentStatus: OrderPaymentStatus;
+  orderId: number;
+  orderTotalPrice: number;
   status: OrderStatus;
   shippingPrice: number;
   totalPrice: number;
   couponPrice: number;
-  typePayment: OrderStatus;
+  typePayment: PaymentType;
   createdAt: string;
   updatedAt: string;
   customerId: string;

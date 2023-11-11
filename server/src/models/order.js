@@ -1,14 +1,26 @@
 import mongoose from "mongoose";
 import mongoosePaginate from "mongoose-paginate-v2";
 
-export const ORDER_STATUS = ["pending", "confirmed", "completed", "canceled"];
-export const ORDER_PAYMENT = ["online", "direct"];
+export const ORDER_STATUS = ["Pending", "Completed", "Canceled"];
+export const ORDER_DELIVERY_STATUS = [
+  "Not shipped",
+  "Shipping",
+  "Shipped",
+  "Canceled",
+];
+export const ORDER_PAYMENT_STATUS = ["Not paid", "Paid", "Canceled"];
+export const ORDER_PAYMENT = ["Online", "Direct"];
+
 const orderSchema = mongoose.Schema(
   {
     customerId: {
       type: mongoose.Types.ObjectId,
       require: true,
       ref: "Customer",
+    },
+    orderId: {
+      type: String,
+      require: true,
     },
     fullName: {
       type: String,
@@ -29,22 +41,36 @@ const orderSchema = mongoose.Schema(
     note: {
       type: String,
     },
+    deliveryStatus: {
+      type: String,
+      enum: ORDER_DELIVERY_STATUS,
+      default: "Not shipped",
+    },
+    paymentStatus: {
+      type: String,
+      enum: ORDER_PAYMENT_STATUS,
+      default: "Not paid",
+    },
     status: {
       type: String,
       enum: ORDER_STATUS,
-      default: "pending",
+      default: "Pending",
     },
     shippingPrice: {
-      type: Number,
-      require: true,
-    },
-    totalPrice: {
       type: Number,
       require: true,
     },
     couponPrice: {
       type: Number,
       default: 0,
+    },
+    totalPrice: {
+      type: Number,
+      require: true,
+    },
+    orderTotalPrice: {
+      type: Number,
+      require: true,
     },
     typePayment: {
       type: String,

@@ -41,4 +41,59 @@ router.put("/:id/status", async (req, res) => {
   }
 });
 
+router.post("/:id/pay", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).end("Missing id");
+    }
+
+    const order = await Order.findById(id);
+
+    if (order.status === "Canceled" || order.paymentStatus === "Canceled") {
+      return res.status(500).end("This order was canceled!");
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(id, {
+      status: "Completed",
+      paymentStatus: "Paid",
+    });
+
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/:id/cancel", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).end("Missing id");
+    }
+
+    const order = await Order.findById(id);
+
+    if (order.status === "Completed") {
+      return res
+        .status(500)
+        .end("Can not cancel this order that was completed.!");
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(id, {
+      status: "Canceled",
+      paymentStatus: "Canceled",
+      deliveryStatus: "Canceled",
+    });
+
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export const orderRoutes = router;

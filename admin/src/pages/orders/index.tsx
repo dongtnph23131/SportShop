@@ -46,9 +46,18 @@ const Page: NextPageWithLayout = () => {
     {
       id: "id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Id" />
+        <DataTableColumnHeader column={column} title="Order Id" />
       ),
-      cell: ({ row }) => <div>{row.original._id}</div>,
+      cell: ({ row }) => <div>{row.original.orderId}</div>,
+    },
+    {
+      id: "createAt",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Created At" />
+      ),
+      cell: ({ row }) => {
+        return format(new Date(row.original.createdAt), "dd MMM yyyy");
+      },
     },
     {
       id: "customer",
@@ -60,12 +69,21 @@ const Page: NextPageWithLayout = () => {
       },
     },
     {
-      id: "createAt",
+      id: "delivery_status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Created At" />
+        <DataTableColumnHeader column={column} title="Delivery Status" />
       ),
       cell: ({ row }) => {
-        return format(new Date(row.original.createdAt), "dd MMM yyyy");
+        return row.original.deliveryStatus;
+      },
+    },
+    {
+      id: "payment_status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Payment Status" />
+      ),
+      cell: ({ row }) => {
+        return row.original.paymentStatus;
       },
     },
     {
@@ -83,7 +101,7 @@ const Page: NextPageWithLayout = () => {
         <DataTableColumnHeader column={column} title="Total" />
       ),
       cell: ({ row }) => {
-        return row.original.totalPrice;
+        return row.original.orderTotalPrice;
       },
     },
     {

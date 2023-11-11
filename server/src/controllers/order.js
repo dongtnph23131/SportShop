@@ -4,24 +4,33 @@ import ProductVariant from "../models/productVariant";
 import CartItem from "../models/cartItem";
 import { orderSchema } from "../validators/order";
 import Cart from "../models/cart";
+import Customer from "../models/customer";
+
 export const create = async (req, res) => {
   try {
     const user = req.user;
     const body = req.body;
-    const {
-      fullName,
-      email,
-      phone,
-      address,
-      shippingPrice,
-      totalPrice,
-      typePayment,
-      items,
-    } = orderSchema.parse(body);
-    const order = await Order.create({ ...body, customerId: user._id });
+
+    const validatedBody = orderSchema.parse(body);
+
+    const order = await Order.create({
+      ...validatedBody,
+      customerId: user._id,
+      orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
+    });
+
+    await Customer.findByIdAndUpdate(
+      user._id,
+      {
+        $addToSet: { orderIds: order._id },
+      },
+      { new: true }
+    );
+
     await CartItem.deleteMany({
       customerId: user._id,
     });
+
     const cart = await Cart.findOne({ customerId: user._id });
     cart.items = [];
     await cart.save({ validateBeforeSave: false });
