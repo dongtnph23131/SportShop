@@ -26,14 +26,15 @@ const Cart = () => {
   });
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const token = Cookies.get("token");
-  const { data: carts } = useGetCartOfUserQuery(token);
-
-  const total = carts?.reduce(
-    (accumulator: any, currentValue: any) =>
-      accumulator +
-      currentValue.productVariantIds.price * currentValue.quantity,
-    0
-  );
+  const { data: carts } = useGetCartOfUserQuery(token);   
+  const total = token
+    ? carts?.reduce(
+        (accumulator: any, currentValue: any) =>
+          accumulator +
+          currentValue.productVariantIds.price * currentValue.quantity,
+        0
+      )
+    : "";
 
   const onAddOrder = async (data: any) => {
     if (carts?.length === 0) {
