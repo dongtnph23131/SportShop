@@ -26,7 +26,7 @@ const Cart = () => {
   });
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const token = Cookies.get("token");
-  const { data: carts } = useGetCartOfUserQuery(token);   
+  const { data: carts } = useGetCartOfUserQuery(token);
   const total = token
     ? carts?.reduce(
         (accumulator: any, currentValue: any) =>
@@ -218,7 +218,7 @@ const Cart = () => {
                     <div className="infomation-content">
                       <div className="delivery-type-item">
                         <input
-                          value={"direct"}
+                          value={"Direct"}
                           {...register("typePayment")}
                           type="radio"
                           className="ng-untouched ng-pristine ng-valid"
@@ -231,7 +231,7 @@ const Cart = () => {
                       </div>
                       <div className="delivery-type-item">
                         <input
-                          value={"online"}
+                          value={"Online"}
                           {...register("typePayment")}
                           type="radio"
                           className="ng-untouched ng-pristine ng-valid"
