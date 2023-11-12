@@ -29,6 +29,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { API_URL } from "@/lib/contants";
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useOrdersQuery } from "@/services/orders/orders-query";
@@ -38,6 +39,7 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const Page: NextPageWithLayout = () => {
   const { data: orders } = useOrdersQuery();
@@ -139,7 +141,24 @@ const Page: NextPageWithLayout = () => {
                   </AlertDialogHeader>
                   <AlertDialogFooter>
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction onClick={() => {}}>
+                    <AlertDialogAction
+                      onClick={async () => {
+                        const res = await fetch(
+                          `${API_URL}/api/admin/orders/${row.original._id}`,
+                          { method: "DELETE" }
+                        );
+
+                        if (!res.ok) {
+                          const error = await res.text();
+                          toast.error(error);
+                          return;
+                        }
+
+                        queryClient.invalidateQueries({ queryKey: ["orders"] });
+
+                        toast.success("Successfully deleted");
+                      }}
+                    >
                       Continue
                     </AlertDialogAction>
                   </AlertDialogFooter>

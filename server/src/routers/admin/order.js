@@ -96,4 +96,21 @@ router.post("/:id/cancel", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    if (!id) {
+      return res.status(400).end("Missing id");
+    }
+
+    const order = await Order.findByIdAndDelete(id);
+
+    return res.status(200).json(order);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 export const orderRoutes = router;
