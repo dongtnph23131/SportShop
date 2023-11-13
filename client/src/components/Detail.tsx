@@ -10,6 +10,7 @@ const Detail = () => {
   const [quantity, setQuantity] = useState(1);
   const [addItemToCart] = useAddItemCartMutation();
   const [selectedAttributes, setSelectedAttributes] = useState<any>({});
+  const [selectedImage, setSelectedImage] = useState<number>(0);
   const handleAddToCart = async () => {
     if (!selectedAttributes) {
       alert("Hãy chọn thuộc tính sản phẩm");
@@ -43,12 +44,16 @@ const Detail = () => {
       [attributeName]: value,
     });
   };
+  const handleImageClick = (index: number) => {
+    setSelectedImage(index);
+  };
+
   return (
     <div>
       <section id="prodetails" className="section-p1">
         <div className="single-pro-image">
           <img
-            src={`${product ? `${product.images[0].url}` : ``}`}
+            src={`${product ? `${product.images[selectedImage].url}` : ``}`}
             width="100%"
             id="MainImg"
             alt=""
@@ -57,7 +62,11 @@ const Detail = () => {
           <div className="small-img-group">
             {product?.images?.map((item: any, index: any) => {
               return (
-                <div key={index + 1} className="small-img-col">
+                <div
+                  key={index + 1}
+                  className="small-img-col"
+                  onClick={() => handleImageClick(index)}
+                >
                   <img
                     src={`${item.url}`}
                     width="100%"

@@ -77,7 +77,7 @@ const Cart = () => {
                 <div>Giỏ hàng trống</div>
               ) : (
                 <>
-                  <section id="cart" className="section-p1">
+                  <section id="cart" className="section-p1 cart__ss">
                     <table width="100%">
                       <thead>
                         <tr>
@@ -164,7 +164,9 @@ const Cart = () => {
                     {errors.node ? errors?.node.message : ""}
                   </p>
                 </table>
+                <div className="group__btnPay">
                 <button className="normal">Proceed to checkout</button>
+                </div>
               </div>
 
               <div id="subtotal">
