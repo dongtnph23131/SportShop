@@ -18,7 +18,20 @@ export const create = async (req, res) => {
       customerId: user._id,
       orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
     });
-
+    await Promise.all(
+      body.items.map(async (item) => {
+        const productVariant = await ProductVariant.findById(
+          item.productVariantId
+        );
+        await ProductVariant.findByIdAndUpdate(
+          productVariant._id,
+          {
+            inventory: productVariant.inventory - item.quantity,
+          },
+          { new: true }
+        );
+      })
+    );
     await Customer.findByIdAndUpdate(
       user._id,
       {
@@ -68,6 +81,35 @@ export const getOneOrder = async (req, res) => {
     return res.status(200).json({
       message: "Lấy đơn hàng thành công",
       order,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+};
+export const cancelOrderByAcount = async (req, res) => {
+  try {
+    const user = req.user;
+    const { id } = req.params;
+    const order = await Order.findOne({ _id: id, customerId: user._id });
+    if (!order) {
+      return res.status(500).json({
+        message: "Bạn k có quyền hủy đơn hàng này",
+      });
+    }
+    if (order.status === "Completed" || order.deliveryStatus === "Shipping") {
+      return res.status(500).json({
+        message: "Bạn k thể hủy đơn",
+      });
+    }
+    await Order.findByIdAndUpdate(id, {
+      status: "Canceled",
+      paymentStatus: "Canceled",
+      deliveryStatus: "Canceled",
+    });
+    return res.status(200).json({
+      message: "Hủy đơn hàng thành công",
     });
   } catch (error) {
     return res.status(500).json({
