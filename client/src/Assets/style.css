@@ -192,19 +192,29 @@ p {
 }
 
 .decrement__cart {
-  height: 20px;
-  width: 20px;
+  height: 40px;
   font-size: 40px;
   background: no-repeat;
-  border: none;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-right: 0;
 }
 
 .increment__cart {
-  height: 20px;
-  width: 20px;
-  font-size: 22px;
+  height: 40px;
+  font-size: 25px;
   background: no-repeat;
-  border: none;
+  border: 1px solid #ddd;
+  border-radius: 0;
+  width: 30px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  border-left: 0;
 }
 
 .box-qlt ul {
@@ -1007,11 +1017,17 @@ footer .copyright {
 .box__crement .ant-input-number-input-wrap {
   display: flex;
   justify-content: center;
-  padding-left: 30px;
 }
 
 .box-qlt ul li:hover {
   background: #4fb68d;
+}
+
+.box__crement .ant-input-number {
+  height: 40px;
+  width: 60px;
+  border-radius: 0;
+  padding-left: 25px;
 }
 
 .box-qlt ul li:hover a {
@@ -1412,6 +1428,12 @@ footer .copyright {
 .ttnh table tr textarea {
   width: 100%;
   height: 85px;
+  padding: 10px;
+}
+
+.group__btnPay {
+  display: flex;
+  justify-content: right;
 }
 
 .infomation-title svg {
