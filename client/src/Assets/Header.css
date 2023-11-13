@@ -238,6 +238,16 @@ ul.all-signinout {
   background: #fff;
   z-index: 9999;
   display: none;
+  min-width: 155px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+  top: 70px;
+}
+ul.all-signinout::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: -30px;
 }
 .qlty {
   position: absolute;
@@ -277,6 +287,7 @@ li.signin-up:hover .all-signinout {
 .avart-sgin {
   height: 35px;
   width: 35px;
+  cursor: pointer;
 }
 
 .avart-sgin img {

@@ -42,28 +42,35 @@ const CartItem = ({ item }: any) => {
         {item?.productIds?.name} -- {item?.productVariantIds?.name}
       </td>
       <td>${item?.productVariantIds?.price}</td>
-      <button
-        className="normal"
-        onClick={() =>
-          removeItemCart({
-            productVariantIds: item?.productVariantIds?._id,
-            token,
-          })
-        }
-      >
-        -
-      </button>
+
       <td>
-        <InputNumber value={item.quantity} onChange={onChangeQuantity} />
+        <div className="box__crement">
+          <button
+            className="decrement__cart"
+            onClick={() =>
+              removeItemCart({
+                productVariantIds: item?.productVariantIds?._id,
+                token,
+              })
+            }
+          >
+            -
+          </button>
+          <InputNumber className="input__cart" value={item.quantity} onChange={onChangeQuantity} />
+          <button
+            className="increment__cart"
+            onClick={() =>
+              addCart({
+                productVariantIds: item?.productVariantIds?._id,
+                token,
+              })
+            }
+          >
+            +
+          </button>
+        </div>
       </td>
-      <button
-        className="normal"
-        onClick={() =>
-          addCart({ productVariantIds: item?.productVariantIds?._id, token })
-        }
-      >
-        +
-      </button>
+
       <td>${item?.productVariantIds?.price * Number(item?.quantity)}</td>
     </tr>
   );

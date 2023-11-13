@@ -68,7 +68,7 @@ const Shops = () => {
                     <div className="select-sub">
                       {categories.map((item: any) => {
                         return (
-                          <div
+                          <div className="clickToFilter"
                             onClick={() => {
                               setPage(1);
                               setDataCategories([

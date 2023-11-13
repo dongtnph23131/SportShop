@@ -146,13 +146,15 @@ p {
   display: block;
   width: 100%;
   overflow-y: auto;
-  height: 70px;
+  height: auto;
   padding: 15px;
   border-radius: 5px;
   border: 1px solid #cdcdcd;
 }
 
-.box-container-filter {}
+.clickToFilter {
+  cursor: pointer;
+}
 
 .color-detaile {
   display: flex;
@@ -181,10 +183,36 @@ p {
   border-radius: 5px;
   border: 1px solid #cdcdcd;
   margin-right: 10px;
+  cursor: pointer;
+}
+
+.box__crement {
+  display: flex;
+  align-items: center;
+}
+
+.decrement__cart {
+  height: 20px;
+  width: 20px;
+  font-size: 40px;
+  background: no-repeat;
+  border: none;
+}
+
+.increment__cart {
+  height: 20px;
+  width: 20px;
+  font-size: 22px;
+  background: no-repeat;
+  border: none;
 }
 
 .box-qlt ul {
   display: flex;
+}
+
+.box-qlt {
+  margin-top: 20px;
 }
 
 .box-container-filter {
@@ -269,7 +297,6 @@ h4.brackham {
 .sort-shops {
   padding-left: 25px;
   position: relative;
-  padding-top: 30px;
 }
 
 .filter-shops {
@@ -368,6 +395,7 @@ button.normal {
   border: none;
   outline: none;
   transition: 0.2s;
+  margin-top: 20px;
 }
 
 button.white {
@@ -544,9 +572,9 @@ body {
 
 #product1 .pro-container {
   display: flex;
-  justify-content: space-between;
   padding-top: 20px;
   flex-wrap: wrap;
+  gap: 20px;
 }
 
 #product1 .pro {
@@ -569,6 +597,7 @@ body {
 #product1 .pro img {
   width: 100%;
   border-radius: 20px;
+  max-height: 350px;
 }
 
 #product1 .pro .des {
@@ -579,6 +608,20 @@ body {
 #product1 .pro .des span {
   color: #606063;
   font-size: 12px;
+}
+
+.optionSize li a:before {
+  position: absolute;
+  content: "";
+  width: 100%;
+  height: 100%;
+  left: 0;
+  top: 0;
+}
+
+.optionSize li {
+  position: relative;
+  cursor: pointer;
 }
 
 #product1 .pro .des h5 {
@@ -907,6 +950,18 @@ footer .copyright {
   flex-basis: 24%;
   cursor: pointer;
   margin-top: 4px;
+  box-shadow: rgba(0, 0, 0, 0.24) 0px 3px 8px;
+}
+
+.single-pro-image img {
+  max-width: 400px;
+}
+
+.single-pro-image {
+  border: 1px solid #cdcd;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
 }
 
 #prodetails .single-pro-details {
@@ -943,6 +998,16 @@ footer .copyright {
 
 .box-qlt ul li a {
   color: #000;
+}
+
+.box__crement .ant-input-number-handler-wrap {
+  display: none;
+}
+
+.box__crement .ant-input-number-input-wrap {
+  display: flex;
+  justify-content: center;
+  padding-left: 30px;
 }
 
 .box-qlt ul li:hover {
