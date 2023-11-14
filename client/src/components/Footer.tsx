@@ -9,13 +9,13 @@ const Footer = () => {
             <span>special offers.</span>
           </p>
         </div>
-        <div className="form">
+        <div className="form contact__ftNews">
           <input type="text" placeholder="Your email address" />
           <button className="normal">Sign Up</button>
         </div>
       </section>
 
-      <footer className="section-p1">
+      <footer className="section-p1 css__newM ">
         <div className="cols">
           <div className="hd4-left__logo">
             Sports <span>Shop</span>
@@ -34,11 +34,11 @@ const Footer = () => {
           <div className="follow">
             <h4>Follow us</h4>
             <div className="icon">
-              <i className="fab fa-facebook-f"></i>
-              <i className="fab fa-twitter"></i>
-              <i className="fab fa-instagram"></i>
-              <i className="fab fa-pinterest-p"></i>
-              <i className="fab fa-youtube"></i>
+              <div className="icon__item"><i className="fab fa-facebook-f"></i></div>
+              <div className="icon__item"><i className="fab fa-twitter"></i></div>
+              <div className="icon__item"><i className="fab fa-instagram"></i></div>
+              <div className="icon__item"><i className="fab fa-pinterest-p"></i></div>
+              <div className="icon__item"><i className="fab fa-youtube"></i></div>
             </div>
           </div>
         </div>
@@ -73,7 +73,7 @@ const Footer = () => {
         </div>
 
         <div className="copyright">
-          <p> Copyrights - Shehzor Memon. All rights reserved.</p>
+          <p> Copyrights - Design by Manh Pro and BaoBao .</p>
         </div>
       </footer>
     </div>
