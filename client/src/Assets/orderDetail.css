@@ -31,14 +31,22 @@ ul.detail-order-info__list {
   padding: 0;
   line-height: 1.8em;
   margin: 0;
+  min-width: 500px;
 }
 
 ul.detail-order-info__list li {
   display: flex;
+  height: 40px;
+  border: 1px solid #cdcdcd;
 }
 
 .detail-order-info__title {
-  width: 30%;
+  width: 40%;
+  border-right: 1px solid #cdcdcd;
+  margin-right: 15px;
+  display: flex;
+  align-items: center;
+  padding-left: 5px
 }
 
 .detail-order-info__content {
@@ -67,12 +75,15 @@ table.table {
   padding-bottom: 1.25rem;
   font-size: 1.125rem;
 }
+
 .table thead tr th:first-child {
   border-radius: 0.5rem 0 0 0.5rem;
 }
+
 .table thead tr th:last-child {
   border-radius: 0 0.625rem 0.625rem 0;
 }
+
 .detail-order-item__thumbnail {
   max-width: 70px;
   max-height: 110px;
@@ -88,14 +99,11 @@ td.text--left div {
   align-items: center;
 }
 
-tbody tr {
-}
+tbody tr {}
 
-tbody tr td {
-}
+tbody tr td {}
 
-td {
-}
+td {}
 
 td {
   /* padding-top: 1.25rem; */
@@ -111,23 +119,28 @@ del {
   color: #cdcdcd;
   margin-left: 10px;
 }
+
 .thank-box .table tfoot td {
   text-align: left;
   background-color: #fff !important;
   border-bottom: 1px solid #d9d9d9;
   padding: 21px 20px;
 }
+
 .thank-box .table tfoot tr:last-child td:first-child {
   border-radius: 0 0 0 16px;
 }
+
 .thank-box .table tfoot tr.total_payment td {
   background-color: #000 !important;
   color: #fff;
   padding: 0.875rem 1.5rem;
 }
+
 .thank-box .table tfoot tr:last-child td {
   border-bottom: 1px solid #d9d9d9 !important;
 }
+
 .thank-box .table tfoot tr:last-child td:last-child {
   border-radius: 0 0 16px 0;
 }

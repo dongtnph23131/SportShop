@@ -71,7 +71,7 @@ const CartItem = ({ item }: any) => {
         </div>
       </td>
 
-      <td>${item?.productVariantIds?.price * Number(item?.quantity)}</td>
+      <td><div className="priceAll">${item?.productVariantIds?.price * Number(item?.quantity)}</div></td>
     </tr>
   );
 };
