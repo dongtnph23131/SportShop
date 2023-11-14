@@ -37,11 +37,24 @@ const orderApi = createApi({
       },
       invalidatesTags: ["Order"],
     }),
+    cancelOrder: builder.mutation({
+      query: ({ token, id }) => {
+        return {
+          url: `/orders/${id}/cancel`,
+          method: "PATCH",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["Order"],
+    }),
   }),
 });
 export const {
   useGetOrderByUserQuery,
   useGetOneOrderQuery,
   useCreateOrderMutation,
+  useCancelOrderMutation,
 } = orderApi;
 export default orderApi;

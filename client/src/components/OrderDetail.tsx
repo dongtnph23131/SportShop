@@ -1,10 +1,13 @@
 import { useParams } from "react-router-dom";
 import "../../src/Assets/orderDetail.css";
-import { useGetOneOrderQuery } from "../api/order";
-
+import { useCancelOrderMutation, useGetOneOrderQuery } from "../api/order";
+import Cookies from "js-cookie";
+import { message } from "antd";
 const OrderDetail = () => {
   const { id }: any = useParams();
+  const token = Cookies.get("token");
   const { data } = useGetOneOrderQuery(id);
+  const [cancelOrder] = useCancelOrderMutation();
   return (
     <div>
       <div className="account-page__content">
@@ -64,6 +67,24 @@ const OrderDetail = () => {
                 </li>
               </ul>
             </div>
+            {data?.order?.deliveryStatus === "Shipping" ||
+            data?.order?.status === "Completed" ||
+            data?.order?.status === "Canceled" ? (
+              ""
+            ) : (
+              <button
+                className="detail-order-status"
+                onClick={async () => {
+                  if (confirm("Bạn có muốn hủy đơn hàng không ?")) {
+                    await cancelOrder({ token, id }).then(() => {
+                      message.success("Hủy đơn hàng thành công");
+                    });
+                  }
+                }}
+              >
+                Hủy đơn
+              </button>
+            )}
             <div className="grid detail-order-button">
               <div className="grid__column">
                 <div className="order-date"></div>
@@ -88,16 +109,14 @@ const OrderDetail = () => {
                             <img src={item?.productId?.images[0]?.url} />
                           </div>
                           <div className="detail-order-item__title">
-                           {item?.productId?.name} <br />
+                            {item?.productId?.name} <br />
                           </div>
                         </div>
                       </td>
                       <td>{item.quantity}</td>
-                      <td>
-                        ${item?.productVariantId?.price}
-                        {/* <del>329.000đ</del> */}
-                      </td>
-                      <td>{item?.productVariantId?.name}</td> <td>${item?.quantity *item?.productVariantId?.price }</td>
+                      <td>${item?.productVariantId?.price}</td>
+                      <td>{item?.productVariantId?.name}</td>{" "}
+                      <td>${item?.quantity * item?.productVariantId?.price}</td>
                     </tr>
                   );
                 })}
@@ -107,16 +126,20 @@ const OrderDetail = () => {
                   <td colSpan={4}>Mã giảm giá</td> <td></td>
                 </tr>
                 <tr>
-                  <td colSpan={4}>Tổng giá trị sản phẩm</td> <td>${data?.order?.totalPrice}</td>
+                  <td colSpan={4}>Tổng giá trị sản phẩm</td>{" "}
+                  <td>${data?.order?.totalPrice}</td>
                 </tr>
                 <tr>
-                  <td colSpan={4}>Tổng khuyến mãi</td> <td>${data?.order?.couponPrice}</td>
+                  <td colSpan={4}>Tổng khuyến mãi</td>{" "}
+                  <td>${data?.order?.couponPrice}</td>
                 </tr>
                 <tr>
-                  <td colSpan={4}>Phí giao hàng</td> <td>${data?.order?.shippingPrice}</td>
+                  <td colSpan={4}>Phí giao hàng</td>{" "}
+                  <td>${data?.order?.shippingPrice}</td>
                 </tr>
                 <tr className="total_payment">
-                  <td colSpan={4}>Tổng thanh toán</td> <td>${data?.order?.totalPrice}</td>
+                  <td colSpan={4}>Tổng thanh toán</td>{" "}
+                  <td>${data?.order?.totalPrice}</td>
                 </tr>
               </tfoot>
             </table>
