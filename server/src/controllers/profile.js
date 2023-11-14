@@ -29,8 +29,6 @@ export const getAllUser = async (req, res) => {
 
 export const getUserById = async (req, res) => {
   console.log(req.params);
-  const id = req.params.customerId;
-console.log(id);
   try {
     // Kiểm tra xem id có đúng định dạng ObjectID không
     if (!mongoose.Types.ObjectId.isValid(id)) {
