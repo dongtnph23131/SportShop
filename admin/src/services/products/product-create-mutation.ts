@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { productCreateBodySchema } from "@/lib/validations/product";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
@@ -6,16 +7,9 @@ import { z } from "zod";
 export type ProductCreateVariables = z.infer<typeof productCreateBodySchema>;
 
 export async function createProduct(body: ProductCreateVariables) {
-  const response = await fetch(`${API_URL}/api/admin/products`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await axiosClient.post(`/products`, body);
 
-  if (!response.ok) throw Error();
-  return response;
+  return response.data;
 }
 
 type ProjectCreateData = Awaited<ReturnType<typeof createProduct>>;

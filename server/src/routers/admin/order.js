@@ -28,19 +28,6 @@ router.get("/:id", async (req, res) => {
   }
 });
 
-router.put("/:id/status", async (req, res) => {
-  try {
-    const { status } = req.body;
-    const order = await Order.findByIdAndUpdate(req.params.id, { status });
-
-    return res.status(200).json(order);
-  } catch (error) {
-    return res.status(500).json({
-      message: error.message,
-    });
-  }
-});
-
 router.post("/:id/pay", async (req, res) => {
   try {
     const { id } = req.params;

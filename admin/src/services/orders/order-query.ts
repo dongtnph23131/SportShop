@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { Customer, Order, Product, ProductVariant } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
@@ -18,11 +19,9 @@ export type OrderResponse = Omit<Order, "customerId" | "items"> & {
 };
 
 export async function getOrder({ id }: Input): Promise<OrderResponse> {
-  const response = await fetch(`${API_URL}/api/admin/orders/${id}`);
+  const response = await axiosClient.get(`/orders/${id}`);
 
-  if (!response.ok) throw Error();
-
-  return await response.json();
+  return response.data;
 }
 
 export type OrderData = Awaited<ReturnType<typeof getOrder>>;

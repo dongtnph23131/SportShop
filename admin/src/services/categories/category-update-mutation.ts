@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { categoryCreateEditSchema } from "@/lib/validations/category";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
@@ -6,16 +7,9 @@ import { z } from "zod";
 export type Variables = z.infer<typeof categoryCreateEditSchema>;
 
 export async function updateCategory(body: Variables) {
-  const response = await fetch(`${API_URL}/api/admin/categories/${body.slug}`, {
-    method: "PUT",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await axiosClient.put(`/categories/${body.slug}`, body);
 
-  if (!response.ok) throw Error();
-  return response;
+  return response.data;
 }
 
 type ProjectUpdateData = Awaited<ReturnType<typeof updateCategory>>;

@@ -1,10 +1,20 @@
-import { ReactElement } from "react";
+import { ReactElement, useEffect } from "react";
 import { BellRing } from "lucide-react";
 import { Sidebar } from "./sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
+import { useRouter } from "next/router";
 
 export default function LayoutAdmin(page: ReactElement) {
+  const router = useRouter();
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      router.push("/auth/signin");
+    }
+  }, [router]);
+
   return (
     <div className="h-screen w-full relative">
       <div className="min-w-[240px] max-w-[240px] p-4 h-screen overflow-y-auto border-r fixed">

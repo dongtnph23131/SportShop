@@ -29,7 +29,6 @@ import {
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
-import { useProductChangeStatusMutation } from "@/services/orders/order-change-status-mutation";
 import { API_URL } from "@/lib/contants";
 import { toast } from "sonner";
 import {
@@ -47,7 +46,6 @@ import { Input } from "@/components/ui/input";
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const { data: order } = useOrderQuery({ id: router.query.id as string });
-  const { mutate } = useProductChangeStatusMutation();
 
   return (
     <>

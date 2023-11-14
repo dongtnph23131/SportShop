@@ -1,3 +1,4 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { Category } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
@@ -7,11 +8,9 @@ interface CategoryInput {
 }
 
 export async function getCategory({ slug }: CategoryInput): Promise<Category> {
-  const response = await fetch(`${API_URL}/api/admin/categories/${slug}`);
+  const response = await axiosClient.get(`/categories/${slug}`);
 
-  if (!response.ok) throw Error();
-
-  return await response.json();
+  return response.data;
 }
 
 export type ProductData = Awaited<ReturnType<typeof getCategory>>;

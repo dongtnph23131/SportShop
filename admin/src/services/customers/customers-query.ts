@@ -1,13 +1,12 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { Customer } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export async function getCustomers(): Promise<Customer[]> {
-  const response = await fetch(`${API_URL}/api/admin/customers`);
+  const response = await axiosClient.get(`/customers`);
 
-  if (!response.ok) throw Error();
-
-  return await response.json();
+  return response.data;
 }
 
 export type CustomersData = Awaited<ReturnType<typeof getCustomers>>;

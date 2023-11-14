@@ -1,19 +1,13 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { UseMutationOptions, useMutation } from "@tanstack/react-query";
 
 export type CategoryCreateVariables = { name: string };
 
 export async function createCategory(body: CategoryCreateVariables) {
-  const response = await fetch(`${API_URL}/api/admin/categories`, {
-    method: "POST",
-    body: JSON.stringify(body),
-    headers: {
-      "Content-Type": "application/json",
-    },
-  });
+  const response = await axiosClient.post(`/categories`, body);
 
-  if (!response.ok) throw Error();
-  return response;
+  return response.data;
 }
 
 type CategoryCreateData = Awaited<ReturnType<typeof createCategory>>;

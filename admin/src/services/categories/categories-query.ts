@@ -1,13 +1,12 @@
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { Category } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export async function getCategories(): Promise<Category[]> {
-  const response = await fetch(`${API_URL}/api/admin/categories`);
+  const response = await axiosClient.get(`/categories`);
 
-  if (!response.ok) throw Error();
-
-  return await response.json();
+  return response.data;
 }
 
 export type CategoriesData = Awaited<ReturnType<typeof getCategories>>;
