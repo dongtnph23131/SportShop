@@ -100,7 +100,7 @@ const Signin = () => {
           </div>
           <div className="sign-up">
             <p>
-              Don't have account <a href="#">Sign up</a>
+              Don't have account <a href="/signup">Sign up</a>
             </p>
           </div>
         </div>

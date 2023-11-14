@@ -8,8 +8,12 @@ const addressSchema = mongoose.Schema(
       require: true,
       ref: "Customer",
     },
+    name: {
+      type: String,
+    },
     default: {
       type: Boolean,
+      default: false,
     },
     address: {
       type: String,
@@ -18,6 +22,9 @@ const addressSchema = mongoose.Schema(
       type: String,
     },
     ward: {
+      type: String,
+    },
+    province: {
       type: String,
     },
     phone: {

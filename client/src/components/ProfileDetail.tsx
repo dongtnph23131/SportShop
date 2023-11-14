@@ -5,6 +5,11 @@ import * as yup from "yup";
 import { useUpdatePasswordMutation } from "../api/acount";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
+import {
+  useCreateAddressMutation,
+  useGetAddressByAcountQuery,
+} from "../api/address";
+import { message } from "antd";
 const schema = yup.object().shape({
   currentPassword: yup
     .string()
@@ -20,6 +25,15 @@ const schema = yup.object().shape({
     .required("Cần nhập lại mật khẩu")
     .min(6, "Nhập lại mật khẩu mới ít nhất 6 kí tự"),
 });
+const schemaAddress = yup.object().shape({
+  address: yup.string().required("Địa chỉ k để trống"),
+  district: yup.string().required("district k để trống"),
+  ward: yup.string().required("ward k để trống"),
+  province: yup.string().required("province k để trống"),
+  phone: yup.string().required("phone k để trống"),
+  name: yup.string().required("name k để trống"),
+  default: yup.boolean(),
+});
 const ProfileDetail = () => {
   const token = Cookies.get("token");
   const [updatePassword] = useUpdatePasswordMutation();
@@ -33,7 +47,10 @@ const ProfileDetail = () => {
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
+  const { data: addresses } = useGetAddressByAcountQuery(token);
+
   const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
+  const [createAddress] = useCreateAddressMutation();
   const {
     register,
     handleSubmit,
@@ -41,6 +58,13 @@ const ProfileDetail = () => {
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
+  });
+  const {
+    register: registerAddress,
+    handleSubmit: handleSubmitAddress,
+    formState: { errors: errorsAdress },
+  } = useForm({
+    resolver: yupResolver(schemaAddress),
   });
   const openAddAddressPopup = () => {
     setIsAddAddressPopupOpen(true);
@@ -67,6 +91,12 @@ const ProfileDetail = () => {
   const togglePasswordVisibilityConfirm = () => {
     setPasswordVisibilityConfirm((prevVisibility) => !prevVisibility);
   };
+  const onAdddress = async (address: any) => {
+    await createAddress({ address, token }).then(()=>{
+      message.success('Thêm địa chỉ thành công')
+      setIsAddAddressPopupOpen(false)
+    });
+  };
   const onUpdatePassword = async (value: any) => {
     const data: any = await updatePassword({ value, token });
     if (data?.data) {
@@ -76,8 +106,8 @@ const ProfileDetail = () => {
       Cookies.set("firstName", data.data.newUser.firstName);
       Cookies.set("lastName", data.data.newUser.lastName);
       Cookies.set("avatar", data.data.newUser.avatar);
-      reset()
-      setIsUpdatePasswordPopupOpen(false)
+      reset();
+      setIsUpdatePasswordPopupOpen(false);
     } else {
       Swal.fire({
         icon: "error",
@@ -258,7 +288,10 @@ const ProfileDetail = () => {
                                   >
                                     Đóng
                                   </button>
-                                  <button type="submit" className="btn__updatePassword">
+                                  <button
+                                    type="submit"
+                                    className="btn__updatePassword"
+                                  >
                                     Cập nhật Mật khẩu
                                   </button>
                                 </div>
@@ -285,27 +318,78 @@ const ProfileDetail = () => {
                       <div className="add-address-popup">
                         <div className="main__addAdress">
                           <h3>Thêm Địa chỉ</h3>
-                          <form action="">
-                            <input type="text" placeholder="Tên" />
-                            <input type="text" placeholder="Số điện thoại" />
-                            <input type="text" placeholder="Địa chỉ" />
-                            <select name="" id="">
-                              <option value="">Tỉnh thành</option>
-                              <option value="">Hà Nội</option>
-                              <option value="">Nghệ An</option>
-                            </select>{" "}
-                            <select name="" id="">
-                              <option value="">Quận / Huyện</option>
-                              <option value="">Hà Nội</option>
-                              <option value="">Nghệ An</option>
-                            </select>
-                            <select name="" id="">
-                              <option value="">Phường / Xã</option>
-                              <option value="">Hà Nội</option>
-                              <option value="">Nghệ An</option>
-                            </select>
+                          <form
+                            onSubmit={handleSubmitAddress(onAdddress)}
+                            action=""
+                          >
+                            <input
+                              value={`${Cookies.get("firstName")} ${Cookies.get(
+                                "lastName"
+                              )} `}
+                              {...registerAddress("name")}
+                              type="text"
+                              placeholder="Tên"
+                            />
+                            <p className="error">
+                              {errorsAdress.name
+                                ? errorsAdress?.name.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddress("phone")}
+                              placeholder="Số điện thoại"
+                            />
+                            <p className="error">
+                              {errorsAdress.phone
+                                ? errorsAdress?.phone.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddress("address")}
+                              placeholder="Địa chỉ"
+                            />
+                            <p className="error">
+                              {errorsAdress.address
+                                ? errorsAdress?.address.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddress("ward")}
+                              placeholder="Phường"
+                            />
+                            <p className="error">
+                              {errorsAdress.ward
+                                ? errorsAdress?.ward.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddress("district")}
+                              placeholder="Quận"
+                            />
+                            <p className="error">
+                              {errorsAdress.district
+                                ? errorsAdress?.district.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddress("province")}
+                              placeholder="Tỉnh"
+                            />
+                            <p className="error">
+                              {errorsAdress.province
+                                ? errorsAdress?.province.message
+                                : ""}
+                            </p>
                             <div className="add__default">
-                              <input type="checkbox" />
+                              <input
+                                {...registerAddress("default")}
+                                type="checkbox"
+                              />
                               <label htmlFor="">Đặt làm địa chỉ mặc định</label>
                             </div>
                             <div className="group__btn__close">
@@ -323,28 +407,54 @@ const ProfileDetail = () => {
                     )}
                     <div className="content__bottom__adress">
                       <h3 className="title__profile">Sổ địa chỉ</h3>
-                      <div className="account__adress">
-                        <div className="left__acount">
-                          <div className="name">Lưu Đức Mạnh</div>
-                          <div className="adressDefault">
-                            <img src="../../src/Assets/star.webp" alt="" />
-                            Mặc định
-                          </div>
-                        </div>
-                        <div className="action__adress">
-                          <a href="" className="update__adress">
-                            Cập nhật
-                          </a>
-                          <a href="" className="delete__adress">
-                            Xóa
-                          </a>
-                        </div>
-                      </div>
-                      <div className="account__phone">0904798514</div>
-                      <div className="acount__adressDetail">
-                        47 Thanh Liệt, Xã Thanh Liệt, Huyện Thanh Trì, Thành phố
-                        Hà Nội, Huyện Thanh Trì, Hà Nội
-                      </div>
+                      {addresses ? (
+                        <>
+                          {" "}
+                          {addresses?.address?.length > 0 ? (
+                            <>
+                              {addresses?.address?.map((item: any) => {
+                                console.log(item);
+                                
+                                return (
+                                  <div key={item._id}>
+                                    <div className="account__adress">
+                                      <div className="left__acount">
+                                        <div className="name">{item?.name}</div>
+                                        <div className="adressDefault">
+                                          <img
+                                            src="../../src/Assets/star.webp"
+                                            alt=""
+                                          />
+                                          Mặc định
+                                        </div>
+                                      </div>
+                                      <div className="action__adress">
+                                        <a href="" className="update__adress">
+                                          Cập nhật
+                                        </a>
+                                        <a href="" className="delete__adress">
+                                          Xóa
+                                        </a>
+                                      </div>
+                                    </div>
+                                    <div className="account__phone">
+                                      {item?.phone}
+                                    </div>
+                                    <div className="acount__adressDetail">
+                                      {item.address}, {item.ward},{" "}
+                                      {item.district}, {item.province}
+                                    </div>
+                                  </div>
+                                );
+                              })}
+                            </>
+                          ) : (
+                            <h1>Sổ địa chỉ trống</h1>
+                          )}
+                        </>
+                      ) : (
+                        ""
+                      )}
                     </div>
                   </div>
                 )}

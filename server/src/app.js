@@ -6,6 +6,7 @@ import authRouter from "./routers/auth";
 import productRouter from "./routers/product";
 import categoryRouter from "./routers/category";
 import acounRouter from "./routers/acount";
+import addreesRouter from "./routers/address"
 import uploadRouter from "./routers/upload";
 import cartRouter from "./routers/cart";
 import { adminRoutes } from "./routers/admin";
@@ -28,6 +29,7 @@ app.use("/api", uploadRouter);
 app.use("/api", cartRouter);
 app.use("/api", orderRouter);
 app.use("/api", profileRouter)
+app.use("/api",addreesRouter)
 mongoose.connect(process.env.URL_DATABASE);
 
 export const viteNodeApp = app;
