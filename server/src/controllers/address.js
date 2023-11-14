@@ -15,9 +15,8 @@ export const createAdddress = async (req, res) => {
         message: errors,
       });
     }
-    const address = await Address.create({ ...body, customerId: user._id });
     if (body.default && body.default === true) {
-      await Address.findAndUpdate(
+      await Address.findOneAndUpdate(
         { default: true },
         {
           default: false,
@@ -27,6 +26,7 @@ export const createAdddress = async (req, res) => {
         }
       );
     }
+    const address = await Address.create({ ...body, customerId: user._id });
     await Customer.findByIdAndUpdate(
       user._id,
       {

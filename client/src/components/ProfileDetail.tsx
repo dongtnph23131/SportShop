@@ -92,9 +92,9 @@ const ProfileDetail = () => {
     setPasswordVisibilityConfirm((prevVisibility) => !prevVisibility);
   };
   const onAdddress = async (address: any) => {
-    await createAddress({ address, token }).then(()=>{
-      message.success('Thêm địa chỉ thành công')
-      setIsAddAddressPopupOpen(false)
+    await createAddress({ address, token }).then(() => {
+      message.success("Thêm địa chỉ thành công");
+      setIsAddAddressPopupOpen(false);
     });
   };
   const onUpdatePassword = async (value: any) => {
@@ -413,20 +413,22 @@ const ProfileDetail = () => {
                           {addresses?.address?.length > 0 ? (
                             <>
                               {addresses?.address?.map((item: any) => {
-                                console.log(item);
-                                
                                 return (
                                   <div key={item._id}>
                                     <div className="account__adress">
                                       <div className="left__acount">
                                         <div className="name">{item?.name}</div>
-                                        <div className="adressDefault">
-                                          <img
-                                            src="../../src/Assets/star.webp"
-                                            alt=""
-                                          />
-                                          Mặc định
-                                        </div>
+                                        {item?.default ? (
+                                          <div className="adressDefault">
+                                            <img
+                                              src="../../src/Assets/star.webp"
+                                              alt=""
+                                            />
+                                            Mặc định
+                                          </div>
+                                        ) : (
+                                          ""
+                                        )}
                                       </div>
                                       <div className="action__adress">
                                         <a href="" className="update__adress">
