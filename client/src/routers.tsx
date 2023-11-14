@@ -1,4 +1,4 @@
-import { Navigate, createBrowserRouter } from "react-router-dom";
+import { Navigate, Outlet, createBrowserRouter } from "react-router-dom";
 import WebsiteLayout from "./components/WebsiteLayout";
 import Home from "./components/Home";
 import Cart from "./components/Cart";
@@ -17,7 +17,14 @@ import OrderClient from "./components/OrderClient";
 import CategoryDetail from "./components/CategoryDetail";
 import ProfileDetail from "./components/ProfileDetail";
 import OrderDetail from "./components/OrderDetail";
-
+import Cookies from "js-cookie";
+const PrivateRouter = () => {
+  const token = Cookies.get("token");
+  if (!token) {
+    return <Navigate to={"/signin"} />;
+  }
+  return <Outlet />;
+};
 export const routers = createBrowserRouter([
   {
     path: "/",
@@ -39,12 +46,32 @@ export const routers = createBrowserRouter([
       { path: "/contact", element: <Contact /> },
       { path: "/blog", element: <Blog /> },
       { path: "/about", element: <About /> },
-      { path: "/profile", element: <Profile /> },
-      { path: "/profileDetail", element: <ProfileDetail /> },
-      { path: "/changepassword", element: <Changepassword /> },
-      { path: "/OrderClient", element: <OrderClient /> },
+      {
+        path: "/profile",
+        element: <PrivateRouter />,
+        children: [{ index: true, element: <Profile /> }],
+      },
+      {
+        path: "/profileDetail",
+        element: <PrivateRouter />,
+        children: [{ index: true, element: <ProfileDetail /> }],
+      },
+      {
+        path: "/changepassword",
+        element: <PrivateRouter />,
+        children: [{ index: true, element: <Changepassword /> }],
+      },
+      {
+        path: "/OrderClient",
+        element: <PrivateRouter />,
+        children: [{ index: true, element: <OrderClient /> }],
+      },
       { path: "/categories/:id", element: <CategoryDetail /> },
-      { path: "/orderDetail/:id", element: <OrderDetail /> },
+      {
+        path: "/orderDetail/:id",
+        element: <PrivateRouter />,
+        children: [{ index: true, element: <OrderDetail /> }],
+      },
     ],
   },
 
