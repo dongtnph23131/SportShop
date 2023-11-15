@@ -7,9 +7,12 @@ import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import {
   useCreateAddressMutation,
+  useDeleteAddressMutation,
   useGetAddressByAcountQuery,
+  useUpdateAddressMutation,
 } from "../api/address";
 import { message } from "antd";
+import axios from "axios";
 const schema = yup.object().shape({
   currentPassword: yup
     .string()
@@ -47,8 +50,10 @@ const ProfileDetail = () => {
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
+  const [updateAdress]=useUpdateAddressMutation()
+  const [isFormUpdateAddress, setIsFormUpdateAddress] = useState(false);
   const { data: addresses } = useGetAddressByAcountQuery(token);
-
+  const [deleteAddress] = useDeleteAddressMutation();
   const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
   const [createAddress] = useCreateAddressMutation();
   const {
@@ -56,14 +61,22 @@ const ProfileDetail = () => {
     handleSubmit,
     reset,
     formState: { errors },
-  } = useForm({
+  }: any = useForm({
     resolver: yupResolver(schema),
   });
   const {
     register: registerAddress,
     handleSubmit: handleSubmitAddress,
     formState: { errors: errorsAdress },
-  } = useForm({
+  }: any = useForm({
+    resolver: yupResolver(schemaAddress),
+  });
+  const {
+    register: registerAddressUpdate,
+    handleSubmit: handleSubmitAddressUpdate,
+    reset: resetAdressUpdate,
+    formState: { errors: errorsAdressUpdate },
+  }: any = useForm({
     resolver: yupResolver(schemaAddress),
   });
   const openAddAddressPopup = () => {
@@ -115,7 +128,14 @@ const ProfileDetail = () => {
       });
     }
   };
-
+  const onUpdateAddress = async (data: any) => {
+    console.log(data);
+    
+     await updateAdress({token,data}).then(()=>{
+      message.success('Cập nhập địa chỉ thành công')
+      setIsFormUpdateAddress(false)
+     })
+  };
   return (
     <div>
       <div className="box__profileDetail">
@@ -395,11 +415,108 @@ const ProfileDetail = () => {
                             <div className="group__btn__close">
                               <button
                                 className="btn__backAdress"
-                                onClick={closeAddAddressPopup}
+                                onClick={() => {
+                                  closeAddAddressPopup();
+                                }}
                               >
                                 Đóng
                               </button>
                               <button className="btn__addAdr">Thêm</button>
+                            </div>
+                          </form>
+                        </div>
+                      </div>
+                    )}
+                    {isFormUpdateAddress && (
+                      <div className="add-address-popup">
+                        <div className="main__addAdress">
+                          <h3>Cập nhật Địa chỉ</h3>
+                          <form
+                            onSubmit={handleSubmitAddressUpdate(
+                              onUpdateAddress
+                            )}
+                            action=""
+                          >
+                            <input
+                              value={`${Cookies.get("firstName")} ${Cookies.get(
+                                "lastName"
+                              )} `}
+                              {...registerAddressUpdate("name")}
+                              type="text"
+                              placeholder="Tên"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.name
+                                ? errorsAdressUpdate?.name.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddressUpdate("phone")}
+                              placeholder="Số điện thoại"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.phone
+                                ? errorsAdressUpdate?.phone.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddressUpdate("address")}
+                              placeholder="Địa chỉ"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.address
+                                ? errorsAdressUpdate?.address.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddressUpdate("ward")}
+                              placeholder="Phường"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.ward
+                                ? errorsAdressUpdate?.ward.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddressUpdate("district")}
+                              placeholder="Quận"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.district
+                                ? errorsAdressUpdate?.district.message
+                                : ""}
+                            </p>
+                            <input
+                              type="text"
+                              {...registerAddressUpdate("province")}
+                              placeholder="Tỉnh"
+                            />
+                            <p className="error">
+                              {errorsAdressUpdate.province
+                                ? errorsAdressUpdate?.province.message
+                                : ""}
+                            </p>
+                            <div className="add__default">
+                              <input
+                                {...registerAddressUpdate("default")}
+                                type="checkbox"
+                              />
+                              <label htmlFor="">Đặt làm địa chỉ mặc định</label>
+                            </div>
+                            <div className="group__btn__close">
+                              <button
+                                className="btn__backAdress"
+                                onClick={() => {
+                                  setIsFormUpdateAddress(false);
+                                }}
+                              >
+                                Đóng
+                              </button>
+                              <button className="btn__addAdr">Cập nhật</button>
                             </div>
                           </form>
                         </div>
@@ -431,10 +548,47 @@ const ProfileDetail = () => {
                                         )}
                                       </div>
                                       <div className="action__adress">
-                                        <a href="" className="update__adress">
+                                        <a
+                                          onClick={async () => {
+                                            setIsFormUpdateAddress(true);
+                                            await axios
+                                              .get(
+                                                `http://localhost:8080/api/address/${item._id}/acount`,
+                                                {
+                                                  headers: {
+                                                    Authorization: `Bearer ${token}`,
+                                                  },
+                                                }
+                                              )
+                                              .then((data) => {
+                                                resetAdressUpdate(
+                                                  data?.data?.address
+                                                );
+                                              });
+                                          }}
+                                          className="update__adress"
+                                        >
                                           Cập nhật
                                         </a>
-                                        <a href="" className="delete__adress">
+                                        <a
+                                          onClick={async () => {
+                                            if (
+                                              confirm(
+                                                "Bạn có muốn xóa địa chỉ này không ?"
+                                              )
+                                            ) {
+                                              await deleteAddress({
+                                                token,
+                                                id: item._id,
+                                              }).then(() => {
+                                                message.success(
+                                                  "Xóa địa chỉ thành công"
+                                                );
+                                              });
+                                            }
+                                          }}
+                                          className="delete__adress"
+                                        >
                                           Xóa
                                         </a>
                                       </div>

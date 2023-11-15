@@ -29,7 +29,37 @@ const addressApi = createApi({
       },
       invalidatesTags: ["Address"],
     }),
+    deleteAddress: builder.mutation({
+      query: ({ token, id }) => {
+        return {
+          url: `/address/${id}/acount`,
+          method: "DELETE",
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["Address"],
+    }),
+    updateAddress: builder.mutation({
+      query: ({ token, data}) => {
+        return {
+          url: `/address/${data._id}/acount`,
+          method: "PATCH",
+          body: { ...data },
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        };
+      },
+      invalidatesTags: ["Address"],
+    }),
   }),
 });
-export const { useGetAddressByAcountQuery,useCreateAddressMutation } = addressApi;
+export const {
+  useGetAddressByAcountQuery,
+  useCreateAddressMutation,
+  useDeleteAddressMutation,
+  useUpdateAddressMutation,
+} = addressApi;
 export default addressApi;
