@@ -33,6 +33,7 @@ router.post("/sign-in", async (req, res) => {
       firstName: user.firstName,
       lastName: user.lastName,
       role: user.role,
+      avatar: user.avatar,
     },
     JWT_SECRET,
     {

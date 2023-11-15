@@ -106,3 +106,12 @@ export interface Customer {
   createdAt: "2023-11-04T16:00:10.314Z";
   updatedAt: "2023-11-04T16:00:10.314Z";
 }
+
+export interface Profile {
+  _id: string;
+  avatar: string;
+  email: string;
+  firstName: string;
+  lastName: string;
+  role: string;
+}
