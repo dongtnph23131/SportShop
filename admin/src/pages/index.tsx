@@ -11,20 +11,29 @@ import { NextPageWithLayout } from "./_app";
 import { Overview } from "@/components/overview/overview";
 import { RecentSales } from "@/components/overview/recent.sales";
 import LayoutAdmin from "@/components/layouts";
+import { useAnalyticsQuery } from "@/services/analytics/analytics";
+import { DateRangePicker } from "@/components/date-range-picker";
+import { useSearchParams } from "next/navigation";
 
 const Page: NextPageWithLayout = () => {
+  const searchParams = useSearchParams();
+  const { data } = useAnalyticsQuery({
+    from: searchParams.get("from"),
+    to: searchParams.get("to"),
+  });
+
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-between space-y-2">
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
         <div className="flex items-center space-x-2">
-          <Button>Download</Button>
+          <DateRangePicker align="end" dayCount={30} />
         </div>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Revenue</CardTitle>
+            <CardTitle className="text-sm font-medium">Total Sale</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
@@ -39,16 +48,16 @@ const Page: NextPageWithLayout = () => {
             </svg>
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">$45,231.89</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold">${data?.sale}</div>
+            {/* <p className="text-xs text-muted-foreground">
               +20.1% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Subscriptions</CardTitle>
-            <svg
+            <CardTitle className="text-sm font-medium">Total orders</CardTitle>
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -61,19 +70,21 @@ const Page: NextPageWithLayout = () => {
               <path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2" />
               <circle cx="9" cy="7" r="4" />
               <path d="M22 21v-2a4 4 0 0 0-3-3.87M16 3.13a4 4 0 0 1 0 7.75" />
-            </svg>
+            </svg> */}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+2350</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold">{data?.orders}</div>
+            {/* <p className="text-xs text-muted-foreground">
               +180.1% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Sales</CardTitle>
-            <svg
+            <CardTitle className="text-sm font-medium">
+              Total customers
+            </CardTitle>
+            {/* <svg
               xmlns="http://www.w3.org/2000/svg"
               viewBox="0 0 24 24"
               fill="none"
@@ -85,13 +96,13 @@ const Page: NextPageWithLayout = () => {
             >
               <rect width="20" height="14" x="2" y="5" rx="2" />
               <path d="M2 10h20" />
-            </svg>
+            </svg> */}
           </CardHeader>
           <CardContent>
-            <div className="text-2xl font-bold">+12,234</div>
-            <p className="text-xs text-muted-foreground">
+            <div className="text-2xl font-bold">{data?.customers}</div>
+            {/* <p className="text-xs text-muted-foreground">
               +19% from last month
-            </p>
+            </p> */}
           </CardContent>
         </Card>
         <Card>
@@ -118,7 +129,7 @@ const Page: NextPageWithLayout = () => {
           </CardContent>
         </Card>
       </div>
-      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
+      {/* <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-7">
         <Card className="col-span-4">
           <CardHeader>
             <CardTitle>Overview</CardTitle>
@@ -136,7 +147,7 @@ const Page: NextPageWithLayout = () => {
             <RecentSales />
           </CardContent>
         </Card>
-      </div>
+      </div> */}
     </div>
   );
 };

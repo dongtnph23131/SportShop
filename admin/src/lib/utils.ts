@@ -24,3 +24,12 @@ export function formatBytes(
     sizeType === "accurate" ? accurateSizes[i] ?? "Bytest" : sizes[i] ?? "Bytes"
   }`;
 }
+
+export const getQueryString = (kv?: Record<string, string>) => {
+  const newParams = new URLSearchParams();
+  if (kv) {
+    Object.entries(kv).forEach(([k, v]) => newParams.set(k, v));
+  }
+  const queryString = newParams.toString();
+  return queryString.length > 0 ? `?${queryString}` : "";
+};
