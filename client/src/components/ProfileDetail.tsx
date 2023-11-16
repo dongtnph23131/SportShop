@@ -173,9 +173,21 @@ const ProfileDetail = () => {
                   onClick={() => handleTabClick("history")}
                 >
                   <div className="icon__sidebar">
-                    <img src="../../src/Assets/cart__m.webp" alt="" />
+                    <img src="../../src/Assets/icon__map.webp" alt="" />
                   </div>
                   Sổ địa chỉ
+                </a>
+                <a
+                  href="#"
+                  className={`account__sidebar__item ${
+                    activeTab === "orderHistory" ? "active" : ""
+                  }`}
+                  onClick={() => handleTabClick("orderHistory")}
+                >
+                  <div className="icon__sidebar">
+                    <img src="../../src/Assets/icon__order.webp" alt="" />
+                  </div>
+                  Lịch sử đơn hàng
                 </a>
               </div>
             </div>
@@ -667,6 +679,13 @@ const ProfileDetail = () => {
                       ) : (
                         ""
                       )}
+                    </div>
+                  </div>
+                )}
+                {activeTab === "orderHistory" && (
+                  <div className="order__history">
+                    <div>
+                      <h3 className="title__profile">Lịch sử đơn hàng</h3>
                     </div>
                   </div>
                 )}
