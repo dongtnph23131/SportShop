@@ -50,12 +50,14 @@ const ProfileDetail = () => {
   const handleTabClick = (tabName: string) => {
     setActiveTab(tabName);
   };
-  const [updateAdress]=useUpdateAddressMutation()
+  const [updateAdress] = useUpdateAddressMutation();
   const [isFormUpdateAddress, setIsFormUpdateAddress] = useState(false);
   const { data: addresses } = useGetAddressByAcountQuery(token);
   const [deleteAddress] = useDeleteAddressMutation();
   const [isAddAddressPopupOpen, setIsAddAddressPopupOpen] = useState(false);
   const [createAddress] = useCreateAddressMutation();
+  const [isUpdateProfilePopupOpen, setIsUpdateProfilePopupOpen] =
+    useState(false);
   const {
     register,
     handleSubmit,
@@ -130,11 +132,18 @@ const ProfileDetail = () => {
   };
   const onUpdateAddress = async (data: any) => {
     console.log(data);
-    
-     await updateAdress({token,data}).then(()=>{
-      message.success('Cập nhập địa chỉ thành công')
-      setIsFormUpdateAddress(false)
-     })
+
+    await updateAdress({ token, data }).then(() => {
+      message.success("Cập nhập địa chỉ thành công");
+      setIsFormUpdateAddress(false);
+    });
+  };
+  const openUpdateProfilePopup = () => {
+    setIsUpdateProfilePopupOpen(true);
+  };
+
+  const closeUpdateProfilePopup = () => {
+    setIsUpdateProfilePopupOpen(false);
   };
   return (
     <div>
@@ -189,9 +198,56 @@ const ProfileDetail = () => {
                         Manhld21082003@gmail.com
                       </div>
                     </div>
-                    <button className="btn__update update__profile">
+                    <button
+                      className="btn__update update__profile"
+                      onClick={openUpdateProfilePopup}
+                    >
                       Cập nhật
                     </button>
+                    {isUpdateProfilePopupOpen && (
+                      <div className="update-profile-popup update-password-popup">
+                        <div className="main_updateProfile main_updatePassword">
+                          <h3>Cập nhật thông tin cá nhân</h3>
+                          <form action="">
+                            <div className="row__update__profile">
+                              <label htmlFor="">Họ Tên</label>
+                              <input type="text" value={"Lưu Đức Mạnh"} />
+                            </div>
+                            <div className="row__update__profile">
+                              <label htmlFor="">Số điện thoại</label>
+                              <input type="text" value={""} />
+                            </div>
+                            <div className="row__update__profile">
+                              <label htmlFor="">Email</label>
+                              <input type="text" value={""} />
+                            </div>
+                            <div className="row__update__profile">
+                              <label htmlFor="">Ảnh đại diện</label>
+                              <div className="file-input-wrapper">
+                                <input type="file" id="avatar" />
+                                <label
+                                  htmlFor="avatar"
+                                  className="file-input-label"
+                                >
+                                  <span className="icon-upload"></span> Chọn ảnh
+                                </label>
+                              </div>
+                            </div>
+                          </form>
+                          <div className="group__btn__close">
+                            <button
+                              className="btn__backAdress"
+                              onClick={closeUpdateProfilePopup}
+                            >
+                              Đóng
+                            </button>
+                            <button className="btnSaveUpdateProfile btn__updatePassword">
+                              Cập nhật
+                            </button>
+                          </div>
+                        </div>
+                      </div>
+                    )}
                     <div className="content__sign">
                       <h3 className="title__signProfile">
                         Thông tin đăng nhập
