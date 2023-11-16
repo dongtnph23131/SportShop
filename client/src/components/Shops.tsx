@@ -56,7 +56,8 @@ const Shops = () => {
             {isFilterVisible && (
               <div className="box-container-filter">
                 <div className="box-item-fillter">
-                  <div className="title-filter-shops">
+                 <div className="item__filter__top">
+                 <div className="title-filter-shops">
                     <h3> Filters</h3>
                     <span>
                       <a href="" onClick={handleHideFilter}>
@@ -120,6 +121,7 @@ const Shops = () => {
                       })}
                     </div>
                   </div>
+                 </div>
 
                   <div className="btn-filter">
                     <a href="">Clear Filters</a>

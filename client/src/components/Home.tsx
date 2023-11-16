@@ -14,7 +14,7 @@ const Home = () => {
       order,
       dataCategories,
       page,
-      limit: 4,
+      limit: 12,
     });
   const { data: productsNoPage } = useGetAllProductsQuery({
     sort,
@@ -53,7 +53,7 @@ const Home = () => {
       </section>
 
       <section id="product1" className="section-p1">
-        <h2>Featured Products</h2>
+        <h2>Tất cả sản phẩm</h2>
         <p>Summer Collection New Modern Design</p>
         <div className="pro-container">
           {products?.map((product: any, index: any) => {

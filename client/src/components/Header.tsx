@@ -27,6 +27,8 @@ const Header = () => {
       setCategories(data.data);
     });
   }, []);
+  const [isDropdownActive, setIsDropdownActive] = useState(false);
+
   return (
     <div>
       <header>
@@ -146,13 +148,18 @@ const Header = () => {
             <ul className="hd4-right__title d-flex js-right ai-center">
               {token ? (
                 <>
-                  <li className="signin-up">
-                    <div className="avart-sgin">
-                      <img src={avatar} alt="" />
+                  <li className="signin-up" >
+                    <div className="clickViewsProfile" onClick={() => setIsDropdownActive(!isDropdownActive)}>
+                      <div className="avart-sgin">
+                        <img src={avatar} alt="" />
+                      </div>
+                      <a className="nameProfileUser">
+                        {firstName} {lastName} <span className={`icon__down__detailProfile ${isDropdownActive ? 'active' : ''}`}><i className="fa-solid fa-caret-down"></i></span>
+                      </a>
                     </div>
-                    <ul className="all-signinout">
+                    <ul className={`all-signinout ${isDropdownActive ? 'active' : ''}`}>
                       <li>
-                        <a href="/profileDetail">Thông tin cá nhân</a>
+                        <a href="/profileDetail" className="detail__profile">Thông tin cá nhân <span><i className="fa-solid fa-user"></i></span></a>
                       </li>
                       <li
                         onClick={() => {
@@ -168,15 +175,11 @@ const Header = () => {
                           navigate("/");
                         }}
                       >
-                        <a>Đăng xuất</a>
+                        <a className="detail__profile">Đăng xuất <span><i className="fa-solid fa-right-from-bracket"></i></span></a>
                       </li>
                     </ul>
                   </li>
-                  <li className="Login">
-                    <a>
-                      {firstName} {lastName}
-                    </a>
-                  </li>
+                  <li className="Login"></li>
                 </>
               ) : (
                 <>
