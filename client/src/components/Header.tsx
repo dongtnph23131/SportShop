@@ -4,11 +4,10 @@ import { getCategories } from "../api/category";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGetCartOfUserQuery } from "../api/cart";
+import { useGetProfileByAcountQuery } from "../api/acount";
 const Header = () => {
   const [token, setToken] = useState<any>(Cookies.get("token"));
-  const [firstName, setFirstName] = useState<any>(Cookies.get("firstName"));
-  const [lastName, setLastName] = useState<any>(Cookies.get("lastName"));
-  const [avatar, setAvatar] = useState<any>(Cookies.get("avatar"));
+  const {data:profile}=useGetProfileByAcountQuery(token)
   const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([]);
@@ -148,11 +147,14 @@ const Header = () => {
                 <>
                   <li className="signin-up">
                     <div className="avart-sgin">
-                      <img src={avatar} alt="" />
+                      <img src={profile?.customer?.avatar} alt="" />
                     </div>
                     <ul className="all-signinout">
                       <li>
                         <a href="/profileDetail">Thông tin cá nhân</a>
+                      </li>
+                      <li>
+                        <a href="/OrderClient">Lịch sử đơn hàng</a>
                       </li>
                       <li
                         onClick={() => {
@@ -161,9 +163,6 @@ const Header = () => {
                           Cookies.remove("lastName");
                           Cookies.remove("avatar");
                           Cookies.remove("token");
-                          setAvatar("");
-                          setFirstName("");
-                          setLastName("");
                           setToken("");
                           navigate("/");
                         }}
@@ -174,7 +173,7 @@ const Header = () => {
                   </li>
                   <li className="Login">
                     <a>
-                      {firstName} {lastName}
+                      {profile?.customer?.firstName} {profile?.customer?.lastName}
                     </a>
                   </li>
                 </>

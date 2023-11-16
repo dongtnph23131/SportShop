@@ -2,7 +2,11 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
-import { useUpdatePasswordMutation } from "../api/acount";
+import {
+  useGetProfileByAcountQuery,
+  useUpdatePasswordMutation,
+  useUpdateProfileMutation,
+} from "../api/acount";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import {
@@ -28,6 +32,9 @@ const schema = yup.object().shape({
     .required("Cần nhập lại mật khẩu")
     .min(6, "Nhập lại mật khẩu mới ít nhất 6 kí tự"),
 });
+const schemaProfile = yup.object().shape({
+  email: yup.string().email("Email chưa đúng địng dạng"),
+});
 const schemaAddress = yup.object().shape({
   address: yup.string().required("Địa chỉ k để trống"),
   district: yup.string().required("district k để trống"),
@@ -39,6 +46,7 @@ const schemaAddress = yup.object().shape({
 });
 const ProfileDetail = () => {
   const token = Cookies.get("token");
+  const [updateProfile] = useUpdateProfileMutation();
   const [updatePassword] = useUpdatePasswordMutation();
   const [activeTab, setActiveTab] = useState("profile");
   const [isUpdatePasswordPopupOpen, setIsUpdatePasswordPopupOpen] =
@@ -51,6 +59,7 @@ const ProfileDetail = () => {
     setActiveTab(tabName);
   };
   const [updateAdress] = useUpdateAddressMutation();
+  const [image, setImage] = useState();
   const [isFormUpdateAddress, setIsFormUpdateAddress] = useState(false);
   const { data: addresses } = useGetAddressByAcountQuery(token);
   const [deleteAddress] = useDeleteAddressMutation();
@@ -73,6 +82,8 @@ const ProfileDetail = () => {
   }: any = useForm({
     resolver: yupResolver(schemaAddress),
   });
+  const { register: registerProfile, handleSubmit: handleSubmitProfile }: any =
+    useForm({ resolver: yupResolver(schemaProfile) });
   const {
     register: registerAddressUpdate,
     handleSubmit: handleSubmitAddressUpdate,
@@ -117,10 +128,6 @@ const ProfileDetail = () => {
     if (data?.data) {
       Swal.fire("Good job!", "Đổi mật khẩu thành công", "success");
       Cookies.set("token", data.data.token);
-      Cookies.set("email", data.data.newUser.email);
-      Cookies.set("firstName", data.data.newUser.firstName);
-      Cookies.set("lastName", data.data.newUser.lastName);
-      Cookies.set("avatar", data.data.newUser.avatar);
       reset();
       setIsUpdatePasswordPopupOpen(false);
     } else {
@@ -131,8 +138,6 @@ const ProfileDetail = () => {
     }
   };
   const onUpdateAddress = async (data: any) => {
-    console.log(data);
-
     await updateAdress({ token, data }).then(() => {
       message.success("Cập nhập địa chỉ thành công");
       setIsFormUpdateAddress(false);
@@ -145,16 +150,50 @@ const ProfileDetail = () => {
   const closeUpdateProfilePopup = () => {
     setIsUpdateProfilePopupOpen(false);
   };
+  const { data: profile } = useGetProfileByAcountQuery(token);
+  const onChangeImage = async (event: any) => {
+    const formData = new FormData();
+    formData.append("image", event.target.files[0]);
+    const apiResponse = await axios.post(
+      `https://api.imgbb.com/1/upload?key=283182a99cb41ed4065016b64933524f`,
+      formData
+    );
+    console.log(apiResponse);
+
+    setImage(apiResponse.data.data.url);
+  };
+  const onUpdateProfile = async (data: any) => {
+    const value = {
+      ...data,
+      firstName: data.fullname.split(" ", 2)[0],
+      lastName: data.fullname.split(" ", 2)[1],
+      avatar: image ? image : profile?.customer.avatar,
+    };
+    await updateProfile({ value, token }).then((response: any) => {
+      Cookies.set("email", response.data.customer.email);
+      Cookies.set("firstName", response.data.customer.firstName);
+      Cookies.set("lastName", response.data.customer.lastName);
+      Cookies.set("avatar", response.data.customer.avatar);
+      message.success("Cập nhập thông tin thành công");
+      setIsUpdateProfilePopupOpen(false);
+    });
+  };
   return (
     <div>
       <div className="box__profileDetail">
         <div className="container">
-          <h2 className="title__profile">Hi, Lưu Đức Mạnh</h2>
+          <h2 className="title__profile">
+            Hi,{" "}
+            {profile &&
+              `${
+                profile?.customer.firstName + " " + profile?.customer.lastName
+              }`}
+          </h2>
           <div className="row">
             <div className="col-lg-4">
               <div className="account__sidebar">
                 <a
-                  href="#"
+                  href=""
                   className={`account__sidebar__item ${
                     activeTab === "profile" ? "active" : ""
                   }`}
@@ -166,7 +205,7 @@ const ProfileDetail = () => {
                   Thông tin cá nhân
                 </a>
                 <a
-                  href="#"
+                  href=""
                   className={`account__sidebar__item ${
                     activeTab === "history" ? "active" : ""
                   }`}
@@ -177,8 +216,8 @@ const ProfileDetail = () => {
                   </div>
                   Sổ địa chỉ
                 </a>
-                <a
-                  href="#"
+                {/* <a
+                  href=""
                   className={`account__sidebar__item ${
                     activeTab === "orderHistory" ? "active" : ""
                   }`}
@@ -188,7 +227,7 @@ const ProfileDetail = () => {
                     <img src="../../src/Assets/icon__order.webp" alt="" />
                   </div>
                   Lịch sử đơn hàng
-                </a>
+                </a> */}
               </div>
             </div>
             <div className="col-lg-8">
@@ -198,16 +237,23 @@ const ProfileDetail = () => {
                     <h3 className="title__profile">Thông tin tài khoản</h3>
                     <div className="profile__name">
                       <div className="full__name">Họ tên:</div>
-                      <div className="name__detail">Lưu Đức Mạnh</div>
+                      <div className="name__detail">
+                        {profile &&
+                          `${
+                            profile?.customer.firstName +
+                            " " +
+                            profile?.customer.lastName
+                          }`}
+                      </div>
                     </div>
-                    <div className="profile__phone">
+                    {/* <div className="profile__phone">
                       <div className="full__name">Số điện thoại:</div>
                       <div className="name__detail">0904798514</div>
-                    </div>
+                    </div> */}
                     <div className="profile__email">
                       <div className="full__name">Email:</div>
                       <div className="name__detail">
-                        Manhld21082003@gmail.com
+                        {profile && `${profile?.customer.email}`}
                       </div>
                     </div>
                     <button
@@ -220,23 +266,40 @@ const ProfileDetail = () => {
                       <div className="update-profile-popup update-password-popup">
                         <div className="main_updateProfile main_updatePassword">
                           <h3>Cập nhật thông tin cá nhân</h3>
-                          <form action="">
+                          <form onSubmit={handleSubmitProfile(onUpdateProfile)}>
                             <div className="row__update__profile">
-                              <label htmlFor="">Họ Tên</label>
-                              <input type="text" value={"Lưu Đức Mạnh"} />
+                              <label>Họ Tên</label>
+                              <input
+                                type="text"
+                                {...registerProfile("fullname")}
+                                defaultValue={`${
+                                  profile?.customer.firstName +
+                                  " " +
+                                  profile?.customer.lastName
+                                }`}
+                              />
                             </div>
-                            <div className="row__update__profile">
+                            {/* <div className="row__update__profile">
                               <label htmlFor="">Số điện thoại</label>
                               <input type="text" value={""} />
-                            </div>
+                            </div> */}
                             <div className="row__update__profile">
-                              <label htmlFor="">Email</label>
-                              <input type="text" value={""} />
+                              <label>Email</label>
+                              <input
+                                type="text"
+                                defaultValue={profile?.customer.email}
+                                {...registerProfile("email")}
+                              />
                             </div>
                             <div className="row__update__profile">
                               <label htmlFor="">Ảnh đại diện</label>
                               <div className="file-input-wrapper">
-                                <input type="file" id="avatar" />
+                                <input
+                                  onChange={onChangeImage}
+                                  type="file"
+                                  id="avatar"
+                                  accept=".jpg"
+                                />
                                 <label
                                   htmlFor="avatar"
                                   className="file-input-label"
@@ -244,19 +307,25 @@ const ProfileDetail = () => {
                                   <span className="icon-upload"></span> Chọn ảnh
                                 </label>
                               </div>
+                              {image && (
+                                <img
+                                  style={{ width: "50px", height: "50px" ,marginLeft:'10px'}}
+                                  src={image}
+                                />
+                              )}
+                            </div>
+                            <div className="group__btn__close">
+                              <button
+                                className="btn__backAdress"
+                                onClick={closeUpdateProfilePopup}
+                              >
+                                Đóng
+                              </button>
+                              <button className="btnSaveUpdateProfile btn__updatePassword">
+                                Cập nhật
+                              </button>
                             </div>
                           </form>
-                          <div className="group__btn__close">
-                            <button
-                              className="btn__backAdress"
-                              onClick={closeUpdateProfilePopup}
-                            >
-                              Đóng
-                            </button>
-                            <button className="btnSaveUpdateProfile btn__updatePassword">
-                              Cập nhật
-                            </button>
-                          </div>
                         </div>
                       </div>
                     )}
@@ -682,7 +751,7 @@ const ProfileDetail = () => {
                     </div>
                   </div>
                 )}
-                {activeTab === "orderHistory" && (
+                {/* {activeTab === "orderHistory" && (
                   <div className="order__history">
                     <div>
                       <h3 className="title__profile">Lịch sử đơn hàng</h3>
@@ -740,7 +809,7 @@ const ProfileDetail = () => {
                       </div>
                     </div>
                   </div>
-                )}
+                )} */}
               </div>
             </div>
           </div>
