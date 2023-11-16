@@ -7,7 +7,7 @@ import { useGetCartOfUserQuery } from "../api/cart";
 import { useGetProfileByAcountQuery } from "../api/acount";
 const Header = () => {
   const [token, setToken] = useState<any>(Cookies.get("token"));
-  const {data:profile}=useGetProfileByAcountQuery(token)
+  const { data: profile } = useGetProfileByAcountQuery(token);
   const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([]);
@@ -21,6 +21,7 @@ const Header = () => {
     e.preventDefault();
     setIsSearchVisible(false);
   };
+  const [isDropdownActive, setIsDropdownActive] = useState(false);
   useEffect(() => {
     getCategories().then((data) => {
       setCategories(data.data);
@@ -146,36 +147,60 @@ const Header = () => {
               {token ? (
                 <>
                   <li className="signin-up">
-                    <div className="avart-sgin">
-                      <img src={profile?.customer?.avatar} alt="" />
+                    <div
+                      className="clickViewsProfile"
+                      onClick={() => setIsDropdownActive(!isDropdownActive)}
+                    >
+                      <div className="avart-sgin">
+                        <img src={profile?.customer?.avatar} alt="" />
+                      </div>
+                      <a className="nameProfileUser">
+                        {profile?.customer?.firstName}{" "}
+                        {profile?.customer?.lastName}{" "}
+                        <span
+                          className={`icon__down__detailProfile ${
+                            isDropdownActive ? "active" : ""
+                          }`}
+                        >
+                          <i className="fa-solid fa-caret-down"></i>
+                        </span>
+                      </a>
                     </div>
-                    <ul className="all-signinout">
+                    <ul
+                      className={`all-signinout ${
+                        isDropdownActive ? "active" : ""
+                      }`}
+                    >
                       <li>
-                        <a href="/profileDetail">Thông tin cá nhân</a>
+                        <a href="/profileDetail" className="detail__profile">
+                          Thông tin cá nhân{" "}
+                          <span>
+                            <i className="fa-solid fa-user"></i>
+                          </span>
+                        </a>
                       </li>
                       <li>
-                        <a href="/OrderClient">Lịch sử đơn hàng</a>
-                      </li>
-                      <li
-                        onClick={() => {
-                          Cookies.remove("email");
-                          Cookies.remove("firstName");
-                          Cookies.remove("lastName");
-                          Cookies.remove("avatar");
-                          Cookies.remove("token");
-                          setToken("");
-                          navigate("/");
-                        }}
-                      >
-                        <a>Đăng xuất</a>
+                        <a
+                          onClick={() => {
+                            Cookies.remove("email");
+                            Cookies.remove("firstName");
+                            Cookies.remove("lastName");
+                            Cookies.remove("avatar");
+                            Cookies.remove("token");
+                            setToken("");
+                            navigate("/");
+                          }}
+                          className="detail__profile"
+                        >
+                          Đăng xuất{" "}
+                          <span>
+                            <i className="fa-solid fa-right-from-bracket"></i>
+                          </span>
+                        </a>
                       </li>
                     </ul>
                   </li>
-                  <li className="Login">
-                    <a>
-                      {profile?.customer?.firstName} {profile?.customer?.lastName}
-                    </a>
-                  </li>
+                  <li className="Login"></li>
                 </>
               ) : (
                 <>
@@ -193,20 +218,31 @@ const Header = () => {
                   </li>
                 </>
               )}
-              <li>
+              {token ? (
+                <li>
+                  <a href="/cart" className="qtyli-cart">
+                    <span className="qlty">
+                      {token
+                        ? carts?.reduce(
+                            (accumulator: any, currentValue: any) =>
+                              accumulator + currentValue.quantity,
+                            0
+                          )
+                        : "0"}
+                    </span>
+                    <img src="../../src/Assets/cart.gif" alt="" />
+                  </a>
+                </li>
+              ) : (
+                <li>
                 <a href="/cart" className="qtyli-cart">
                   <span className="qlty">
-                    {token
-                      ? carts?.reduce(
-                          (accumulator: any, currentValue: any) =>
-                            accumulator + currentValue.quantity,
-                          0
-                        )
-                      : "0"}
+                    0
                   </span>
                   <img src="../../src/Assets/cart.gif" alt="" />
                 </a>
               </li>
+              )}
             </ul>
           </div>
         </div>
