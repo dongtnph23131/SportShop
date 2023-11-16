@@ -4,11 +4,10 @@ import { getCategories } from "../api/category";
 import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { useGetCartOfUserQuery } from "../api/cart";
+import { useGetProfileByAcountQuery } from "../api/acount";
 const Header = () => {
   const [token, setToken] = useState<any>(Cookies.get("token"));
-  const [firstName, setFirstName] = useState<any>(Cookies.get("firstName"));
-  const [lastName, setLastName] = useState<any>(Cookies.get("lastName"));
-  const [avatar, setAvatar] = useState<any>(Cookies.get("avatar"));
+  const {data:profile}=useGetProfileByAcountQuery(token)
   const navigate = useNavigate();
   const [isSearchVisible, setIsSearchVisible] = useState(false);
   const [categories, setCategories] = useState<any>([]);
@@ -27,8 +26,6 @@ const Header = () => {
       setCategories(data.data);
     });
   }, []);
-  const [isDropdownActive, setIsDropdownActive] = useState(false);
-
   return (
     <div>
       <header>
@@ -148,18 +145,16 @@ const Header = () => {
             <ul className="hd4-right__title d-flex js-right ai-center">
               {token ? (
                 <>
-                  <li className="signin-up" >
-                    <div className="clickViewsProfile" onClick={() => setIsDropdownActive(!isDropdownActive)}>
-                      <div className="avart-sgin">
-                        <img src={avatar} alt="" />
-                      </div>
-                      <a className="nameProfileUser">
-                        {firstName} {lastName} <span className={`icon__down__detailProfile ${isDropdownActive ? 'active' : ''}`}><i className="fa-solid fa-caret-down"></i></span>
-                      </a>
+                  <li className="signin-up">
+                    <div className="avart-sgin">
+                      <img src={profile?.customer?.avatar} alt="" />
                     </div>
-                    <ul className={`all-signinout ${isDropdownActive ? 'active' : ''}`}>
+                    <ul className="all-signinout">
                       <li>
-                        <a href="/profileDetail" className="detail__profile">Thông tin cá nhân <span><i className="fa-solid fa-user"></i></span></a>
+                        <a href="/profileDetail">Thông tin cá nhân</a>
+                      </li>
+                      <li>
+                        <a href="/OrderClient">Lịch sử đơn hàng</a>
                       </li>
                       <li
                         onClick={() => {
@@ -168,18 +163,19 @@ const Header = () => {
                           Cookies.remove("lastName");
                           Cookies.remove("avatar");
                           Cookies.remove("token");
-                          setAvatar("");
-                          setFirstName("");
-                          setLastName("");
                           setToken("");
                           navigate("/");
                         }}
                       >
-                        <a className="detail__profile">Đăng xuất <span><i className="fa-solid fa-right-from-bracket"></i></span></a>
+                        <a>Đăng xuất</a>
                       </li>
                     </ul>
                   </li>
-                  <li className="Login"></li>
+                  <li className="Login">
+                    <a>
+                      {profile?.customer?.firstName} {profile?.customer?.lastName}
+                    </a>
+                  </li>
                 </>
               ) : (
                 <>
