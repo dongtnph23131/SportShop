@@ -42,6 +42,7 @@ import {
 } from "@/components/ui/dialog";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
+import axiosClient from "@/lib/axios-instance";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -71,13 +72,12 @@ const Page: NextPageWithLayout = () => {
                     <Button
                       variant={"destructive"}
                       onClick={async () => {
-                        const res = await fetch(
-                          `${API_URL}/api/admin/orders/${order._id}/cancel`,
-                          { method: "POST" }
+                        const res = await axiosClient.post(
+                          `/orders/${order._id}/cancel`
                         );
 
-                        if (!res.ok) {
-                          const error = await res.text();
+                        if (res.status !== 200) {
+                          const error = res.data.message;
                           toast.error(error);
                           return;
                         }
@@ -238,13 +238,12 @@ const Page: NextPageWithLayout = () => {
                     <Button
                       variant={"outline"}
                       onClick={async () => {
-                        const res = await fetch(
-                          `${API_URL}/api/admin/orders/${order._id}/pay`,
-                          { method: "POST" }
+                        const res = await axiosClient.post(
+                          `/orders/${order._id}/pay`
                         );
 
-                        if (!res.ok) {
-                          const error = await res.text();
+                        if (res.status !== 200) {
+                          const error = res.data.message;
                           toast.error(error);
                           return;
                         }
