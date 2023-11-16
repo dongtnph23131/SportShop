@@ -2,9 +2,24 @@ import axiosClient from "@/lib/axios-instance";
 import { getQueryString } from "@/lib/utils";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
+export interface DailyAnalytics {
+  _id: number;
+  total: number;
+}
+
+export interface SaleAnalytics {
+  total: number;
+  daily: DailyAnalytics[];
+}
+
+export interface OrderAnalytics {
+  total: number;
+  daily: DailyAnalytics[];
+}
+
 export interface Analytics {
-  sale: number;
-  orders: number;
+  sale: SaleAnalytics;
+  orders: OrderAnalytics;
   customers: number;
 }
 

@@ -37,28 +37,52 @@ router.get("/", async (req, res) => {
       : {}
   );
 
-  const monthlySales = await Order.aggregate([
-    // {
-    //   $match: {
-    //     createdAt: {
-    //       ...(formDay && { $gte: formDay }),
-    //       ...(toDay && { $lte: toDay }),
-    //     },
-    //   },
-    // },
+  const dailySales = await Order.aggregate([
+    {
+      $match: {
+        status: "Completed",
+        createdAt: {
+          ...(formDay && { $gte: formDay }),
+          ...(toDay && { $lte: toDay }),
+        },
+      },
+    },
     {
       $group: {
-        _id: { $month: "$createdAt" },
+        _id: { $dayOfMonth: "$createdAt" },
         total: { $sum: "$orderTotalPrice" },
       },
     },
   ]);
 
+  const dailyOrders = await Order.aggregate([
+    {
+      $match: {
+        status: "Completed",
+        createdAt: {
+          ...(formDay && { $gte: formDay }),
+          ...(toDay && { $lte: toDay }),
+        },
+      },
+    },
+    {
+      $group: {
+        _id: { $dayOfMonth: "$createdAt" },
+        total: { $sum: 1 },
+      },
+    },
+  ]);
+
   res.status(200).json({
-    sale,
-    orders: orders.length,
+    sale: {
+      total: sale,
+      daily: dailySales,
+    },
+    orders: {
+      total: orders.length,
+      daily: dailyOrders,
+    },
     customers: customers.length,
-    monthlySales,
   });
 });
 

@@ -29,6 +29,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -143,13 +144,12 @@ const Page: NextPageWithLayout = () => {
                     <AlertDialogCancel>Cancel</AlertDialogCancel>
                     <AlertDialogAction
                       onClick={async () => {
-                        const res = await fetch(
-                          `${API_URL}/api/admin/orders/${row.original._id}`,
-                          { method: "DELETE" }
+                        const res = await axiosClient.delete(
+                          `/orders/${row.original._id}`
                         );
 
-                        if (!res.ok) {
-                          const error = await res.text();
+                        if (res.status !== 200) {
+                          const error = res.data.message;
                           toast.error(error);
                           return;
                         }
