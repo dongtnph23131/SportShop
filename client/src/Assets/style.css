@@ -1863,10 +1863,67 @@ footer .copyright {
   cursor: pointer;
 }
 
+
+.main_updateProfile form {
+  padding: 20px 40px;
+}
+
+.row__update__profile label {
+  min-width: 100px;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+}
+
+.row__update__profile {
+  margin-bottom: 15px;
+  display: flex;
+  align-items: center;
+}
+
+.row__update__profile input {
+  padding: 10px;
+  width: 85%;
+  border-radius: 5px;
+}
+
+.file-input-wrapper {
+  position: relative;
+  overflow: hidden;
+  display: inline-block;
+}
+
+.file-input-wrapper input[type=file] {
+  font-size: 100px;
+  position: absolute;
+  left: 0;
+  top: 0;
+  opacity: 0;
+  width: 100%;
+  height: 100%;
+}
+
+.file-input-label {
+  display: inline-block;
+  padding: 10px 15px;
+  background-color: #3498db;
+  color: #fff;
+  border-radius: 5px;
+  cursor: pointer;
+}
+
+.icon-upload {
+  display: inline-block;
+  width: 25px;
+  height: 16px;
+  background-image: url('../Assets/icon__upload.png'); /* Thay thế bằng đường dẫn biểu tượng của bạn */
+  background-size: cover;
+  margin-right: 5px;
+}
 /* Media Query */
 @media (max-width: 799px) {
   .section-p1 {
-    padding: 40px 40px;
+    padding: 20px 0;
   }
 
   #navbar {
