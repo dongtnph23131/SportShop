@@ -90,6 +90,7 @@ a.order {
   display: flex;
   width: 100%;
   position: relative;
+  background: #E8E8E8;
 }
 
 .order-item-info {

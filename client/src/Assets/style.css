@@ -1920,6 +1920,38 @@ footer .copyright {
   background-size: cover;
   margin-right: 5px;
 }
+.ordered__color {
+  font-weight: 600;
+}
+
+.ordered__color span {
+  font-weight: 400;
+}
+
+.order-item-quantity {
+  font-weight: 600;
+}
+
+.order-item-quantity span {
+  font-weight: 400;
+}
+
+.order-item-price span {
+  font-weight: 400;
+  color: red;
+}
+
+.order-item-price {
+  font-weight: 600;
+}
+.all__prices {
+  font-weight: 600;
+}
+
+.all__prices b {
+  color: red;
+  margin-left: 10px;
+}
 /* Media Query */
 @media (max-width: 799px) {
   .section-p1 {
