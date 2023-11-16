@@ -364,6 +364,9 @@ h4.brackham {
   padding: 20px 20px;
   text-align: left;
   background: #fff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
 }
 
 .title-filter-shops h3 {
@@ -1951,6 +1954,60 @@ footer .copyright {
 .all__prices b {
   color: red;
   margin-left: 10px;
+}
+.clickViewsProfile {
+  display: flex;
+  align-items: center;
+  cursor: pointer;
+}
+.detail__profile {
+  display: flex;
+  justify-content: space-between;
+}
+.nameProfileUser i {
+  margin-left: 10px;
+}
+.nameProfileUser {
+  margin-left: 10px;
+}
+.detail__profile {
+  display: flex;
+  justify-content: space-between;
+}
+
+.nameProfileUser i {
+  margin-left: 10px;
+}
+
+.icon__down__detailProfile.active i {
+  transform: rotate(0deg);
+  transition: 0.3s;
+}
+
+.icon__down__detailProfile i {
+  transform: rotate(180deg);
+  transition: 0.3s;
+}
+.cart__zero {
+  padding: 50px 0px;
+  text-align: center;
+}
+.payNow__cart0 {
+  margin: auto;
+  padding: 0.625rem 2.625rem;
+  position: relative;
+  overflow: visible;
+  outline: 0;
+  border: none;
+  background: #ee4d2d;
+}
+
+.cart__zero h3 {
+  margin-bottom: 10px;
+}
+
+.payNow__cart0 a {
+  color: #fff;
 }
 /* Media Query */
 @media (max-width: 799px) {
