@@ -1,6 +1,26 @@
-import React from "react";
+import React, { useState } from "react";
+import { useGetAllProductsQuery } from "../api/product";
+import { useNavigate } from "react-router-dom";
 
 const Home = () => {
+  const [sort, setSort] = useState<String>();
+  const [order, setOrder] = useState<String>();
+  const [page, setPage] = useState<any>(1);
+  const [dataCategories, setDataCategories] = useState<any>([]);
+  const navigate = useNavigate();
+  const { data: products, isLoading: isLoadingProducts } =
+    useGetAllProductsQuery({
+      sort,
+      order,
+      dataCategories,
+      page,
+      limit: 4,
+    });
+  const { data: productsNoPage } = useGetAllProductsQuery({
+    sort,
+    order,
+    dataCategories,
+  });
   return (
     <div>
       <section id="hero"></section>
@@ -36,157 +56,36 @@ const Home = () => {
         <h2>Featured Products</h2>
         <p>Summer Collection New Modern Design</p>
         <div className="pro-container">
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
+          {products?.map((product: any, index: any) => {
+            return (
+              <div
+                onClick={() => {
+                  navigate(`/products/${product._id}`);
+                }}
+                className="pro"
+                key={index + 1}
+              >
+                <img src={`${product?.images[0].url}`} alt="" />
+                <div className="des">
+                  <span>adidas</span>
+                  <h5>{product.name}</h5>
+                  <div className="star">
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                    <i className="fas fa-star"></i>
+                  </div>
+                  <h4>
+                    ${product.minPrice}-${product.maxPrice}
+                  </h4>
+                </div>
+                <a href="#">
+                  <i className="fab fa-opencart cart"></i>
+                </a>
               </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Ladies paint</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product2.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut Dress</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fab fa-opencart cart"></i>
-            </a>
-          </div>
+            );
+          })}
         </div>
       </section>
 
@@ -202,139 +101,6 @@ const Home = () => {
         <h2>New Arrivals</h2>
         <p>Summer Collection New Modern Design</p>
         <div className="pro-container">
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut T-Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut Paint</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
-          <div className="pro">
-            <img src="../../src/Assets/product33.jpg" alt="" />
-            <div className="des">
-              <span>adidas</span>
-              <h5>Cartoon Astronaut Shirts</h5>
-              <div className="star">
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-                <i className="fas fa-star"></i>
-              </div>
-              <h4>$78</h4>
-            </div>
-            <a href="#">
-              <i className="fal fa-shopping-cart cart"></i>
-            </a>
-          </div>
-
           <div className="pro">
             <img src="../../src/Assets/product33.jpg" alt="" />
             <div className="des">
