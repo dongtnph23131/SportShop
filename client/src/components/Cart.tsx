@@ -74,7 +74,14 @@ const Cart = () => {
           {!carts?.message ? (
             <>
               {carts?.length === 0 ? (
-                <div>Giỏ hàng trống</div>
+                <div className="cart__zero">
+                  <div className="icon__cart__0">
+                    {" "}
+                    <img src="../../src/Assets/icon__cart__0.png" alt="" />
+                  </div>
+                  <h3>Giỏ hàng của bạn đang trống</h3>
+                  <button className="payNow__cart0"><a href="/shops">Mua ngay</a></button>
+                </div>
               ) : (
                 <>
                   <section id="cart" className="section-p1 cart__ss">
@@ -165,7 +172,7 @@ const Cart = () => {
                   </p>
                 </table>
                 <div className="group__btnPay">
-                <button className="normal">Proceed to checkout</button>
+                  <button className="normal">Proceed to checkout</button>
                 </div>
               </div>
 

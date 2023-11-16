@@ -234,13 +234,20 @@ li.signin-up {
 
 ul.all-signinout {
   position: absolute;
-  width: 135px;
+  width: 200px;
   background: #fff;
   z-index: 9999;
-  display: none;
   min-width: 155px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
   top: 70px;
+  overflow: hidden; /* Ẩn nội dung vượt ra khỏi phần tử */
+  max-height: 0; /* Ẩn phần tử ban đầu */
+  transition: max-height 0.3s ease; /* Thêm transition cho max-height */
+}
+
+ul.all-signinout.active {
+  max-height: 200px; /* Đặt giá trị max-height tùy ý */
+  transition: max-height 0.3s ease; /* Thêm transition cho max-height khi active */
 }
 ul.all-signinout::before {
   content: "";
@@ -280,9 +287,9 @@ ul.all-signinout li:hover {
 .all-signinout li a {
   padding: 0px 20px;
 }
-li.signin-up:hover .all-signinout {
+/* li.signin-up:hover .all-signinout {
   display: block;
-}
+} */
 
 .avart-sgin {
   height: 35px;
