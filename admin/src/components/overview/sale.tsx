@@ -55,7 +55,7 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalytics }) {
       <CardHeader>
         <CardTitle>Total Sale</CardTitle>
         <CardDescription className="text-2xl font-bold text-black">
-          ${sale?.total}
+          ${sale?.total ?? 0}
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">

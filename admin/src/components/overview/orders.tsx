@@ -56,7 +56,7 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
       <CardHeader>
         <CardTitle>Total Orders</CardTitle>
         <CardDescription className="text-2xl font-bold text-black">
-          {orders?.total}
+          {orders?.total ?? 0}
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
