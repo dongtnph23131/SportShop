@@ -1,6 +1,7 @@
 import { Router } from "express";
 import Order from "../../models/Order";
 import Customer from "../../models/customer";
+import Product from "../../models/product";
 
 const router = Router();
 
@@ -84,6 +85,27 @@ router.get("/", async (req, res) => {
     },
     customers: customers.length,
   });
+});
+
+router.get("/top", async (req, res) => {
+  const topProducts = await Product.find().sort({ purchases: -1 }).limit(5);
+  const customers = await Customer.find().populate("orderIds");
+
+  const topCustomers = customers
+    .map((customer) => {
+      const totalOrderPrice = customer.orderIds.reduce((total, order) => {
+        return total + order.orderTotalPrice;
+      }, 0);
+
+      return {
+        ...customer._doc,
+        totalOrderPrice,
+      };
+    })
+    .sort((a, b) => b.totalOrderPrice - a.totalOrderPrice)
+    .slice(0, 5);
+
+  res.status(200).json({ topProducts, topCustomers });
 });
 
 export const analyticRoutes = router;

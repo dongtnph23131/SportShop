@@ -8,6 +8,7 @@ export interface Product {
   options: Option[];
   maxPrice: number;
   minPrice: number;
+  purchases: number;
   productVariantIds: ProductVariant[];
 }
 

@@ -19,7 +19,7 @@ export const create = async (req, res) => {
       orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
     });
     await Promise.all(
-      body.items.map(async (item) => {
+      validatedBody.items.map(async (item) => {
         const productVariant = await ProductVariant.findById(
           item.productVariantId
         );
@@ -28,6 +28,12 @@ export const create = async (req, res) => {
           {
             inventory: productVariant.inventory - item.quantity,
           },
+          { new: true }
+        );
+        const product = await Product.findById(item.productId);
+        await Product.findByIdAndUpdate(
+          item.productId,
+          { purchases: product.purchases + item.quantity },
           { new: true }
         );
       })
