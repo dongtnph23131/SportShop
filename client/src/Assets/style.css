@@ -73,38 +73,48 @@ p {
 .bo .bow1 .bow1-child {
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(90deg,
-      rgba(26, 84, 158, 1) 0%,
-      rgba(62, 149, 216, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 84, 158, 1) 0%,
+    rgba(62, 149, 216, 1) 100%
+  );
   padding: 0 15px;
 }
 
 .bo .bow1:nth-child(2) .bow1-child {
   background: rgb(17, 145, 176);
-  background: linear-gradient(90deg,
-      rgba(17, 145, 176, 1) 0%,
-      rgba(78, 211, 190, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(17, 145, 176, 1) 0%,
+    rgba(78, 211, 190, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(3) .bow1-child {
   background: rgb(227, 114, 20);
-  background: linear-gradient(90deg,
-      rgba(227, 114, 20, 1) 0%,
-      rgba(245, 177, 42, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(227, 114, 20, 1) 0%,
+    rgba(245, 177, 42, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(4) .bow1-child {
   background: rgb(163, 39, 85);
-  background: linear-gradient(90deg,
-      rgba(163, 39, 85, 1) 0%,
-      rgba(222, 40, 80, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(163, 39, 85, 1) 0%,
+    rgba(222, 40, 80, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(5) .bow1-child {
   background: rgb(26, 84, 158);
-  background: linear-gradient(90deg,
-      rgba(26, 84, 158, 1) 0%,
-      rgba(62, 149, 216, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 84, 158, 1) 0%,
+    rgba(62, 149, 216, 1) 100%
+  );
 }
 
 .icon {
@@ -439,6 +449,11 @@ h4.brackham {
 
 .btn-filter a {
   color: #000;
+}
+
+button:disabled,
+button[disabled] {
+  opacity: 0.5;
 }
 
 button.normal {
@@ -1866,7 +1881,6 @@ footer .copyright {
   cursor: pointer;
 }
 
-
 .main_updateProfile form {
   padding: 20px 40px;
 }
@@ -1896,7 +1910,7 @@ footer .copyright {
   display: inline-block;
 }
 
-.file-input-wrapper input[type=file] {
+.file-input-wrapper input[type="file"] {
   font-size: 100px;
   position: absolute;
   left: 0;
@@ -1919,7 +1933,7 @@ footer .copyright {
   display: inline-block;
   width: 25px;
   height: 16px;
-  background-image: url('../Assets/icon__upload.png'); /* Thay thế bằng đường dẫn biểu tượng của bạn */
+  background-image: url("../Assets/icon__upload.png"); /* Thay thế bằng đường dẫn biểu tượng của bạn */
   background-size: cover;
   margin-right: 5px;
 }
@@ -2279,4 +2293,5 @@ footer .copyright {
 
 .selected {
   background-color: #088178;
+  color: #fff;
 }

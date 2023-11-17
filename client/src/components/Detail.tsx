@@ -17,29 +17,29 @@ const Detail = () => {
   const [page, setPage] = useState<any>(1);
   const [dataCategories, setDataCategories] = useState<any>([]);
   const navigate = useNavigate();
-  const { data: products, isLoading: isLoadingProducts  } = useGetAllProductsQuery({
-    sort,
-    order,
-    dataCategories,
-    page,
-    limit: 4,
-  });
+  const { data: products, isLoading: isLoadingProducts } =
+    useGetAllProductsQuery({
+      sort,
+      order,
+      dataCategories,
+      page,
+      limit: 4,
+    });
   const { data: productsNoPage } = useGetAllProductsQuery({
     sort,
     order,
     dataCategories,
   });
+  const selectedVariant = product?.productVariantIds.find((item: any) =>
+    item.options.every((option: any) =>
+      Object.values(selectedAttributes).includes(option)
+    )
+  );
   const handleAddToCart = async () => {
     if (!selectedAttributes) {
       alert("Hãy chọn thuộc tính sản phẩm");
       return;
     } else if (product) {
-      const productVariantId = product.productVariantIds;
-      const selectedVariant = productVariantId.find((item: any) =>
-        Object.keys(selectedAttributes).every((option) =>
-          item.options.includes(selectedAttributes[option])
-        )
-      );
       if (selectedVariant) {
         const cart = {
           token: Cookies.get("token"),
@@ -103,7 +103,15 @@ const Detail = () => {
 
           <h2>
             {" "}
-            Price: {product ? `${product.minPrice}-${product.maxPrice}` : ``} $
+            Price:{" "}
+            {selectedVariant
+              ? selectedVariant?.price
+              : product
+              ? product.minPrice === product.maxPrice
+                ? product.minPrice
+                : `${product.minPrice}-${product.maxPrice}`
+              : ""}
+            $
           </h2>
           {product?.options.map((productItem: any, index: any) => {
             return (
@@ -132,7 +140,11 @@ const Detail = () => {
               </div>
             );
           })}
-          <button className="normal" onClick={handleAddToCart}>
+          <button
+            className="normal"
+            onClick={handleAddToCart}
+            disabled={!selectedVariant}
+          >
             Add to Cart{" "}
           </button>
           <h4>Descriptions</h4>
