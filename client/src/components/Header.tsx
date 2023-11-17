@@ -180,6 +180,14 @@ const Header = () => {
                         </a>
                       </li>
                       <li>
+                        <a href="/orderClient" className="detail__profile">
+                          Lịch sử đơn hàng
+                          {/* <span>
+                            <i className="fa-solid fa-user"></i>
+                          </span> */}
+                        </a>
+                      </li>
+                      <li>
                         <a
                           onClick={() => {
                             Cookies.remove("email");

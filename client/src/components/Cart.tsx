@@ -7,8 +7,9 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateOrderMutation } from "../api/order";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Modal } from "antd";
+import { useGetAddressByAcountQuery } from "../api/address";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại k được để trống"),
@@ -22,12 +23,14 @@ const Cart = () => {
   const {
     register,
     handleSubmit,
+    reset,
     formState: { errors },
   } = useForm({
     resolver: yupResolver(schema),
   });
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const token = Cookies.get("token");
+  const { data: addresses } = useGetAddressByAcountQuery(token);
   const { data: carts } = useGetCartOfUserQuery(token);
   const total = token
     ? carts?.reduce(
@@ -79,6 +82,20 @@ const Cart = () => {
   const handleEditFormCancel = () => {
     setEditFormVisible(false);
   };
+  useEffect(() => {
+    reset(
+      addresses?.address
+        ?.map((item: any) => {
+          return {
+            fullName: `${item.name}`,
+            phone: item.phone,
+            address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
+            default: item.default,
+          };
+        })
+        .find((item: any) => item.default === true)
+    );
+  }, [addresses]);
   return (
     <div>
       <section id="page-header3" className="about-header">
@@ -152,91 +169,47 @@ const Cart = () => {
                     onCancel={handleAddressModalCancel}
                     footer={null}
                   >
-                    <div className="address-items">
-                      <div
-                        data-v-46be4137=""
-                        data-v-17ff779a=""
-                        className="address-book-item-wrapper"
-                      >
+                    {addresses?.address?.map((item: any) => {
+                      return (
                         <div
-                          data-v-46be4137=""
-                          className="address-book-item selected"
+                          key={item._id}
+                          onClick={() => {
+                            reset({
+                              fullName: `${item.name}`,
+                              phone: item.phone,
+                              address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
+                            });
+                            setAddressModalVisible(false)
+                          }}
+                          className="address-items"
                         >
-                          <span data-v-46be4137="" className="default-address">
-                            ★
-                          </span>{" "}
-                          <div data-v-46be4137="" className="address-text">
-                            47 Thanh Liệt, Xã Thanh Liệt, Huyện Thanh Trì, Thành
-                            phố Hà Nội, Huyện Thanh Trì, Hà Nội
-                          </div>{" "}
-                          <div data-v-46be4137="" className="info-text">
-                            Lưu Mạnh, 0904798511
-                          </div>{" "}
-                          <span
+                          <div
                             data-v-46be4137=""
-                            className="edit-address"
-                            onClick={showEditForm}
+                            data-v-17ff779a=""
+                            className="address-book-item-wrapper"
                           >
-                            Sửa
-                          </span>
-                        </div>
-                      </div>{" "}
-                      {isEditFormVisible && (
-                        <div>
-                          <div className="form__editAdress">
-                            <div className="row__editAdres">
-                              <div className="row__editAdres__left">
-                                <input type="text" />
-                              </div>
-                              <div className="row__editAdres__right">
-                                <input type="text" />
-                              </div>
-                            </div>
-                            <div className="row__editAdres">
-                              <div className="row__editAdres__left">
-                                <input type="text" />
-                              </div>
-                              <div className="row__editAdres__right">
-                                <select name="" id="">
-                                  <option value="">Hà Nội</option>
-                                </select>
-                              </div>
-                            </div>
-                            <div className="row__editAdres">
-                              <div className="row__editAdres__left">
-                                <select name="" id="">
-                                  <option value="">Cầu Giấy</option>
-                                </select>
-                              </div>
-                              <div className="row__editAdres__right">
-                                <select name="" id="">
-                                  <option value="">Trung Hòa</option>
-                                </select>
-                              </div>
-                            </div>
-                          </div>
-                          <div className="set__defaultAdre">
-                            <label htmlFor="">Đặt làm địa chỉ mặc định</label>
-                          <input type="checkbox" />
-                          </div>
-                          <div className="group__btn__action__remove">
-                            <div className="action_left">Xóa địa chỉ</div>
-                            <div className="action_right">
-                              <button className="btn__back " onClick={handleEditFormCancel}>Hủy</button>
-                              <button className="btn__save">Lưu</button>
+                            <div
+                              data-v-46be4137=""
+                              className="address-book-item selected"
+                            >
+                              <span
+                                data-v-46be4137=""
+                                className="default-address"
+                              >
+                                {item.default === true ? "★" : ""}
+                              </span>{" "}
+                              <div data-v-46be4137="" className="address-text">
+                                {item.address}, {item.ward}, {item.district},{" "}
+                                {item.province}
+                              </div>{" "}
+                              <div data-v-46be4137="" className="info-text">
+                                {item.phone},{item.name}
+                              </div>{" "}
                             </div>
                           </div>
                         </div>
-                      )}
-                      <div className="gr__btn__Add">
-                        <button
-                          data-v-17ff779a=""
-                          className="btn btn-sm btn-secondary"
-                        >
-                          Thêm địa chỉ
-                        </button>
-                      </div>
-                    </div>
+                      );
+                    })}
                   </Modal>
                 </div>
                 <table>
@@ -295,9 +268,12 @@ const Cart = () => {
                     {errors.node ? errors?.node.message : ""}
                   </p>
                 </table>
-                <div className="group__btnPay">
-                  <button className="normal">Proceed to checkout</button>
-                </div>
+                <button
+                  disabled={carts?.length === 0 || !token}
+                  className="normal"
+                >
+                  Proceed to checkout
+                </button>
               </div>
 
               <div id="subtotal">

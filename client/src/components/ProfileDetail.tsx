@@ -193,7 +193,6 @@ const ProfileDetail = () => {
             <div className="col-lg-4">
               <div className="account__sidebar">
                 <a
-                  href=""
                   className={`account__sidebar__item ${
                     activeTab === "profile" ? "active" : ""
                   }`}
@@ -205,7 +204,6 @@ const ProfileDetail = () => {
                   Thông tin cá nhân
                 </a>
                 <a
-                  href=""
                   className={`account__sidebar__item ${
                     activeTab === "history" ? "active" : ""
                   }`}
@@ -246,10 +244,6 @@ const ProfileDetail = () => {
                           }`}
                       </div>
                     </div>
-                    {/* <div className="profile__phone">
-                      <div className="full__name">Số điện thoại:</div>
-                      <div className="name__detail">0904798514</div>
-                    </div> */}
                     <div className="profile__email">
                       <div className="full__name">Email:</div>
                       <div className="name__detail">
@@ -279,10 +273,6 @@ const ProfileDetail = () => {
                                 }`}
                               />
                             </div>
-                            {/* <div className="row__update__profile">
-                              <label htmlFor="">Số điện thoại</label>
-                              <input type="text" value={""} />
-                            </div> */}
                             <div className="row__update__profile">
                               <label>Email</label>
                               <input
@@ -337,7 +327,7 @@ const ProfileDetail = () => {
                         <div className="detail__sign__item">
                           <div className="lable">Email:</div>
                           <div className="sign__email">
-                            Manhld21082003@gmail.com
+                          {profile && `${profile?.customer.email}`}
                           </div>
                         </div>
                         <div className="detail__sign__item">
@@ -751,65 +741,6 @@ const ProfileDetail = () => {
                     </div>
                   </div>
                 )}
-                {/* {activeTab === "orderHistory" && (
-                  <div className="order__history">
-                    <div>
-                      <h3 className="title__profile">Lịch sử đơn hàng</h3>
-                      <div className="list__order__history">
-                        <div className="order-header">
-                          <div>
-                            <p className="order-title">
-                              <div className="id__order">
-                                Mã đơn hàng:{" "}
-                                <span> # 6553130c9e604898b9cfbfb8</span>
-                              </div>
-                            </p>{" "}
-                            <p className="order-date">
-                              <div className="time__ordered">
-                                Thời gian mua hàng:{" "}
-                                <span>2023-11-14T06:26:20.674Z</span>
-                              </div>
-                            </p>
-                          </div>{" "}
-                          <div className="order-status-badge order-status-badge-canceled">
-                            {" "}
-                            <span>Pending</span>
-                          </div>
-                        </div>
-                        <div className="order-item">
-                          <div className="order-item-thumbnail">
-                            <a
-                              href="/product/ao-thun-oversize-in-the-future-is-yours-clean-vietnam-mau-trang"
-                              target="_blank"
-                            >
-                              {" "}
-                              <img src="../../src/Assets/star.webp" alt="" />
-                            </a>
-                          </div>{" "}
-                          <div className="order-item-info">
-                            <a className="order-item-title">
-                              T-Shirt Cotton 220GSM
-                            </a>{" "}
-                            <div className="order-item-variant-label">
-                             <div className="ordered__color">Màu sắc: <span> Đen/3XL</span></div>
-                            </div>{" "}
-                            <div className="order-item-quantity">Số lượng: <span> x 2</span></div>{" "}
-                            <div className="order-item-price">Đơn giá: <span> $50 </span></div>
-                          </div>{" "}
-                        </div>
-                        <div className="order-footer">
-                          <div className="order-footer__left"></div>{" "}
-                          <div className="order-footer__right">
-                            <div className="all__prices">
-                              Thành tiền
-                              <b>$50</b>
-                            </div>{" "}
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  </div>
-                )} */}
               </div>
             </div>
           </div>
