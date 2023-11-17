@@ -7,6 +7,8 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateOrderMutation } from "../api/order";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
+import { useState } from "react";
+import { Modal } from "antd";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại k được để trống"),
@@ -60,6 +62,23 @@ const Cart = () => {
       navigate("/OrderClient");
     });
   };
+
+  const [isAddressModalVisible, setAddressModalVisible] = useState(false);
+  const showAddressModal = () => {
+    setAddressModalVisible(true);
+  };
+  const handleAddressModalCancel = () => {
+    setAddressModalVisible(false);
+  };
+  const [isEditFormVisible, setEditFormVisible] = useState(false);
+
+  const showEditForm = () => {
+    setEditFormVisible(true);
+  };
+
+  const handleEditFormCancel = () => {
+    setEditFormVisible(false);
+  };
   return (
     <div>
       <section id="page-header3" className="about-header">
@@ -80,7 +99,9 @@ const Cart = () => {
                     <img src="../../src/Assets/icon__cart__0.png" alt="" />
                   </div>
                   <h3>Giỏ hàng của bạn đang trống</h3>
-                  <button className="payNow__cart0"><a href="/shops">Mua ngay</a></button>
+                  <button className="payNow__cart0">
+                    <a href="/shops">Mua ngay</a>
+                  </button>
                 </div>
               ) : (
                 <>
@@ -114,7 +135,110 @@ const Cart = () => {
           <form onSubmit={handleSubmit(onAddOrder)}>
             <section id="cart-add" className="section-p1">
               <div id="subtotal" className="ttnh">
-                <h3>Thông tin nhận hàng</h3>
+                <div className="header__checkout__news">
+                  <h3>Thông tin nhận hàng</h3>
+                  <div className="btn__add__default__adress">
+                    <div onClick={showAddressModal}>
+                      {" "}
+                      <span className="ic_adr">
+                        <i className="fa-solid fa-map-location-dot"></i>
+                      </span>{" "}
+                      Chọn từ sổ địa chỉ
+                    </div>
+                  </div>
+                  <Modal
+                    title="Chọn địa chỉ"
+                    visible={isAddressModalVisible}
+                    onCancel={handleAddressModalCancel}
+                    footer={null}
+                  >
+                    <div className="address-items">
+                      <div
+                        data-v-46be4137=""
+                        data-v-17ff779a=""
+                        className="address-book-item-wrapper"
+                      >
+                        <div
+                          data-v-46be4137=""
+                          className="address-book-item selected"
+                        >
+                          <span data-v-46be4137="" className="default-address">
+                            ★
+                          </span>{" "}
+                          <div data-v-46be4137="" className="address-text">
+                            47 Thanh Liệt, Xã Thanh Liệt, Huyện Thanh Trì, Thành
+                            phố Hà Nội, Huyện Thanh Trì, Hà Nội
+                          </div>{" "}
+                          <div data-v-46be4137="" className="info-text">
+                            Lưu Mạnh, 0904798511
+                          </div>{" "}
+                          <span
+                            data-v-46be4137=""
+                            className="edit-address"
+                            onClick={showEditForm}
+                          >
+                            Sửa
+                          </span>
+                        </div>
+                      </div>{" "}
+                      {isEditFormVisible && (
+                        <div>
+                          <div className="form__editAdress">
+                            <div className="row__editAdres">
+                              <div className="row__editAdres__left">
+                                <input type="text" />
+                              </div>
+                              <div className="row__editAdres__right">
+                                <input type="text" />
+                              </div>
+                            </div>
+                            <div className="row__editAdres">
+                              <div className="row__editAdres__left">
+                                <input type="text" />
+                              </div>
+                              <div className="row__editAdres__right">
+                                <select name="" id="">
+                                  <option value="">Hà Nội</option>
+                                </select>
+                              </div>
+                            </div>
+                            <div className="row__editAdres">
+                              <div className="row__editAdres__left">
+                                <select name="" id="">
+                                  <option value="">Cầu Giấy</option>
+                                </select>
+                              </div>
+                              <div className="row__editAdres__right">
+                                <select name="" id="">
+                                  <option value="">Trung Hòa</option>
+                                </select>
+                              </div>
+                            </div>
+                          </div>
+                          <div className="set__defaultAdre">
+                            <label htmlFor="">Đặt làm địa chỉ mặc định</label>
+                          <input type="checkbox" />
+                          </div>
+                          <div className="group__btn__action__remove">
+                            <div className="action_left">Xóa địa chỉ</div>
+                            <div className="action_right">
+                              <button className="btn__back " onClick={handleEditFormCancel}>Hủy</button>
+                              <button className="btn__save">Lưu</button>
+                            </div>
+                          </div>
+                        </div>
+                      )}
+                      <div className="gr__btn__Add">
+                        <button
+                          data-v-17ff779a=""
+                          className="btn btn-sm btn-secondary"
+                        >
+                          Thêm địa chỉ
+                        </button>
+                      </div>
+                    </div>
+                  </Modal>
+                </div>
                 <table>
                   <tr>
                     <input
