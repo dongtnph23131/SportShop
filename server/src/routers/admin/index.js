@@ -6,6 +6,7 @@ import { customerRoutes } from "./customer";
 import { authRoutes } from "./auth";
 import { analyticRoutes } from "./analytics";
 import { verifyToken } from "../../middlewares/admin";
+import { inventoryRoutes } from "./inventory";
 
 const router = Router();
 
@@ -14,6 +15,7 @@ router.use("/products", verifyToken, productRoutes);
 router.use("/orders", verifyToken, orderRoutes);
 router.use("/customers", verifyToken, customerRoutes);
 router.use("/analytics", verifyToken, analyticRoutes);
+router.use("/inventory", verifyToken, inventoryRoutes);
 router.use("/auth", authRoutes);
 router.use("/me", verifyToken, async (req, res) => {
   if (!req.user) return res.status(401).json("You need to login!");
