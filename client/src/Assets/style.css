@@ -549,13 +549,13 @@ body {
   display: none;
 }
 
-/* Hoe Page */
+/* Hero Page */
 #hero {
   background-image: url(../Assets/banner.png);
-  height: 90vh;
+  height: 544px;
   width: 100%;
   background-size: cover;
-  background-position: center center;
+  background-position: center;
   padding: 0 80px;
   display: flex;
   flex-direction: column;
@@ -980,20 +980,20 @@ footer .copyright {
   padding-bottom: 0;
 }
 
-
-
 .header__checkout__news {
   display: flex;
   justify-content: space-between;
   align-items: center;
 }
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
   background-color: #2f5acf;
   border: 1px solid #2f5acf;
   color: white;
 }
-.address-book-item.selected .default-address[data-v-46be4137], .address-book-item.editing .default-address[data-v-46be4137] {
-  color: #F9F86C;
+.address-book-item.selected .default-address[data-v-46be4137],
+.address-book-item.editing .default-address[data-v-46be4137] {
+  color: #f9f86c;
 }
 .address-book-item .default-address[data-v-46be4137] {
   display: block;
@@ -1001,7 +1001,8 @@ footer .copyright {
   top: 0.5rem;
   right: 1rem;
 }
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
   background-color: #2f5acf;
   border: 1px solid #2f5acf;
   color: white;
@@ -1040,26 +1041,28 @@ footer .copyright {
 }
 
 .address-book-item.selected:hover {
-  background: #8E8E8E;
+  background: #8e8e8e;
   color: #333;
   border: none;
 }
 
 .address-book-item.selected:hover .edit-address {
-  background-color: #F9F86C;
+  background-color: #f9f86c;
   color: black;
 }
 
 .ant-modal-title {
   text-align: center;
 }
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
   background-color: #2f5acf;
   border: 1px solid #2f5acf;
   color: white;
 }
-.address-book-item.selected .default-address[data-v-46be4137], .address-book-item.editing .default-address[data-v-46be4137] {
-  color: #F9F86C;
+.address-book-item.selected .default-address[data-v-46be4137],
+.address-book-item.editing .default-address[data-v-46be4137] {
+  color: #f9f86c;
 }
 .address-book-item .default-address[data-v-46be4137] {
   display: block;
@@ -1067,7 +1070,8 @@ footer .copyright {
   top: 0.5rem;
   right: 1rem;
 }
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
   background-color: #2f5acf;
   border: 1px solid #2f5acf;
   color: white;
@@ -1106,97 +1110,13 @@ footer .copyright {
 }
 
 .address-book-item.selected:hover {
-  background: #8E8E8E;
+  background: #8e8e8e;
   color: #333;
   border: none;
 }
 
 .address-book-item.selected:hover .edit-address {
-  background-color: #F9F86C;
-  color: black;
-}
-
-.ant-modal-title {
-  text-align: center;
-}
-
-.row__editAdres {
-  display: flex;
-  width: 100%;
-  margin-bottom: 10px;
-}
-
-.row__editAdres input,select {width: 97%;border-radius: 10px;padding: 10px;}
-
-.row__editAdres__left {
-  width: 50%;
-}
-
-.row__editAdres__right {
-  width: 50%;
-}
-
-
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
-  background-color: #2f5acf;
-  border: 1px solid #2f5acf;
-  color: white;
-}
-.address-book-item.selected .default-address[data-v-46be4137], .address-book-item.editing .default-address[data-v-46be4137] {
-  color: #F9F86C;
-}
-.address-book-item .default-address[data-v-46be4137] {
-  display: block;
-  position: absolute;
-  top: 0.5rem;
-  right: 1rem;
-}
-.address-book-item.selected[data-v-46be4137], .address-book-item.editing[data-v-46be4137] {
-  background-color: #2f5acf;
-  border: 1px solid #2f5acf;
-  color: white;
-}
-.address-book-item[data-v-46be4137] {
-  display: block;
-  padding: 1rem 2rem;
-  border: 1px solid #d9d9d9;
-  border-radius: 16px;
-  cursor: pointer;
-  transition: 0.2s all;
-  position: relative;
-  z-index: 1;
-  background-color: white;
-}
-
-.edit-address {
-  display: block;
-  position: absolute;
-  bottom: 0.5rem;
-  right: 1rem;
-  padding: 0 10px;
-  border-radius: 8px;
-}
-
-.gr__btn__Add {
-  display: flex;
-  justify-content: center;
-  margin-top: 15px;
-}
-
-.gr__btn__Add button {
-  background-color: #d9d9d9;
-  border: none;
-  color: #000;
-}
-
-.address-book-item.selected:hover {
-  background: #8E8E8E;
-  color: #333;
-  border: none;
-}
-
-.address-book-item.selected:hover .edit-address {
-  background-color: #F9F86C;
+  background-color: #f9f86c;
   color: black;
 }
 
@@ -1210,7 +1130,12 @@ footer .copyright {
   margin-bottom: 10px;
 }
 
-.row__editAdres input,select {width: 97%;border-radius: 10px;padding: 10px;}
+.row__editAdres input,
+select {
+  width: 97%;
+  border-radius: 10px;
+  padding: 10px;
+}
 
 .row__editAdres__left {
   width: 50%;
@@ -1220,8 +1145,99 @@ footer .copyright {
   width: 50%;
 }
 
-.row__editAdres {}
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
+  background-color: #2f5acf;
+  border: 1px solid #2f5acf;
+  color: white;
+}
+.address-book-item.selected .default-address[data-v-46be4137],
+.address-book-item.editing .default-address[data-v-46be4137] {
+  color: #f9f86c;
+}
+.address-book-item .default-address[data-v-46be4137] {
+  display: block;
+  position: absolute;
+  top: 0.5rem;
+  right: 1rem;
+}
+.address-book-item.selected[data-v-46be4137],
+.address-book-item.editing[data-v-46be4137] {
+  background-color: #2f5acf;
+  border: 1px solid #2f5acf;
+  color: white;
+}
+.address-book-item[data-v-46be4137] {
+  display: block;
+  padding: 1rem 2rem;
+  border: 1px solid #d9d9d9;
+  border-radius: 16px;
+  cursor: pointer;
+  transition: 0.2s all;
+  position: relative;
+  z-index: 1;
+  background-color: white;
+}
 
+.edit-address {
+  display: block;
+  position: absolute;
+  bottom: 0.5rem;
+  right: 1rem;
+  padding: 0 10px;
+  border-radius: 8px;
+}
+
+.gr__btn__Add {
+  display: flex;
+  justify-content: center;
+  margin-top: 15px;
+}
+
+.gr__btn__Add button {
+  background-color: #d9d9d9;
+  border: none;
+  color: #000;
+}
+
+.address-book-item.selected:hover {
+  background: #8e8e8e;
+  color: #333;
+  border: none;
+}
+
+.address-book-item.selected:hover .edit-address {
+  background-color: #f9f86c;
+  color: black;
+}
+
+.ant-modal-title {
+  text-align: center;
+}
+
+.row__editAdres {
+  display: flex;
+  width: 100%;
+  margin-bottom: 10px;
+}
+
+.row__editAdres input,
+select {
+  width: 97%;
+  border-radius: 10px;
+  padding: 10px;
+}
+
+.row__editAdres__left {
+  width: 50%;
+}
+
+.row__editAdres__right {
+  width: 50%;
+}
+
+.row__editAdres {
+}
 
 .group__btn__action__remove {
   display: flex;
