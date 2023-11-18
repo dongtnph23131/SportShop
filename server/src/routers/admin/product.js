@@ -105,6 +105,7 @@ router.post("/", async (req, res) => {
           price: variant.price,
           inventory: variant.inventory,
           options: variant.options,
+          sku: variant.sku,
           productId: product._id,
         });
       })
@@ -191,6 +192,7 @@ router.put("/:id", async (req, res) => {
         { _id: variant.id },
         {
           name: variant.name,
+          sku: variant.sku,
           price: variant.price,
           inventory: variant.inventory,
           options: variant.options,

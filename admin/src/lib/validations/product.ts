@@ -17,6 +17,7 @@ export const productCreateBodySchema = z.object({
       price: z.number(),
       inventory: z.number(),
       options: z.array(z.string()),
+      sku: z.string(),
     })
   ),
   images: z.array(
@@ -43,6 +44,7 @@ export const productUpdateBodySchema = z.object({
   variants: z.array(
     z.object({
       id: z.string(),
+      sku: z.string(),
       name: z.string(),
       price: z.number(),
       inventory: z.number(),

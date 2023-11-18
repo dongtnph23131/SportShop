@@ -60,6 +60,7 @@ const formSchema = z.object({
       price: z.number(),
       inventory: z.number(),
       options: z.array(z.object({ name: z.string(), value: z.string() })),
+      sku: z.string(),
     })
   ),
 });
