@@ -35,7 +35,13 @@ import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useOrdersQuery } from "@/services/orders/orders-query";
 import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
-import { Order, Product } from "@/types/base";
+import {
+  Order,
+  OrderDeliveryStatus,
+  OrderPaymentStatus,
+  OrderStatus,
+  Product,
+} from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -51,7 +57,7 @@ const Page: NextPageWithLayout = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Order Id" />
       ),
-      cell: ({ row }) => <div>{row.original.orderId}</div>,
+      cell: ({ row }) => <div>#{row.original.orderId}</div>,
     },
     {
       id: "createAt",
@@ -72,29 +78,78 @@ const Page: NextPageWithLayout = () => {
       },
     },
     {
-      id: "delivery_status",
+      id: "phone",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Delivery Status" />
+        <DataTableColumnHeader column={column} title="Phone" />
       ),
       cell: ({ row }) => {
-        return row.original.deliveryStatus;
+        return row.original.phone;
       },
     },
-    {
-      id: "payment_status",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Payment Status" />
-      ),
-      cell: ({ row }) => {
-        return row.original.paymentStatus;
-      },
-    },
+
+    // {
+    //   id: "delivery_status",
+    //   header: ({ column }) => (
+    //     <DataTableColumnHeader column={column} title="Delivery Status" />
+    //   ),
+    //   cell: ({ row }) => {
+    //     if (row.original.deliveryStatus === OrderDeliveryStatus.CANCELED) {
+    //       return (
+    //         <Badge variant={"destructive"}>{row.original.deliveryStatus}</Badge>
+    //       );
+    //     }
+    //     if (row.original.deliveryStatus === OrderDeliveryStatus.SHIPPED) {
+    //       return (
+    //         <Badge variant={"success"}>{row.original.deliveryStatus}</Badge>
+    //       );
+    //     }
+    //     return <Badge>{row.original.deliveryStatus}</Badge>;
+    //   },
+    // },
+    // {
+    //   id: "payment_status",
+    //   header: ({ column }) => (
+    //     <DataTableColumnHeader column={column} title="Payment Status" />
+    //   ),
+    //   cell: ({ row }) => {
+    //     if (row.original.paymentStatus === "Paid") {
+    //       return (
+    //         <Badge variant={"success"}>{row.original.paymentStatus}</Badge>
+    //       );
+    //     }
+
+    //     if (row.original.paymentStatus === OrderPaymentStatus.NOT_PAID) {
+    //       return (
+    //         <Badge variant={"pending"}>{row.original.paymentStatus}</Badge>
+    //       );
+    //     }
+
+    //     if (row.original.paymentStatus === OrderPaymentStatus.CANCELED) {
+    //       return (
+    //         <Badge variant={"destructive"}>{row.original.paymentStatus}</Badge>
+    //       );
+    //     }
+
+    //     return row.original.paymentStatus;
+    //   },
+    // },
     {
       id: "status",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Status" />
       ),
       cell: ({ row }) => {
+        if (row.original.status === OrderStatus.CANCELED) {
+          return <Badge variant={"destructive"}>{row.original.status}</Badge>;
+        }
+
+        if (row.original.status === OrderStatus.COMPLETED) {
+          return <Badge variant={"success"}>{row.original.status}</Badge>;
+        }
+
+        if (row.original.status === OrderStatus.PENDING) {
+          return <Badge variant={"pending"}>{row.original.status}</Badge>;
+        }
         return row.original.status;
       },
     },

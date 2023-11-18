@@ -22,6 +22,8 @@ import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useCustomerQuery } from "@/services/customers/customer-query";
 import { format } from "date-fns";
+import { OrderStatus } from "@/types/base";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -39,9 +41,15 @@ const Page: NextPageWithLayout = () => {
       {customer ? (
         <>
           <Card>
-            <CardHeader>
-              <CardTitle>{customer.firstName + customer.lastName}</CardTitle>
-              <CardDescription>{customer.email}</CardDescription>
+            <CardHeader className="flex flex-row items-center gap-4">
+              <Avatar className="h-9 w-9">
+                <AvatarImage src={customer.avatar} alt="Avatar" />
+                <AvatarFallback>OM</AvatarFallback>
+              </Avatar>
+              <div>
+                <CardTitle>{customer.firstName + customer.lastName}</CardTitle>
+                <CardDescription>{customer.email}</CardDescription>
+              </div>
             </CardHeader>
 
             <CardContent>
@@ -55,6 +63,16 @@ const Page: NextPageWithLayout = () => {
                   </dd>
                 </div>
               </dl>
+              {/* <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    Created At:
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {customer.firstName}
+                  </dd>
+                </div>
+              </dl> */}
             </CardContent>
           </Card>
 
@@ -85,7 +103,17 @@ const Page: NextPageWithLayout = () => {
                       <TableCell>
                         {format(new Date(item.createdAt), "dd MMM yyyy hh:mm")}
                       </TableCell>
-                      <TableCell>{item.status}</TableCell>
+                      <TableCell>
+                        {item.status === OrderStatus.CANCELED && (
+                          <Badge variant={"destructive"}>{item.status}</Badge>
+                        )}
+                        {item.status === OrderStatus.PENDING && (
+                          <Badge variant={"pending"}>{item.status}</Badge>
+                        )}
+                        {item.status === OrderStatus.COMPLETED && (
+                          <Badge variant={"success"}>{item.status}</Badge>
+                        )}
+                      </TableCell>
                       <TableCell>{item.totalPrice}</TableCell>
                     </TableRow>
                   ))}

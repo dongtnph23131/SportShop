@@ -289,7 +289,7 @@ const Page: NextPageWithLayout = () => {
                 </div>
               </CardContent>
             </Card>
-            <Card className="mt-4">
+            {/* <Card className="mt-4">
               <CardHeader>
                 <CardTitle>Shipping</CardTitle>
               </CardHeader>
@@ -375,7 +375,7 @@ const Page: NextPageWithLayout = () => {
                   </Dialog>
                 )}
               </CardContent>
-            </Card>
+            </Card> */}
           </div>
         </>
       ) : (

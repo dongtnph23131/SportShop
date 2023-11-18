@@ -26,10 +26,10 @@ const Page: NextPageWithLayout = () => {
         <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
       </div>
       <div className="grid grid-cols-2 gap-4">
-        <div className="col-span-1">
+        <div className="col-span-1 h-full">
           <TopProducts topProducts={topAnalytics?.topProducts} />
         </div>
-        <div className="col-span-1">
+        <div className="col-span-1 h-full">
           <TopCustomers topCustomers={topAnalytics?.topCustomers} />
         </div>
       </div>

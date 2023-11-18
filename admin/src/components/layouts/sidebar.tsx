@@ -56,7 +56,7 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
       <div className="my-4 flex flex-col px-2">
         <h1 className="text-gray-400 text-xs font-medium">Store</h1>
         <Button variant="link" className="inline-block" asChild>
-          <Link href={"/store"}>Sport shop</Link>
+          <Link href={"http://localhost:5173/"}>Sport shop</Link>
         </Button>
       </div>
       <div className="space-y-2 py-4">
