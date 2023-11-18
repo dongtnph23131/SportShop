@@ -17,7 +17,7 @@ const Shops = () => {
     order,
     dataCategories,
     page,
-    limit: 4,
+    limit: 12,
   });
   const { data: productsNoPage } = useGetAllProductsQuery({
     sort,

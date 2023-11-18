@@ -361,8 +361,20 @@ h4.brackham {
 .sort-shops {
   padding-left: 25px;
   position: relative;
+  margin-top: 25px;
 }
-
+.btn__add__default__adress {
+  cursor: pointer;
+}
+.pro__checkout {
+  justify-content: right;
+  display: flex;
+}
+.address-items {
+  margin-bottom: 20px
+px
+;
+}
 .filter-shops {
   position: relative;
 }
@@ -669,7 +681,7 @@ body {
 #product1 .pro img {
   width: 100%;
   border-radius: 20px;
-  max-height: 350px;
+  height: 350px;
 }
 
 #product1 .pro .des {
@@ -1993,7 +2005,11 @@ button.btn__save {
 
 .content__bottom__adress {
   padding: 20px 0px;
+}
+.item__adress__detail {
+  margin-bottom: 20px;
   border-bottom: 1px solid;
+  padding-bottom: 20px;
 }
 
 .left__acount {
@@ -2027,10 +2043,13 @@ button.btn__save {
 .update__adress {
   padding: 0 20px;
   border-right: 1px solid;
+  cursor: pointer;
 }
 
 .delete__adress {
   padding: 0 20px;
+  cursor: pointer;
+  color: red;
 }
 
 .account__phone {
@@ -2066,11 +2085,12 @@ button.btn__save {
   border-radius: 16px;
   flex-direction: column;
 }
-
+.forgot{
+  margin-bottom: 15px;
+}
 .main__addAdress input {
-  width: 45%;
+  width: 100%;
   padding: 10px;
-  margin: 10px 15px;
   border-radius: 10px;
 }
 
@@ -2084,13 +2104,24 @@ button.btn__save {
 .add__default input {
   width: 15px;
   height: 15px;
+  margin-right: 5px;
 }
 
 .add__default {
   display: flex;
   align-items: center;
+  width: 200px;
+  position: relative;
 }
-
+.add__default input::before {
+  content: "";
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
+}
 .group__btn__close {
   display: flex;
   justify-content: end;
