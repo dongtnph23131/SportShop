@@ -1,9 +1,9 @@
 import { Link, useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
-import { Pagination } from "antd";
+import { Pagination, message } from "antd";
 
 const Detail = () => {
   const { id } = useParams();
@@ -47,12 +47,12 @@ const Detail = () => {
         };
         try {
           await addItemToCart(cart);
-          alert("Sản phẩm đã được thêm vào giỏ hàng.");
+         message.success("Sản phẩm đã được thêm vào giỏ hàng")
         } catch (error) {
           console.error(error);
         }
       } else {
-        alert("Thuộc tính ko tồn tại !");
+        message.error("Vui lòng chọn thuộc tính sản phẩm!")
       }
     }
   };
@@ -65,7 +65,9 @@ const Detail = () => {
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
-
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [id]);
   return (
     <div>
       <section id="prodetails" className="section-p1">
@@ -101,9 +103,9 @@ const Detail = () => {
           <h6>Home / T-Shirts</h6>
           <h4>{product ? `${product.name}` : ``}</h4>
 
-          <h2>
+          <h2 className="price-detail">
             {" "}
-            Price:{" "}
+            {" "}
             {selectedVariant
               ? selectedVariant?.price
               : product
@@ -143,7 +145,6 @@ const Detail = () => {
           <button
             className="normal"
             onClick={handleAddToCart}
-            disabled={!selectedVariant}
           >
             Add to Cart{" "}
           </button>
