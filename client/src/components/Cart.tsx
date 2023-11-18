@@ -268,12 +268,14 @@ const Cart = () => {
                     {errors.node ? errors?.node.message : ""}
                   </p>
                 </table>
-                <button
+               <div className="pro__checkout">
+               <button
                   disabled={carts?.length === 0 || !token}
                   className="normal"
                 >
                   Proceed to checkout
                 </button>
+               </div>
               </div>
 
               <div id="subtotal">

@@ -77,7 +77,7 @@ const Signin = () => {
           </div>
           <div className="forgot">
             <section>
-              <a href="#" className="forgot-link">
+              <a href="/forgot" className="forgot-link">
                 Forgot password?
               </a>
             </section>

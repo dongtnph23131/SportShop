@@ -299,7 +299,11 @@ const ProfileDetail = () => {
                               </div>
                               {image && (
                                 <img
-                                  style={{ width: "50px", height: "50px" ,marginLeft:'10px'}}
+                                  style={{
+                                    width: "50px",
+                                    height: "50px",
+                                    marginLeft: "10px",
+                                  }}
                                   src={image}
                                 />
                               )}
@@ -327,7 +331,7 @@ const ProfileDetail = () => {
                         <div className="detail__sign__item">
                           <div className="lable">Email:</div>
                           <div className="sign__email">
-                          {profile && `${profile?.customer.email}`}
+                            {profile && `${profile?.customer.email}`}
                           </div>
                         </div>
                         <div className="detail__sign__item">
@@ -655,82 +659,86 @@ const ProfileDetail = () => {
                         <>
                           {" "}
                           {addresses?.address?.length > 0 ? (
-                            <>
+                            <div className="">
                               {addresses?.address?.map((item: any) => {
                                 return (
                                   <div key={item._id}>
-                                    <div className="account__adress">
-                                      <div className="left__acount">
-                                        <div className="name">{item?.name}</div>
-                                        {item?.default ? (
-                                          <div className="adressDefault">
-                                            <img
-                                              src="../../src/Assets/star.webp"
-                                              alt=""
-                                            />
-                                            Mặc định
+                                    <div className="item__adress__detail">
+                                      <div className="account__adress">
+                                        <div className="left__acount">
+                                          <div className="name">
+                                            {item?.name}
                                           </div>
-                                        ) : (
-                                          ""
-                                        )}
+                                          {item?.default ? (
+                                            <div className="adressDefault">
+                                              <img
+                                                src="../../src/Assets/star.webp"
+                                                alt=""
+                                              />
+                                              Mặc định
+                                            </div>
+                                          ) : (
+                                            ""
+                                          )}
+                                        </div>
+                                        <div className="action__adress">
+                                          <a
+                                            onClick={async () => {
+                                              setIsFormUpdateAddress(true);
+                                              await axios
+                                                .get(
+                                                  `http://localhost:8080/api/address/${item._id}/acount`,
+                                                  {
+                                                    headers: {
+                                                      Authorization: `Bearer ${token}`,
+                                                    },
+                                                  }
+                                                )
+                                                .then((data) => {
+                                                  resetAdressUpdate(
+                                                    data?.data?.address
+                                                  );
+                                                });
+                                            }}
+                                            className="update__adress"
+                                          >
+                                            Cập nhật
+                                          </a>
+                                          <a
+                                            onClick={async () => {
+                                              if (
+                                                confirm(
+                                                  "Bạn có muốn xóa địa chỉ này không ?"
+                                                )
+                                              ) {
+                                                await deleteAddress({
+                                                  token,
+                                                  id: item._id,
+                                                }).then(() => {
+                                                  message.success(
+                                                    "Xóa địa chỉ thành công"
+                                                  );
+                                                });
+                                              }
+                                            }}
+                                            className="delete__adress"
+                                          >
+                                            Xóa
+                                          </a>
+                                        </div>
                                       </div>
-                                      <div className="action__adress">
-                                        <a
-                                          onClick={async () => {
-                                            setIsFormUpdateAddress(true);
-                                            await axios
-                                              .get(
-                                                `http://localhost:8080/api/address/${item._id}/acount`,
-                                                {
-                                                  headers: {
-                                                    Authorization: `Bearer ${token}`,
-                                                  },
-                                                }
-                                              )
-                                              .then((data) => {
-                                                resetAdressUpdate(
-                                                  data?.data?.address
-                                                );
-                                              });
-                                          }}
-                                          className="update__adress"
-                                        >
-                                          Cập nhật
-                                        </a>
-                                        <a
-                                          onClick={async () => {
-                                            if (
-                                              confirm(
-                                                "Bạn có muốn xóa địa chỉ này không ?"
-                                              )
-                                            ) {
-                                              await deleteAddress({
-                                                token,
-                                                id: item._id,
-                                              }).then(() => {
-                                                message.success(
-                                                  "Xóa địa chỉ thành công"
-                                                );
-                                              });
-                                            }
-                                          }}
-                                          className="delete__adress"
-                                        >
-                                          Xóa
-                                        </a>
+                                      <div className="account__phone">
+                                        {item?.phone}
                                       </div>
-                                    </div>
-                                    <div className="account__phone">
-                                      {item?.phone}
-                                    </div>
-                                    <div className="acount__adressDetail">
-                                      {item.address}, {item.ward},{" "}
-                                      {item.district}, {item.province}
+                                      <div className="acount__adressDetail">
+                                        {item.address}, {item.ward},{" "}
+                                        {item.district}, {item.province}
+                                      </div>
                                     </div>
                                   </div>
                                 );
                               })}
-                            </>
+                            </div>
                           ) : (
                             <h1>Sổ địa chỉ trống</h1>
                           )}
