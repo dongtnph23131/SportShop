@@ -309,6 +309,7 @@ p {
 h4.brackham {
   background: #eee;
   line-height: 35px;
+  margin-bottom: 25px;
 }
 
 .brackham span {
@@ -361,7 +362,6 @@ h4.brackham {
 .sort-shops {
   padding-left: 25px;
   position: relative;
-  margin-top: 25px;
 }
 .btn__add__default__adress {
   cursor: pointer;
@@ -372,8 +372,19 @@ h4.brackham {
 }
 .address-items {
   margin-bottom: 20px
-px
-;
+}
+.delivery-type-item {
+  position: relative;
+}
+
+.delivery-type-item input::before {
+  position: absolute;
+  content: "";
+  width: 50%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  cursor: pointer;
 }
 .filter-shops {
   position: relative;
@@ -1371,10 +1382,10 @@ button.btn__save {
   padding: 40px 0 20px 0;
 }
 
-#prodetails .single-pro-details h2 {
-  padding: 26px;
+.price-detail {
+  color: red;
+  font-weight: 600;
 }
-
 #prodetails .single-pro-details select {
   display: block;
   padding: 5px 10px;

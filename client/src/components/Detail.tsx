@@ -101,9 +101,9 @@ const Detail = () => {
           <h6>Home / T-Shirts</h6>
           <h4>{product ? `${product.name}` : ``}</h4>
 
-          <h2>
+          <h2 className="price-detail">
             {" "}
-            Price:{" "}
+            {" "}
             {selectedVariant
               ? selectedVariant?.price
               : product
