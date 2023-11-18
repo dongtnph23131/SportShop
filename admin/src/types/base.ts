@@ -13,11 +13,12 @@ export interface Product {
 }
 
 export interface ProductVariant {
+  _id: string;
+  sku: string;
   name: string;
   price: number;
   inventory: number;
   options: string[];
-  _id: string;
   productId: string;
   createdAt: string;
   updatedAt: string;

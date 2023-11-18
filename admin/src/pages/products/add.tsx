@@ -8,10 +8,8 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Separator } from "@/components/ui/separator";
 import { NextPageWithLayout } from "@/pages/_app";
 import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/router";
 
 const Page: NextPageWithLayout = () => {

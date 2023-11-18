@@ -42,12 +42,24 @@ export const CreateProductVariantDialog = ({
     name: "",
     price: 0,
     inventory: 0,
+    sku: "",
     options: addProductForm
       .getValues("options")
       .map((item) => ({ name: item.name, value: "" })),
   });
 
-  console.log({ formState });
+  useEffect(() => {
+    //Create name for variant based on options
+    const name = formState.options.every((option) => option.value.length > 0)
+      ? formState.options.map((option) => option.value).join(" / ")
+      : "";
+    if (formState.name !== name && name.length > 0) {
+      setFormState((prev) => ({
+        ...prev,
+        name,
+      }));
+    }
+  }, [formState]);
 
   return (
     <Dialog open={open} onOpenChange={setOpen}>
@@ -60,12 +72,13 @@ export const CreateProductVariantDialog = ({
           <Label>Name</Label>
           <Input
             placeholder="Black / XL"
-            onChange={(e) =>
+            value={formState.name}
+            onChange={(e) => {
               setFormState((prev) => ({
                 ...prev,
                 name: e.target.value,
-              }))
-            }
+              }));
+            }}
           />
         </div>
 
@@ -149,6 +162,44 @@ export const CreateProductVariantDialog = ({
               />
             </FormControl>
           </FormItem>
+        </div>
+
+        <div className="flex flex-col items-end gap-4 sm:flex-row">
+          <FormItem className="w-full">
+            <FormLabel>SKU:</FormLabel>
+            <FormControl>
+              <Input
+                type="text"
+                value={formState.sku}
+                onChange={(e) =>
+                  setFormState((prev) => ({
+                    ...prev,
+                    sku: e.target.value,
+                  }))
+                }
+              />
+            </FormControl>
+          </FormItem>
+          <Button
+            variant={"outline"}
+            onClick={() => {
+              //Generate SKU that includes numbers and letters
+              let result = "";
+              const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
+              const charactersLength = characters.length;
+              for (let i = 0; i < 6; i++) {
+                result += characters.charAt(
+                  Math.floor(Math.random() * charactersLength)
+                );
+              }
+              setFormState((prev) => ({
+                ...prev,
+                sku: result,
+              }));
+            }}
+          >
+            Generate
+          </Button>
         </div>
 
         <DialogFooter>

@@ -7,6 +7,9 @@ const ProductVariantSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    sku: {
+      type: String,
+    },
     price: {
       type: Number,
       require: true,

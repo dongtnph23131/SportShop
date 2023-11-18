@@ -60,6 +60,7 @@ const formSchema = z.object({
   variants: z.array(
     z.object({
       id: z.string(),
+      sku: z.string(),
       name: z.string(),
       price: z.number(),
       inventory: z.number(),
@@ -108,13 +109,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
   const form = useForm<Inputs>({
     resolver: zodResolver(formSchema),
     defaultValues: {
-      collectionId: product.categoryId._id,
+      collectionId: product.categoryId?._id,
       options: product.options.map((option) => ({
         name: option.name,
         values: option.values,
       })),
       variants: product.productVariantIds.map((variant) => ({
         id: variant._id,
+        sku: variant.sku,
         name: variant.name,
         price: variant.price,
         inventory: variant.inventory,

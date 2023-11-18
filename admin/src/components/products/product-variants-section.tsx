@@ -33,10 +33,11 @@ export const ProductVariants = () => {
       <h3 className="mt-4 font-medium">Product Variants</h3>
 
       <div className="mt-2">
-        <div className="grid grid-cols-[1fr_160px_160px_40px] gap-2">
+        <div className="grid grid-cols-[1fr_160px_160px_160px_40px] gap-2">
           <Label>Variant</Label>
           <Label>Price</Label>
           <Label>Inventory</Label>
+          <Label>SKU</Label>
         </div>
       </div>
 
@@ -45,7 +46,7 @@ export const ProductVariants = () => {
           return (
             <div
               key={field.id}
-              className="grid grid-cols-[1fr_160px_160px_40px] gap-2"
+              className="grid grid-cols-[1fr_160px_160px_160px_40px] gap-2"
             >
               <div className="flex items-center">
                 <FormField
@@ -84,6 +85,17 @@ export const ProductVariants = () => {
                         valueAsNumber: true,
                       })}
                       placeholder="Price..."
+                    />
+                  </FormControl>
+                  <FormMessage />
+                </FormItem>
+              </div>
+              <div className="flex items-center">
+                <FormItem>
+                  <FormControl>
+                    <Input
+                      type="text"
+                      {...form.register(`variants.${index}.sku`)}
                     />
                   </FormControl>
                   <FormMessage />
