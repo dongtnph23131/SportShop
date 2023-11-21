@@ -4,8 +4,18 @@
   width: 100%;
   height: 100%;
   z-index: 9;
+  left: 0;
+  top: 0;
+}
+.cart-sticky-display {
+  display: flex;
+  align-items: center;
 }
 
+.search__desktop {
+  font-size: 22px;
+  cursor: pointer;
+}
 .box-allserch.container {
   position: absolute;
   top: 40%;
@@ -54,7 +64,6 @@
   background: #fff;
   width: 90%;
   margin: 0 auto;
-  border-radius: 10px;
 }
 
 .col-item-3search {
@@ -75,6 +84,11 @@
   padding-top: 20px;
   padding-bottom: 20px;
   display: inline-block;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-bottom: 20px;
 }
 
 .search-addCart {

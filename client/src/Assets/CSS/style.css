@@ -190,6 +190,7 @@ body {
 
 .header-topbar-area-top .header-login {
     margin-top: 11px;
+    color: #fff;
 }
 
 .header-login li {
@@ -834,6 +835,7 @@ nav ul.main-menu {
     width: 90%;
 
     text-align: right;
+    position: relative;
 }
 
 .header-cart-area .cart-heading {
@@ -845,7 +847,7 @@ nav ul.main-menu {
 }
 
 .main-cart-area {
-    padding-top: 17px;
+    padding-top: 0px;
 }
 
 .sticky .main-cart-area {
