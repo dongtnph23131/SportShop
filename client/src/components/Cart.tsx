@@ -341,6 +341,7 @@ const Cart = () => {
                         </label>
                       </div>
                       <div className="delivery-type-item">
+                        
                         <input
                           value={"Online"}
                           {...register("typePayment")}

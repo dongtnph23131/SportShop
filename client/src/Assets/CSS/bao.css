@@ -43,3 +43,20 @@ a.btn-def.btn-product-qview.q-view {
 #cart table img {
     width: 40% !important;
 }
+
+.product-img img {
+    height: 300px;
+    object-fit: cover;
+    width: 100%;
+}
+.product-bottom-title h4{
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    -webkit-line-clamp: 2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+.product-bottom-price span {
+    font-weight: 800;
+    font-size: 18px !important;
+}

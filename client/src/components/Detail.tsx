@@ -3,7 +3,7 @@ import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
-import { Pagination, message, Form, Rate, Button, Input } from "antd";
+import { Pagination, message, Form, Rate, Button, Input} from "antd";
 
 const Detail = () => {
   const { id } = useParams();
@@ -101,9 +101,8 @@ const Detail = () => {
         </div>
 
         <div className="single-pro-details">
-          <h6>Home / T-Shirts</h6>
           <h4>{product ? `${product.name}` : ``}</h4>
-
+          <Rate allowHalf defaultValue={2.5} />;
           <h2 className="price-detail">
             {" "}
             {selectedVariant
@@ -231,7 +230,7 @@ const Detail = () => {
         </div>
       </section>
       <section id="product1" className="section-p1">
-        <h2>Các sản phẩm liên quan</h2>
+        <h2>OUR PRODUCTS</h2>
         <p>Summer Collection New Modern Design</p>
         <div className="pro-container">
           {products?.map((product: any, index: any) => {
