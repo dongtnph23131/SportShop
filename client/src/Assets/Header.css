@@ -859,6 +859,7 @@ header {
   color: var(--color-second);
   font-family: "Roboto", sans-serif;
   font-weight: bolder;
+  margin-bottom: 0px;
 }
 
 .hd4-right__title li svg {

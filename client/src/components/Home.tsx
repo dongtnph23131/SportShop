@@ -334,6 +334,7 @@ const Home = () => {
                         <div className="product-wrapper posr">
                           <div className="priduct-img-wrapper posr">
                             <div className="product-img">
+                            <a class="btn-def btn-product-qview q-view" data-bs-toggle="modal" data-bs-target=".modal" href="#"><i class=" product-search fa fa-search"></i> quick View</a>
                               <a href={`/products/${product._id}`}>
                                 <img
                                   src={`${product?.images[0].url}`}
@@ -368,68 +369,37 @@ const Home = () => {
         </div>
       </div>
 
-      <div className="center-banner-area hp1-center-banner">
-        <div className="center-banner">
-          <div className="banner-left-wrapper">
-            <div className="banner-text-wrapper top-bg">
-              <div className="banner-text-top text-center">
-                <div className="collection-title title-top title-head">
-                  <h3>liber tempor cum soluta</h3>
+      
+      <div className="product-banner-area hp2pbanner-area">
+        <div className="container">
+            <div className="row">
+                <div className="col-lg-6 col-md-6 col-sm-12">
+                    <div className="product-banner-left">
+                        <div className="pbanner-image hvreff-defm20 posr">
+                            <img src="../../src/Assets/cms7.webp" alt=""/>
+                        </div>
+                    </div>
                 </div>
-                <div className="content-top content-area-comm">
-                  <p>
-                    Aenean commodo ligula eget dolor Aenean massa. Portals seize
-                    data-driven, tag expedite.
-                  </p>
+                <div className="col-lg-6 col-md-6 col-sm-12">
+                    <div className="product-banner-right">
+                        <div className="img-banner">
+                            <div className="pbanner-image hvreff-defm10 posr">
+                                <img src="../../src/Assets/cms9.webp" alt=""/>
+                            </div>
+                        </div>
+                        <div className="img-banner">
+                            <div className="pbanner-image hvreff-defm10 posr">
+                                <img src="../../src/Assets/cms8.webp" alt="" />
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                <div className="collection-btn btn-area-comm">
-                  <a className="btn-def-black" href="#">
-                    See Collection
-                  </a>
-                </div>
-              </div>
             </div>
-            <div className="banner-image">
-              <div className="collection-single-box-img">
-                <div className="collection-right-img">
-                  <a href="#">
-                    <img src="images/middle/m2.jpg" alt="domino" />
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div className="banner-right-wrapper">
-            <div className="banner-image">
-              <div className="collection-single-box-img">
-                <div className="collection-right-img">
-                  <a href="#">
-                    <img src="images/middle/m1.jpg" alt="domino" />
-                  </a>
-                </div>
-              </div>
-            </div>
-            <div className="banner-text-wrapper bottom-bg">
-              <div className="banner-text-bottom text-center">
-                <div className="collection-title title-bottom title-head">
-                  <h3>Typi non habent</h3>
-                </div>
-                <div className="content-bottom content-area-comm">
-                  <p>
-                    Aenean commodo ligula eget dolor Aenean massa. Portals seize
-                    data-driven, tag expedite.
-                  </p>
-                </div>
-                <div className="collection-btn btn-area-comm">
-                  <a className="btn-def btn-def-white" href="#">
-                    See Collection
-                  </a>
-                </div>
-              </div>
-            </div>
-          </div>
         </div>
-      </div>
+    </div>
+
+
+
       <div className="new-arrival-product-area hp1-napa pt-60">
         <div className="container">
           <div className="row">

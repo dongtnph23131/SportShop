@@ -13,6 +13,7 @@ import "../Assets/style.css";
 import "../Assets/changerPass.css";
 import "../Assets/search.css";
 import "../Assets/CSS/style.css"
+import "../Assets/CSS/default.css"
 // End css
 
 const WebsiteLayout = () => {

@@ -64,10 +64,11 @@
   background: #fff;
   width: 90%;
   margin: 0 auto;
+  height: 470px;
+  overflow-y: auto;
 }
 
 .col-item-3search {
-  padding: 30px;
   border-radius: 10px;
   margin-bottom: 25px;
 }
