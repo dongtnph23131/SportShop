@@ -1,81 +1,199 @@
 const Footer = () => {
   return (
     <div>
-      <section id="newsletter" className="section-p1 section-m1">
-        <div className="newstext">
-          <h4>Sin Up For Newsletters</h4>
-          <p>
-            Get E-mail updates about our latest shop and{" "}
-            <span>special offers.</span>
-          </p>
-        </div>
-        <div className="form contact__ftNews">
-          <input type="text" placeholder="Your email address" />
-          <button className="normal">Sign Up</button>
-        </div>
-      </section>
+      <div className="main-footer-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-4 col-md-6 col-sm-12">
+              <div className="footer-content-wrapper">
+                <div className="footer-content">
+                  <div
+                    id="f-about"
+                    className="footer-title def-funderline ftitle-about posr"
+                  >
+                    <h5 className="active-about">About us</h5>
+                  </div>
+                  <div className="footer-text">
+                    <p>
+                      Lorem ipsum dolor sit amet, consec tetuer adipis elit,
+                      aliquam eget nibh etlibura. Aenean commodo ligula eget
+                      dolor Aenean massa. Portals seize data-driven, tag
+                      expedite
+                    </p>
+                    <div className="footer-readmore">
+                      <a href="about.html">Read more</a>
+                    </div>
+                  </div>
 
-      <footer className="section-p1 css__newM ">
-        <div className="cols">
-          <div className="hd4-left__logo">
-            Sports <span>Shop</span>
-          </div>
-          <h4>Contact</h4>
-          <p>
-            <strong>Address:</strong> 562 Wellington Road, Street 32, San
-            Fransico
-          </p>
-          <p>
-            <strong>Phone</strong> +01 2222 365 /(+91) 01 2345 6789
-          </p>
-          <p>
-            <strong>Hours</strong>10:00 - 18:00, Mon - Sat
-          </p>
-          <div className="follow">
-            <h4>Follow us</h4>
-            <div className="icon">
-              <div className="icon__item"><i className="fab fa-facebook-f"></i></div>
-              <div className="icon__item"><i className="fab fa-twitter"></i></div>
-              <div className="icon__item"><i className="fab fa-instagram"></i></div>
-              <div className="icon__item"><i className="fab fa-pinterest-p"></i></div>
-              <div className="icon__item"><i className="fab fa-youtube"></i></div>
+                  <ul className="footer-social-icon">
+                    <li>
+                      <a href="#">
+                        <i className="zmdi zmdi-facebook"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="zmdi zmdi-twitter"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="zmdi zmdi-rss"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="zmdi zmdi-youtube"></i>
+                      </a>
+                    </li>
+                    <li>
+                      <a href="#">
+                        <i className="zmdi zmdi-google-plus"></i>
+                      </a>
+                    </li>
+                  </ul>
+                </div>
+              </div>
+            </div>
+            <div className="col-lg-2 col-md-6 col-sm-12">
+              <div className="footer-list-wrapper">
+                <div
+                  id="f-info"
+                  className="footer-title def-funderline ftitle-info posr"
+                >
+                  <h5 className="active">Information</h5>
+                </div>
+                <ul className="footer-list-text jscroll-info">
+                  <li>
+                    <a href="shop.html" title="New products">
+                      New products
+                    </a>
+                  </li>
+                  <li>
+                    <a href="single-product.html" title="Best sellers">
+                      Best sellers
+                    </a>
+                  </li>
+                  <li>
+                    <a href="shop.html" title="Our stores">
+                      Our stores
+                    </a>
+                  </li>
+                  <li>
+                    <a href="contact.html" title="Contact us">
+                      Contact us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="index2.html" title="Sitemap">
+                      Sitemap
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-2 col-md-6 col-sm-12">
+              <div className="footer-list-wrapper">
+                <div
+                  id="f-myac"
+                  className="footer-title def-funderline ftitle-myA posr"
+                >
+                  <h5 className="active">My account</h5>
+                </div>
+                <ul className="footer-list-text jscroll-myac">
+                  <li>
+                    <a href="my-account.html" title="My orders">
+                      My orders{" "}
+                    </a>
+                  </li>
+                  <li>
+                    <a href="my-account.html" title="My credit slips">
+                      My credit slips
+                    </a>
+                  </li>
+                  <li>
+                    <a href="index2.html" title="My addresses">
+                      My addresses
+                    </a>
+                  </li>
+                  <li>
+                    <a href="shop.html" title="Specials">
+                      Specials
+                    </a>
+                  </li>
+                  <li>
+                    <a href="my-account.html" title="My personal info">
+                      My personal info
+                    </a>
+                  </li>
+                </ul>
+              </div>
+            </div>
+            <div className="col-lg-2 col-md-6 col-sm-12">
+              <div className="footer-list-wrapper">
+                <div
+                  id="f-cussve"
+                  className="footer-title def-funderline def-funderline2 ftitle-cus posr"
+                >
+                  <h5 className="active">Customer Service</h5>
+                </div>
+                <ul className="footer-list-text jscroll-cussrve">
+                  <li>
+                    <a href="contact.html" title="Contact us">
+                      Contact us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="index2.html" title="Discount">
+                      Discount
+                    </a>
+                  </li>
+                  <li>
+                    <a href="index2.html" title="Site map">
+                      Site map
+                    </a>
+                  </li>
+                  <li>
+                    <a href="about.html" title="About us">
+                      About us
+                    </a>
+                  </li>
+                  <li>
+                    <a href="contact.html" title="Custom service">
+                      Custom service
+                    </a>
+                  </li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
+      </div>
 
-        <div className="cols">
-          <h4>About</h4>
-          <a href="#">About Us</a>
-          <a href="#">Delivery Information</a>
-          <a href="#">Privacy Policy</a>
-          <a href="#">Terms & Condition</a>
-          <a href="#">Contact Us</a>
-        </div>
-
-        <div className="cols">
-          <h4>My Account</h4>
-          <a href="#">Sign In</a>
-          <a href="#">View Cart</a>
-          <a href="#">My Wishlist</a>
-          <a href="#">Track My Order</a>
-          <a href="#">Help</a>
-        </div>
-
-        <div className="cols install">
-          <h4>Install App</h4>
-          <p>From App Store or Google Play</p>
-          <div className="rows">
-            <img src="../../src/Assets/footer-1.jpg" alt="" />
-            <img src="../../src/Assets/footer-2.jpg" alt="" />
+      <div className="footer-bottom-area">
+        <div className="container">
+          <div className="row">
+            <div className="col-lg-8 col-md-6 col-sm-12 footer-bottom-left">
+              <div className="footer-bottom-text">
+                <p>
+                  &copy; Domino 2022 Made With <i className="fa fa-heart"></i>{" "}
+                  by
+                  <a href="https://hasthemes.com/" rel="noopener">
+                    HasThemes
+                  </a>
+                </p>
+              </div>
+            </div>
+            <div className="col-lg-4 col-md-6 col-sm-12 footer-bottom-right">
+              <div className="footer-bottom-image">
+                <a href="#">
+                  <img src="images/payment/p.png" alt="domino" />{" "}
+                </a>
+              </div>
+            </div>
           </div>
-          <p>Secured Payment Gateways</p>
-          <img src="" alt="" />
         </div>
-
-        <div className="copyright">
-          <p> Copyrights - Design by Manh Pro and BaoBao .</p>
-        </div>
-      </footer>
+      </div>
     </div>
   );
 };
