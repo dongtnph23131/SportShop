@@ -17,6 +17,7 @@ import productApi from "../api/product";
 import cartApi from "../api/cart";
 import orderApi from "../api/order";
 import addressApi from "../api/address";
+import commentApi from "../api/comment";
 const persistConfig = {
   key: "root",
   storage,
@@ -28,7 +29,8 @@ const rootReducer = combineReducers({
   [productApi.reducerPath]: productApi.reducer,
   [cartApi.reducerPath]: cartApi.reducer,
   [orderApi.reducerPath]: orderApi.reducer,
-  [addressApi.reducerPath]:addressApi.reducer
+  [addressApi.reducerPath]: addressApi.reducer,
+  [commentApi.reducerPath]: commentApi.reducer,
 });
 const middleware = [
   authApi.middleware,
@@ -36,7 +38,8 @@ const middleware = [
   productApi.middleware,
   cartApi.middleware,
   orderApi.middleware,
-  addressApi.middleware
+  addressApi.middleware,
+  commentApi.middleware,
 ];
 const persistedReducer = persistReducer(persistConfig, rootReducer);
 const store = configureStore({

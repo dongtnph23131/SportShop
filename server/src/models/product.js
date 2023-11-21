@@ -61,6 +61,16 @@ const productSchema = mongoose.Schema(
         ref: "ProductVariant",
       },
     ],
+    raitings: {
+      type: Number,
+      default: 0,
+    },
+    comments: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Comment",
+      },
+    ],
   },
   { timestamps: true, versionKey: false }
 );

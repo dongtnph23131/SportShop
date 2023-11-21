@@ -56,7 +56,11 @@ const CartItem = ({ item }: any) => {
           >
             -
           </button>
-          <InputNumber className="input__cart" value={item.quantity} onChange={onChangeQuantity} />
+          <InputNumber
+            className="input__cart"
+            value={item.quantity}
+            onChange={onChangeQuantity}
+          />
           <button
             className="increment__cart"
             onClick={() =>
@@ -71,7 +75,11 @@ const CartItem = ({ item }: any) => {
         </div>
       </td>
 
-      <td><div className="priceAll">${item?.productVariantIds?.price * Number(item?.quantity)}</div></td>
+      <td>
+        <div className="priceAll">
+          ${item?.productVariantIds?.price * Number(item?.quantity)}
+        </div>
+      </td>
     </tr>
   );
 };

@@ -3,18 +3,26 @@ import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
-import { Pagination, message, Form, Rate, Button, Input} from "antd";
+import { Pagination, message, Form, Rate, Button, Input } from "antd";
+import {
+  useCreateCommentMutation,
+  useGetAllCommentByProductQuery,
+} from "../api/comment";
+import Swal from "sweetalert2";
+import { useForm } from "antd/es/form/Form";
 
 const Detail = () => {
   const { id } = useParams();
+  const token = Cookies.get("token");
   const { data: product, isLoading } = useGetProductQuery(id);
-  const [quantity, setQuantity] = useState(1);
   const [addItemToCart] = useAddItemCartMutation();
   const [selectedAttributes, setSelectedAttributes] = useState<any>({});
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const [sort, setSort] = useState<String>();
   const [order, setOrder] = useState<String>();
   const [page, setPage] = useState<any>(1);
+  const { data } = useGetAllCommentByProductQuery(id);
+  const [raiting, setRaiting] = useState<any>(0);
   const [dataCategories, setDataCategories] = useState<any>([]);
   const navigate = useNavigate();
   const { data: products, isLoading: isLoadingProducts } =
@@ -25,6 +33,7 @@ const Detail = () => {
       page,
       limit: 4,
     });
+  const [createComment] = useCreateCommentMutation();
   const { data: productsNoPage } = useGetAllProductsQuery({
     sort,
     order,
@@ -65,10 +74,29 @@ const Detail = () => {
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
+  const [form] = useForm();
+  const [content, setContent] = useState<any>();
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
   const { TextArea } = Input;
+  const onFinish = async () => {
+    const comment: any = await createComment({
+      token,
+      comment: { raiting, content, productId: id },
+    });
+    if (!comment?.error) {
+      Swal.fire("Good job!", comment.data.message, "success");
+      form.resetFields();
+      setContent("");
+      setRaiting(0);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: comment?.error.data.message,
+      });
+    }
+  };
   return (
     <div>
       <section id="prodetails" className="section-p1">
@@ -102,7 +130,7 @@ const Detail = () => {
 
         <div className="single-pro-details">
           <h4>{product ? `${product.name}` : ``}</h4>
-          <Rate allowHalf defaultValue={2.5} />;
+          <Rate value={product?.raitings} disabled />
           <h2 className="price-detail">
             {" "}
             {selectedVariant
@@ -151,6 +179,7 @@ const Detail = () => {
       <section className="comment">
         <div className="container">
           <Form
+            form={form}
             name="wrap"
             labelAlign="left"
             labelWrap
@@ -158,43 +187,34 @@ const Detail = () => {
             colon={false}
           >
             <div className="form-title">
-              <h3 className="text-xl">
-                Nhận xét - Đánh giá !
-              </h3>
+              <h3 className="text-xl">Nhận xét - Đánh giá !</h3>
             </div>
-            <div className="rating__old">
-              <div className="rating__old__item">
-                <div className="avt">
-                  <img src="../../src/Assets/user.png" alt="" />
-                </div>
-                <div className="old__comment">
-                  <div className="old__comment__item">
-                    <div className="ratings">
-                      <span className="star">
-                        <i className="fas fa-star"></i>
-                      </span>
-                      <span className="star">
-                        <i className="fas fa-star"></i>
-                      </span>
-                      <span className="star">
-                        <i className="fas fa-star"></i>
-                      </span>
-                      <span className="star">
-                        <i className="fas fa-star"></i>
-                      </span>
-                      <span className="star">
-                        <i className="fas fa-star"></i>
-                      </span>
+            {data?.comments?.length === 0 && <div>Chưa có đánh giá nào</div>}
+            {data?.comments?.map((item: any) => {
+              return (
+                item.default === true && (
+                  <div key={item._id} className="rating__old">
+                    <div className="rating__old__item">
+                      <div className="avt">
+                        <img src={`${item.customerId.avatar}`} alt="" />
+                      </div>
+                      <div className="old__comment">
+                        <div className="old__comment__item">
+                          <div className="ratings">
+                            <Rate value={item.raiting} />
+                          </div>
+                          <div className="date__comment">{item.createdAt}</div>
+                        </div>
+                        <div className="last__comment">{item.content}</div>
+                      </div>
                     </div>
-                    <div className="date__comment">21-11-2023</div>
                   </div>
-                  <div className="last__comment">Sản phẩm tốt</div>
-                </div>
-              </div>
-            </div>
+                )
+              );
+            })}
             <div className="box_rating">
-              <Form.Item name="rating" label="Đánh giá" initialValue={1}>
-                <Rate />
+              <Form.Item name="rating" label="Đánh giá" initialValue={0}>
+                <Rate value={raiting} onChange={(value) => setRaiting(value)} />
               </Form.Item>
             </div>
             <Form.Item
@@ -208,6 +228,8 @@ const Detail = () => {
               ]}
             >
               <TextArea
+                onChange={(e) => setContent(e.target.value)}
+                value={content}
                 showCount
                 maxLength={100}
                 style={{ height: 120, resize: "none" }}
@@ -215,17 +237,11 @@ const Detail = () => {
               />
             </Form.Item>
 
-            <Form.Item label=" ">
-              <div className="wrap__button">
-                <Button
-                  type="primary"
-                  className="bg-blue-500"
-                  htmlType="submit"
-                >
-                  Đánh giá
-                </Button>
-              </div>
-            </Form.Item>
+            <div className="wrap__button">
+              <Button onClick={onFinish} type="primary" className="bg-blue-500">
+                Đánh giá
+              </Button>
+            </div>
           </Form>
         </div>
       </section>

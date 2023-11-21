@@ -179,7 +179,7 @@ const Cart = () => {
                               phone: item.phone,
                               address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
                             });
-                            setAddressModalVisible(false)
+                            setAddressModalVisible(false);
                           }}
                           className="address-items"
                         >
@@ -268,14 +268,14 @@ const Cart = () => {
                     {errors.node ? errors?.node.message : ""}
                   </p>
                 </table>
-               <div className="pro__checkout">
-               <button
-                  disabled={carts?.length === 0 || !token}
-                  className="normal"
-                >
-                  Proceed to checkout
-                </button>
-               </div>
+                <div className="pro__checkout">
+                  <button
+                    disabled={carts?.length === 0 || !token}
+                    className="normal"
+                  >
+                    Proceed to checkout
+                  </button>
+                </div>
               </div>
 
               <div id="subtotal">
@@ -341,7 +341,6 @@ const Cart = () => {
                         </label>
                       </div>
                       <div className="delivery-type-item">
-                        
                         <input
                           value={"Online"}
                           {...register("typePayment")}

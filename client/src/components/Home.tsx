@@ -334,7 +334,7 @@ const Home = () => {
                         <div className="product-wrapper posr">
                           <div className="priduct-img-wrapper posr">
                             <div className="product-img">
-                            <a class="btn-def btn-product-qview q-view" data-bs-toggle="modal" data-bs-target=".modal" href="#"><i class=" product-search fa fa-search"></i> quick View</a>
+                            <a className="btn-def btn-product-qview q-view" data-bs-toggle="modal" data-bs-target=".modal" href="#"><i className=" product-search fa fa-search"></i> quick View</a>
                               <a href={`/products/${product._id}`}>
                                 <img
                                   src={`${product?.images[0].url}`}
