@@ -3,6 +3,7 @@ import { useGetAllProductsQuery } from "../api/product";
 import { getCategories } from "../api/category";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "antd";
+import "../../../client/src/Assets/css/bao.css"
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [ishandleSortVisible, setIsSortVisible] = useState(false);
@@ -42,10 +43,34 @@ const Shops = () => {
   }, []);
   return (
     <div>
+      
+       
+        
       <section id="page-header">
         <h2>#stayhome</h2>
         <p>Save more with coupons & up to 70% off!</p>
       </section>
+
+      <div className="breadcrumbs-wrapper breadcumbs-bg1">
+            <div className="container-brk" style={{padding: "0px 80px"}} >
+                <div className="row">
+                    <div className="col-xs-12">
+                        <div className="breadcrumbs breadcrumbs-style1 sep1 posr">
+                            <ul>
+                                <li>
+                                    <div className="breadcrumbs-icon1">
+                                        <a href="index.html"  title="Return to home"><i className="fa fa-home"></i></a>
+                                    </div>
+                                </li>
+                                <li>About Us</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+
 
       <section id="product1" className="section-p1">
         <div className="fiter">
@@ -212,7 +237,11 @@ const Shops = () => {
                 className="pro"
                 key={index + 1}
               >
+                <div className="qiezzz">
                 <img src={`${product?.images[0].url}`} alt="" />
+                <a className="btn-def btn-product-qview q-view" data-bs-toggle="modal" data-bs-target=".modal" href="#"><i className=" product-search fa fa-search"></i> quick View</a>
+                </div>
+                
                 <div className="des">
                   <span>adidas</span>
                   <h5>{product.name}</h5>

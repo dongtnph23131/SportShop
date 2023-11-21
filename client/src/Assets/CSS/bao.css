@@ -1,0 +1,45 @@
+a.btn-def.btn-product-qview.q-view {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+}
+
+.qiezzz {
+    position: relative;
+}
+.qiezzz:hover a {
+    display: block !important;
+}
+.qiezzz a {
+    display: none !important;
+    font-weight: 600;
+    line-height: 47px;
+    display: inline-block;
+    height: 47px;
+    padding: 0 15px;
+    transition: all 0.3s ease 0s;
+    text-align: center;
+    white-space: nowrap;
+    text-decoration: none;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #A08D7C;
+    border: 1px solid #A08D7C;
+    background: #FFF none repeat scroll 0 0;
+}
+
+.clickToFilter:hover {
+    background: #acacac;
+}
+.clickToFilter {
+    cursor: pointer;
+    padding: 20px 10px;
+    font-weight: 600;
+    font-size: 19px;
+    color: #222;
+}
+
+#cart table img {
+    width: 40% !important;
+}
