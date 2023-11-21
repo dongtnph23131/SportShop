@@ -522,7 +522,47 @@ body {
   top: 0;
   left: 0;
 }
+.wrap__button {
+  display: flex;
+  justify-content: right;
+}
+.box_rating .ant-form-item {
+  margin-bottom: 10px;
+  margin-top: 10px;
+  padding-left: 140px;
+}
 
+section.comment {
+  padding: 20px 0px;
+}
+.rating__old__item {
+  display: flex;
+  margin-top: 20px;
+  padding-bottom: 20px;
+  border-bottom: 1px solid #cdcdcd;
+}
+
+.old__comment {
+  width: 80%;
+}
+
+.rating__old__item .avt {
+  width: 20%;
+  text-align: center;
+}
+.ratings {
+  display: flex;
+  align-items: center;
+}
+
+.star {
+  color: yellow;
+  font-size: 1.2em; /* Adjust the font size as needed */
+  margin-right: 5px; /* Adjust the margin between stars as needed */
+}
+.last__comment {
+  margin-top: 10px;
+}
 #navbar {
   display: flex;
   align-items: center;
