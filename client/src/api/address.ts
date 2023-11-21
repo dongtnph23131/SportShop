@@ -42,7 +42,7 @@ const addressApi = createApi({
       invalidatesTags: ["Address"],
     }),
     updateAddress: builder.mutation({
-      query: ({ token, data}) => {
+      query: ({ token, data }) => {
         return {
           url: `/address/${data._id}/acount`,
           method: "PATCH",

@@ -1,6 +1,6 @@
 import "../../../client/src/Assets/CSS/responsive.css";
 import "../../../client/src/Assets/CSS/meanmenu.css";
-import '../../../client/src/Assets/CSS/style.css'
+import "../../../client/src/Assets/CSS/style.css";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
 import { getCategories } from "../api/category";
@@ -409,10 +409,10 @@ const Header = () => {
               <div className="header-whishlist">
                 <div className="header-whish-compare posr">
                   <div className="header-whish">
-                    <a >My Wishlist</a>
+                    <a>My Wishlist</a>
                   </div>
                   <div className="header-compare">
-                    <a >Compare</a>
+                    <a>Compare</a>
                   </div>
                 </div>
                 <div className="header-middle-phone">
@@ -467,192 +467,212 @@ const Header = () => {
 
             <div className="col-lg-3 col-md-2 col-sm-12">
               <div className="main-cart-area  cart-sticky-display posr">
-              <div className="hd4-mid wrapSearch ">
-              {isSearchVisible && (
-          <div className="box-search-click">
-            <div className="box-allserch container">
-              <div className="input-searched">
-                <input
-                  type="text"
-                  placeholder="search..."
-                  onChange={async (event) => {
-                    if (event.target.value != "") {
-                      setIsLoading(true);
-                      await axios
-                        .get(
-                          `http://localhost:8080/api/products?q=${
-                            event.target.value ? event.target.value : ""
-                          }`
-                        )
-                        .then((data) => {
-                          setProductSearch(data.data);
-                        });
-                      setIsLoading(false);
-                    } else {
-                      setProductSearch([]);
-                    }
-                  }}
-                />
-                <button className="remo-search" onClick={handleHideSearch}>
-                  X
-                </button>
-              </div>
-              <div className="row">
-                {productSearch.length === 0 ? (
-                  <span className="text-searchs">
-                    Hãy nhập nội dung tìm kiếm
-                  </span>
-                ) : (
-                  ""
-                )}
-                {productSearch?.map((item: any) => {
-                  return (
-                    <div
-                      onClick={() => {
-                        navigate(`/products/${item._id}`);
-                        setIsSearchVisible(false);
-                        setProductSearch([]);
-                      }}
-                      className="col-lg-3 col-item-3search "
-                    >
-                      <div key={item._id} className="box-itemsearch">
-                        <img src={`${item.images[0].url}`} alt="" />
-                        <div className="contentSearch-item">
-                          <span className="search-items-name">{item.name}</span>
-                          <button className="search-addCart">buy</button>
+                <div className="hd4-mid wrapSearch ">
+                  {isSearchVisible && (
+                    <div className="box-search-click">
+                      <div className="box-allserch container">
+                        <div className="input-searched">
+                          <input
+                            type="text"
+                            placeholder="search..."
+                            onChange={async (event) => {
+                              if (event.target.value != "") {
+                                setIsLoading(true);
+                                await axios
+                                  .get(
+                                    `http://localhost:8080/api/products?q=${
+                                      event.target.value
+                                        ? event.target.value
+                                        : ""
+                                    }`
+                                  )
+                                  .then((data) => {
+                                    setProductSearch(data.data);
+                                  });
+                                setIsLoading(false);
+                              } else {
+                                setProductSearch([]);
+                              }
+                            }}
+                          />
+                          <button
+                            className="remo-search"
+                            onClick={handleHideSearch}
+                          >
+                            X
+                          </button>
+                        </div>
+                        <div className="row">
+                          {productSearch.length === 0 ? (
+                            <span className="text-searchs">
+                              Hãy nhập nội dung tìm kiếm
+                            </span>
+                          ) : (
+                            ""
+                          )}
+                          {productSearch?.map((item: any) => {
+                            return (
+                              <div
+                                onClick={() => {
+                                  navigate(`/products/${item._id}`);
+                                  setIsSearchVisible(false);
+                                  setProductSearch([]);
+                                }}
+                                className="col-lg-3 col-item-3search "
+                              >
+                                <div key={item._id} className="box-itemsearch">
+                                  <img src={`${item.images[0].url}`} alt="" />
+                                  <div className="contentSearch-item">
+                                    <span className="search-items-name">
+                                      {item.name}
+                                    </span>
+                                    <button className="search-addCart">
+                                      buy
+                                    </button>
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
                         </div>
                       </div>
                     </div>
-                  );
-                })}
-              </div>
-            </div>
-          </div>
-        )}
-           <form action="" className="hd4-mid__search">
-             
-             <div className="search__desktop"  onClick={handleSearchClick}>
-               <svg
-                  xmlns="http://www.w3.org/2000/svg"
-                  height="1em"
-                  viewBox="0 0 512 512"
-                >
-                  <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
-                </svg>
-              </div>
-            </form>
-          </div>
-                <div className="hd4-right flex-1">
-        <ul className="hd4-right__title d-flex js-right ai-center">
-         {token ? (
-                <>
-                  <li className="signin-up">
+                  )}
+                  <form action="" className="hd4-mid__search">
                     <div
-                      className="clickViewsProfile"
-                      onClick={() => setIsDropdownActive(!isDropdownActive)}
+                      className="search__desktop"
+                      onClick={() => {
+                        handleSearchClick();
+                        setProductSearch([])
+                      }}
                     >
-                      <div className="avart-sgin">
-                        <img src={profile?.customer?.avatar} alt="" />
-                      </div>
-                      <a className="nameProfileUser">
-                        {profile?.customer?.firstName}{" "}
-                        {profile?.customer?.lastName}{" "}
-                        <span
-                          className={`icon__down__detailProfile ${
-                            isDropdownActive ? "active" : ""
-                          }`}
-                        >
-                          <i className="fa-solid fa-caret-down"></i>
-                        </span>
-                      </a>
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        height="1em"
+                        viewBox="0 0 512 512"
+                      >
+                        <path d="M416 208c0 45.9-14.9 88.3-40 122.7L502.6 457.4c12.5 12.5 12.5 32.8 0 45.3s-32.8 12.5-45.3 0L330.7 376c-34.4 25.2-76.8 40-122.7 40C93.1 416 0 322.9 0 208S93.1 0 208 0S416 93.1 416 208zM208 352a144 144 0 1 0 0-288 144 144 0 1 0 0 288z" />
+                      </svg>
                     </div>
-                    <ul
-                      className={`all-signinout ${
-                        isDropdownActive ? "active" : ""
-                      }`}
-                    >
+                  </form>
+                </div>
+                <div className="hd4-right flex-1">
+                  <ul className="hd4-right__title d-flex js-right ai-center">
+                    {token ? (
+                      <>
+                        <li className="signin-up">
+                          <div
+                            className="clickViewsProfile"
+                            onClick={() =>
+                              setIsDropdownActive(!isDropdownActive)
+                            }
+                          >
+                            <div className="avart-sgin">
+                              <img src={profile?.customer?.avatar} alt="" />
+                            </div>
+                            <a className="nameProfileUser">
+                              {profile?.customer?.firstName}{" "}
+                              {profile?.customer?.lastName}{" "}
+                              <span
+                                className={`icon__down__detailProfile ${
+                                  isDropdownActive ? "active" : ""
+                                }`}
+                              >
+                                <i className="fa-solid fa-caret-down"></i>
+                              </span>
+                            </a>
+                          </div>
+                          <ul
+                            className={`all-signinout ${
+                              isDropdownActive ? "active" : ""
+                            }`}
+                          >
+                            <li>
+                              <a
+                                href="/profileDetail"
+                                className="detail__profile"
+                              >
+                                Thông tin cá nhân{" "}
+                                <span>
+                                  <i className="fa-solid fa-user"></i>
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                href="/orderClient"
+                                className="detail__profile"
+                              >
+                                Lịch sử đơn hàng
+                                <span>
+                                  <i className="fa-regular fa-rectangle-list"></i>
+                                </span>
+                              </a>
+                            </li>
+                            <li>
+                              <a
+                                onClick={() => {
+                                  Cookies.remove("email");
+                                  Cookies.remove("firstName");
+                                  Cookies.remove("lastName");
+                                  Cookies.remove("avatar");
+                                  Cookies.remove("token");
+                                  setToken("");
+                                  navigate("/");
+                                }}
+                                className="detail__profile"
+                              >
+                                Đăng xuất{" "}
+                                <span>
+                                  <i className="fa-solid fa-right-from-bracket"></i>
+                                </span>
+                              </a>
+                            </li>
+                          </ul>
+                        </li>
+                        <li className="Login"></li>
+                      </>
+                    ) : (
+                      <>
+                        <li className="Login">
+                          <a href="/signin" id="loginLink">
+                            {" "}
+                            Đăng nhập
+                          </a>
+                        </li>
+                        <li className="Login">
+                          <a href="/signup" id="signupLink">
+                            {" "}
+                            / Đăng ký
+                          </a>
+                        </li>
+                      </>
+                    )}
+                    {token ? (
                       <li>
-                        <a href="/profileDetail" className="detail__profile">
-                          Thông tin cá nhân{" "}
-                          <span>
-                            <i className="fa-solid fa-user"></i>
+                        <a href="/cart" className="qtyli-cart">
+                          <span className="qlty">
+                            {token
+                              ? carts?.reduce(
+                                  (accumulator: any, currentValue: any) =>
+                                    accumulator + currentValue.quantity,
+                                  0
+                                )
+                              : "0"}
                           </span>
+                          <img src="../../src/Assets/cart.gif" alt="" />
                         </a>
                       </li>
+                    ) : (
                       <li>
-                        <a href="/orderClient" className="detail__profile">
-                          Lịch sử đơn hàng
-                          <span>
-                          <i className="fa-regular fa-rectangle-list"></i>
-                          </span>
+                        <a href="/cart" className="qtyli-cart">
+                          <span className="qlty">0</span>
+                          <img src="../../src/Assets/cart.gif" alt="" />
                         </a>
                       </li>
-                      <li>
-                        <a
-                          onClick={() => {
-                            Cookies.remove("email");
-                            Cookies.remove("firstName");
-                            Cookies.remove("lastName");
-                            Cookies.remove("avatar");
-                            Cookies.remove("token");
-                            setToken("");
-                            navigate("/");
-                          }}
-                          className="detail__profile"
-                        >
-                          Đăng xuất{" "}
-                          <span>
-                            <i className="fa-solid fa-right-from-bracket"></i>
-                          </span>
-                        </a>
-                      </li>
-                    </ul>
-                  </li>
-                  <li className="Login"></li>
-                </>
-              ) : (
-                <>
-                  <li className="Login">
-                    <a href="/signin" id="loginLink">
-                      {" "}
-                      Đăng nhập
-                    </a>
-                  </li>
-                  <li className="Login">
-                    <a href="/signup" id="signupLink">
-                      {" "}
-                      / Đăng ký
-                    </a>
-                  </li>
-                </>
-              )}
-              {token ? (
-                <li>
-                  <a href="/cart" className="qtyli-cart">
-                    <span className="qlty">
-                      {token
-                        ? carts?.reduce(
-                            (accumulator: any, currentValue: any) =>
-                              accumulator + currentValue.quantity,
-                            0
-                          )
-                        : "0"}
-                    </span>
-                    <img src="../../src/Assets/cart.gif" alt="" />
-                  </a>
-                </li>
-              ) : (
-                <li>
-                <a href="/cart" className="qtyli-cart">
-                  <span className="qlty">
-                    0
-                  </span>
-                  <img src="../../src/Assets/cart.gif" alt="" />
-                </a>
-              </li>
-              )}
-            </ul>
-          </div>
+                    )}
+                  </ul>
+                </div>
               </div>
             </div>
           </div>

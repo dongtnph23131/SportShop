@@ -3,7 +3,7 @@ import { useGetAllProductsQuery } from "../api/product";
 import { getCategories } from "../api/category";
 import { useNavigate } from "react-router-dom";
 import { Pagination } from "antd";
-import "../../../client/src/Assets/css/bao.css"
+import "../../../client/src/Assets/css/bao.css";
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
   const [ishandleSortVisible, setIsSortVisible] = useState(false);
@@ -43,34 +43,31 @@ const Shops = () => {
   }, []);
   return (
     <div>
-      
-       
-        
       <section id="page-header">
         <h2>#stayhome</h2>
         <p>Save more with coupons & up to 70% off!</p>
       </section>
 
       <div className="breadcrumbs-wrapper breadcumbs-bg1">
-            <div className="container-brk" style={{padding: "0px 80px"}} >
-                <div className="row">
-                    <div className="col-xs-12">
-                        <div className="breadcrumbs breadcrumbs-style1 sep1 posr">
-                            <ul>
-                                <li>
-                                    <div className="breadcrumbs-icon1">
-                                        <a href="index.html"  title="Return to home"><i className="fa fa-home"></i></a>
-                                    </div>
-                                </li>
-                                <li>About Us</li>
-                            </ul>
-                        </div>
+        <div className="container-brk" style={{ padding: "0px 80px" }}>
+          <div className="row">
+            <div className="col-xs-12">
+              <div className="breadcrumbs breadcrumbs-style1 sep1 posr">
+                <ul>
+                  <li>
+                    <div className="breadcrumbs-icon1">
+                      <a href="index.html" title="Return to home">
+                        <i className="fa fa-home"></i>
+                      </a>
                     </div>
-                </div>
+                  </li>
+                  <li>About Us</li>
+                </ul>
+              </div>
             </div>
+          </div>
         </div>
-
-
+      </div>
 
       <section id="product1" className="section-p1">
         <div className="fiter">
@@ -81,72 +78,73 @@ const Shops = () => {
             {isFilterVisible && (
               <div className="box-container-filter">
                 <div className="box-item-fillter">
-                 <div className="item__filter__top">
-                 <div className="title-filter-shops">
-                    <h3> Filters</h3>
-                    <span>
-                      <a href="" onClick={handleHideFilter}>
-                        X
-                      </a>
-                    </span>
-                  </div>
-                  <div className="subcate">
-                    <div className="select-sub">
-                      {categories.map((item: any) => {
-                        return (
-                          <div className="clickToFilter"
-                            onClick={() => {
-                              setPage(1);
-                              setDataCategories([
-                                ...dataCategories,
-                                { _id: item._id, name: item.name },
-                              ]);
-                              setCategories(
-                                categories.filter(
-                                  (category: any) => category._id !== item._id
-                                )
-                              );
-                            }}
-                            key={item._id}
-                          >
-                            {item.name}
-                          </div>
-                        );
-                      })}
+                  <div className="item__filter__top">
+                    <div className="title-filter-shops">
+                      <h3> Filters</h3>
+                      <span>
+                        <a href="" onClick={handleHideFilter}>
+                          X
+                        </a>
+                      </span>
                     </div>
-                  </div>
+                    <div className="subcate">
+                      <div className="select-sub">
+                        {categories.map((item: any) => {
+                          return (
+                            <div
+                              className="clickToFilter"
+                              onClick={() => {
+                                setPage(1);
+                                setDataCategories([
+                                  ...dataCategories,
+                                  { _id: item._id, name: item.name },
+                                ]);
+                                setCategories(
+                                  categories.filter(
+                                    (category: any) => category._id !== item._id
+                                  )
+                                );
+                              }}
+                              key={item._id}
+                            >
+                              {item.name}
+                            </div>
+                          );
+                        })}
+                      </div>
+                    </div>
 
-                  <div className="box-item-stores">
-                    <span>Storess</span>
-                    <div className="box-checkbox-filter">
-                      {dataCategories.map((item: any) => {
-                        return (
-                          <div key={item._id} className="boxs-mos">
-                            <button>
-                              <i
-                                onClick={() => {
-                                  setPage(1);
-                                  setCategories([
-                                    ...categories,
-                                    { _id: item._id, name: item.name },
-                                  ]);
-                                  setDataCategories(
-                                    dataCategories.filter(
-                                      (category: any) =>
-                                        category._id !== item._id
-                                    )
-                                  );
-                                }}
-                                className="fas fa-trash-alt"
-                              ></i>
-                            </button>
-                            <label htmlFor="">{item.name}</label>
-                          </div>
-                        );
-                      })}
+                    <div className="box-item-stores">
+                      <span>Storess</span>
+                      <div className="box-checkbox-filter">
+                        {dataCategories.map((item: any) => {
+                          return (
+                            <div key={item._id} className="boxs-mos">
+                              <button>
+                                <i
+                                  onClick={() => {
+                                    setPage(1);
+                                    setCategories([
+                                      ...categories,
+                                      { _id: item._id, name: item.name },
+                                    ]);
+                                    setDataCategories(
+                                      dataCategories.filter(
+                                        (category: any) =>
+                                          category._id !== item._id
+                                      )
+                                    );
+                                  }}
+                                  className="fas fa-trash-alt"
+                                ></i>
+                              </button>
+                              <label htmlFor="">{item.name}</label>
+                            </div>
+                          );
+                        })}
+                      </div>
                     </div>
                   </div>
-                 </div>
 
                   <div className="btn-filter">
                     <a href="">Clear Filters</a>
@@ -238,10 +236,17 @@ const Shops = () => {
                 key={index + 1}
               >
                 <div className="qiezzz">
-                <img src={`${product?.images[0].url}`} alt="" />
-                <a className="btn-def btn-product-qview q-view" data-bs-toggle="modal" data-bs-target=".modal" href="#"><i className=" product-search fa fa-search"></i> quick View</a>
+                  <img src={`${product?.images[0].url}`} alt="" />
+                  <a
+                    className="btn-def btn-product-qview q-view"
+                    data-bs-toggle="modal"
+                    data-bs-target=".modal"
+                    href="#"
+                  >
+                    <i className=" product-search fa fa-search"></i> quick View
+                  </a>
                 </div>
-                
+
                 <div className="des">
                   <span>adidas</span>
                   <h5>{product.name}</h5>

@@ -371,7 +371,7 @@ h4.brackham {
   display: flex;
 }
 .address-items {
-  margin-bottom: 20px
+  margin-bottom: 20px;
 }
 .delivery-type-item {
   position: relative;
@@ -554,7 +554,9 @@ section.comment {
   display: flex;
   align-items: center;
 }
-
+.avt img {
+  width: 100px;
+}
 .star {
   color: yellow;
   font-size: 1.2em; /* Adjust the font size as needed */
@@ -2137,7 +2139,7 @@ button.btn__save {
   border-radius: 16px;
   flex-direction: column;
 }
-.forgot{
+.forgot {
   margin-bottom: 15px;
 }
 .main__addAdress input {
@@ -2676,7 +2678,7 @@ button.btn__save {
   background-color: #088178;
   color: #fff;
 }
-.img-User{
+.img-User {
   width: 50px;
   height: 50px;
   border-radius: 100px;

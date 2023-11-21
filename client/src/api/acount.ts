@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react";
 
 const acountApi = createApi({
   reducerPath: "acount",
-  tagTypes:["Profile"],
+  tagTypes: ["Profile"],
   baseQuery: fetchBaseQuery({ baseUrl: "http://localhost:8080/api" }),
   endpoints: (builder) => ({
     forgotPassword: builder.mutation({
@@ -42,7 +42,7 @@ const acountApi = createApi({
           },
         };
       },
-      providesTags:["Profile"]
+      providesTags: ["Profile"],
     }),
     updateProfile: builder.mutation({
       query: ({ value, token }) => {
@@ -55,7 +55,7 @@ const acountApi = createApi({
           },
         };
       },
-      invalidatesTags:["Profile"]
+      invalidatesTags: ["Profile"],
     }),
   }),
 });
@@ -64,6 +64,6 @@ export const {
   useResettPasswordMutation,
   useUpdatePasswordMutation,
   useGetProfileByAcountQuery,
-  useUpdateProfileMutation
+  useUpdateProfileMutation,
 } = acountApi;
 export default acountApi;
