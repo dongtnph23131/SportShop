@@ -124,7 +124,9 @@ const CategoryDetail = () => {
                     <i className="fas fa-star"></i>
                   </div>
                   <h4>
-                    ${product.minPrice}-${product.maxPrice}
+                    {product.minPrice === product.maxPrice
+                      ? `${product.maxPrice}$`
+                      : `${product.minPrice}$-${product.maxPrice}$`}
                   </h4>
                 </div>
                 <a href="#">

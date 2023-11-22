@@ -61,7 +61,7 @@ const Shops = () => {
                       </a>
                     </div>
                   </li>
-                  <li>About Us</li>
+                  <li>Shops Us</li>
                 </ul>
               </div>
             </div>
@@ -258,7 +258,9 @@ const Shops = () => {
                     <i className="fas fa-star"></i>
                   </div>
                   <h4>
-                    ${product.minPrice}-${product.maxPrice}
+                    {product.minPrice === product.maxPrice
+                      ? `${product.maxPrice}$`
+                      : `${product.minPrice}$-${product.maxPrice}$`}
                   </h4>
                 </div>
                 <a href="#">
