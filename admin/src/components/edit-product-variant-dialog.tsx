@@ -19,7 +19,7 @@ import { queryClient } from "@/lib/react-query";
 export const EditProductVariantDialog = ({
   productVariant,
 }: {
-  productVariant: InventoryResponse;
+  productVariant: InventoryResponse["docs"][number];
 }) => {
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);

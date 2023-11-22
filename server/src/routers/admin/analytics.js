@@ -9,7 +9,9 @@ router.get("/", async (req, res) => {
   const { from, to } = req.query;
 
   const formDay = from ? new Date(from) : undefined;
-  const toDay = to ? new Date(to) : undefined;
+  const toDay = to
+    ? new Date(new Date(to).setDate(new Date(to).getDate() + 1))
+    : undefined;
 
   const orders = await Order.find(
     formDay || toDay

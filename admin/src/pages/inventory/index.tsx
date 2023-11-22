@@ -1,5 +1,7 @@
 import { EditProductVariantDialog } from "@/components/edit-product-variant-dialog";
 import LayoutAdmin from "@/components/layouts";
+import TablePagination from "@/components/table-pagination";
+import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
   Card,
@@ -8,6 +10,15 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import { Separator } from "@/components/ui/separator";
 
 import {
   Table,
@@ -17,12 +28,13 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
-
+import useRouterStuff from "@/lib/hooks/use-router-stuff";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useInventoryQuery } from "@/services/inventory/inventory-query";
 import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
+  const { queryParams, searchParams } = useRouterStuff();
   const { data: productVariants } = useInventoryQuery();
 
   return (
@@ -38,10 +50,26 @@ const Page: NextPageWithLayout = () => {
           </Button>
         </div>
         <CardContent>
+          <Input
+            placeholder="Search by product variant name..."
+            className="h-8 w-[150px] lg:w-[250px] mb-4"
+            onChange={(event) => {
+              queryParams({
+                set: {
+                  q: event.target.value,
+                  _page: "1",
+                },
+              });
+            }}
+          />
+
+          <Separator />
+
           <Table>
             <TableHeader>
               <TableRow>
                 <TableHead>Product</TableHead>
+                <TableHead>Category</TableHead>
                 <TableHead>SKU</TableHead>
                 <TableHead>Price</TableHead>
                 <TableHead>Inventory</TableHead>
@@ -49,18 +77,23 @@ const Page: NextPageWithLayout = () => {
               </TableRow>
             </TableHeader>
             <TableBody>
-              {productVariants?.map((item) => (
+              {productVariants?.docs.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>
                     <div>
                       <Link
                         href={`/products/${item.productId.slug}`}
-                        className="font-semibold hover:underline"
+                        className="font-semibold hover:underline block w-56 truncate"
                       >
                         {item.productId.name}
                       </Link>
-                      <p>{item.options.join(" / ")}</p>
+                      <Badge className="inline-block" variant={"secondary"}>
+                        {item.options.join(" / ")}
+                      </Badge>
                     </div>
+                  </TableCell>
+                  <TableCell>
+                    <Badge variant={"outline"}>{item.category.name}</Badge>
                   </TableCell>
                   <TableCell>{item.sku}</TableCell>
                   <TableCell>{item.price}</TableCell>
@@ -72,6 +105,10 @@ const Page: NextPageWithLayout = () => {
               ))}
             </TableBody>
           </Table>
+
+          <Separator />
+
+          <TablePagination tableData={productVariants} />
         </CardContent>
       </Card>
     </>
