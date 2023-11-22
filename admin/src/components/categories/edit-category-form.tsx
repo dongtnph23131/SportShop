@@ -20,11 +20,13 @@ import { Icons } from "@/components/icons";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useCategoryUpdateMutation } from "@/services/categories/category-update-mutation";
 import { Category } from "@/types/base";
+import { Textarea } from "../ui/textarea";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
+  description: z.string(),
 });
 
 type Inputs = z.infer<typeof formSchema>;
@@ -48,6 +50,7 @@ export default function EditCategoryForm({
     resolver: zodResolver(formSchema),
     defaultValues: {
       name: collection.name,
+      description: collection.description,
     },
   });
 
@@ -55,6 +58,7 @@ export default function EditCategoryForm({
     editCollectionMutation.mutate({
       name: data.name,
       slug: router.query.slug as string,
+      description: data.description,
     });
   }
 
@@ -71,6 +75,19 @@ export default function EditCategoryForm({
               aria-invalid={!!form.formState.errors.name}
               placeholder="Type collection name here."
               {...form.register("name")}
+            />
+          </FormControl>
+          <UncontrolledFormMessage
+            message={form.formState.errors.name?.message}
+          />
+        </FormItem>
+
+        <FormItem>
+          <FormLabel>Description</FormLabel>
+          <FormControl>
+            <Textarea
+              aria-invalid={!!form.formState.errors.name}
+              {...form.register("description")}
             />
           </FormControl>
           <UncontrolledFormMessage

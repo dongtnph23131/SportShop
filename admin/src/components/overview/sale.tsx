@@ -76,7 +76,7 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalytics }) {
               tickFormatter={(value) => `$${value}`}
             />
             <Tooltip />
-            <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} />
+            <Bar dataKey="total" fill="#adfa1d" radius={[4, 4, 0, 0]} label />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

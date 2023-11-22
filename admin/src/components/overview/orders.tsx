@@ -77,7 +77,8 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
               tickFormatter={(value) => `${value}`}
             />
             <Tooltip />
-            <Bar dataKey="total" fill="#65c7f2" radius={[4, 4, 0, 0]} />
+
+            <Bar dataKey="total" fill="#65c7f2" radius={[4, 4, 0, 0]} label />
           </BarChart>
         </ResponsiveContainer>
       </CardContent>

@@ -28,6 +28,8 @@ export interface Category {
   _id: string;
   slug: string;
   name: string;
+  description: string;
+  image: string;
   updatedAt: string;
   createdAt: string;
   productIds: string[];
