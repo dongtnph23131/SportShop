@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -53,7 +54,21 @@ const Page: NextPageWithLayout = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
-      cell: ({ row }) => <span>{row.original.firstName}</span>,
+      cell: ({ row }) => (
+        <div className="flex gap-4 items-center">
+          <Avatar className="h-10 w-10">
+            <AvatarImage
+              src={
+                row.original.avatar ??
+                "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+              }
+              alt="Avatar"
+            />
+            <AvatarFallback>OM</AvatarFallback>
+          </Avatar>
+          {row.original.firstName}
+        </div>
+      ),
     },
     {
       id: "email",

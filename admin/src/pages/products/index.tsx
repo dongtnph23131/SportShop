@@ -12,6 +12,7 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -51,7 +52,22 @@ const Page: NextPageWithLayout = () => {
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Product" />
+      ),
+      cell: ({ row }) => (
+        <div className="flex gap-4 items-center">
+          <Avatar className="h-10 w-10 rounded-sm border border-gray-200">
+            <AvatarImage
+              src={
+                row.original.images?.[0]?.url ??
+                "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+              }
+              alt="Avatar"
+            />
+            <AvatarFallback>OM</AvatarFallback>
+          </Avatar>
+          {row.original.name}
+        </div>
       ),
     },
     {

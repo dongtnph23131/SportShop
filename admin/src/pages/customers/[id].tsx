@@ -47,12 +47,44 @@ const Page: NextPageWithLayout = () => {
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
               <div>
-                <CardTitle>{customer.firstName + customer.lastName}</CardTitle>
+                <CardTitle>
+                  {customer.firstName + " " + customer.lastName}
+                </CardTitle>
                 <CardDescription>{customer.email}</CardDescription>
               </div>
             </CardHeader>
 
             <CardContent>
+              <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    First Name:
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {customer.firstName}
+                  </dd>
+                </div>
+              </dl>
+              <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    Last Name:
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {customer.lastName}
+                  </dd>
+                </div>
+              </dl>
+              <dl className="divide-y divide-gray-100">
+                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                  <dt className="text-sm font-medium leading-6 text-gray-900">
+                    Email
+                  </dt>
+                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                    {customer.email}
+                  </dd>
+                </div>
+              </dl>
               <dl className="divide-y divide-gray-100">
                 <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-sm font-medium leading-6 text-gray-900">
@@ -63,16 +95,6 @@ const Page: NextPageWithLayout = () => {
                   </dd>
                 </div>
               </dl>
-              {/* <dl className="divide-y divide-gray-100">
-                <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                  <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Created At:
-                  </dt>
-                  <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {customer.firstName}
-                  </dd>
-                </div>
-              </dl> */}
             </CardContent>
           </Card>
 

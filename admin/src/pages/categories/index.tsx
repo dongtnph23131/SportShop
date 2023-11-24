@@ -35,6 +35,7 @@ import { useCategoriesQuery } from "@/services/categories/categories-query";
 import { Category } from "@/types/base";
 import { useCategoryDeleteMutation } from "@/services/categories/category-delete-mutation";
 import { queryClient } from "@/lib/react-query";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 
 interface Collection {
   name: string;
@@ -64,7 +65,21 @@ const Page: NextPageWithLayout = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
-      cell: ({ row }) => <div className="w-[80px]">{row.getValue("name")}</div>,
+      cell: ({ row }) => (
+        <div className="flex gap-4 items-center">
+          <Avatar className="h-10 w-10 rounded-sm border border-gray-200">
+            <AvatarImage
+              src={
+                row.original.image ??
+                "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+              }
+              alt="Avatar"
+            />
+            <AvatarFallback>OM</AvatarFallback>
+          </Avatar>
+          {row.original.name}
+        </div>
+      ),
     },
     {
       accessorKey: "createdAt",
@@ -76,16 +91,7 @@ const Page: NextPageWithLayout = () => {
       },
     },
     {
-      accessorKey: "updatedAt",
-      header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Updated At" />
-      ),
-      cell: ({ row }) => {
-        return format(new Date(row.original.updatedAt), "dd MMM yyyy");
-      },
-    },
-    {
-      accessorKey: "id",
+      id: "productLength",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Products" />
       ),
