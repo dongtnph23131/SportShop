@@ -5,6 +5,7 @@ import CartItem from "../models/cartItem";
 import { orderSchema } from "../validators/order";
 import Cart from "../models/cart";
 import Customer from "../models/customer";
+import { generateRandomString } from "../libs/utils";
 
 export const create = async (req, res) => {
   try {
@@ -17,6 +18,7 @@ export const create = async (req, res) => {
       ...validatedBody,
       customerId: user._id,
       orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
+      code: `DH-${generateRandomString()}`,
     });
     await Promise.all(
       validatedBody.items.map(async (item) => {

@@ -26,7 +26,6 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import axiosClient from "@/lib/axios-instance";
@@ -34,14 +33,8 @@ import { API_URL } from "@/lib/contants";
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useOrdersQuery } from "@/services/orders/orders-query";
-import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
-import {
-  Order,
-  OrderDeliveryStatus,
-  OrderPaymentStatus,
-  OrderStatus,
-  Product,
-} from "@/types/base";
+
+import { Order, OrderStatus } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -55,9 +48,9 @@ const Page: NextPageWithLayout = () => {
     {
       id: "id",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Order Id" />
+        <DataTableColumnHeader column={column} title="Order" />
       ),
-      cell: ({ row }) => <div>#{row.original.orderId}</div>,
+      cell: ({ row }) => <div>{row.original.code}</div>,
     },
     {
       id: "createAt",

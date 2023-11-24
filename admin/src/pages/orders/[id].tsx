@@ -1,22 +1,9 @@
 import LayoutAdmin from "@/components/layouts";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardFooter,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NextPageWithLayout } from "@/pages/_app";
-import {
-  Order,
-  OrderDeliveryStatus,
-  OrderPaymentStatus,
-  OrderStatus,
-  Product,
-} from "@/types/base";
+import { OrderPaymentStatus, OrderStatus } from "@/types/base";
 import { format } from "date-fns";
 import {
   TableHead,
@@ -29,20 +16,10 @@ import {
 import { useRouter } from "next/router";
 import { ArrowLeft } from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
-import { API_URL } from "@/lib/contants";
 import { toast } from "sonner";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
 import axiosClient from "@/lib/axios-instance";
+import { queryClient } from "@/lib/react-query";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -83,6 +60,7 @@ const Page: NextPageWithLayout = () => {
                         }
 
                         toast.success("Successfully canceled this order");
+                        queryClient.invalidateQueries({ queryKey: ["orders"] });
                       }}
                     >
                       Cancel
@@ -104,7 +82,7 @@ const Page: NextPageWithLayout = () => {
                       ID:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      {order.orderId}
+                      {order.code}
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -249,6 +227,7 @@ const Page: NextPageWithLayout = () => {
                         }
 
                         toast.success("Successfully mask as paid");
+                        queryClient.invalidateQueries({ queryKey: ["orders"] });
                       }}
                     >
                       Paid

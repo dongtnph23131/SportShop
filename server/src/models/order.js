@@ -18,6 +18,10 @@ const orderSchema = mongoose.Schema(
       require: true,
       ref: "Customer",
     },
+    code: {
+      type: String,
+      require: true,
+    },
     orderId: {
       type: String,
       require: true,

@@ -31,7 +31,6 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
-import { toast } from "sonner";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import { Category } from "@/types/base";
 import { useCategoryDeleteMutation } from "@/services/categories/category-delete-mutation";
@@ -152,7 +151,7 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Collections</CardTitle>
+            <CardTitle>Category</CardTitle>
             <CardDescription>
               Here&apos;s a list of your products!
             </CardDescription>

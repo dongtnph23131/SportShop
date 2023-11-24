@@ -26,14 +26,13 @@ import {
   DropdownMenuContent,
   DropdownMenuItem,
   DropdownMenuSeparator,
-  DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useCustomersQuery } from "@/services/customers/customers-query";
 import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
-import { Customer, Product } from "@/types/base";
+import { Customer } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
@@ -48,29 +47,9 @@ const Page: NextPageWithLayout = () => {
   });
 
   const columns: ColumnDef<Customer>[] = [
-    // {
-    //   id: "select",
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={table.getIsAllPageRowsSelected()}
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //       className="translate-y-[2px]"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //       className="translate-y-[2px]"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
       id: "name",
+      accessorKey: "firstName",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),

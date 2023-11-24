@@ -75,6 +75,7 @@ export enum OrderDeliveryStatus {
 
 export interface Order {
   _id: string;
+  code: string;
   fullName: string;
   email: string;
   phone: number;
