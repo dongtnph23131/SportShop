@@ -18,7 +18,7 @@ export function TopProducts({ topProducts }: { topProducts?: Product[] }) {
         <div className="space-y-8">
           {topProducts?.map((product) => (
             <div key={product._id} className="flex items-center">
-              <Avatar className="h-9 w-9">
+              <Avatar className="h-10 w-10 rounded-sm border border-gray-200">
                 <AvatarImage src={product.images[0].url} alt="Avatar" />
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>

@@ -15,6 +15,7 @@ import { InventoryResponse } from "@/services/inventory/inventory-query";
 import axiosClient from "@/lib/axios-instance";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
+import { generateRandomString } from "@/lib/utils";
 
 export const EditProductVariantDialog = ({
   productVariant,
@@ -114,17 +115,8 @@ export const EditProductVariantDialog = ({
                 variant={"outline"}
                 type="button"
                 onClick={() => {
-                  //Generate SKU that includes numbers and letters
-                  let result = "";
-                  const characters = "ABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789";
-                  const charactersLength = characters.length;
-                  for (let i = 0; i < 6; i++) {
-                    result += characters.charAt(
-                      Math.floor(Math.random() * charactersLength)
-                    );
-                  }
                   (document.getElementById("sku") as HTMLInputElement).value =
-                    result;
+                    generateRandomString();
                 }}
               >
                 Generate

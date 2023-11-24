@@ -3,6 +3,7 @@ export interface Product {
   slug: string;
   name: string;
   description: string;
+  code: string;
   images: Image[];
   categoryId: { _id: string; name: string } | null;
   options: Option[];

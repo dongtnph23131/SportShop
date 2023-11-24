@@ -76,6 +76,13 @@ const Page: NextPageWithLayout = () => {
       cell: ({ row }) => <div>{row.original.name}</div>,
     },
     {
+      id: "code",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Code" />
+      ),
+      cell: ({ row }) => <div>{row.original.code}</div>,
+    },
+    {
       id: "collection",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category" />

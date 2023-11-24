@@ -34,7 +34,7 @@ import { ProductVariants } from "./product-variants-section";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useProductCreateMutation } from "@/services/products/product-create-mutation";
 import { toast } from "sonner";
-import { isArrayOfFile } from "@/lib/utils";
+import { generateRandomString, isArrayOfFile } from "@/lib/utils";
 import { OurFileRouter } from "@/lib/uploadthing";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import slugify from "@sindresorhus/slugify";
@@ -47,6 +47,7 @@ const formSchema = z.object({
   collectionId: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
+  productCode: z.string().min(1, { message: "Must be at least 1 character" }),
   images: z.unknown(),
   options: z.array(
     z.object({
@@ -106,6 +107,7 @@ export function AddProductForm() {
         slug: slugify(data.name),
         name: data.name,
         description: data.description,
+        productCode: data.productCode,
         categoryId: data.collectionId,
         options: data.options,
         variants: data.variants.map((item) => ({
@@ -168,6 +170,30 @@ export function AddProductForm() {
                 message={form.formState.errors.description?.message}
               />
             </FormItem>
+
+            <div className="flex gap-2 items-end">
+              <FormItem className="flex-1">
+                <FormLabel>Product Code</FormLabel>
+                <FormControl>
+                  <Input
+                    aria-invalid={!!form.formState.errors.productCode}
+                    placeholder="SP-DSU43ID"
+                    {...form.register("productCode")}
+                  />
+                </FormControl>
+                <UncontrolledFormMessage
+                  message={form.formState.errors.productCode?.message}
+                />
+              </FormItem>
+              <Button
+                type="button"
+                onClick={() => {
+                  form.setValue("productCode", `SP-${generateRandomString()}`);
+                }}
+              >
+                Generate
+              </Button>
+            </div>
 
             <FormField
               control={form.control}

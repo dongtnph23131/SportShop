@@ -6,7 +6,7 @@ import { generateReactHelpers } from "@uploadthing/react/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { isArrayOfFile } from "@/lib/utils";
+import { generateRandomString, isArrayOfFile } from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -47,6 +47,7 @@ const formSchema = z.object({
     message: "Must be at least 1 character",
   }),
   description: z.string(),
+  productCode: z.string().min(1, { message: "Must be at least 1 character" }),
   collectionId: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
@@ -114,6 +115,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         name: option.name,
         values: option.values,
       })),
+      productCode: product.code,
       variants: product.productVariantIds.map((variant) => ({
         id: variant._id,
         sku: variant.sku,
@@ -144,6 +146,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
       slug: slugify(data.name),
       name: data.name,
       description: data.description,
+      productCode: data.productCode,
       categoryId: data.collectionId,
       images:
         images?.map((image) => ({
@@ -199,6 +202,32 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
                 message={form.formState.errors.description?.message}
               />
             </FormItem>
+
+            <div className="flex items-end gap-2">
+              <FormItem className="flex-1">
+                <FormLabel>Product Code</FormLabel>
+                <FormControl>
+                  <FormControl>
+                    <Input
+                      aria-invalid={!!form.formState.errors.productCode}
+                      placeholder="SP-DSU43ID"
+                      {...form.register("productCode")}
+                    />
+                  </FormControl>
+                </FormControl>
+                <UncontrolledFormMessage
+                  message={form.formState.errors.description?.message}
+                />
+              </FormItem>
+              <Button
+                type="button"
+                onClick={() => {
+                  form.setValue("productCode", `SP-${generateRandomString()}`);
+                }}
+              >
+                Generate
+              </Button>
+            </div>
 
             <FormField
               control={form.control}
