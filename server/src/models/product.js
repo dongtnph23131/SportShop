@@ -4,6 +4,10 @@ import mongoosePaginate from "mongoose-paginate-v2";
 const productSchema = mongoose.Schema(
   {
     slug: { type: String },
+    code: {
+      type: String,
+      required: true,
+    },
     name: {
       type: String,
       required: true,

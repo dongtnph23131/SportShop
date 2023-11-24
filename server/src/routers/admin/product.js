@@ -73,8 +73,16 @@ router.get("/:slug", async (req, res) => {
 
 router.post("/", async (req, res) => {
   try {
-    const { slug, name, description, categoryId, options, variants, images } =
-      productCreateBodySchema.parse(req.body);
+    const {
+      slug,
+      name,
+      description,
+      categoryId,
+      productCode,
+      options,
+      variants,
+      images,
+    } = productCreateBodySchema.parse(req.body);
     const numberPrice = variants.map((variant) => {
       return variant.price;
     });
@@ -85,6 +93,7 @@ router.post("/", async (req, res) => {
       name,
       description,
       categoryId,
+      code: productCode,
       options,
       images,
     });
@@ -163,8 +172,16 @@ router.delete("/:id", async (req, res) => {
 
 router.put("/:id", async (req, res) => {
   try {
-    const { slug, name, description, categoryId, options, images, variants } =
-      productUpdateBodySchema.parse(req.body);
+    const {
+      slug,
+      name,
+      description,
+      productCode,
+      categoryId,
+      options,
+      images,
+      variants,
+    } = productUpdateBodySchema.parse(req.body);
 
     const data = await Product.findOneAndUpdate(
       { _id: req.params.id },
@@ -172,6 +189,7 @@ router.put("/:id", async (req, res) => {
         slug,
         name,
         description,
+        code: productCode,
         categoryId,
         options,
         images,
