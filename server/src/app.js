@@ -6,13 +6,14 @@ import authRouter from "./routers/auth";
 import productRouter from "./routers/product";
 import categoryRouter from "./routers/category";
 import acounRouter from "./routers/acount";
-import addreesRouter from "./routers/address"
+import addreesRouter from "./routers/address";
 import uploadRouter from "./routers/upload";
 import cartRouter from "./routers/cart";
 import { adminRoutes } from "./routers/admin";
 import orderRouter from "./routers/order";
-import profileRouter from "./routers/profile"
-import commentRouter from "./routers/comment"
+import profileRouter from "./routers/profile";
+import commentRouter from "./routers/comment";
+import paymentRouter from "./routers/payment";
 dotenv.config();
 const app = express();
 
@@ -29,9 +30,10 @@ app.use("/api", acounRouter);
 app.use("/api", uploadRouter);
 app.use("/api", cartRouter);
 app.use("/api", orderRouter);
-app.use("/api", profileRouter)
-app.use("/api",addreesRouter)
-app.use('/api',commentRouter)
+app.use("/api", profileRouter);
+app.use("/api", addreesRouter);
+app.use("/api", commentRouter);
+app.use("/api", paymentRouter);
 mongoose.connect(process.env.URL_DATABASE);
 
 export const viteNodeApp = app;

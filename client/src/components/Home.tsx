@@ -180,7 +180,9 @@ const Home = () => {
                                 </div>
                                 <div className="product-bottom-price">
                                   <span>
-                                    ${product.minPrice}-${product.maxPrice}
+                                    {product.minPrice === product.maxPrice
+                                      ? `${product.maxPrice}$`
+                                      : `${product.minPrice}$-${product.maxPrice}$`}
                                   </span>
                                 </div>
                               </div>
@@ -196,39 +198,6 @@ const Home = () => {
           </div>
         </div>
       </div>
-      {/* <div className="home-email-area hp1-email-area">
-        <div className="container">
-          <div className="row">
-            <div className="col-xs-12">
-              <div className="email-text-wrapper">
-                <div className="section-title title-head">
-                  <h3>Sign up for send newsletter</h3>
-                </div>
-                <div className="email-small-text">
-                  <p>
-                    Join over 1,000 people who get free and fresh content
-                    delivered automatically each time we publish.
-                  </p>
-                </div>
-                <form action="#">
-                  <div className="email-input">
-                    <input
-                      type="email"
-                      name="email"
-                      placeholder="Enter your email"
-                    />
-                  </div>
-                  <div className="email-btn">
-                    <button type="submit" value="">
-                      <span>Sign up</span>
-                    </button>
-                  </div>
-                </form>
-              </div>
-            </div>
-          </div>
-        </div>
-      </div> */}
     </div>
   );
 };

@@ -10,6 +10,7 @@ import { useNavigate } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { useGetAddressByAcountQuery } from "../api/address";
+import { usePayMomoMutation } from "../api/payment";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại k được để trống"),
@@ -30,13 +31,14 @@ const Cart = () => {
   });
   const [createOrder, { isLoading }] = useCreateOrderMutation();
   const token = Cookies.get("token");
+  const [payMomo] = usePayMomoMutation();
   const { data: addresses } = useGetAddressByAcountQuery(token);
   const { data: carts } = useGetCartOfUserQuery(token);
   const total = token
     ? carts?.reduce(
         (accumulator: any, currentValue: any) =>
           accumulator +
-          currentValue.productVariantIds.price * currentValue.quantity,
+          currentValue.productVariantIds?.price * currentValue.quantity,
         0
       )
     : "";
@@ -60,6 +62,13 @@ const Cart = () => {
       items,
       email: Cookies.get("email"),
     };
+    if (data.typePayment === "Online") {
+      const response: any = await payMomo({...order,token});
+      if (response) {
+        window.location.href = response?.data?.payUrl;
+      }
+      return;
+    }
     await createOrder({ token, order }).then((data: any) => {
       message.success(data.data.message);
       navigate("/OrderClient");
