@@ -47,33 +47,12 @@ const Page: NextPageWithLayout = () => {
   });
 
   const columns: ColumnDef<Product>[] = [
-    // {
-    //   id: "select",
-    //   header: ({ table }) => (
-    //     <Checkbox
-    //       checked={table.getIsAllPageRowsSelected()}
-    //       onCheckedChange={(value) => table.toggleAllPageRowsSelected(!!value)}
-    //       aria-label="Select all"
-    //       className="translate-y-[2px]"
-    //     />
-    //   ),
-    //   cell: ({ row }) => (
-    //     <Checkbox
-    //       checked={row.getIsSelected()}
-    //       onCheckedChange={(value) => row.toggleSelected(!!value)}
-    //       aria-label="Select row"
-    //       className="translate-y-[2px]"
-    //     />
-    //   ),
-    //   enableSorting: false,
-    //   enableHiding: false,
-    // },
     {
       id: "name",
+      accessorKey: "name",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
-      cell: ({ row }) => <div>{row.original.name}</div>,
     },
     {
       id: "code",
@@ -83,7 +62,8 @@ const Page: NextPageWithLayout = () => {
       cell: ({ row }) => <div>{row.original.code}</div>,
     },
     {
-      id: "collection",
+      id: "category",
+      accessorKey: "category",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Category" />
       ),
@@ -97,6 +77,10 @@ const Page: NextPageWithLayout = () => {
             )}
           </div>
         );
+      },
+      filterFn: (row, id, value) => {
+        console.log({ row, id, value });
+        return value.includes(row.original.categoryId?._id);
       },
     },
     {

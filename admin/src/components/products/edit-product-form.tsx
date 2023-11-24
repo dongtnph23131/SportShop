@@ -92,7 +92,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
     if (product.images && product.images.length > 0) {
       setFiles(
         product.images.map((image) => {
-          const file = new File([], image.url, {
+          const file = new File([], image.name, {
             type: "image",
           });
           const fileWithPreview = Object.assign(file, {
@@ -148,12 +148,13 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
       description: data.description,
       productCode: data.productCode,
       categoryId: data.collectionId,
-      images:
-        images?.map((image) => ({
-          name: image.name,
-          url: image.url,
-          publicId: image.id,
-        })) ?? [],
+      images: images
+        ? images?.map((image) => ({
+            name: image.name,
+            url: image.url,
+            publicId: image.id,
+          }))
+        : product.images,
       options: data.options,
       variants: data.variants,
     });

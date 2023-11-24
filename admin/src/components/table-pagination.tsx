@@ -72,7 +72,7 @@ export function TablePagination<TData>({
             onClick={() => {
               queryParams({
                 set: {
-                  _page: String(Number(searchParams.get("_page")) + 1),
+                  _page: String(Number(searchParams.get("_page") ?? 1) + 1),
                 },
               });
             }}

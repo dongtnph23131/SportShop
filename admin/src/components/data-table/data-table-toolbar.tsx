@@ -5,6 +5,8 @@ import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { DataTableViewOptions } from "./data-table-view-options";
+import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { useCategoriesQuery } from "@/services/categories/categories-query";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -13,6 +15,7 @@ interface DataTableToolbarProps<TData> {
 export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
+  const { data: categories } = useCategoriesQuery();
   const isFiltered = table.getState().columnFilters.length > 0;
 
   return (
@@ -26,6 +29,18 @@ export function DataTableToolbar<TData>({
           }
           className="h-8 w-[150px] lg:w-[250px]"
         />
+        {table.getColumn("category") && (
+          <DataTableFacetedFilter
+            column={table.getColumn("category")}
+            title="Category"
+            options={
+              categories?.map((category) => ({
+                label: category.name,
+                value: category._id,
+              })) ?? []
+            }
+          />
+        )}
         {isFiltered && (
           <Button
             variant="ghost"
