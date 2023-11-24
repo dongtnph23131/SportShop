@@ -63,13 +63,16 @@ router.post("/", async (req, res) => {
 
 router.put("/:slug", async (req, res) => {
   try {
-    const { name, description } = categoryCreateEditSchema.parse(req.body);
+    const { name, description, image } = categoryCreateEditSchema.parse(
+      req.body
+    );
     const data = await Category.findOneAndUpdate(
       { slug: req.params.slug },
       {
         name,
         slug: slugify(name),
         description,
+        image,
       },
       {
         new: true,

@@ -19,7 +19,13 @@ export function TopProducts({ topProducts }: { topProducts?: Product[] }) {
           {topProducts?.map((product) => (
             <div key={product._id} className="flex items-center">
               <Avatar className="h-10 w-10 rounded-sm border border-gray-200">
-                <AvatarImage src={product.images[0].url} alt="Avatar" />
+                <AvatarImage
+                  src={
+                    product.images?.[0]?.url ??
+                    "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+                  }
+                  alt="Avatar"
+                />
                 <AvatarFallback>OM</AvatarFallback>
               </Avatar>
               <div className="ml-4 space-y-1">

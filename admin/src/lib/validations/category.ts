@@ -6,4 +6,5 @@ export const categoryCreateEditSchema = z.object({
   description: z
     .string()
     .min(1, { message: "Category description is required!" }),
+  image: z.string().min(1, { message: "Category image is required!" }),
 });

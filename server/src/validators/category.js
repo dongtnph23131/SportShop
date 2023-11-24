@@ -15,4 +15,5 @@ export const categoryValidators = joi.object({
 export const categoryCreateEditSchema = z.object({
   name: z.string().min(1, { message: "Category name is required!" }),
   description: z.string(),
+  image: z.string(),
 });

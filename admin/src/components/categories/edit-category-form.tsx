@@ -21,12 +21,19 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useCategoryUpdateMutation } from "@/services/categories/category-update-mutation";
 import { Category } from "@/types/base";
 import { Textarea } from "../ui/textarea";
+import { FileDialog, FileWithPreview } from "../products/file-dialog";
+import { generateReactHelpers } from "@uploadthing/react/hooks";
+import { OurFileRouter } from "@/lib/uploadthing";
+import { isArrayOfFile } from "@/lib/utils";
+import { Zoom } from "../products/zoom-image";
+import Image from "next/image";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
   description: z.string(),
+  images: z.unknown(),
 });
 
 type Inputs = z.infer<typeof formSchema>;
@@ -35,10 +42,31 @@ interface EditCollectionFormProps {
   collection: Category;
 }
 
+const { useUploadThing } = generateReactHelpers<OurFileRouter>();
+
 export default function EditCategoryForm({
   collection,
 }: EditCollectionFormProps) {
   const router = useRouter();
+  const [files, setFiles] = React.useState<FileWithPreview[] | null>(null);
+  const [upload, setUpload] = React.useState(false);
+
+  const { isUploading, startUpload } = useUploadThing("imageUploader");
+
+  React.useEffect(() => {
+    if (collection.image) {
+      setFiles([
+        Object.assign(
+          new File([], collection.image, {
+            type: "image",
+          }),
+          {
+            preview: collection.image,
+          }
+        ),
+      ]);
+    }
+  }, [collection.image]);
 
   const editCollectionMutation = useCategoryUpdateMutation({
     onSuccess: () => {
@@ -55,10 +83,24 @@ export default function EditCategoryForm({
   });
 
   async function onSubmit(data: Inputs) {
+    setUpload(true);
+    const images = isArrayOfFile(data.images)
+      ? await startUpload(data.images).then((res) => {
+          const formattedImages = res?.map((image) => ({
+            id: image.key,
+            name: image.key.split("_")[1] ?? image.key,
+            url: image.url,
+          }));
+          return formattedImages ?? null;
+        })
+      : null;
+    setUpload(false);
+
     editCollectionMutation.mutate({
       name: data.name,
       slug: router.query.slug as string,
       description: data.description,
+      image: images?.[0].url ?? collection.image,
     });
   }
 
@@ -92,6 +134,38 @@ export default function EditCategoryForm({
           </FormControl>
           <UncontrolledFormMessage
             message={form.formState.errors.name?.message}
+          />
+        </FormItem>
+
+        <FormItem className="flex w-full flex-col gap-1.5">
+          <FormLabel>Image</FormLabel>
+          {files?.length ? (
+            <div className="flex items-center gap-2">
+              {files.map((file, i) => (
+                <Zoom key={i}>
+                  <Image
+                    src={file.preview}
+                    alt={file.name}
+                    className="h-20 w-20 shrink-0 rounded-md object-cover object-center"
+                    width={80}
+                    height={80}
+                  />
+                </Zoom>
+              ))}
+            </div>
+          ) : null}
+          <FormControl>
+            <FileDialog
+              setValue={form.setValue}
+              name="images"
+              maxSize={1024 * 1024 * 4}
+              files={files}
+              setFiles={setFiles}
+              isUploading={isUploading}
+            />
+          </FormControl>
+          <UncontrolledFormMessage
+            message={form.formState.errors.images?.message}
           />
         </FormItem>
 
