@@ -15,9 +15,9 @@ const OrderDetail = () => {
           <div className="thank-box">
             <div className="detail-order">
               <h1 className="detail-order-heading">
-                Thông tin đơn hàng #{data?.order?._id}
+                Thông tin đơn hàng {data?.order?.code}
               </h1>
-              <div className="detail-order-status"> {data?.order?.status}</div>
+              <div className="detail-order-status">Trạng thái đơn hàng: {data?.order?.status}</div>
             </div>
             <div className="detail-order-info">
               <ul className="detail-order-info__list">

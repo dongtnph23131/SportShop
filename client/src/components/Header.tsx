@@ -575,7 +575,7 @@ const Header = () => {
                               {profile?.customer?.lastName}{" "}
                               <span
                                 className={`icon__down__detailProfile ${
-                                  isDropdownActive ? "active" : ""
+                                  !isDropdownActive ? "active" : ""
                                 }`}
                               >
                                 <i className="fa-solid fa-caret-down"></i>

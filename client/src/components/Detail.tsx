@@ -3,7 +3,15 @@ import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
-import { Pagination, message, Form, Rate, Button, Input } from "antd";
+import {
+  Pagination,
+  message,
+  Form,
+  Rate,
+  Button,
+  Input,
+  InputNumber,
+} from "antd";
 import {
   useCreateCommentMutation,
   useGetAllCommentByProductQuery,
@@ -44,6 +52,8 @@ const Detail = () => {
       Object.values(selectedAttributes).includes(option)
     )
   );
+
+  const [quantity, setQuantity] = useState(1);
   const handleAddToCart = async () => {
     if (!selectedAttributes) {
       alert("Hãy chọn thuộc tính sản phẩm");
@@ -53,6 +63,7 @@ const Detail = () => {
         const cart = {
           token: Cookies.get("token"),
           productVariantIds: selectedVariant._id,
+          quantity,
         };
         try {
           await addItemToCart(cart);
@@ -169,9 +180,30 @@ const Detail = () => {
               </div>
             );
           })}
-          <button className="normal" onClick={handleAddToCart}>
-            Add to Cart{" "}
-          </button>
+          <div className="acticon__addtocart">
+            <div className="box__cremedetail">
+              <button
+                className="decrement__cart"
+                onClick={() => setQuantity(quantity - 1)}
+              >
+                -
+              </button>
+              <InputNumber
+                className="input__cart"
+                value={quantity}
+                onChange={(value) => setQuantity(value as number)}
+              />
+              <button
+                className="increment__cart"
+                onClick={() => setQuantity(quantity + 1)}
+              >
+                +
+              </button>
+            </div>
+            <button className="normal" onClick={handleAddToCart}>
+              Add to Cart{" "}
+            </button>
+          </div>
           <h4>Descriptions</h4>
           <span>{product ? product.description : ""}</span>
         </div>

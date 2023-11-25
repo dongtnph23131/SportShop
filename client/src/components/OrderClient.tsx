@@ -26,8 +26,8 @@ const OrderClient = () => {
                           <a href="" className="order">
                             <div className="order-header">
                               <div>
-                                <p className="order-title"># {item._id}</p>{" "}
-                                <p className="order-date">{item.createdAt}</p>
+                                <p className="order-title"> {item.code}</p>{" "}
+                                <p className="order-date">{new Date(item.createdAt).toLocaleString()}</p>
                               </div>{" "}
                               <div className="order-status-badge order-status-badge-canceled">
                                 {" "}

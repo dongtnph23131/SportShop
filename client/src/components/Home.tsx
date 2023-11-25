@@ -1,8 +1,12 @@
 import React, { useState, useEffect } from "react";
 import { useGetAllProductsQuery } from "../api/product";
 import { Link, useNavigate } from "react-router-dom";
-import { getCategoryById, getCategories } from "../api/category";
-
+import { getCategories } from "../api/category";
+import $ from "jquery";
+import "slick-carousel/slick/slick";
+import "slick-carousel/slick/slick.css";
+import "slick-carousel/slick/slick-theme.css";
+import Slider from "react-slick";
 const Home = () => {
   const [sort, setSort] = useState<String>();
   const [order, setOrder] = useState<String>();
@@ -46,7 +50,17 @@ const Home = () => {
     image: string;
     description?: string;
   }
-
+  const sliderSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 3,
+    slidesToScroll: 1,
+    vertical: false,
+    afterChange: () => {
+      console.log("Slider initialized!");
+    },
+  };
   return (
     <div>
       <div className="new-arrival-product-area hp1-napa pt-60">
@@ -63,50 +77,52 @@ const Home = () => {
               </div>
               <div className="product-conttab-wrapper">
                 <div className="active-owl-product def-owl row">
-                  {products?.map((product: any, index: any) => (
-                    <div className="col-md-3" key={index + 1}>
-                      <div className="single-product">
-                        <div className="product-wrapper posr">
-                          <div className="priduct-img-wrapper posr">
-                            <div className="product-img">
-                              <a
-                                className="btn-def btn-product-qview q-view"
-                                data-bs-toggle="modal"
-                                data-bs-target=".modal"
-                                href="#"
-                              >
-                                <i className=" product-search fa fa-search"></i>{" "}
-                                quick View
-                              </a>
-                              <a href={`/products/${product._id}`}>
-                                <img
-                                  src={`${product?.images[0].url}`}
-                                  alt={product.name}
-                                />
-                              </a>
+                  <Slider {...sliderSettings}>
+                    {products?.map((product: any, index: any) => (
+                      <div className="col-md-3" key={index + 1}>
+                        <div className="single-product">
+                          <div className="product-wrapper posr">
+                            <div className="priduct-img-wrapper posr">
+                              <div className="product-img">
+                                <a
+                                  className="btn-def btn-product-qview q-view"
+                                  data-bs-toggle="modal"
+                                  data-bs-target=".modal"
+                                  href="#"
+                                >
+                                  <i className=" product-search fa fa-search"></i>{" "}
+                                  quick View
+                                </a>
+                                <a href={`/products/${product._id}`}>
+                                  <img
+                                    src={`${product?.images[0].url}`}
+                                    alt={product.name}
+                                  />
+                                </a>
+                              </div>
                             </div>
-                          </div>
-                          <div className="product-bottom-text posr">
-                            <div className="product-bottom-title deft-underline2">
-                              <a
-                                href={`/products/${product._id}`}
-                                title={product.name}
-                              >
-                                <h4>{product.name}</h4>
-                              </a>
-                            </div>
-                            <div className="product-bottom-price">
-                              <span>
-                                {product.minPrice === product.maxPrice
-                                  ? `${product.maxPrice}$`
-                                  : `${product.minPrice}$-${product.maxPrice}$`}
-                              </span>
+                            <div className="product-bottom-text posr">
+                              <div className="product-bottom-title deft-underline2">
+                                <a
+                                  href={`/products/${product._id}`}
+                                  title={product.name}
+                                >
+                                  <h4>{product.name}</h4>
+                                </a>
+                              </div>
+                              <div className="product-bottom-price">
+                                <span>
+                                  {product.minPrice === product.maxPrice
+                                    ? `${product.maxPrice}$`
+                                    : `${product.minPrice}$-${product.maxPrice}$`}
+                                </span>
+                              </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    </div>
-                  ))}
+                    ))}
+                  </Slider>
                 </div>
               </div>
             </div>
@@ -162,12 +178,12 @@ const Home = () => {
                     id="newArrival"
                     aria-labelledby="tab1"
                   >
-                    <div className="active-owl-product def-owl row">
+                    <div className="active-owl-product categorySlider def-owl ">
                       {isLoadingCategories ? (
                         <p>Loading categories...</p>
                       ) : (
                         categories.map((category) => (
-                          <div className="col-md-3" key={category._id}>
+                          <div className="categorySlideItem" key={category._id}>
                             <div className="single-product">
                               <div className="product-wrapper posr">
                                 <div className="priduct-img-wrapper posr">

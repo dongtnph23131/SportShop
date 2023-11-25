@@ -25,7 +25,7 @@ const CartItem = ({ item }: any) => {
   return (
     <tr>
       <td>
-        <button
+        <button className="remove__item__product"
           onClick={async () => {
             if (confirm("Bạn có muốn xóa sản phẩm này k ?")) {
               await removeItem({ cartItemId: item._id, token });

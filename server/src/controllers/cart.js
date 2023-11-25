@@ -3,7 +3,7 @@ import CartItem from "../models/cartItem";
 import ProductVariant from "../models/productVariant";
 export const addCart = async (req, res) => {
   try {
-    const { productVariantIds } = req.body;
+    const { productVariantIds , quantity} = req.body;
     const user = req.user;
     const cart = await Cart.findOne({ customerId: user._id }).populate(
       "items",
@@ -15,6 +15,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
+        quantity
       });
       const cartOfUser = await Cart.create({ customerId: user._id });
       await Cart.findByIdAndUpdate(cartOfUser._id, {
@@ -31,6 +32,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
+        quantity
       });
       await Cart.findByIdAndUpdate(cart._id, {
         $addToSet: {
@@ -51,8 +53,9 @@ export const addCart = async (req, res) => {
       });
       await CartItem.findByIdAndUpdate(
         cartItem._id,
+
         {
-          quantity: cartItem.quantity + 1,
+          quantity: cartItem.quantity + quantity,
         },
         { new: true }
       );
@@ -64,6 +67,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
+        quantity
       });
       await Cart.findByIdAndUpdate(cart._id, {
         $addToSet: {
