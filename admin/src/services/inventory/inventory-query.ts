@@ -33,8 +33,6 @@ export const useInventoryQuery = <TData = InventoryData>({
 }: Omit<UseQueryOptions<InventoryData, any, TData>, "queryKey"> = {}) => {
   const { getQueryString, searchParams } = useRouterStuff();
 
-  console.log("getQueryString", getQueryString());
-
   return useQuery<InventoryData, any, TData>({
     queryKey: [
       "inventory",

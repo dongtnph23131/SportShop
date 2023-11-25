@@ -117,6 +117,7 @@ export const MomoSuccess = async (req, res) => {
     customerId: user._id,
     orderTotalPrice: body.totalPrice - body.shippingPrice,
     paymentStatus: data.message == "Successful." ? "Paid" : "Not paid",
+    code: `DH-${generateRandomString()}`,
   });
   await Promise.all(
     data.items.map(async (item) => {
