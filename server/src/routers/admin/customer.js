@@ -5,7 +5,7 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const customers = await Customer.find();
+    const customers = await Customer.find().populate("orderIds");
 
     return res.status(200).json(customers);
   } catch (error) {

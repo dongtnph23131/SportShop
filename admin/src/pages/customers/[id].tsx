@@ -107,7 +107,7 @@ const Page: NextPageWithLayout = () => {
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Order Id</TableHead>
+                    <TableHead>Order</TableHead>
                     <TableHead>Products</TableHead>
                     <TableHead>Date</TableHead>
                     <TableHead>Status</TableHead>
@@ -120,7 +120,7 @@ const Page: NextPageWithLayout = () => {
                       key={item._id}
                       onClick={() => router.push(`/orders/${item._id}`)}
                     >
-                      <TableCell>{item.orderId}</TableCell>
+                      <TableCell>{item.code}</TableCell>
                       <TableCell>{item.items.length}</TableCell>
                       <TableCell>
                         {format(new Date(item.createdAt), "dd MMM yyyy hh:mm")}
