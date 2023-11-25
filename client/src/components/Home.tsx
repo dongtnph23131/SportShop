@@ -1,6 +1,7 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useGetAllProductsQuery } from "../api/product";
-import { useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
+import { getCategoryById, getCategories } from "../api/category";
 
 const Home = () => {
   const [sort, setSort] = useState<String>();
@@ -21,6 +22,31 @@ const Home = () => {
     order,
     dataCategories,
   });
+  const [categories, setCategories] = useState<Category[]>([]);
+  const [isLoadingCategories, setIsLoadingCategories] = useState(true);
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await getCategories();
+
+        setCategories(response.data);
+        setIsLoadingCategories(false);
+      } catch (error) {
+        console.error("Error fetching categories:", error);
+        setIsLoadingCategories(false);
+      }
+    };
+
+    fetchData();
+  }, []);
+
+  interface Category {
+    _id: string;
+    name: string;
+    image: string;
+    description?: string;
+  }
+
   return (
     <div>
       <div className="new-arrival-product-area hp1-napa pt-60">
@@ -30,7 +56,7 @@ const Home = () => {
               <div className="col-xs-12">
                 <div className="home-product-tab-category text-center">
                   <div className="section-title title-head">
-                    <h3>Our Products</h3>
+                    <h3>FEATURED PRODUCTS</h3>
                     <img src="images/icons/icon-title.png" alt="" />
                   </div>
                 </div>
@@ -123,7 +149,7 @@ const Home = () => {
               <div className="col-xs-12">
                 <div className="home-product-tab-category text-center">
                   <div className="section-title title-head">
-                    <h3>Featured Products</h3>
+                    <h3>Featured categories</h3>
                     <img src="images/icons/icon-title.png" alt="" />
                   </div>
                 </div>
@@ -137,59 +163,39 @@ const Home = () => {
                     aria-labelledby="tab1"
                   >
                     <div className="active-owl-product def-owl row">
-                      {products?.map((product: any, index: any) => (
-                        <div className="col-md-3" key={index + 1}>
-                          <div className="single-product">
-                            <div className="product-wrapper posr">
-                              <div className="priduct-img-wrapper posr">
-                                <div className="product-img">
-                                  <a href={`/products/${product._id}`}>
-                                    <img
-                                      src={`${product?.images[0].url}`}
-                                      alt={product.name}
-                                    />
-                                  </a>
-                                </div>
-                                <div className="product-inner-text">
-                                  <div className="product-btn">
-                                    <div className="product-qview-search">
-                                      <a
-                                        className="btn-def btn-product-qview q-view"
-                                        data-bs-toggle="modal"
-                                        data-bs-target=".modal"
-                                        href="#"
-                                      >
-                                        <i className=" product-search fa fa-search"></i>{" "}
-                                        quick View
-                                      </a>
-                                    </div>
+                      {isLoadingCategories ? (
+                        <p>Loading categories...</p>
+                      ) : (
+                        categories.map((category) => (
+                          <div className="col-md-3" key={category._id}>
+                            <div className="single-product">
+                              <div className="product-wrapper posr">
+                                <div className="priduct-img-wrapper posr">
+                                  <div className="product-img">
+                                    <Link to={`/categories/${category._id}`}>
+                                      <img
+                                        src={category.image}
+                                        alt={category.name}
+                                      />
+                                    </Link>
                                   </div>
                                 </div>
-                              </div>
-                              <div className="product-review">
-                                <ul className="light-color"></ul>
-                              </div>
-                              <div className="product-bottom-text posr">
-                                <div className="product-bottom-title deft-underline2">
-                                  <a
-                                    href={`/products/${product._id}`}
-                                    title={product.name}
-                                  >
-                                    <h4>{product.name}</h4>
-                                  </a>
-                                </div>
-                                <div className="product-bottom-price">
-                                  <span>
-                                    {product.minPrice === product.maxPrice
-                                      ? `${product.maxPrice}$`
-                                      : `${product.minPrice}$-${product.maxPrice}$`}
-                                  </span>
+                                <div className="product-bottom-text posr">
+                                  <div className="product-bottom-title deft-underline2">
+                                    <Link to={`/categories/${category._id}`}>
+                                      <h4>{category.name}</h4>
+                                    </Link>
+                                  </div>
+
+                                  {category.description && (
+                                    <p>{category.description}</p>
+                                  )}
                                 </div>
                               </div>
                             </div>
                           </div>
-                        </div>
-                      ))}
+                        ))
+                      )}
                     </div>
                   </div>
                 </div>
