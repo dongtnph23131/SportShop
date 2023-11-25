@@ -29,6 +29,7 @@ import {
   TableRow,
 } from "@/components/ui/table";
 import useRouterStuff from "@/lib/hooks/use-router-stuff";
+import { formatPrice } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useInventoryQuery } from "@/services/inventory/inventory-query";
 import Link from "next/link";
@@ -96,7 +97,7 @@ const Page: NextPageWithLayout = () => {
                     <Badge variant={"outline"}>{item.category.name}</Badge>
                   </TableCell>
                   <TableCell>{item.sku}</TableCell>
-                  <TableCell>{item.price}</TableCell>
+                  <TableCell>{formatPrice(item.price)}</TableCell>
                   <TableCell>{item.inventory}</TableCell>
                   <TableCell>
                     <EditProductVariantDialog productVariant={item} />

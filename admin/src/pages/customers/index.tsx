@@ -30,8 +30,12 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { queryClient } from "@/lib/react-query";
+import { formatPrice } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useCustomersQuery } from "@/services/customers/customers-query";
+import {
+  CustomersResponse,
+  useCustomersQuery,
+} from "@/services/customers/customers-query";
 import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
 import { Customer } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
@@ -47,7 +51,7 @@ const Page: NextPageWithLayout = () => {
     },
   });
 
-  const columns: ColumnDef<Customer>[] = [
+  const columns: ColumnDef<CustomersResponse>[] = [
     {
       id: "name",
       accessorKey: "firstName",
@@ -92,6 +96,19 @@ const Page: NextPageWithLayout = () => {
         <DataTableColumnHeader column={column} title="Orders" />
       ),
       cell: ({ row }) => <span>{row.original.orderIds.length}</span>,
+    },
+    {
+      id: "amountSpent",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Amount Spent" />
+      ),
+      cell: ({ row }) => {
+        const amountSpent = row.original.orderIds.reduce((acc, curr) => {
+          return acc + curr.orderTotalPrice;
+        }, 0);
+
+        return <span>{formatPrice(amountSpent)}</span>;
+      },
     },
     {
       id: "actions",

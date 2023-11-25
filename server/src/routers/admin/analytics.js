@@ -1,5 +1,5 @@
 import { Router } from "express";
-import Order from "../../models/Order";
+import Order from "../../models/order";
 import Customer from "../../models/customer";
 import Product from "../../models/product";
 

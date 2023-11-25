@@ -20,6 +20,7 @@ import { toast } from "sonner";
 
 import axiosClient from "@/lib/axios-instance";
 import { queryClient } from "@/lib/react-query";
+import { formatPrice } from "@/lib/utils";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -119,7 +120,7 @@ const Page: NextPageWithLayout = () => {
                       Total Amount:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      {order.totalPrice}
+                      {formatPrice(order.totalPrice)}
                     </dd>
                   </div>
                 </dl>
@@ -190,9 +191,13 @@ const Page: NextPageWithLayout = () => {
                       <TableCell>{item.productId.name}</TableCell>
                       <TableCell>{item.productVariantId.name}</TableCell>
                       <TableCell>{item.quantity}</TableCell>
-                      <TableCell>{item.productVariantId.price}</TableCell>
                       <TableCell>
-                        {item.productVariantId.price * item.quantity}
+                        {formatPrice(item.productVariantId.price)}
+                      </TableCell>
+                      <TableCell>
+                        {formatPrice(
+                          item.productVariantId.price * item.quantity
+                        )}
                       </TableCell>
                     </TableRow>
                   ))}
@@ -245,25 +250,25 @@ const Page: NextPageWithLayout = () => {
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <dt className="leading-6 text-gray-900">Subtotal:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {order.totalPrice}
+                    {formatPrice(order.totalPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <dt className="leading-6 text-gray-900">Discount:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {order.couponPrice}
+                    {formatPrice(order.couponPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
                   <dt className="leading-6 text-gray-900">Shipping:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {order.shippingPrice}
+                    {formatPrice(order.shippingPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-lg">
                   <dt className="font-semibold leading-6">Total:</dt>
                   <dd className="font-semibold leading-6 sm:col-span-2 sm:mt-0">
-                    {order.totalPrice - order.couponPrice - order.shippingPrice}
+                    {formatPrice(order.orderTotalPrice)}
                   </dd>
                 </div>
               </CardContent>

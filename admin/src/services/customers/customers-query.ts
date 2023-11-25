@@ -1,9 +1,12 @@
 import axiosClient from "@/lib/axios-instance";
-import { API_URL } from "@/lib/contants";
-import { Customer } from "@/types/base";
+import { Customer, Order } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
-export async function getCustomers(): Promise<Customer[]> {
+export type CustomersResponse = Omit<Customer, "orderIds"> & {
+  orderIds: Order[];
+};
+
+export async function getCustomers(): Promise<CustomersResponse[]> {
   const response = await axiosClient.get(`/customers`);
 
   return response.data;

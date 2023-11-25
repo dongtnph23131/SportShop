@@ -5,7 +5,39 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const orders = await Order.find();
+    const {
+      _limit = 10,
+      _sort = "createAt",
+      _page = 1,
+      _order = "asc",
+      q,
+      status,
+      date,
+    } = req.query;
+    const options = {
+      page: _page,
+      limit: _limit,
+      sort: {
+        [_sort]: _order === "desc" ? -1 : 1,
+      },
+    };
+
+    const startOfDay = new Date(date);
+    const endOfDay = new Date(
+      new Date(date).setDate(new Date(date).getDate() + 1)
+    );
+
+    let searchQuery = {
+      ...(q
+        ? {
+            code: { $regex: q, $options: "i" },
+          }
+        : {}),
+      ...(status !== "all" && status ? { status: status } : {}),
+      ...(date ? { createdAt: { $gte: startOfDay, $lte: endOfDay } } : {}),
+    };
+
+    const orders = await Order.paginate(searchQuery, options);
 
     return res.status(200).json(orders);
   } catch (error) {
