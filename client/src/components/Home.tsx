@@ -202,10 +202,6 @@ const Home = () => {
                                       <h4>{category.name}</h4>
                                     </Link>
                                   </div>
-
-                                  {category.description && (
-                                    <p>{category.description}</p>
-                                  )}
                                 </div>
                               </div>
                             </div>

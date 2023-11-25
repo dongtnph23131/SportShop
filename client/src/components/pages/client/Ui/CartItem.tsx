@@ -67,6 +67,7 @@ const CartItem = ({ item }: any) => {
               addCart({
                 productVariantIds: item?.productVariantIds?._id,
                 token,
+                quantity:1,
               })
             }
           >
