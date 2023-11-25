@@ -74,9 +74,7 @@ const Page: NextPageWithLayout = () => {
   const { data: orders } = useOrdersQuery();
   const { queryParams, searchParams } = useRouterStuff();
 
-  const date = searchParams.get("date")
-    ? new Date(searchParams.get("date"))
-    : null;
+  const date = searchParams.get("date");
 
   return (
     <>
@@ -121,7 +119,7 @@ const Page: NextPageWithLayout = () => {
               <PopoverContent className="w-auto p-0">
                 <Calendar
                   mode="single"
-                  selected={date}
+                  selected={date ? new Date(date) : null}
                   onSelect={(date) => {
                     queryParams({
                       set: {

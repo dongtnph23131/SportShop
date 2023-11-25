@@ -1,9 +1,11 @@
 import { ReactElement, useEffect } from "react";
 import { BellRing } from "lucide-react";
-import { Sidebar } from "./sidebar";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
 import { useRouter } from "next/router";
+import dynamic from "next/dynamic";
+
+const Sidebar = dynamic(() => import("./sidebar"), { ssr: false });
 
 export default function LayoutAdmin(page: ReactElement) {
   const router = useRouter();

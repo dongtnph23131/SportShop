@@ -11,9 +11,28 @@ import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
 import { UserNav } from "./user-nav";
+import Cookies from "js-cookie";
+import { Badge } from "../ui/badge";
+import { useOrdersQuery } from "@/services/orders/orders-query";
+import { isAfter } from "date-fns";
 
-export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
+export default function Sidebar({
+  className,
+}: React.HTMLAttributes<HTMLDivElement>) {
   const router = useRouter();
+  const { data } = useOrdersQuery({
+    refetchInterval: 10000,
+  });
+
+  const lastReadOrder = Cookies.get("lastReadOrder");
+
+  const numberOfUnreadOrders = lastReadOrder
+    ? data
+      ? data.docs.filter((doc) =>
+          isAfter(new Date(doc.createdAt), new Date(lastReadOrder))
+        ).length
+      : 0
+    : 2;
 
   const tabs = [
     {
@@ -70,12 +89,27 @@ export function Sidebar({ className }: React.HTMLAttributes<HTMLDivElement>) {
                   ? "default"
                   : "ghost"
               }
+              onClick={() => {
+                if (tab.href === "/orders") {
+                  Cookies.set("lastReadOrder", new Date().toISOString());
+                }
+              }}
               className="w-full justify-start"
               asChild
             >
-              <Link href={tab.href}>
-                <tab.Icon className="h-4 w-4 mr-2" />
-                {tab.name}
+              <Link
+                href={tab.href}
+                className="flex items-center justify-between"
+              >
+                <div className="flex items-center gap-1">
+                  <tab.Icon className="h-4 w-4 mr-2" />
+                  {tab.name}
+                </div>
+                {tab.href === "/orders" && numberOfUnreadOrders > 0 && (
+                  <Badge variant={"blue"} className="rounded-full">
+                    {numberOfUnreadOrders}
+                  </Badge>
+                )}
               </Link>
             </Button>
           );
