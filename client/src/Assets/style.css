@@ -528,7 +528,14 @@ body {
 .box_rating .ant-form-item {
   margin-bottom: 10px;
   margin-top: 10px;
-  padding-left: 140px;
+  padding-left: 0px;
+}
+.ant-row.ant-form-item-row.css-dev-only-do-not-override-amq5gd {
+  display: block !important;
+}
+:where(.css-dev-only-do-not-override-amq5gd).ant-btn-primary {
+  color: #fff;
+  background-color: #088178 !important;
 }
 
 section.comment {
@@ -543,14 +550,21 @@ section.comment {
 }
 
 .old__comment {
-  width: 80%;
+  width: 90%;
 }
-
+:where(.css-dev-only-do-not-override-amq5gd).ant-btn { 
+  height: 45px !important;
+}
 .rating__old__item .avt {
-  width: 20%;
+  width: 10%;
   text-align: center;
 }
-
+.avt img {
+  width: 70px !important;
+  height: 70px;
+  border-radius: 100px;
+  box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
+}
 .ratings {
   display: flex;
   align-items: center;
@@ -574,6 +588,7 @@ section.comment {
 
 .categorySlider {
   display: flex;
+  flex-wrap: wrap;
 }
 
 .categorySlideItem {
@@ -2600,9 +2615,15 @@ button.btn__save {
   #form-details form {
     width: 50%;
   }
+  .categorySlideItem {
+    width: 50%;
+  }
 }
 
 @media (max-width: 477px) {
+  .categorySlideItem {
+    width: 100%;
+  }
   .section-p1 {
     padding: 20px;
   }

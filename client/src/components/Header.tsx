@@ -1,5 +1,4 @@
 import "../../../client/src/Assets/CSS/responsive.css";
-import "../../../client/src/Assets/CSS/meanmenu.css";
 import "../../../client/src/Assets/CSS/style.css";
 import React, { useEffect, useState } from "react";
 import Cookies from "js-cookie";
@@ -543,7 +542,7 @@ const Header = () => {
                       className="search__desktop"
                       onClick={() => {
                         handleSearchClick();
-                        setProductSearch([])
+                        setProductSearch([]);
                       }}
                     >
                       <svg
@@ -678,232 +677,291 @@ const Header = () => {
           </div>
         </div>
         <div className="mobile-menu-area hp1-mobile-area">
-          <div className="container">
-            <div className="row">
-              <div className="col-xs-12">
-                <nav className="active-mobile-menu">
-                  <ul>
-                    <li>
-                      <a href="index.html">Home</a>
-                      <ul>
-                        <li>
-                          <a href="index.html">Home-1</a>
-                        </li>
-                        <li>
-                          <a href="index2.html">Home-2</a>
-                        </li>
-                        <li>
-                          <a href="index3.html">Home-3</a>
-                        </li>
-                        <li>
-                          <a href="index4.html">Home-4</a>
-                        </li>
-                        <li>
-                          <a href="index5.html">Home-5</a>
-                        </li>
-                        <li>
-                          <a href="index6.html">Home-6</a>
-                        </li>
-                        <li className="lastli">
-                          <a href="index7.html">Home-7</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="shop.html">Shop</a>
-                      <ul>
-                        <li>
-                          <a href="#">Shop Layouts</a>
-                          <ul>
-                            <li>
-                              <a href="shop-fullwidth.html">Fullwidth</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">Sidebar Left</a>
-                            </li>
-                            <li>
-                              <a href="shop-right-sidebar.html">
-                                Sidebar right
-                              </a>
-                            </li>
-                            <li>
-                              <a href="shop-list-view.html">List View</a>
-                            </li>
-                            <li>
-                              <a href="shop-list-view-right.html">
-                                List View right
-                              </a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="#">Shop Pages</a>
-                          <ul>
-                            <li>
-                              <a href="shop.html">Category</a>
-                            </li>
-                            <li>
-                              <a href="my-account.html">My Account</a>
-                            </li>
-                            <li>
-                              <a href="wishlist.html">Wishlist</a>
-                            </li>
-                            <li>
-                              <a href="cart.html">Shopping Cart</a>
-                            </li>
-                            <li>
-                              <a href="checkout.html">Checkout</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="#">Product Types</a>
-                          <ul>
-                            <li>
-                              <a href="single-product.html">Single Product</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">Variable Product</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">Group Product</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">External Product</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">New Product</a>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="about.html">About Us</a>
-                    </li>
-                    <li>
-                      <a href="portfolio.html">Portfolio</a>
-                    </li>
+          <div className="container mean-container">
+            <div className="mean-bar">
+              <a
+                href="#nav"
+                className="meanmenu-reveal"
+                style={{ background: '', color: '', right: 0, left: 'auto' }}
+              >
+                <span></span>
+                <span></span>
+                <span></span>
+              </a>
+              <nav className="mean-nav">
+                <ul style={{display:'none'}}>
+                  <li>
+                    <a href="index.html">Home</a>
+                    <ul style={{display:'none'}}>
+                      <li>
+                        <a href="index.html">Home-1</a>
+                      </li>
+                      <li>
+                        <a href="index2.html">Home-2</a>
+                      </li>
+                      <li>
+                        <a href="index3.html">Home-3</a>
+                      </li>
+                      <li>
+                        <a href="index4.html">Home-4</a>
+                      </li>
+                      <li>
+                        <a href="index5.html">Home-5</a>
+                      </li>
+                      <li>
+                        <a href="index6.html">Home-6</a>
+                      </li>
+                      <li className="lastli">
+                        <a href="index7.html">Home-7</a>
+                      </li>
+                    </ul>
+                    <a className="mean-expand" href="#" >
+                      +
+                    </a>
+                  </li>
+                  <li>
+                    <a href="shop.html">Shop</a>
+                    <ul style={{display:'none'}}>
+                      <li>
+                        <a href="#">Shop Layouts</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="shop-fullwidth.html">Fullwidth</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">Sidebar Left</a>
+                          </li>
+                          <li>
+                            <a href="shop-right-sidebar.html">Sidebar right</a>
+                          </li>
+                          <li>
+                            <a href="shop-list-view.html">List View</a>
+                          </li>
+                          <li>
+                            <a href="shop-list-view-right.html">
+                              List View right
+                            </a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                          
+                        >
+                          +
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Shop Pages</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="shop.html">Category</a>
+                          </li>
+                          <li>
+                            <a href="my-account.html">My Account</a>
+                          </li>
+                          <li>
+                            <a href="wishlist.html">Wishlist</a>
+                          </li>
+                          <li>
+                            <a href="cart.html">Shopping Cart</a>
+                          </li>
+                          <li>
+                            <a href="checkout.html">Checkout</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                         
+                        >
+                          +
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Product Types</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="single-product.html">Single Product</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">Variable Product</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">Group Product</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">External Product</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">New Product</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                          
+                        >
+                          +
+                        </a>
+                      </li>
+                    </ul>
+                    <a className="mean-expand" href="#" >
+                      +
+                    </a>
+                  </li>
+                  <li>
+                    <a href="about.html">About Us</a>
+                  </li>
+                  <li>
+                    <a href="portfolio.html">Portfolio</a>
+                  </li>
 
-                    <li>
-                      <a href="blog.html">Blog</a>
-                      <ul>
-                        <li>
-                          <a href="blog-right-sidebar.html">Right Sidebar</a>
-                        </li>
-                        <li>
-                          <a href="blog-fullwidth.html">Fullwidth</a>
-                        </li>
-                        <li>
-                          <a href="single-blog-video.html">Single Video</a>
-                        </li>
-                        <li>
-                          <a href="single-blog-audio.html">Single Audio</a>
-                        </li>
-                        <li>
-                          <a href="single-blog-slider.html">Single Gallery</a>
-                        </li>
-                        <li>
-                          <a href="single-blog.html">Single Image</a>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="#">Pages</a>
-                      <ul>
-                        <li>
-                          <a href="#">Pages-01</a>
-                          <ul>
-                            <li>
-                              <a href="about.html">About us</a>
-                            </li>
-                            <li>
-                              <a href="404.html">Page 404</a>
-                            </li>
-                            <li>
-                              <a href="portfolio.html">Portfolio</a>
-                            </li>
-                            <li>
-                              <a href="portfolio2.html">Portfolio2</a>
-                            </li>
-                            <li>
-                              <a href="single-product-2.html">Single Product</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="#">Pages-02</a>
-                          <ul>
-                            <li>
-                              <a href="blog-right-sidebar.html">
-                                Right Sidebar
-                              </a>
-                            </li>
-                            <li>
-                              <a href="single-blog-video.html">Single Video</a>
-                            </li>
-                            <li>
-                              <a href="single-blog-audio.html">Single Audio</a>
-                            </li>
-                            <li>
-                              <a href="single-blog-slider.html">
-                                Single Gallery
-                              </a>
-                            </li>
-                            <li>
-                              <a href="single-blog.html">Single Image</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="#">Pages-03</a>
-                          <ul>
-                            <li>
-                              <a href="cart.html">Cart</a>
-                            </li>
-                            <li>
-                              <a href="address.html">Address</a>
-                            </li>
-                            <li>
-                              <a href="checkout.html">Checkout</a>
-                            </li>
-                            <li>
-                              <a href="payment.html">Payment</a>
-                            </li>
-                            <li>
-                              <a href="shipping.html">Shipping</a>
-                            </li>
-                          </ul>
-                        </li>
-                        <li>
-                          <a href="#">Pages-04</a>
-                          <ul>
-                            <li>
-                              <a href="my-account.html">My Account</a>
-                            </li>
-                            <li>
-                              <a href="wishlist.html">Wishlist</a>
-                            </li>
-                            <li>
-                              <a href="login.html">login</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">Dresses</a>
-                            </li>
-                            <li>
-                              <a href="shop.html">T-Shirts</a>
-                            </li>
-                          </ul>
-                        </li>
-                      </ul>
-                    </li>
-                    <li>
-                      <a href="contact.html">Contact Us</a>
-                    </li>
-                  </ul>
-                </nav>
-              </div>
+                  <li>
+                    <a href="blog.html">Blog</a>
+                    <ul style={{display:'none'}}>
+                      <li>
+                        <a href="blog-right-sidebar.html">Right Sidebar</a>
+                      </li>
+                      <li>
+                        <a href="blog-fullwidth.html">Fullwidth</a>
+                      </li>
+                      <li>
+                        <a href="single-blog-video.html">Single Video</a>
+                      </li>
+                      <li>
+                        <a href="single-blog-audio.html">Single Audio</a>
+                      </li>
+                      <li>
+                        <a href="single-blog-slider.html">Single Gallery</a>
+                      </li>
+                      <li>
+                        <a href="single-blog.html">Single Image</a>
+                      </li>
+                    </ul>
+                    <a className="mean-expand" href="#" >
+                      +
+                    </a>
+                  </li>
+                  <li>
+                    <a href="#">Pages</a>
+                    <ul style={{display:'none'}}>
+                      <li>
+                        <a href="#">Pages-01</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="about.html">About us</a>
+                          </li>
+                          <li>
+                            <a href="404.html">Page 404</a>
+                          </li>
+                          <li>
+                            <a href="portfolio.html">Portfolio</a>
+                          </li>
+                          <li>
+                            <a href="portfolio2.html">Portfolio2</a>
+                          </li>
+                          <li>
+                            <a href="single-product-2.html">Single Product</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                        >
+                          +
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Pages-02</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="blog-right-sidebar.html">Right Sidebar</a>
+                          </li>
+                          <li>
+                            <a href="single-blog-video.html">Single Video</a>
+                          </li>
+                          <li>
+                            <a href="single-blog-audio.html">Single Audio</a>
+                          </li>
+                          <li>
+                            <a href="single-blog-slider.html">Single Gallery</a>
+                          </li>
+                          <li>
+                            <a href="single-blog.html">Single Image</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                        >
+                          +
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Pages-03</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="cart.html">Cart</a>
+                          </li>
+                          <li>
+                            <a href="address.html">Address</a>
+                          </li>
+                          <li>
+                            <a href="checkout.html">Checkout</a>
+                          </li>
+                          <li>
+                            <a href="payment.html">Payment</a>
+                          </li>
+                          <li>
+                            <a href="shipping.html">Shipping</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                        >
+                          +
+                        </a>
+                      </li>
+                      <li>
+                        <a href="#">Pages-04</a>
+                        <ul style={{display:'none'}}>
+                          <li>
+                            <a href="my-account.html">My Account</a>
+                          </li>
+                          <li>
+                            <a href="wishlist.html">Wishlist</a>
+                          </li>
+                          <li>
+                            <a href="login.html">login</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">Dresses</a>
+                          </li>
+                          <li>
+                            <a href="shop.html">T-Shirts</a>
+                          </li>
+                        </ul>
+                        <a
+                          className="mean-expand"
+                          href="#"
+                        >
+                          +
+                        </a>
+                      </li>
+                    </ul>
+                    <a className="mean-expand" href="#" >
+                      +
+                    </a>
+                  </li>
+                  <li className="mean-last">
+                    <a href="contact.html">Contact Us</a>
+                  </li>
+                </ul>
+              </nav>
             </div>
+           
           </div>
         </div>
       </div>

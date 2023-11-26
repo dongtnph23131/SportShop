@@ -1,3 +1,14 @@
+
+
+
+
+
+
+
+
+
+
+
 /* Normal desktop :1366px. */
 @media (min-width: 1170px) and (max-width: 1400px) {
 }
@@ -2008,7 +2019,7 @@
         top: 10px;
         right: 10px;
         bottom: 10px;
-        left: 10px;
+        left: 0px;
     }
 
     .discount-middle-text-btm > h3 {
