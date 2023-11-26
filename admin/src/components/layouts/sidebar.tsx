@@ -13,14 +13,14 @@ import { useRouter } from "next/router";
 import { UserNav } from "./user-nav";
 import Cookies from "js-cookie";
 import { Badge } from "../ui/badge";
-import { useOrdersQuery } from "@/services/orders/orders-query";
 import { isAfter } from "date-fns";
+import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 
 export default function Sidebar({
   className,
 }: React.HTMLAttributes<HTMLDivElement>) {
   const router = useRouter();
-  const { data } = useOrdersQuery({
+  const { data } = useAllOrdersQuery({
     refetchInterval: 10000,
   });
 
@@ -28,8 +28,8 @@ export default function Sidebar({
 
   const numberOfUnreadOrders = lastReadOrder
     ? data
-      ? data.docs.filter((doc) =>
-          isAfter(new Date(doc.createdAt), new Date(lastReadOrder))
+      ? data.filter((order) =>
+          isAfter(new Date(order.createdAt), new Date(lastReadOrder))
         ).length
       : 0
     : 2;
