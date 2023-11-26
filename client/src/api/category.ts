@@ -9,6 +9,9 @@ export const getCategoryById = (_id: any, sort: any, order: any, page: any) => {
     }`
   );
 };
+export const getCategoryDetail = (id:any) => {
+  return instance.get(`/categories/detail/${id}`)
+};
 export const addCategory = (category: any) => {
   return instance.post("/categories", category);
 };

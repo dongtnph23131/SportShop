@@ -8,7 +8,7 @@ export const ORDER_DELIVERY_STATUS = [
   "Shipped",
   "Canceled",
 ];
-export const ORDER_PAYMENT_STATUS = ["Not paid", "Paid", "Canceled"];
+export const ORDER_PAYMENT_STATUS = ["Not paid", "Paid", "Refunded","Canceled"];
 export const ORDER_PAYMENT = ["Online", "Direct"];
 
 const orderSchema = mongoose.Schema(

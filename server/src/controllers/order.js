@@ -111,11 +111,19 @@ export const cancelOrderByAcount = async (req, res) => {
         message: "Bạn k thể hủy đơn",
       });
     }
-    await Order.findByIdAndUpdate(id, {
-      status: "Canceled",
-      paymentStatus: "Canceled",
-      deliveryStatus: "Canceled",
-    });
+    if (order.paymentStatus === "Paid") {
+      await Order.findByIdAndUpdate(id, {
+        status: "Canceled",
+        paymentStatus: "Refunded",
+        deliveryStatus: "Canceled",
+      });
+    } else {
+      await Order.findByIdAndUpdate(id, {
+        status: "Canceled",
+        paymentStatus: "Canceled",
+        deliveryStatus: "Canceled",
+      });
+    }
     return res.status(200).json({
       message: "Hủy đơn hàng thành công",
     });
