@@ -1,4 +1,5 @@
 import Comment from "../models/comment";
+import Order from "../models/order";
 import Product from "../models/product";
 import { commentValidators } from "../validators/comment";
 
@@ -6,14 +7,32 @@ export const create = async (req, res) => {
   try {
     const user = req.user;
     const body = req.body;
+    console.log(body);
     const { error } = commentValidators.validate(body);
     if (error) {
       return res.json({
         message: error.details.map((item) => item.message),
       });
     }
+    const orders = await Order.find({ customerId: user._id }).populate(
+      "items.productId items.productVariantId"
+    );
+    const isMatch = orders.map((item) => {
+      console.log(item);
+      const isCheck = item.items.find((itemChild) => {
+        console.log(itemChild.productId._id, body.productId);
+        return itemChild.productId._id.toString() == body.productId.toString();
+      });
+      return isCheck ? true : false;
+    });
+    if (!isMatch.includes(true)) {
+      return res.status(400).json({
+        message: "Mua hàng mới đc đánh giá",
+      });
+    }
     const comment = await Comment.create({ ...req.body, customerId: user._id });
-    await Product.findByIdAndUpdate(
+
+    const product = await Product.findByIdAndUpdate(
       req.body.productId,
       {
         $addToSet: {
@@ -22,8 +41,15 @@ export const create = async (req, res) => {
       },
       { new: true }
     );
+    const comments = await Comment.find({ productId: body.productId });
+    let avg = 0;
+    comments.forEach((rev) => {
+      avg += rev.raiting;
+    });
+    product.raitings = Number(avg / comments.length);
+    await product.save();
     return res.status(200).json({
-      message: "Đã bình luận chờ phê duyệt",
+      message: "Đáng giá thành công",
       comment,
     });
   } catch (error) {

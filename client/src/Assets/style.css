@@ -586,9 +586,38 @@ section.comment {
   margin-top: 10px;
 }
 
-.categorySlider {
+.categorySlider .slick-dots {
+  bottom: 5px;
+}
+.modal-body {
+  background: #fff;
+  max-width: 800px;
+}
+.main__bodyDetail {
+  height: 100%;
   display: flex;
-  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+}
+.categorySlider {
+  padding: 30px 0px;
+}
+.btn__close__views {
+  position: absolute;
+  right: -15px;
+  top: -20px;
+  border-radius: 100%;
+  width: 40px;
+  height: 40px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+.quick-add-to-cart form {display: flex;align-items: center;}
+
+.quick-add-to-cart input {
+    text-align: center !important;
+    padding: 8px 10px !important;
 }
 
 .categorySlideItem {
