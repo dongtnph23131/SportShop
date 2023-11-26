@@ -177,7 +177,7 @@ const Page: NextPageWithLayout = () => {
                   <TableRow key={order._id}>
                     <TableHead>{order.code}</TableHead>
                     <TableHead>
-                      {format(new Date(order.createdAt), "dd MMM yyyy")}
+                      {format(new Date(order.createdAt), "dd MMM yyyy hh:mm")}
                     </TableHead>
                     <TableHead>{order.fullName}</TableHead>
                     <TableHead>{order.phone}</TableHead>

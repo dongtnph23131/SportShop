@@ -7,6 +7,8 @@ import { authRoutes } from "./auth";
 import { analyticRoutes } from "./analytics";
 import { verifyToken } from "../../middlewares/admin";
 import { inventoryRoutes } from "./inventory";
+import { userRoutes } from "./user";
+import User from "../../models/user";
 
 const router = Router();
 
@@ -16,11 +18,14 @@ router.use("/orders", verifyToken, orderRoutes);
 router.use("/customers", verifyToken, customerRoutes);
 router.use("/analytics", verifyToken, analyticRoutes);
 router.use("/inventory", verifyToken, inventoryRoutes);
+router.use("/user", verifyToken, userRoutes);
 router.use("/auth", authRoutes);
 router.use("/me", verifyToken, async (req, res) => {
   if (!req.user) return res.status(401).json("You need to login!");
 
-  res.status(200).json(req.user);
+  const user = await User.findById(req.user.id);
+
+  res.status(200).json(user);
 });
 
 export const adminRoutes = router;

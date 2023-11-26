@@ -7,9 +7,9 @@ router.get("/", async (req, res) => {
   try {
     const {
       _limit = 10,
-      _sort = "createAt",
+      _sort = "createdAt",
       _page = 1,
-      _order = "asc",
+      _order = "desc",
       q,
       status,
       date,
