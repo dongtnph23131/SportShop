@@ -1,4 +1,3 @@
-// import { UpdateProductForm } from "@/components/interfaces/admin/products/edit-product-form";
 import LayoutAdmin from "@/components/layouts";
 import { UpdateProductForm } from "@/components/products/edit-product-form";
 import { Button } from "@/components/ui/button";
@@ -19,8 +18,6 @@ const Page: NextPageWithLayout = () => {
   const slug = router.query.slug as string;
 
   const { data: product } = useProductQuery({ slug });
-
-  console.log({ product });
 
   return (
     <>

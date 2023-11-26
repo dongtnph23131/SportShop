@@ -109,8 +109,8 @@ export interface Customer {
   email: string;
   password: string;
   avatar: string;
-  createdAt: "2023-11-04T16:00:10.314Z";
-  updatedAt: "2023-11-04T16:00:10.314Z";
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Profile {
@@ -120,6 +120,17 @@ export interface Profile {
   firstName: string;
   lastName: string;
   role: string;
+}
+
+export interface Comment {
+  _id: string;
+  customerId: string;
+  productId: string;
+  content: string;
+  raiting: string;
+  default: boolean;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Pagination {
