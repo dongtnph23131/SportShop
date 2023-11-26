@@ -15,6 +15,7 @@ import Cookies from "js-cookie";
 import { Badge } from "../ui/badge";
 import { isAfter } from "date-fns";
 import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
+import { Separator } from "../ui/separator";
 
 export default function Sidebar({
   className,
@@ -69,15 +70,28 @@ export default function Sidebar({
 
   return (
     <div className={cn("pb-12 h-full", className)}>
-      <div>
-        <UserNav />
-      </div>
-      <div className="my-4 flex flex-col px-2">
-        <h1 className="text-gray-400 text-xs font-medium">Store</h1>
-        <Button variant="link" className="inline-block" asChild>
-          <Link href={"http://localhost:5173/"}>Sport shop</Link>
-        </Button>
-      </div>
+      <Link
+        href="/"
+        className="mr-2 flex w-full items-center justify-center md:w-auto lg:mr-6"
+      >
+        <div className="flex flex-none items-center justify-center border border-neutral-200 bg-white dark:border-neutral-700 dark:bg-black h-[40px] w-[40px] rounded-xl">
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            aria-label="Acme Store logo"
+            viewBox="0 0 32 28"
+            className="h-4 w-4 fill-black dark:fill-white"
+          >
+            <path d="M21.5758 9.75769L16 0L0 28H11.6255L21.5758 9.75769Z"></path>
+            <path d="M26.2381 17.9167L20.7382 28H32L26.2381 17.9167Z"></path>
+          </svg>
+        </div>
+        <div className="ml-2 flex-none text-sm font-medium uppercase md:hidden lg:block">
+          Sport Shop
+        </div>
+      </Link>
+
+      <Separator className="my-4" />
+
       <div className="space-y-2 py-4">
         {tabs.map((tab, index) => {
           return (

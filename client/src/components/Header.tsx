@@ -396,12 +396,13 @@ const Header = () => {
         <div className="container">
           <div className="row">
             <div className="col-lg-3 col-md-3 col-sm-12">
-              <div className="header-logo">
-                <div className="hd4-left__logo">
-                  <a href="/home" style={{ color: "black" }}>
-                    Sports <span>Shop</span>
-                  </a>
-                </div>
+              <div style={{ marginTop: "12px" }}>
+                <img
+                  src="../../src/Assets/sport-shop-logo.svg"
+                  alt=""
+                  width={180}
+                  height={180}
+                />
               </div>
             </div>
             <div className="col-lg-9 col-md-9 col-sm-12">
@@ -682,17 +683,17 @@ const Header = () => {
               <a
                 href="#nav"
                 className="meanmenu-reveal"
-                style={{ background: '', color: '', right: 0, left: 'auto' }}
+                style={{ background: "", color: "", right: 0, left: "auto" }}
               >
                 <span></span>
                 <span></span>
                 <span></span>
               </a>
               <nav className="mean-nav">
-                <ul style={{display:'none'}}>
+                <ul style={{ display: "none" }}>
                   <li>
                     <a href="index.html">Home</a>
-                    <ul style={{display:'none'}}>
+                    <ul style={{ display: "none" }}>
                       <li>
                         <a href="index.html">Home-1</a>
                       </li>
@@ -715,16 +716,16 @@ const Header = () => {
                         <a href="index7.html">Home-7</a>
                       </li>
                     </ul>
-                    <a className="mean-expand" href="#" >
+                    <a className="mean-expand" href="#">
                       +
                     </a>
                   </li>
                   <li>
                     <a href="shop.html">Shop</a>
-                    <ul style={{display:'none'}}>
+                    <ul style={{ display: "none" }}>
                       <li>
                         <a href="#">Shop Layouts</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="shop-fullwidth.html">Fullwidth</a>
                           </li>
@@ -743,17 +744,13 @@ const Header = () => {
                             </a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                          
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                       <li>
                         <a href="#">Shop Pages</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="shop.html">Category</a>
                           </li>
@@ -770,17 +767,13 @@ const Header = () => {
                             <a href="checkout.html">Checkout</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                         
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                       <li>
                         <a href="#">Product Types</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="single-product.html">Single Product</a>
                           </li>
@@ -797,16 +790,12 @@ const Header = () => {
                             <a href="shop.html">New Product</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                          
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                     </ul>
-                    <a className="mean-expand" href="#" >
+                    <a className="mean-expand" href="#">
                       +
                     </a>
                   </li>
@@ -819,7 +808,7 @@ const Header = () => {
 
                   <li>
                     <a href="blog.html">Blog</a>
-                    <ul style={{display:'none'}}>
+                    <ul style={{ display: "none" }}>
                       <li>
                         <a href="blog-right-sidebar.html">Right Sidebar</a>
                       </li>
@@ -839,16 +828,16 @@ const Header = () => {
                         <a href="single-blog.html">Single Image</a>
                       </li>
                     </ul>
-                    <a className="mean-expand" href="#" >
+                    <a className="mean-expand" href="#">
                       +
                     </a>
                   </li>
                   <li>
                     <a href="#">Pages</a>
-                    <ul style={{display:'none'}}>
+                    <ul style={{ display: "none" }}>
                       <li>
                         <a href="#">Pages-01</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="about.html">About us</a>
                           </li>
@@ -865,16 +854,13 @@ const Header = () => {
                             <a href="single-product-2.html">Single Product</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                       <li>
                         <a href="#">Pages-02</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="blog-right-sidebar.html">Right Sidebar</a>
                           </li>
@@ -891,16 +877,13 @@ const Header = () => {
                             <a href="single-blog.html">Single Image</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                       <li>
                         <a href="#">Pages-03</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="cart.html">Cart</a>
                           </li>
@@ -917,16 +900,13 @@ const Header = () => {
                             <a href="shipping.html">Shipping</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                       <li>
                         <a href="#">Pages-04</a>
-                        <ul style={{display:'none'}}>
+                        <ul style={{ display: "none" }}>
                           <li>
                             <a href="my-account.html">My Account</a>
                           </li>
@@ -943,15 +923,12 @@ const Header = () => {
                             <a href="shop.html">T-Shirts</a>
                           </li>
                         </ul>
-                        <a
-                          className="mean-expand"
-                          href="#"
-                        >
+                        <a className="mean-expand" href="#">
                           +
                         </a>
                       </li>
                     </ul>
-                    <a className="mean-expand" href="#" >
+                    <a className="mean-expand" href="#">
                       +
                     </a>
                   </li>
@@ -961,7 +938,6 @@ const Header = () => {
                 </ul>
               </nav>
             </div>
-           
           </div>
         </div>
       </div>
