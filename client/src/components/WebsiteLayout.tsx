@@ -4,6 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 // import css
+import"../Assets/css/meanmenu.css";
 import "../Assets/Header.css";
 import "../Assets/utilities.css";
 import "../Assets/Footer.css";
@@ -14,6 +15,7 @@ import "../Assets/changerPass.css";
 import "../Assets/search.css";
 import "../Assets/CSS/style.css";
 import "../Assets/CSS/default.css";
+
 // End css
 
 const WebsiteLayout = () => {

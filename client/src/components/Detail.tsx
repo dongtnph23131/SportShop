@@ -3,6 +3,7 @@ import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
+
 import {
   Pagination,
   message,
@@ -20,6 +21,7 @@ import Swal from "sweetalert2";
 import { useForm } from "antd/es/form/Form";
 
 const Detail = () => {
+  
   const { id } = useParams();
   const token = Cookies.get("token");
   const { data: product, isLoading } = useGetProductQuery(id);
@@ -108,6 +110,11 @@ const Detail = () => {
       });
     }
   };
+
+
+
+
+  
   return (
     <div>
       <section id="prodetails" className="section-p1">
