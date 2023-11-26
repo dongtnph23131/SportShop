@@ -28,7 +28,7 @@ const schema = yup.object().shape({
     .min(6, "Mật khẩu mới ít nhất 6 kí tự"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), "Nhập lại mật khẩu chưa đúng"])
+    .oneOf([yup.ref("password")],"Nhập lại mật khẩu chưa đúng")
     .required("Cần nhập lại mật khẩu")
     .min(6, "Nhập lại mật khẩu mới ít nhất 6 kí tự"),
 });
@@ -36,12 +36,12 @@ const schemaProfile = yup.object().shape({
   email: yup.string().email("Email chưa đúng địng dạng"),
 });
 const schemaAddress = yup.object().shape({
-  address: yup.string().required("Địa chỉ k để trống"),
-  district: yup.string().required("district k để trống"),
-  ward: yup.string().required("ward k để trống"),
-  province: yup.string().required("province k để trống"),
-  phone: yup.string().required("phone k để trống"),
-  name: yup.string().required("name k để trống"),
+  address: yup.string().required("Địa chỉ không để trống"),
+  district: yup.string().required("District không để trống"),
+  ward: yup.string().required("Ward không để trống"),
+  province: yup.string().required("Province không để trống"),
+  phone: yup.string().required("Phone không để trống"),
+  name: yup.string().required("Name không  để trống"),
   default: yup.boolean(),
 });
 const ProfileDetail = () => {

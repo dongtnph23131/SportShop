@@ -7,6 +7,7 @@ const OrderDetail = () => {
   const { id }: any = useParams();
   const token = Cookies.get("token");
   const { data } = useGetOneOrderQuery(id);
+
   const [cancelOrder] = useCancelOrderMutation();
   return (
     <div>
@@ -17,14 +18,19 @@ const OrderDetail = () => {
               <h1 className="detail-order-heading">
                 Thông tin đơn hàng {data?.order?.code}
               </h1>
-              <div className="detail-order-status">Trạng thái đơn hàng: {data?.order?.status}</div>
+              <div className="detail-order-status">
+                Trạng thái đơn hàng: {data?.order?.status}
+              </div>
+              <div className="detail-order-status">
+                Trạng thái thanh toán: {data?.order?.paymentStatus}
+              </div>
             </div>
             <div className="detail-order-info">
               <ul className="detail-order-info__list">
                 <li>
                   <div className="detail-order-info__title">Ngày đặt hàng:</div>
                   <div className="detail-order-info__content">
-                    {data?.order?.createdAt}
+                    {new Date(data?.order?.createdAt).toLocaleString()}
                   </div>
                 </li>
                 <li>
@@ -51,6 +57,14 @@ const OrderDetail = () => {
                   </div>
                   <div className="detail-order-info__content">
                     {data?.order?.typePayment}
+                  </div>
+                </li>
+                <li>
+                  <div className="detail-order-info__title">
+                    Trạng thái giao hàng:
+                  </div>
+                  <div className="detail-order-info__content">
+                    {data?.order?.deliveryStatus}
                   </div>
                 </li>
                 <li>

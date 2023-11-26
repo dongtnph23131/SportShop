@@ -6,7 +6,7 @@ import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 const schema = yup.object().shape({
   firstName: yup.string().required("FirstName ko đc để trống "),
-  lastName: yup.string().required("LasttName ko đc để trống"),
+  lastName: yup.string().required("LastName ko đc để trống"),
   email: yup
     .string()
     .email("Email chưa đúng địng dạng")
@@ -17,7 +17,7 @@ const schema = yup.object().shape({
     .min(6, "Password ít nhất 6 kí tự"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password"), "Nhập lại mật khẩu chưa đúng"])
+    .oneOf([yup.ref("password")], "Nhập lại mật khẩu chưa đúng")
     .required("Cần nhập lại mật khẩu"),
 });
 const Signup = () => {

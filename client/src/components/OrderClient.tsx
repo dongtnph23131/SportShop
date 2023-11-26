@@ -27,7 +27,9 @@ const OrderClient = () => {
                             <div className="order-header">
                               <div>
                                 <p className="order-title"> {item.code}</p>{" "}
-                                <p className="order-date">{new Date(item.createdAt).toLocaleString()}</p>
+                                <p className="order-date">
+                                  {new Date(item.createdAt).toLocaleString()}
+                                </p>
                               </div>{" "}
                               <div className="order-status-badge order-status-badge-canceled">
                                 {" "}
@@ -71,17 +73,17 @@ const OrderClient = () => {
                                       </div>
                                     </div>
                                   </div>{" "}
-                                  <div className="order-footer">
-                                    <div className="order-footer__left"></div>{" "}
-                                    <div className="order-footer__right">
-                                      <div>
-                                        <b>${item.totalPrice}</b>
-                                      </div>{" "}
-                                    </div>
-                                  </div>
                                 </div>
                               );
                             })}
+                            <div className="order-footer">
+                              <div className="order-footer__left"></div>{" "}
+                              <div className="order-footer__right">
+                                <div>
+                                  <b>${item.totalPrice}</b>
+                                </div>{" "}
+                              </div>
+                            </div>
                           </a>
                         </div>{" "}
                       </div>{" "}
