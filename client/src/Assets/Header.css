@@ -479,6 +479,31 @@ button.check-giohangs {
   color: #4fb68d;
 }
 
+.header-logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.header-logo .logo {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px solid #cdcdcd;
+  background-color: #fff;
+  height: 40px;
+  width: 40px;
+  border-radius: 12px;
+}
+
+.header-logo .logo-name {
+  font-size: 14px /* 14px */;
+  line-height: 20px /* 20px */;
+  font-weight: 500;
+  text-transform: uppercase;
+  color: #000;
+}
+
 @media (min-width: 576px) {
   :root {
   }

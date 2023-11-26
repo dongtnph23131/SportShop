@@ -47,6 +47,18 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/all", async (req, res) => {
+  try {
+    const orders = await Order.find();
+
+    return res.status(200).json(orders);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.get("/:id", async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(

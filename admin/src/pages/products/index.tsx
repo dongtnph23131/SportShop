@@ -128,7 +128,9 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/products/${encodeURIComponent(row.original.slug)}`}>
+              <Link
+                href={`/products/${encodeURIComponent(row.original.slug)}/edit`}
+              >
                 Edit
               </Link>
             </DropdownMenuItem>

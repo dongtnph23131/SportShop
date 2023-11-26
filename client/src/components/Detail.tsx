@@ -19,9 +19,9 @@ import {
 } from "../api/comment";
 import Swal from "sweetalert2";
 import { useForm } from "antd/es/form/Form";
+import { useGetOrderByUserQuery } from "../api/order";
 
 const Detail = () => {
-  
   const { id } = useParams();
   const token = Cookies.get("token");
   const { data: product, isLoading } = useGetProductQuery(id);
@@ -35,6 +35,14 @@ const Detail = () => {
   const [raiting, setRaiting] = useState<any>(0);
   const [dataCategories, setDataCategories] = useState<any>([]);
   const navigate = useNavigate();
+  const { data: orders } = useGetOrderByUserQuery(token);
+  const isMatch = orders?.orders?.map((item: any) => {
+    const isCheck = item.items.find(
+      (itemChild: any) => itemChild.productId._id === id
+    );
+    return isCheck ? true : false;
+  });
+
   const { data: products, isLoading: isLoadingProducts } =
     useGetAllProductsQuery({
       sort,
@@ -111,10 +119,6 @@ const Detail = () => {
     }
   };
 
-
-
-
-  
   return (
     <div>
       <section id="prodetails" className="section-p1">
@@ -148,7 +152,16 @@ const Detail = () => {
 
         <div className="single-pro-details">
           <h4>{product ? `${product.name}` : ``}</h4>
-          <Rate value={product?.raitings} disabled />
+          <Rate
+            value={
+              data?.comments.reduce(
+                (accumulator: any, currentValue: any) =>
+                  accumulator + currentValue.raiting,
+                0
+              ) / data?.comments.length
+            }
+            disabled
+          />
           <h2 className="price-detail">
             {" "}
             {selectedVariant
@@ -231,56 +244,68 @@ const Detail = () => {
             {data?.comments?.length === 0 && <div>Chưa có đánh giá nào</div>}
             {data?.comments?.map((item: any) => {
               return (
-                item.default === true && (
-                  <div key={item._id} className="rating__old">
-                    <div className="rating__old__item">
-                      <div className="avt">
-                        <img src={`${item.customerId.avatar}`} alt="" />
-                      </div>
-                      <div className="old__comment">
-                        <div className="old__comment__item">
-                          <div className="ratings">
-                            <Rate value={item.raiting} />
-                          </div>
-                          <div className="date__comment">{item.createdAt}</div>
+                <div key={item._id} className="rating__old">
+                  <div className="rating__old__item">
+                    <div className="avt">
+                      <img src={`${item.customerId.avatar}`} alt="" />
+                    </div>
+                    <div className="old__comment">
+                      <div className="old__comment__item">
+                        <div className="ratings">
+                          <Rate disabled value={item.raiting} />
                         </div>
-                        <div className="last__comment">{item.content}</div>
+                        <div className="date__comment">{item.createdAt}</div>
                       </div>
+                      <div className="last__comment">{item.content}</div>
                     </div>
                   </div>
-                )
+                </div>
               );
             })}
-            <div className="box_rating">
-              <Form.Item name="rating" label="Đánh giá" initialValue={0}>
-                <Rate value={raiting} onChange={(value) => setRaiting(value)} />
-              </Form.Item>
-            </div>
-            <Form.Item
-              name="review"
-              label="Nhận xét của bạn"
-              rules={[
-                {
-                  required: true,
-                  message: "Không được bỏ trống bình luận",
-                },
-              ]}
-            >
-              <TextArea
-                onChange={(e) => setContent(e.target.value)}
-                value={content}
-                showCount
-                maxLength={100}
-                style={{ height: 120, resize: "none" }}
-                placeholder="Hãy bình luận sản phẩm này"
-              />
-            </Form.Item>
-
-            <div className="wrap__button">
-              <Button onClick={onFinish} type="primary" className="bg-blue-500">
-                Đánh giá
-              </Button>
-            </div>
+            {isMatch?.includes(true) ? (
+              <>
+                {" "}
+                <div className="box_rating">
+                  <Form.Item name="rating" label="Đánh giá" initialValue={0}>
+                    <Rate
+                      value={raiting}
+                      onChange={(value) => setRaiting(value)}
+                    />
+                  </Form.Item>
+                </div>
+                <Form.Item
+                  name="review"
+                  label="Nhận xét của bạn"
+                  rules={[
+                    {
+                      required: true,
+                      message: "Không được bỏ trống bình luận",
+                    },
+                  ]}
+                >
+                  <TextArea
+                    onChange={(e) => setContent(e.target.value)}
+                    value={content}
+                    showCount
+                    maxLength={100}
+                    style={{ height: 120, resize: "none" }}
+                    placeholder="Hãy bình luận sản phẩm này"
+                  />
+                </Form.Item>
+                <div className="wrap__button">
+                  <Button
+                    disabled={!content}
+                    onClick={onFinish}
+                    type="primary"
+                    className="bg-blue-500"
+                  >
+                    Đánh giá
+                  </Button>
+                </div>
+              </>
+            ) : (
+              <></>
+            )}
           </Form>
         </div>
       </section>

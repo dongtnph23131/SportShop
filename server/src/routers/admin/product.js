@@ -6,6 +6,7 @@ import {
   productCreateBodySchema,
   productUpdateBodySchema,
 } from "../../validators/product";
+import Comment from "../../models/comment";
 
 const router = Router();
 
@@ -64,6 +65,22 @@ router.get("/:slug", async (req, res) => {
       });
     }
     return res.status(200).json(product);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+});
+
+router.get("/:slug/review", async (req, res) => {
+  try {
+    const comments = await Comment.find({
+      productId: req.params.slug,
+    })
+      .populate("customerId")
+      .sort({ createdAt: -1 });
+
+    return res.status(200).json(comments);
   } catch (error) {
     return res.status(400).json({
       message: error.message,
