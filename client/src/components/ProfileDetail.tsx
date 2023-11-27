@@ -28,12 +28,14 @@ const schema = yup.object().shape({
     .min(6, "Mật khẩu mới ít nhất 6 kí tự"),
   confirmPassword: yup
     .string()
-    .oneOf([yup.ref("password")],"Nhập lại mật khẩu chưa đúng")
+    .oneOf([yup.ref("password")], "Nhập lại mật khẩu chưa đúng")
     .required("Cần nhập lại mật khẩu")
     .min(6, "Nhập lại mật khẩu mới ít nhất 6 kí tự"),
 });
 const schemaProfile = yup.object().shape({
   email: yup.string().email("Email chưa đúng địng dạng"),
+  lastName: yup.string().required("Lastname không được để trống"),
+  firstName: yup.string().required("Firstname không được để trống"),
 });
 const schemaAddress = yup.object().shape({
   address: yup.string().required("Địa chỉ không để trống"),
@@ -165,8 +167,8 @@ const ProfileDetail = () => {
   const onUpdateProfile = async (data: any) => {
     const value = {
       ...data,
-      firstName: data.fullname.split(" ", 2)[0],
-      lastName: data.fullname.split(" ", 2)[1],
+      firstName: data.firstName,
+      lastName: data.lastName,
       avatar: image ? image : profile?.customer.avatar,
     };
     await updateProfile({ value, token }).then((response: any) => {
@@ -214,18 +216,6 @@ const ProfileDetail = () => {
                   </div>
                   Sổ địa chỉ
                 </a>
-                {/* <a
-                  href=""
-                  className={`account__sidebar__item ${
-                    activeTab === "orderHistory" ? "active" : ""
-                  }`}
-                  onClick={() => handleTabClick("orderHistory")}
-                >
-                  <div className="icon__sidebar">
-                    <img src="../../src/Assets/icon__order.webp" alt="" />
-                  </div>
-                  Lịch sử đơn hàng
-                </a> */}
               </div>
             </div>
             <div className="col-lg-8">
@@ -262,15 +252,19 @@ const ProfileDetail = () => {
                           <h3>Cập nhật thông tin cá nhân</h3>
                           <form onSubmit={handleSubmitProfile(onUpdateProfile)}>
                             <div className="row__update__profile">
-                              <label>Họ Tên</label>
+                              <label>First Name</label>
                               <input
                                 type="text"
-                                {...registerProfile("fullname")}
-                                defaultValue={`${
-                                  profile?.customer.firstName +
-                                  " " +
-                                  profile?.customer.lastName
-                                }`}
+                                {...registerProfile("firstName")}
+                                defaultValue={`${profile?.customer.firstName}`}
+                              />
+                            </div>
+                            <div className="row__update__profile">
+                              <label>Last Name</label>
+                              <input
+                                type="text"
+                                {...registerProfile("lastName")}
+                                defaultValue={`${profile?.customer.lastName}`}
                               />
                             </div>
                             <div className="row__update__profile">
