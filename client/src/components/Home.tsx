@@ -62,8 +62,19 @@ const Home = () => {
       console.log("Slider initialized!");
     },
   };
-  const [isViewProductPopupOpen, setisViewProductPopupOpen] =
-    useState(false);
+  const bannerSettings = {
+    dots: true,
+    infinite: true,
+    speed: 500,
+    slidesToShow: 1,
+    slidesToScroll: 1,
+    vertical: false,
+    arrows: false,
+    afterChange: () => {
+      console.log("Slider initialized!");
+    },
+  };
+  const [isViewProductPopupOpen, setisViewProductPopupOpen] = useState(false);
   const openUpdateProductPopup = () => {
     setisViewProductPopupOpen(true);
   };
@@ -73,6 +84,85 @@ const Home = () => {
   };
   return (
     <div>
+      
+      <div className="banners">
+      <Slider {...bannerSettings}>
+      <div className="banner__item">
+          <img src="../../src/Assets/banner.webp" alt="" />
+        </div>
+        <div className="banner__item">
+          <img src="../../src/Assets/banner.webp" alt="" />
+        </div>
+      </Slider>
+      </div>
+
+      <div className="banner-top hp2-bannertop">
+        <div className="container">
+          <div className="banner-top-wrapper">
+            <div className="row">
+              <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div className="single-banner text-center">
+                  <div className="banner-icon">
+                    <div className="hvr-icon-pulse-grow icon__reload">
+                      <i className="zmdi zmdi-refresh-sync"></i>
+                    </div>
+                  </div>
+                  <div className="banner-title-head head__1">
+                    <h2>30 Days return</h2>
+                  </div>
+                  <div className="banner-content">
+                    <p>
+                      Skinny jeans trouser plaited clashing patterns maxi skirt
+                      green Lanvin headscarf. Street style dress printed nails
+                      Black 90s button up white shirt knitwear Paris.
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div className="single-banner text-center">
+                  <div className="banner-virticle-line posr">
+                    <div className="banner-icon">
+                      <div className="hvr-icon-pulse-grow icon__reload__2">
+                        <i className="zmdi zmdi-boat"></i>
+                      </div>
+                    </div>
+                    <div className="banner-title-head head__2">
+                      <h2>30 Days return</h2>
+                    </div>
+                    <div className="banner-content">
+                      <p>
+                        Skinny jeans trouser plaited clashing patterns maxi
+                        skirt green Lanvin headscarf. Street style dress printed
+                        nails Black 90s button up white shirt knitwear Paris.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+              <div className="col-lg-4 col-md-6 col-sm-6 col-xs-12">
+                <div className="single-banner text-center">
+                  <div className="banner-icon">
+                    <div className="hvr-icon-pulse-grow icon__reload__3">
+                      <i className="zmdi zmdi-lock"></i>
+                    </div>
+                  </div>
+                  <div className="banner-title-head head__3">
+                    <h2>30 Days return</h2>
+                  </div>
+                  <div className="banner-content">
+                    <p>
+                      Skinny jeans trouser plaited clashing patterns maxi skirt
+                      green Lanvin headscarf. Street style dress printed nails
+                      Black 90s button up white shirt knitwear Paris.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
       <div className="middle-discount-area">
         <div className="container">
           <div className="row">
@@ -185,7 +275,12 @@ const Home = () => {
         <div className="update-profile-popup update-password-popup">
           <div className="main__bodyDetail">
             <div className="modal-body">
-            <button className="btn__close__views" onClick={closeUpdateProductPopup}>X</button>
+              <button
+                className="btn__close__views"
+                onClick={closeUpdateProductPopup}
+              >
+                X
+              </button>
               <div className="modal-product">
                 <div className="product-images">
                   <div className="portfolio-thumbnil-area-2">
@@ -245,28 +340,40 @@ const Home = () => {
                           aria-controls="view1"
                           data-bs-toggle="tab"
                         >
-                          <img src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg" alt="" />
+                          <img
+                            src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg"
+                            alt=""
+                          />
                         </a>
                         <a
                           href="#view2"
                           aria-controls="view2"
                           data-bs-toggle="tab"
                         >
-                          <img src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg" alt="" />
+                          <img
+                            src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg"
+                            alt=""
+                          />
                         </a>
                         <a
                           href="#view3"
                           aria-controls="view3"
                           data-bs-toggle="tab"
                         >
-                          <img src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg" alt="" />
+                          <img
+                            src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg"
+                            alt=""
+                          />
                         </a>
                         <a
                           href="#view4"
                           aria-controls="view4"
                           data-bs-toggle="tab"
                         >
-                          <img src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg" alt="" />
+                          <img
+                            src="https://i.pinimg.com/564x/09/f0/df/09f0df81a9e264e0f7de6e72deb3ba7f.jpg"
+                            alt=""
+                          />
                         </a>
                       </div>
                     </div>
@@ -361,7 +468,6 @@ const Home = () => {
               </div>
             </div>
           </div>
-       
         </div>
       )}
       <div className="new-arrival-product-area hp1-napa pt-60">

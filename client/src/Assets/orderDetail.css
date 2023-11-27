@@ -2,13 +2,15 @@
   font-size: 14px;
   padding: 5px 12px;
   background-color: transparent;
-  color: #2f5acf;
+  color: #fff;
   border-radius: 23px;
-  border: 1px solid #2f5acf;
   font-weight: 400;
   width: -moz-fit-content;
   width: fit-content;
   white-space: nowrap;
+  background: #f00;
+  border: none;
+  margin-top: 10px;
 }
 
 .detail-order {
@@ -31,7 +33,7 @@ ul.detail-order-info__list {
   padding: 0;
   line-height: 1.8em;
   margin: 0;
-  min-width: 500px;
+  width: 100%;
 }
 
 ul.detail-order-info__list li {
@@ -51,6 +53,8 @@ ul.detail-order-info__list li {
 
 .detail-order-info__content {
   width: 70%;
+  display: flex;
+  align-items: center;
 }
 
 table.table {

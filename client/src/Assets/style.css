@@ -294,8 +294,7 @@ p {
 }
 
 .box-oder-carts {
-  padding-top: 31px;
-  border: 1px solid #cdcdcd;
+  padding: 30px 0; 
 }
 
 h4.brackham {
@@ -326,11 +325,13 @@ h4.brackham {
 .items-sort-ul {
   border-radius: 0px 10px 10px 10px;
   position: absolute;
-  top: 25px;
+  top: 40px;
   z-index: 99;
   width: max-content;
-  border: 1px solid black;
-  background: #000;
+  border: 1px solid #fff;
+  background: #2d2b2be8;
+  padding: 10px 0px;
+  box-shadow: rgb(247 247 247 / 35%) 0px 5px 15px;
 }
 
 .items-sort-ul li {
@@ -530,9 +531,11 @@ body {
   margin-top: 10px;
   padding-left: 0px;
 }
+
 .ant-row.ant-form-item-row.css-dev-only-do-not-override-amq5gd {
   display: block !important;
 }
+
 :where(.css-dev-only-do-not-override-amq5gd).ant-btn-primary {
   color: #fff;
   background-color: #088178 !important;
@@ -552,19 +555,23 @@ section.comment {
 .old__comment {
   width: 90%;
 }
-:where(.css-dev-only-do-not-override-amq5gd).ant-btn { 
+
+:where(.css-dev-only-do-not-override-amq5gd).ant-btn {
   height: 45px !important;
 }
+
 .rating__old__item .avt {
   width: 10%;
   text-align: center;
 }
+
 .avt img {
   width: 70px !important;
   height: 70px;
   border-radius: 100px;
   box-shadow: rgba(0, 0, 0, 0.35) 0px 5px 15px;
 }
+
 .ratings {
   display: flex;
   align-items: center;
@@ -589,19 +596,23 @@ section.comment {
 .categorySlider .slick-dots {
   bottom: 5px;
 }
+
 .modal-body {
   background: #fff;
   max-width: 800px;
 }
+
 .main__bodyDetail {
   height: 100%;
   display: flex;
   align-items: center;
   justify-content: center;
 }
+
 .categorySlider {
   padding: 30px 0px;
 }
+
 .btn__close__views {
   position: absolute;
   right: -15px;
@@ -613,11 +624,15 @@ section.comment {
   justify-content: center;
   align-items: center;
 }
-.quick-add-to-cart form {display: flex;align-items: center;}
+
+.quick-add-to-cart form {
+  display: flex;
+  align-items: center;
+}
 
 .quick-add-to-cart input {
-    text-align: center !important;
-    padding: 8px 10px !important;
+  text-align: center !important;
+  padding: 8px 10px !important;
 }
 
 .categorySlideItem {
@@ -650,6 +665,7 @@ section.comment {
   background: no-repeat;
   border: none !important;
 }
+
 .acticon__addtocart button {
   margin: 0;
   padding: 10px 20px;
@@ -659,9 +675,11 @@ section.comment {
   padding-top: 50px;
   gap: 20px;
 }
+
 .remove__item__product {
   margin: auto;
 }
+
 #navbar {
   display: flex;
   align-items: center;
@@ -1884,6 +1902,13 @@ button.btn__save {
 #cart table td:nth-child(3) {
   width: 250px;
   text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  padding: 0 20px;
+}
+
+.wrap__button button {
+  color: #fff !important;
 }
 
 #cart table td:nth-child(4),
@@ -2539,6 +2564,18 @@ button.btn__save {
   color: #fff;
 }
 
+.icon__reload i::before {
+  content: url(./iconreload.png);
+}
+
+.icon__reload__2 i::before {
+  content: url(./iconreload2.png);
+}
+.icon__reload__3 i::before{
+content: url(./iconreload3.png);
+}
+
+
 /* Media Query */
 @media (max-width: 799px) {
   .section-p1 {
@@ -2644,6 +2681,7 @@ button.btn__save {
   #form-details form {
     width: 50%;
   }
+
   .categorySlideItem {
     width: 50%;
   }
@@ -2653,6 +2691,7 @@ button.btn__save {
   .categorySlideItem {
     width: 100%;
   }
+
   .section-p1 {
     padding: 20px;
   }

@@ -1,7 +1,7 @@
 .account-page__content {
   flex: 1;
   background-color: #fff;
-  padding: 3.625rem 3.875rem;
+  padding: 0;
   border-radius: 0.5rem;
   overflow: hidden;
 }
@@ -33,7 +33,7 @@ a.order {
   justify-content: space-between;
   align-items: center;
   color: white;
-  background-color: #2f5acf;
+  background-color: #333;
   border-radius: 0.5rem;
   padding: 10px 30px;
   position: relative;
@@ -47,14 +47,15 @@ a.order {
   justify-content: space-between;
   align-items: center;
   color: white;
-  background-color: #2f5acf;
   border-radius: 0.5rem;
   padding: 10px 30px;
   position: relative;
   z-index: 2;
   box-sizing: border-box;
 }
-
+.order-footer__right {
+  color: #f00;
+}
 .order-header p {
   font-weight: bold;
   font-size: 1.1rem;
@@ -62,8 +63,6 @@ a.order {
   margin: 5px 0px !important;
 }
 
-.order-status-badge.order-status-badge-canceled {
-}
 
 .order-status-badge.order-status-badge-canceled {
   display: block;
@@ -79,7 +78,6 @@ a.order {
 .order-body {
   border: 1px solid #d9d9d9;
   background-color: rgb(232, 232, 232);
-  margin-top: -16px;
   position: relative;
   z-index: 1;
   padding-top: 16px;
@@ -108,6 +106,7 @@ a.order-item-title {
 
 .order-item-thumbnail a img {
   height: 145px;
+  width: 145px;
 }
 
 .order-footer {
