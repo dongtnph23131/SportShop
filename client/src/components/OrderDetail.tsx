@@ -10,7 +10,7 @@ const OrderDetail = () => {
 
   const [cancelOrder] = useCancelOrderMutation();
   return (
-    <div>
+    <div className="container">
       <div className="account-page__content">
         <div id="detail-order">
           <div className="thank-box">

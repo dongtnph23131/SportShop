@@ -7,7 +7,7 @@ const OrderClient = () => {
   const { data: orders } = useGetOrderByUserQuery(token);
 
   return (
-    <div>
+    <div className="container">
       <div className="box-oder-carts">
         <div className="account-page__content">
           <div>
