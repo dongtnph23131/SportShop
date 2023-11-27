@@ -1,3 +1,4 @@
+import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import { SwitchGroup, SwitchGroupItem } from "@/components/switch-group";
 import TablePagination from "@/components/table-pagination";
@@ -48,6 +49,7 @@ import useRouterStuff from "@/lib/hooks/use-router-stuff";
 import { queryClient } from "@/lib/react-query";
 import { cn, formatPrice } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 import { useOrdersQuery } from "@/services/orders/orders-query";
 
 import { Order, OrderStatus } from "@/types/base";
@@ -73,16 +75,23 @@ const renderStatus = (status: OrderStatus) => {
 const Page: NextPageWithLayout = () => {
   const { data: orders } = useOrdersQuery();
   const { queryParams, searchParams } = useRouterStuff();
+  const { data: allOrders } = useAllOrdersQuery();
 
   const date = searchParams.get("date");
 
   return (
     <>
       <Card>
-        <CardHeader>
-          <CardTitle>Orders</CardTitle>
-          <CardDescription>Here&apos;s a list of the orders!</CardDescription>
-        </CardHeader>
+        <div className="flex justify-between p-6">
+          <CardHeader className="p-0">
+            <CardTitle>Orders</CardTitle>
+            <CardDescription>Here&apos;s a list of the orders!</CardDescription>
+          </CardHeader>
+          <ExportCSVButton
+            csvData={JSON.stringify(allOrders)}
+            fileName="orders"
+          />
+        </div>
 
         <CardContent>
           <div className="flex items-center gap-2 mb-4">

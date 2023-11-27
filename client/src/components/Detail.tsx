@@ -36,7 +36,9 @@ const Detail = () => {
   const [dataCategories, setDataCategories] = useState<any>([]);
   const navigate = useNavigate();
   const { data: orders } = useGetOrderByUserQuery(token);
-  const isMatch = orders?.orders?.map((item: any) => {
+  const isMatch = orders?.orders?.filter((item:any)=>{
+     return item.status==="Completed"
+  }).map((item: any) => {
     const isCheck = item.items.find(
       (itemChild: any) => itemChild.productId._id === id
     );

@@ -12,6 +12,7 @@ import { ProfileForm } from "@/components/profile-form";
 import { Separator } from "@/components/ui/separator";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { useProfileQuery } from "@/services/profile/profile-query";
+import BannerManagement from "@/components/banner-management";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -46,6 +47,8 @@ const Page: NextPageWithLayout = () => {
           </div>
         </CardContent>
       </Card>
+
+      <BannerManagement />
     </>
   );
 };

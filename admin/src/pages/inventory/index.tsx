@@ -1,4 +1,5 @@
 import { EditProductVariantDialog } from "@/components/edit-product-variant-dialog";
+import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import TablePagination from "@/components/table-pagination";
 import { Badge } from "@/components/ui/badge";
@@ -35,7 +36,7 @@ import { useInventoryQuery } from "@/services/inventory/inventory-query";
 import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
-  const { queryParams, searchParams } = useRouterStuff();
+  const { queryParams } = useRouterStuff();
   const { data: productVariants } = useInventoryQuery();
 
   return (
@@ -46,9 +47,15 @@ const Page: NextPageWithLayout = () => {
             <CardTitle>Inventory</CardTitle>
             <CardDescription>Here&apos;s a list of inventory!</CardDescription>
           </CardHeader>
-          <Button asChild>
-            <Link href={"/products"}>View products</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <ExportCSVButton
+              csvData={JSON.stringify(productVariants?.docs)}
+              fileName="inventory"
+            />
+            <Button asChild>
+              <Link href={"/products"}>View products</Link>
+            </Button>
+          </div>
         </div>
         <CardContent>
           <Input

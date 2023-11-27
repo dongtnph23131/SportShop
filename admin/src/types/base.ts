@@ -133,6 +133,20 @@ export interface Comment {
   updatedAt: string;
 }
 
+export enum BannerStatus {
+  ACTIVE = "Active",
+  INACTIVE = "Inactive",
+}
+
+export interface Banner {
+  _id: string;
+  name: string;
+  image: string;
+  status: BannerStatus;
+  createdAt: string;
+  updatedAt: string;
+}
+
 export interface Pagination {
   totalDocs: number;
   limit: number;
