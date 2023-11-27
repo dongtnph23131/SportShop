@@ -1,5 +1,6 @@
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import {
   AlertDialog,
@@ -38,6 +39,7 @@ import { Product } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
+import * as XLSX from "xlsx";
 
 const Page: NextPageWithLayout = () => {
   const { data: products } = useProductsQuery();
@@ -184,9 +186,15 @@ const Page: NextPageWithLayout = () => {
               Here&apos;s a list of your products!
             </CardDescription>
           </CardHeader>
-          <Button asChild>
-            <Link href="/products/add">Add Product</Link>
-          </Button>
+          <div className="flex gap-2 items-center">
+            <ExportCSVButton
+              csvData={JSON.stringify(products)}
+              fileName="products"
+            />
+            <Button asChild>
+              <Link href="/products/add">Add Product</Link>
+            </Button>
+          </div>
         </div>
         <CardContent>
           <DataTable data={products ?? []} columns={columns} />

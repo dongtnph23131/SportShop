@@ -36,6 +36,7 @@ import { Category } from "@/types/base";
 import { useCategoryDeleteMutation } from "@/services/categories/category-delete-mutation";
 import { queryClient } from "@/lib/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { ExportCSVButton } from "@/components/export-button";
 
 interface Collection {
   name: string;
@@ -162,9 +163,15 @@ const Page: NextPageWithLayout = () => {
               Here&apos;s a list of your products!
             </CardDescription>
           </CardHeader>
-          <Button asChild>
-            <Link href="/categories/add">New Collection</Link>
-          </Button>
+          <div className="flex items-center gap-2">
+            <ExportCSVButton
+              csvData={JSON.stringify(categories)}
+              fileName="categories"
+            />
+            <Button asChild>
+              <Link href="/categories/add">New Collection</Link>
+            </Button>
+          </div>
         </div>
         <CardContent>
           <DataTable columns={columns} data={categories ?? []} />

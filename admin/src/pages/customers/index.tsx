@@ -1,5 +1,6 @@
 import { DataTable } from "@/components/data-table/data-table";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
+import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import {
   AlertDialog,
@@ -170,6 +171,10 @@ const Page: NextPageWithLayout = () => {
             <CardTitle>Customers</CardTitle>
             <CardDescription>Here&apos;s a list of customers!</CardDescription>
           </CardHeader>
+          <ExportCSVButton
+            csvData={JSON.stringify(customers)}
+            fileName="customers"
+          />
         </div>
         <CardContent>
           <DataTable data={customers ?? []} columns={columns} />
