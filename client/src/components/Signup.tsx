@@ -21,7 +21,7 @@ const schema = yup.object().shape({
     .required("Cần nhập lại mật khẩu"),
 });
 const Signup = () => {
-  const [signup, { isLoading }] = useSignupMutation();
+  const [signup] = useSignupMutation();
   const {
     register,
     handleSubmit,

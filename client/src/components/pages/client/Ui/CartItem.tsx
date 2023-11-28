@@ -25,7 +25,8 @@ const CartItem = ({ item }: any) => {
   return (
     <tr>
       <td>
-        <button className="remove__item__product"
+        <button
+          className="remove__item__product"
           onClick={async () => {
             if (confirm("Bạn có muốn xóa sản phẩm này k ?")) {
               await removeItem({ cartItemId: item._id, token });
@@ -67,7 +68,7 @@ const CartItem = ({ item }: any) => {
               addCart({
                 productVariantIds: item?.productVariantIds?._id,
                 token,
-                quantity:1,
+                quantity: 1,
               })
             }
           >

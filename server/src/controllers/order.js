@@ -70,7 +70,7 @@ export const getOrderByUser = async (req, res) => {
     const user = req.user;
     const orders = await Order.find({ customerId: user._id }).populate(
       "items.productId items.productVariantId"
-    );
+    ).sort({ createdAt: -1 });;
     return res.status(200).json({
       message: "Lấy đơn hàng của tài khoản thành công",
       orders,

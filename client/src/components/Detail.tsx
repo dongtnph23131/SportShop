@@ -1,4 +1,4 @@
-import { Link, useNavigate, useParams } from "react-router-dom";
+import {  useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
@@ -24,40 +24,39 @@ import { useGetOrderByUserQuery } from "../api/order";
 const Detail = () => {
   const { id } = useParams();
   const token = Cookies.get("token");
-  const { data: product, isLoading } = useGetProductQuery(id);
+  const { data: product } = useGetProductQuery(id);
   const [addItemToCart] = useAddItemCartMutation();
   const [selectedAttributes, setSelectedAttributes] = useState<any>({});
   const [selectedImage, setSelectedImage] = useState<number>(0);
-  const [sort, setSort] = useState<String>();
-  const [order, setOrder] = useState<String>();
   const [page, setPage] = useState<any>(1);
   const { data } = useGetAllCommentByProductQuery(id);
   const [raiting, setRaiting] = useState<any>(0);
-  const [dataCategories, setDataCategories] = useState<any>([]);
   const navigate = useNavigate();
   const { data: orders } = useGetOrderByUserQuery(token);
-  const isMatch = orders?.orders?.filter((item:any)=>{
-     return item.status==="Completed"
-  }).map((item: any) => {
-    const isCheck = item.items.find(
-      (itemChild: any) => itemChild.productId._id === id
-    );
-    return isCheck ? true : false;
-  });
+  const isMatch = orders?.orders
+    ?.filter((item: any) => {
+      return item.status === "Completed";
+    })
+    .map((item: any) => {
+      const isCheck = item.items.find(
+        (itemChild: any) => itemChild.productId._id === id
+      );
+      return isCheck ? true : false;
+    });
 
-  const { data: products, isLoading: isLoadingProducts } =
+  const { data: products} =
     useGetAllProductsQuery({
-      sort,
-      order,
-      dataCategories,
+      sort:'createdAt',
+      order:'asc',
+      dataCategories:[],
       page,
       limit: 4,
     });
   const [createComment] = useCreateCommentMutation();
   const { data: productsNoPage } = useGetAllProductsQuery({
-    sort,
-    order,
-    dataCategories,
+    sort:'createdAt',
+    order:'asc',
+    dataCategories:[],
   });
   const selectedVariant = product?.productVariantIds.find((item: any) =>
     item.options.every((option: any) =>
@@ -326,20 +325,14 @@ const Detail = () => {
               >
                 <img src={`${product?.images[0].url}`} alt="" />
                 <div className="des">
-                  <span>adidas</span>
+                  <span>{product?.categoryId?.name}</span>
                   <h5>{product.name}</h5>
-                  <div className="star">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
                   <h4>
                     ${product.minPrice}-${product.maxPrice}
                   </h4>
                 </div>
-                <a href="#">
+                <Rate value={product?.raitings} disabled />
+                <a>
                   <i className="fab fa-opencart cart"></i>
                 </a>
               </div>

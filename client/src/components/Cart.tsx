@@ -29,7 +29,7 @@ const Cart = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [createOrder, { isLoading }] = useCreateOrderMutation();
+  const [createOrder] = useCreateOrderMutation();
   const token = Cookies.get("token");
   const [payMomo] = usePayMomoMutation();
   const { data: addresses } = useGetAddressByAcountQuery(token);
@@ -63,7 +63,7 @@ const Cart = () => {
       email: Cookies.get("email"),
     };
     if (data.typePayment === "Online") {
-      const response: any = await payMomo({...order,token});
+      const response: any = await payMomo({ ...order, token });
       if (response) {
         window.location.href = response?.data?.payUrl;
       }
@@ -81,15 +81,6 @@ const Cart = () => {
   };
   const handleAddressModalCancel = () => {
     setAddressModalVisible(false);
-  };
-  const [isEditFormVisible, setEditFormVisible] = useState(false);
-
-  const showEditForm = () => {
-    setEditFormVisible(true);
-  };
-
-  const handleEditFormCancel = () => {
-    setEditFormVisible(false);
   };
   useEffect(() => {
     reset(

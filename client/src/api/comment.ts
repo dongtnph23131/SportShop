@@ -9,9 +9,9 @@ const commentApi = createApi({
       query: (productId: any) => {
         return `/comments/${productId}`;
       },
-      providesTags:['Comment']
+      providesTags: ["Comment"],
     }),
-    createComment: builder.mutation<any,any>({
+    createComment: builder.mutation<any, any>({
       query: ({ token, comment }) => {
         return {
           url: "/comments",
@@ -22,9 +22,10 @@ const commentApi = createApi({
           },
         };
       },
-      invalidatesTags:["Comment"]
+      invalidatesTags: ["Comment"],
     }),
   }),
 });
-export const { useGetAllCommentByProductQuery,useCreateCommentMutation } = commentApi;
+export const { useGetAllCommentByProductQuery, useCreateCommentMutation } =
+  commentApi;
 export default commentApi;

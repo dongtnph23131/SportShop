@@ -2,7 +2,7 @@ import React, { useEffect, useState } from "react";
 import { useGetAllProductsQuery } from "../api/product";
 import { getCategories } from "../api/category";
 import { useNavigate } from "react-router-dom";
-import { Pagination } from "antd";
+import { Pagination, Rate } from "antd";
 import "../../../client/src/Assets/css/bao.css";
 const Shops = () => {
   const [isFilterVisible, setIsFilterVisible] = useState(false);
@@ -18,7 +18,7 @@ const Shops = () => {
     order,
     dataCategories,
     page,
-    limit: 12,
+    limit: 8,
   });
   const { data: productsNoPage } = useGetAllProductsQuery({
     sort,
@@ -225,57 +225,72 @@ const Shops = () => {
             )}
           </div>
         </div>
-        <div className="pro-container">
-          {products?.map((product: any, index: any) => {
-            return (
-              <div
-                onClick={() => {
-                  navigate(`/products/${product._id}`);
-                }}
-                className="pro"
-                key={index + 1}
-              >
-                <div className="qiezzz">
-                  <img src={`${product?.images[0].url}`} alt="" />
-                  <a
-                    className="btn-def btn-product-qview q-view"
-                    data-bs-toggle="modal"
-                    data-bs-target=".modal"
-                    href="#"
-                  >
-                    <i className=" product-search fa fa-search"></i> quick View
-                  </a>
-                </div>
+        {isLoading ? (
+          <p>Loading ...</p>
+        ) : (
+          <>
+            {products?.length > 0 ? (
+              <>
+                <div className="pro-container">
+                  {products?.map((product: any, index: any) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          navigate(`/products/${product._id}`);
+                        }}
+                        className="pro"
+                        key={index + 1}
+                      >
+                        <div className="qiezzz">
+                          <img src={`${product?.images[0].url}`} alt="" />
+                          <a
+                            className="btn-def btn-product-qview q-view"
+                            data-bs-toggle="modal"
+                            data-bs-target=".modal"
+                            href="#"
+                          >
+                            <i className=" product-search fa fa-search"></i>{" "}
+                            quick View
+                          </a>
+                        </div>
 
-                <div className="des">
-                  <span>adidas</span>
-                  <h5>{product.name}</h5>
-                  <div className="star">
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                    <i className="fas fa-star"></i>
-                  </div>
-                  <h4>
-                    {product.minPrice === product.maxPrice
-                      ? `${product.maxPrice}$`
-                      : `${product.minPrice}$-${product.maxPrice}$`}
-                  </h4>
+                        <div className="des">
+                          <span>{product?.categoryId?.name}</span>
+                          <h5>{product.name}</h5>
+                          <h4>
+                            {product.minPrice === product.maxPrice
+                              ? `${product.maxPrice}$`
+                              : `${product.minPrice}$-${product.maxPrice}$`}
+                          </h4>
+                        </div>
+                        <Rate value={product?.raitings} disabled />
+                        <a>
+                          <i className="fab fa-opencart cart"></i>
+                        </a>
+                      </div>
+                    );
+                  })}
                 </div>
-                <a href="#">
-                  <i className="fab fa-opencart cart"></i>
-                </a>
-              </div>
-            );
-          })}
-        </div>
-        <Pagination
-          defaultCurrent={page}
-          onChange={(value) => setPage(value)}
-          total={productsNoPage?.length}
-          pageSize={12}
-        />
+                <Pagination
+                  defaultCurrent={page}
+                  onChange={(value) => setPage(value)}
+                  total={productsNoPage?.length}
+                  pageSize={8}
+                />
+              </>
+            ) : (
+              <>
+                <div className="cart__zero">
+                  <div className="icon__cart__0">
+                    {" "}
+                    <img src="../../src/Assets/icon__cart__0.png" alt="" />
+                  </div>
+                  <h3>Không có sản phẩm nào phù hợp</h3>
+                </div>
+              </>
+            )}
+          </>
+        )}
       </section>
     </div>
   );

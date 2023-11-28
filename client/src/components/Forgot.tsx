@@ -1,4 +1,3 @@
-import React from "react";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -20,7 +19,7 @@ const Forgot = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [forgotPassword, { isLoading }] = useForgotPasswordMutation();
+  const [forgotPassword] = useForgotPasswordMutation();
   const onSubmit = async (value: any) => {
     const data: any = await forgotPassword(value);
     if (data?.data) {

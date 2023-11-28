@@ -4,13 +4,13 @@ export const getCategories = () => {
 };
 export const getCategoryById = (_id: any, sort: any, order: any, page: any) => {
   return instance.get(
-    `/categories/${_id}?&_limit=4&_page=${page}${sort ? `&_sort=${sort}` : ``}${
+    `/categories/${_id}?&_limit=8&_page=${page}${sort ? `&_sort=${sort}` : ``}${
       order ? `&_order=${order}` : ``
     }`
   );
 };
-export const getCategoryDetail = (id:any) => {
-  return instance.get(`/categories/detail/${id}`)
+export const getCategoryDetail = (id: any) => {
+  return instance.get(`/categories/detail/${id}`);
 };
 export const addCategory = (category: any) => {
   return instance.post("/categories", category);

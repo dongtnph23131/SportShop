@@ -4,7 +4,7 @@ import Header from "./Header";
 import Footer from "./Footer";
 
 // import css
-import"../Assets/css/meanmenu.css";
+import "../Assets/css/meanmenu.css";
 import "../Assets/Header.css";
 import "../Assets/utilities.css";
 import "../Assets/Footer.css";

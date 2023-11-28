@@ -1,4 +1,3 @@
-import React from "react";
 import Swal from "sweetalert2";
 import * as yup from "yup";
 import { yupResolver } from "@hookform/resolvers/yup";
@@ -17,15 +16,11 @@ const schema = yup.object().shape({
     .required("Cần nhập lại mật khẩu"),
 });
 const ForgotToken = () => {
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm({
+  const { register, handleSubmit } = useForm({
     resolver: yupResolver(schema),
   });
   const navigate = useNavigate();
-  const [resetPassword, { isLoading }] = useResettPasswordMutation();
+  const [resetPassword] = useResettPasswordMutation();
   const onSubmit = async (value: any) => {
     const data: any = await resetPassword(value);
     if (data?.data) {
@@ -69,19 +64,6 @@ const ForgotToken = () => {
 
             <div className="input-box">
               <input type="submit" className="input-submit" />
-            </div>
-            <div className="middle-text">
-              <hr />
-              <p className="or-text">Or</p>
-            </div>
-            <div className="social-sign-in">
-              <button className="input-google">
-                <i className="fab fa-google"></i>
-                <p>Sign In with Google</p>
-              </button>
-              <button className="input-twitter">
-                <i className="fab fa-twitter"></i>
-              </button>
             </div>
             <div className="sign-up">
               <p>
