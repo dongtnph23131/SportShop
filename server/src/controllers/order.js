@@ -6,6 +6,7 @@ import { orderSchema } from "../validators/order";
 import Cart from "../models/cart";
 import Customer from "../models/customer";
 import { generateRandomString } from "../libs/utils";
+import { sendEmail } from "./sendMail";
 
 export const create = async (req, res) => {
   try {
@@ -55,6 +56,11 @@ export const create = async (req, res) => {
     const cart = await Cart.findOne({ customerId: user._id });
     cart.items = [];
     await cart.save({ validateBeforeSave: false });
+        const emailSubject = 'Xác nhận đặt hàng thành công';
+        const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;
+        const customerName = `${user.firstName} ${user.lastName}`;
+        const orderHtmlContent = await generateOrderHtmlContent(order);
+        await sendEmail(user.email, emailSubject, emailContent, customerName, orderHtmlContent);
     return res.status(200).json({
       message: "Đặt hàng thành công",
       order,
@@ -64,7 +70,43 @@ export const create = async (req, res) => {
       message: error.message,
     });
   }
+  
 };
+const generateOrderHtmlContent = async (order) => {
+  const itemsHtml = await Promise.all(
+    order.items.map(async (item) => {
+      const productVariant = await ProductVariant.findById(
+        item.productVariantId
+      );
+      const product = await Product.findById(item.productId);
+      if (!isNaN(productVariant.price) && !isNaN(item.quantity)) {
+        const totalPrice = productVariant.price * item.quantity;
+        
+        return `
+        <div style="margin: 2px 0; padding: 2px;">
+          <p style="color: black"><strong>Sản phẩm:</strong> ${product.name}</p>
+          <p style="color: black"><strong>Biến thể:</strong> ${productVariant.name}</p>
+          <p style="color: black"><strong>Số lượng:</strong> ${item.quantity}</p>
+          <p style="color: black"><strong>Giá:</strong> ${totalPrice.toFixed(2)} $</p>
+        </div>
+        `;
+      } else {
+        return `<p>Không thể tính giá. Kiểm tra dữ liệu đầu vào.</p>`;
+      }
+    })
+  );
+
+  const orderHtmlContent = `
+    <h4 style="color: black">Chi tiết đơn hàng:</h4>
+    ${itemsHtml.join('')}
+    <p style="color: black"><strong>Tổng cộng:</strong> ${order.orderTotalPrice.toFixed(2)} $</p>
+  `;
+
+  return orderHtmlContent;
+};
+
+
+
 export const getOrderByUser = async (req, res) => {
   try {
     const user = req.user;
