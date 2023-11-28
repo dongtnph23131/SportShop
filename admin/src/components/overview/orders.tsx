@@ -1,7 +1,6 @@
 import {
-  Bar,
-  BarChart,
-  Legend,
+  Line,
+  LineChart,
   ResponsiveContainer,
   Tooltip,
   XAxis,
@@ -61,7 +60,7 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
       </CardHeader>
       <CardContent className="pl-2">
         <ResponsiveContainer width="100%" height={350}>
-          <BarChart data={data}>
+          <LineChart data={data}>
             <XAxis
               dataKey="name"
               stroke="#888888"
@@ -77,9 +76,8 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
               tickFormatter={(value) => `${value}`}
             />
             <Tooltip />
-
-            <Bar dataKey="total" fill="#65c7f2" radius={[4, 4, 0, 0]} label />
-          </BarChart>
+            <Line type="monotone" dataKey="total" stroke="#82ca9d" />
+          </LineChart>
         </ResponsiveContainer>
       </CardContent>
     </Card>
