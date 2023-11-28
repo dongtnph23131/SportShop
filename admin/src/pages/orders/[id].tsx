@@ -3,7 +3,11 @@ import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { NextPageWithLayout } from "@/pages/_app";
-import { OrderPaymentStatus, OrderStatus } from "@/types/base";
+import {
+  OrderDeliveryStatus,
+  OrderPaymentStatus,
+  OrderStatus,
+} from "@/types/base";
 import { format } from "date-fns";
 import {
   TableHead,
@@ -21,6 +25,16 @@ import { toast } from "sonner";
 import axiosClient from "@/lib/axios-instance";
 import { queryClient } from "@/lib/react-query";
 import { formatPrice } from "@/lib/utils";
+import {
+  Dialog,
+  DialogContent,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Label } from "@/components/ui/label";
+import { Input } from "@/components/ui/input";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -273,7 +287,7 @@ const Page: NextPageWithLayout = () => {
                 </div>
               </CardContent>
             </Card>
-            {/* <Card className="mt-4">
+            <Card className="mt-4">
               <CardHeader>
                 <CardTitle>Shipping</CardTitle>
               </CardHeader>
@@ -281,85 +295,57 @@ const Page: NextPageWithLayout = () => {
                 <div className="mt-4 flex items-center justify-between text-sm mb-4">
                   <dt className="leading-6 text-gray-900">Status:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {order.deliveryStatus}
+                    {order.deliveryStatus === OrderDeliveryStatus.SHIPPED ? (
+                      <Badge variant="success">Shipped</Badge>
+                    ) : (
+                      <Badge variant="default">{order.deliveryStatus}</Badge>
+                    )}
                   </dd>
                 </div>
                 {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
-                  <Dialog>
-                    <DialogTrigger asChild>
-                      <Button
-                      // onClick={async () => {
-                      //   const res = await fetch(
-                      //     `${API_URL}/api/admin/orders/${order._id}/pay`,
-                      //     { method: "POST" }
-                      //   );
+                  <Button
+                    onClick={async () => {
+                      const res = await axiosClient.post(
+                        `/orders/${order._id}/ship/status`,
+                        { status: OrderDeliveryStatus.SHIPPING }
+                      );
 
-                      //   if (!res.ok) {
-                      //     const error = await res.text();
-                      //     toast.error(error);
-                      //     return;
-                      //   }
+                      if (res.status !== 200) {
+                        const error = res.data.message;
+                        toast.error(error);
+                        return;
+                      }
 
-                      //   toast.success("Successfully mask as paid");
-                      // }}
-                      >
-                        Create Delivery
-                      </Button>
-                    </DialogTrigger>
-                    <DialogContent>
-                      <DialogHeader>
-                        <DialogTitle>Create delivery</DialogTitle>
-                      </DialogHeader>
-                      <div className="grid gap-4 py-4">
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="weight" className="text-right">
-                            Khối lượng
-                          </Label>
-                          <Input
-                            id="weight"
-                            type="number"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="username" className="text-right">
-                            Giao hàng bằng
-                          </Label>
-                          <Input
-                            id="username"
-                            defaultValue="@peduarte"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="username" className="text-right">
-                            Số tiền thu hộ
-                          </Label>
-                          <Input
-                            id="username"
-                            defaultValue="@peduarte"
-                            className="col-span-3"
-                          />
-                        </div>
-                        <div className="grid grid-cols-4 items-center gap-4">
-                          <Label htmlFor="username" className="text-right">
-                            Ghi chú
-                          </Label>
-                          <Input
-                            id="username"
-                            defaultValue="@peduarte"
-                            className="col-span-3"
-                          />
-                        </div>
-                      </div>
-                      <DialogFooter>
-                        <Button type="submit">Giao hàng</Button>
-                      </DialogFooter>
-                    </DialogContent>
-                  </Dialog>
+                      toast.success("Successfully ship this order");
+                      queryClient.invalidateQueries({ queryKey: ["orders"] });
+                    }}
+                  >
+                    Ship
+                  </Button>
+                )}
+                {order.deliveryStatus === OrderDeliveryStatus.SHIPPING && (
+                  <Button
+                    onClick={async () => {
+                      const res = await axiosClient.post(
+                        `/orders/${order._id}/ship/status`,
+                        { status: OrderDeliveryStatus.SHIPPED }
+                      );
+
+                      if (res.status !== 200) {
+                        const error = res.data.message;
+                        toast.error(error);
+                        return;
+                      }
+
+                      toast.success("Successfully ship this order");
+                      queryClient.invalidateQueries({ queryKey: ["orders"] });
+                    }}
+                  >
+                    Mask as delivered
+                  </Button>
                 )}
               </CardContent>
-            </Card> */}
+            </Card>
           </div>
         </>
       ) : (
@@ -372,3 +358,64 @@ const Page: NextPageWithLayout = () => {
 Page.getLayout = LayoutAdmin;
 
 export default Page;
+
+// <Dialog>
+//   <DialogTrigger asChild>
+//     <Button
+//     // onClick={async () => {
+//     //   const res = await fetch(
+//     //     `${API_URL}/api/admin/orders/${order._id}/pay`,
+//     //     { method: "POST" }
+//     //   );
+
+//     //   if (!res.ok) {
+//     //     const error = await res.text();
+//     //     toast.error(error);
+//     //     return;
+//     //   }
+
+//     //   toast.success("Successfully mask as paid");
+//     // }}
+//     >
+//       Create Delivery
+//     </Button>
+//   </DialogTrigger>
+//   <DialogContent>
+//     <DialogHeader>
+//       <DialogTitle>Create delivery</DialogTitle>
+//     </DialogHeader>
+//     <div className="grid gap-4 py-4">
+//       <div className="grid grid-cols-4 items-center gap-4">
+//         <Label htmlFor="weight" className="text-right">
+//           Khối lượng
+//         </Label>
+//         <Input
+//           id="weight"
+//           type="number"
+//           className="col-span-3"
+//         />
+//       </div>
+//       <div className="grid grid-cols-4 items-center gap-4">
+//         <Label htmlFor="username" className="text-right">
+//           Giao hàng bằng
+//         </Label>
+//         <Input id="username" className="col-span-3" />
+//       </div>
+//       <div className="grid grid-cols-4 items-center gap-4">
+//         <Label htmlFor="username" className="text-right">
+//           Số tiền thu hộ
+//         </Label>
+//         <Input id="username" className="col-span-3" />
+//       </div>
+//       <div className="grid grid-cols-4 items-center gap-4">
+//         <Label htmlFor="username" className="text-right">
+//           Ghi chú
+//         </Label>
+//         <Input id="username" className="col-span-3" />
+//       </div>
+//     </div>
+//     <DialogFooter>
+//       <Button type="submit">Giao hàng</Button>
+//     </DialogFooter>
+//   </DialogContent>
+// </Dialog>

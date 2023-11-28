@@ -86,9 +86,43 @@ router.post("/:id/pay", async (req, res) => {
     }
 
     const updatedOrder = await Order.findByIdAndUpdate(id, {
-      status: "Completed",
       paymentStatus: "Paid",
     });
+
+    if (order.deliveryStatus === "Shipped") {
+      await Order.findByIdAndUpdate(id, {
+        status: "Completed",
+      });
+    }
+
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/:id/ship/status", async (req, res) => {
+  try {
+    const { status } = req.body;
+    const { id } = req.params;
+
+    const order = await Order.findById(id);
+
+    if (order.status === "Canceled" || order.paymentStatus === "Canceled") {
+      return res.status(500).end("This order was canceled!");
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(id, {
+      deliveryStatus: status,
+    });
+
+    if (order.paymentStatus === "Paid") {
+      await Order.findByIdAndUpdate(id, {
+        status: "Completed",
+      });
+    }
 
     return res.status(200).json(updatedOrder);
   } catch (error) {
