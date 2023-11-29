@@ -8,7 +8,12 @@ export const ORDER_DELIVERY_STATUS = [
   "Shipped",
   "Canceled",
 ];
-export const ORDER_PAYMENT_STATUS = ["Not paid", "Paid", "Refunded","Canceled"];
+export const ORDER_PAYMENT_STATUS = [
+  "Not paid",
+  "Paid",
+  "Refunded",
+  "Canceled",
+];
 export const ORDER_PAYMENT = ["Online", "Direct"];
 
 const orderSchema = mongoose.Schema(
@@ -80,6 +85,11 @@ const orderSchema = mongoose.Schema(
       type: String,
       enum: ORDER_PAYMENT,
       require: true,
+    },
+    managerId: {
+      type: mongoose.Types.ObjectId,
+      require: true,
+      ref: "User",
     },
     items: [
       {

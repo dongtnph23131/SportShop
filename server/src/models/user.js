@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-export const role = ["staff", "admin"];
+export const role = ["shipper", "staff", "admin"];
 
 const userSchema = new mongoose.Schema(
   {
@@ -29,6 +29,12 @@ const userSchema = new mongoose.Schema(
       default:
         "https://res.cloudinary.com/dtsfrv4lf/image/upload/v1696781478/SportShop/c6e56503cfdd87da299f72dc416023d4-736x620_dgtvuh.jpg",
     },
+    orders: [
+      {
+        type: mongoose.Schema.Types.ObjectId,
+        ref: "Order",
+      },
+    ],
   },
   {
     timestamps: true,
