@@ -1,7 +1,13 @@
 import nodemailer from "nodemailer";
 
-export const sendEmail = async (to, subject, text, customerName, orderHtmlContent) => {
-    const htmlContent = `
+export const sendEmail = async (
+  to,
+  subject,
+  text,
+  customerName,
+  orderHtmlContent
+) => {
+  const htmlContent = `
     <div style="display: flex; justify-content: center; color: black;">
     <div style="color: black; margin: auto;">
       <img src="https://i.imgur.com/QKplh0e.jpg" alt="Logo" style="max-width: 250px; max-height: 250px; margin: auto; display: block;">

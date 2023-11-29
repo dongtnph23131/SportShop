@@ -8,6 +8,8 @@ import Product from "../models/product";
 import Cart from "../models/cart";
 import CartItem from "../models/cartItem";
 import { generateRandomString } from "../libs/utils";
+import { sendEmail } from "./sendMail";
+import { generateOrderHtmlContent } from "./order";
 
 export const PayMomo = (req, res) => {
   const body = req.body;
@@ -156,5 +158,16 @@ export const MomoSuccess = async (req, res) => {
   const cart = await Cart.findOne({ customerId: user._id });
   cart.items = [];
   await cart.save({ validateBeforeSave: false });
+  const emailSubject = "Xác nhận đặt hàng thành công";
+  const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;
+  const customerName = `${user.firstName} ${user.lastName}`;
+  const orderHtmlContent = await generateOrderHtmlContent(order);
+  await sendEmail(
+    user.email,
+    emailSubject,
+    emailContent,
+    customerName,
+    orderHtmlContent
+  );
   res.redirect("http://localhost:5173/OrderClient");
 };
