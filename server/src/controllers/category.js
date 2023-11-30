@@ -107,7 +107,7 @@ export const update = async (req, res) => {
 
 export const getDetail = async (req, res) => {
   try {
-    const data = await Category.findById(req.params.id);
+    const data = await Category.findById(req.params.id).populate('productIds');
     return res.json(data);
   } catch (error) {
     return res.status(400).json({

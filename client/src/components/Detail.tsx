@@ -1,6 +1,6 @@
-import {  useNavigate, useParams } from "react-router-dom";
+import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
-import { useGetAllProductsQuery, useGetProductQuery } from "../api/product";
+import { useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation } from "../api/cart";
 
@@ -20,6 +20,7 @@ import {
 import Swal from "sweetalert2";
 import { useForm } from "antd/es/form/Form";
 import { useGetOrderByUserQuery } from "../api/order";
+import { getCategoryDetail } from "../api/category";
 
 const Detail = () => {
   const { id } = useParams();
@@ -32,6 +33,28 @@ const Detail = () => {
   const { data } = useGetAllCommentByProductQuery(id);
   const [raiting, setRaiting] = useState<any>(0);
   const navigate = useNavigate();
+  const [products, setProducts] = useState<any>([]);
+  const [productsNoPage, setProductsNoPage] = useState<any>([]);
+  useEffect(() => {
+    if (product) {
+      getCategoryDetail(product.categoryId).then((data) => {
+        setProducts(
+          data?.data?.productIds
+            .filter((item: any) => {
+              return item._id !== id;
+            })
+            .slice((page - 1) * 4, page * 4)
+        );
+      });
+      getCategoryDetail(product.categoryId).then((data) => {
+        setProductsNoPage(
+          data?.data?.productIds.filter((item: any) => {
+            return item._id !== id;
+          })
+        );
+      });
+    }
+  }, [product, page]);
   const { data: orders } = useGetOrderByUserQuery(token);
   const isMatch = orders?.orders
     ?.filter((item: any) => {
@@ -43,21 +66,7 @@ const Detail = () => {
       );
       return isCheck ? true : false;
     });
-
-  const { data: products} =
-    useGetAllProductsQuery({
-      sort:'createdAt',
-      order:'asc',
-      dataCategories:[],
-      page,
-      limit: 4,
-    });
   const [createComment] = useCreateCommentMutation();
-  const { data: productsNoPage } = useGetAllProductsQuery({
-    sort:'createdAt',
-    order:'asc',
-    dataCategories:[],
-  });
   const selectedVariant = product?.productVariantIds.find((item: any) =>
     item.options.every((option: any) =>
       Object.values(selectedAttributes).includes(option)
@@ -255,7 +264,9 @@ const Detail = () => {
                         <div className="ratings">
                           <Rate disabled value={item.raiting} />
                         </div>
-                        <div className="date__comment">{item.createdAt}</div>
+                        <div className="date__comment">
+                          {new Date(item?.createdAt).toLocaleString()}
+                        </div>
                       </div>
                       <div className="last__comment">{item.content}</div>
                     </div>
@@ -341,8 +352,8 @@ const Detail = () => {
         </div>
         <Pagination
           defaultCurrent={page}
-          onChange={(value) => setPage(value)}
           total={productsNoPage?.length}
+          onChange={(value) => setPage(value)}
           pageSize={4}
         />
       </section>
