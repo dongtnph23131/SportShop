@@ -2,13 +2,27 @@ import { useParams } from "react-router-dom";
 import "../../src/Assets/orderDetail.css";
 import { useCancelOrderMutation, useGetOneOrderQuery } from "../api/order";
 import Cookies from "js-cookie";
-import { message } from "antd";
+import { Button, Modal, message } from "antd";
+import { useState } from "react";
 const OrderDetail = () => {
   const { id }: any = useParams();
   const token = Cookies.get("token");
   const { data } = useGetOneOrderQuery(id);
-
   const [cancelOrder] = useCancelOrderMutation();
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
+  const [infoStaff, setInforStaff] = useState<any>("");
   return (
     <div className="container">
       <div className="account-page__content">
@@ -65,6 +79,36 @@ const OrderDetail = () => {
                   </div>
                   <div className="detail-order-info__content">
                     {data?.order?.deliveryStatus}
+                  </div>
+                </li>
+                <li>
+                  <div className="detail-order-info__title">
+                    Nhân viên quản lí đơn:
+                  </div>
+                  <div className="detail-order-info__content">
+                    {data?.order?.managerId?.firstName}{" "}
+                    {data?.order?.managerId?.lastName}{" "}
+                    <Button type="primary" onClick={()=>{
+                       showModal()
+                       setInforStaff(data?.order?.managerId)
+                    }}>
+                      View
+                    </Button>
+                    <Modal
+                      title="Thông tin nhân viên quản lí đơn"
+                      open={isModalOpen}
+                      onOk={()=>{
+                        handleOk()
+                        setInforStaff("")
+                      }}
+                      onCancel={()=>{
+                        handleCancel()
+                        setInforStaff("")
+                      }}
+                    >
+                      <p>Số điện thoại: {infoStaff?.phone}</p>
+                      <p>Email: {infoStaff?.email}</p>
+                    </Modal>
                   </div>
                 </li>
                 <li>

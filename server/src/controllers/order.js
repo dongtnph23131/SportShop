@@ -7,16 +7,18 @@ import Cart from "../models/cart";
 import Customer from "../models/customer";
 import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
-
+import User from "../models/user";
 export const create = async (req, res) => {
   try {
     const user = req.user;
     const body = req.body;
 
     const validatedBody = orderSchema.parse(body);
-
+    const data = await User.find({ role: "staff" });
+    const staffs = data.sort((a, b) => a.orders.length - b.orders.length);
     const order = await Order.create({
       ...validatedBody,
+      managerId: staffs[0]._id,
       customerId: user._id,
       orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
       code: `DH-${generateRandomString()}`,
@@ -40,6 +42,17 @@ export const create = async (req, res) => {
           { new: true }
         );
       })
+    );
+    await User.findByIdAndUpdate(
+      staffs[0]._id,
+      {
+        $addToSet: {
+          orders: order._id,
+        },
+      },
+      {
+        new: true,
+      }
     );
     await Customer.findByIdAndUpdate(
       user._id,
@@ -137,7 +150,7 @@ export const getOrderByUser = async (req, res) => {
 export const getOneOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(
-      "items.productId items.productVariantId"
+      "items.productId items.productVariantId managerId"
     );
     return res.status(200).json({
       message: "Lấy đơn hàng thành công",
