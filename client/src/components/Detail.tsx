@@ -86,6 +86,14 @@ const Detail = () => {
       }
     }
   };
+  const calculateTotalInventoryAllVariants = (product: any) => {
+    const variants = product?.productVariantIds || [];
+    return variants.reduce(
+      (total , variant) => total + (variant.inventory || 0),
+      0
+    );
+  };
+
   const handleAttributeChange = (attributeName: any, value: any) => {
     setSelectedAttributes({
       ...selectedAttributes,
@@ -200,6 +208,9 @@ const Detail = () => {
               </div>
             );
           })}
+          <div>
+          Số lượng còn: {selectedVariant?.inventory || calculateTotalInventoryAllVariants(product)}
+          </div>
           <div className="acticon__addtocart">
             <div className="box__cremedetail">
               <button
@@ -211,6 +222,7 @@ const Detail = () => {
               <InputNumber
                 className="input__cart"
                 value={quantity}
+                min={1}
                 onChange={(value) => setQuantity(value as number)}
               />
               <button
