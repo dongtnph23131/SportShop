@@ -58,6 +58,34 @@ router.delete("/:id", async (req, res) => {
   }
 });
 
+router.put("/:id/active", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, { isActive: true });
+
+    return res.status(200).json({
+      message: "Active user successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.put("/:id/deactive", async (req, res) => {
+  try {
+    await User.findByIdAndUpdate(req.params.id, { isActive: false });
+
+    return res.status(200).json({
+      message: "Deactive user successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.put("/", async (req, res) => {
   try {
     let { firstName, lastName, image } = req.body;

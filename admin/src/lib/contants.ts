@@ -7,3 +7,5 @@ export const productStatus = [
   ProductStatus.DRAFT,
   ProductStatus.ARCHIVED,
 ];
+
+export const roles = ["admin", "staff", "shipper"];

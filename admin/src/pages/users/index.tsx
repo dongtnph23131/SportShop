@@ -41,6 +41,7 @@ import axiosClient from "@/lib/axios-instance";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 import { Badge } from "@/components/ui/badge";
+import { DataTableToolbar } from "@/components/users/data-table-toolbar";
 
 const Page: NextPageWithLayout = () => {
   const { data: users } = useUsersQuery();
@@ -77,11 +78,32 @@ const Page: NextPageWithLayout = () => {
       cell: ({ row }) => <span>{row.original.email}</span>,
     },
     {
+      id: "status",
+      accessorKey: "status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
+      cell: ({ row }) =>
+        row.original.isActive ? (
+          <Badge variant={"success"}>Active</Badge>
+        ) : (
+          <Badge variant={"destructive"}>Inactive</Badge>
+        ),
+      filterFn: (row, id, value) => {
+        const rowValue = row.original.isActive ? "Active" : "Inactive";
+        return value.includes(rowValue);
+      },
+    },
+    {
       id: "role",
+      accessorKey: "role",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Role" />
       ),
       cell: ({ row }) => <Badge>{row.original.role}</Badge>,
+      filterFn: (row, id, value) => {
+        return value.includes(row.original.role);
+      },
     },
     {
       id: "actions",
@@ -97,6 +119,54 @@ const Page: NextPageWithLayout = () => {
             </Button>
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
+            {row.original.isActive ? (
+              <DropdownMenuItem
+                onClick={async () => {
+                  try {
+                    const res = await axiosClient.put(
+                      `/user/${row.original._id}/deactive`
+                    );
+                    if (res.status !== 200) {
+                      toast.error(res.data.message);
+                      return;
+                    }
+                    toast.success("Deactive user successfully!");
+                    queryClient.invalidateQueries({
+                      queryKey: ["users"],
+                    });
+                  } catch (error) {
+                    toast.error("Something went wrong!");
+                  }
+                }}
+              >
+                Deactive
+              </DropdownMenuItem>
+            ) : (
+              <DropdownMenuItem
+                onClick={async () => {
+                  try {
+                    const res = await axiosClient.put(
+                      `/user/${row.original._id}/active`
+                    );
+                    if (res.status !== 200) {
+                      toast.error(res.data.message);
+                      return;
+                    }
+                    toast.success("Active user successfully!");
+                    queryClient.invalidateQueries({
+                      queryKey: ["users"],
+                    });
+                  } catch (error) {
+                    toast.error("Something went wrong!");
+                  }
+                }}
+              >
+                Active
+              </DropdownMenuItem>
+            )}
+
+            <DropdownMenuSeparator />
+
             <DropdownMenuItem asChild>
               <AlertDialog>
                 <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
@@ -117,7 +187,6 @@ const Page: NextPageWithLayout = () => {
                     <AlertDialogAction
                       onClick={async () => {
                         try {
-                          setIsLoading(true);
                           const res = await axiosClient.delete(
                             `/user/${row.original._id}`
                           );
@@ -156,7 +225,11 @@ const Page: NextPageWithLayout = () => {
         <CreateUserDialog />
       </div>
       <CardContent>
-        <DataTable columns={columns} data={users ?? []} />
+        <DataTable
+          columns={columns}
+          data={users ?? []}
+          toolbar={(table) => <DataTableToolbar table={table} />}
+        />
       </CardContent>
     </Card>
   );

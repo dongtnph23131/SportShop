@@ -20,6 +20,10 @@ const userSchema = new mongoose.Schema(
       type: String,
       require: true,
     },
+    isActive: {
+      type: Boolean,
+      default: true,
+    },
     role: {
       type: String,
       enum: role,
