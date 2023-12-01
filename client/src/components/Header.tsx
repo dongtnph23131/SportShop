@@ -107,12 +107,12 @@ const Header = () => {
               <ul className="header-social-icon text-center text-md-end">
                 <li>
                   <a href="#">
-                    <i className="fa fa-facebook"></i>
+                  <i className="fa-brands fa-square-facebook"></i>
                   </a>
                 </li>
                 <li>
                   <a href="#">
-                    <i className="fa fa-twitter"></i>
+                  <i className="fa-brands fa-twitter"></i>
                   </a>
                 </li>
                 <li>
@@ -140,17 +140,10 @@ const Header = () => {
             </div>
             <div className="col-lg-9 col-md-9 col-sm-12">
               <div className="header-whishlist">
-                <div className="header-whish-compare posr">
-                  <div className="header-whish">
-                    <a>My Wishlist</a>
-                  </div>
-                  <div className="header-compare">
-                    <a>Compare</a>
-                  </div>
-                </div>
+               
                 <div className="header-middle-phone">
                   <span>
-                    <i className="fa fa-phone"></i>1-888-123-456-89
+                    <i className="fa fa-phone"></i>0904 798 514
                   </span>
                 </div>
               </div>
