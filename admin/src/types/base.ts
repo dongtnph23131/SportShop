@@ -135,6 +135,7 @@ export interface Comment {
   productId: string;
   content: string;
   raiting: string;
+  isHidden: boolean;
   default: boolean;
   createdAt: string;
   updatedAt: string;

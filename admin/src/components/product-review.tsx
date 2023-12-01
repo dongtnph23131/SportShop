@@ -20,6 +20,8 @@ import {
 import { useCommentsByProductQuery } from "@/services/products/comments-query";
 import Link from "next/link";
 import { format } from "date-fns";
+import axiosClient from "@/lib/axios-instance";
+import { toast } from "sonner";
 
 const PAGE_SIZE = 5;
 
@@ -63,7 +65,29 @@ const ProductReview = ({ productId }: { productId: string }) => {
                 </div>
               </div>
 
+              {comment.isHidden && (
+                <Badge variant={"destructive"}>Hidden</Badge>
+              )}
+
               <div className="flex gap-2 items-center">
+                {!comment.isHidden && (
+                  <Button
+                    variant={"secondary"}
+                    onClick={async () => {
+                      const res = await axiosClient.put(
+                        `/comments/${comment._id}/hide`
+                      );
+
+                      if (res.status === 200) {
+                        toast.success("Comment hidden successfully");
+                      } else {
+                        toast.error("Failed to hide comment");
+                      }
+                    }}
+                  >
+                    Hide review
+                  </Button>
+                )}
                 <Button asChild>
                   <Link href={`/customers/${comment.customerId._id}`}>
                     View Customer

@@ -110,8 +110,6 @@ router.get("/:slug/review", async (req, res) => {
   }
 });
 
-router.post("/:slug/review", async (req, res) => {});
-
 router.post("/", async (req, res) => {
   try {
     const {
