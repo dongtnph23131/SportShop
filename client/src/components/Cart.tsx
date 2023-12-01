@@ -1,5 +1,5 @@
 import Cookies from "js-cookie";
-import { useGetCartOfUserQuery } from "../api/cart";
+import { useGetCartOfUserQuery, useRemoveCartMutation } from "../api/cart";
 import CartItem from "./pages/client/Ui/CartItem";
 import * as yup from "yup";
 import { useForm } from "react-hook-form";
@@ -13,7 +13,7 @@ import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
-  phone: yup.string().required("Số điện thoại k được để trống"),
+  phone: yup.string().required("Số điện thoại không được để trống"),
   address: yup.string().required("Địa chỉ không được để trống"),
   node: yup.string(),
   typePayment: yup.string().required("Chọn hình thức thanh toán"),
@@ -21,6 +21,7 @@ const schema = yup.object().shape({
 });
 const Cart = () => {
   const navigate = useNavigate();
+  const [removeCart]=useRemoveCartMutation()
   const {
     register,
     handleSubmit,
@@ -69,8 +70,9 @@ const Cart = () => {
       }
       return;
     }
-    await createOrder({ token, order }).then((data: any) => {
-      message.success(data.data.message);
+    await createOrder({ token, order })
+    await removeCart(token).then(() => {
+      message.success('Đặt hàng thành công');
       navigate("/OrderClient");
     });
   };
@@ -99,7 +101,7 @@ const Cart = () => {
   return (
     <div>
       <section id="page-header3" className="about-header">
-        <h2>#let's_talk</h2>
+        <h2>#Let's_talk</h2>
         <p>LEAVE A MESSAGE, We love to hear from you!</p>
       </section>
 

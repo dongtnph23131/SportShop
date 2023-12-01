@@ -3,6 +3,7 @@ export interface Product {
   slug: string;
   name: string;
   description: string;
+  status: ProductStatus;
   code: string;
   images: Image[];
   categoryId: { _id: string; name: string } | null;
@@ -73,6 +74,12 @@ export enum OrderDeliveryStatus {
   CANCELED = "Canceled",
 }
 
+export enum ProductStatus {
+  ACTIVE = "Active",
+  DRAFT = "Draft",
+  ARCHIVED = "Archived",
+}
+
 export interface Order {
   _id: string;
   code: string;
@@ -128,6 +135,7 @@ export interface Comment {
   productId: string;
   content: string;
   raiting: string;
+  isHidden: boolean;
   default: boolean;
   createdAt: string;
   updatedAt: string;

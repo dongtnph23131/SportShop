@@ -1,11 +1,12 @@
-import { Cross2Icon } from "@radix-ui/react-icons";
 import { Table } from "@tanstack/react-table";
 
-import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 
 import { DataTableFacetedFilter } from "./data-table-faceted-filter";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
+import { useEffect } from "react";
+import { ProductStatus } from "@/types/base";
+import { SwitchGroup, SwitchGroupItem } from "../switch-group";
 
 interface DataTableToolbarProps<TData> {
   table: Table<TData>;
@@ -15,11 +16,34 @@ export function DataTableToolbar<TData>({
   table,
 }: DataTableToolbarProps<TData>) {
   const { data: categories } = useCategoriesQuery();
-  const isFiltered = table.getState().columnFilters.length > 0;
+
+  useEffect(() => {
+    table.getColumn("status")?.setFilterValue(ProductStatus.ACTIVE);
+  }, [table]);
 
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex flex-1 items-center space-x-2">
+    <div>
+      {table.getColumn("category") && (
+        <SwitchGroup
+          defaultValue={ProductStatus.ACTIVE}
+          onValueChange={(value) => {
+            if (value === "all") {
+              table.getColumn("status")?.setFilterValue(undefined);
+            } else {
+              table.getColumn("status")?.setFilterValue(value);
+            }
+          }}
+        >
+          <SwitchGroupItem value="all">All</SwitchGroupItem>
+          <SwitchGroupItem value={ProductStatus.ACTIVE}>Active</SwitchGroupItem>
+          <SwitchGroupItem value={ProductStatus.DRAFT}>Draft</SwitchGroupItem>
+          <SwitchGroupItem value={ProductStatus.ARCHIVED}>
+            Archived
+          </SwitchGroupItem>
+        </SwitchGroup>
+      )}
+
+      <div className="mt-4 flex flex-1 items-center space-x-2">
         <Input
           placeholder="Search by name..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
@@ -40,7 +64,8 @@ export function DataTableToolbar<TData>({
             }
           />
         )}
-        {isFiltered && (
+
+        {/* {isFiltered && (
           <Button
             variant="ghost"
             onClick={() => table.resetColumnFilters()}
@@ -49,7 +74,7 @@ export function DataTableToolbar<TData>({
             Reset
             <Cross2Icon className="ml-2 h-4 w-4" />
           </Button>
-        )}
+        )} */}
       </div>
       {/* <DataTableViewOptions table={table} /> */}
     </div>

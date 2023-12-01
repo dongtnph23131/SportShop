@@ -4,6 +4,7 @@ export const productCreateBodySchema = z.object({
   slug: z.string().min(1, "Slug không được để trống"),
   name: z.string().min(1, "Tên sản phẩm không được để trống"),
   description: z.string(),
+  status: z.string(),
   productCode: z.string(),
   categoryId: z.string().min(1, "Danh mục không được để trống!"),
   options: z.array(

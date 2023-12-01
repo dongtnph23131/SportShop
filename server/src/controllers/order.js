@@ -1,9 +1,7 @@
 import Order from "../models/order";
 import Product from "../models/product";
 import ProductVariant from "../models/productVariant";
-import CartItem from "../models/cartItem";
 import { orderSchema } from "../validators/order";
-import Cart from "../models/cart";
 import Customer from "../models/customer";
 import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
@@ -61,13 +59,6 @@ export const create = async (req, res) => {
       },
       { new: true }
     );
-
-    await CartItem.deleteMany({
-      customerId: user._id,
-    });
-
-    const cart = await Cart.findOne({ customerId: user._id });
-    cart.items = [];
     await cart.save({ validateBeforeSave: false });
     const emailSubject = "Xác nhận đặt hàng thành công";
     const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;

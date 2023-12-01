@@ -10,6 +10,7 @@ import { inventoryRoutes } from "./inventory";
 import { userRoutes } from "./user";
 import User from "../../models/user";
 import { bannerRoutes } from "./banner";
+import { commentRoutes } from "./comment";
 
 const router = Router();
 
@@ -21,6 +22,7 @@ router.use("/analytics", verifyToken, analyticRoutes);
 router.use("/inventory", verifyToken, inventoryRoutes);
 router.use("/user", verifyToken, userRoutes);
 router.use("/banners", verifyToken, bannerRoutes);
+router.use("/comments", verifyToken, commentRoutes);
 router.use("/auth", authRoutes);
 router.use("/me", verifyToken, async (req, res) => {
   if (!req.user) return res.status(401).json("You need to login!");
