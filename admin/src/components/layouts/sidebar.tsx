@@ -12,12 +12,13 @@ import {
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
 import { useRouter } from "next/router";
-import { UserNav } from "./user-nav";
 import Cookies from "js-cookie";
 import { Badge } from "../ui/badge";
 import { isAfter } from "date-fns";
 import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 import { Separator } from "../ui/separator";
+import { useProfileQuery } from "@/services/profile/profile-query";
+import { UserRole } from "@/types/base";
 
 export default function Sidebar({
   className,
@@ -26,6 +27,7 @@ export default function Sidebar({
   const { data } = useAllOrdersQuery({
     refetchInterval: 10000,
   });
+  const { data: profile } = useProfileQuery();
 
   const lastReadOrder = Cookies.get("lastReadOrder");
 
@@ -42,41 +44,65 @@ export default function Sidebar({
       name: "Overview",
       href: "/",
       Icon: BarChart3,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
     {
       name: "Products",
       href: "/products",
       Icon: Tag,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
     {
       name: "Inventory",
       href: "/inventory",
       Icon: Archive,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
     {
       name: "Categories",
       href: "/categories",
       Icon: Folder,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
     {
       name: "Orders",
       href: "/orders",
       Icon: ShoppingCart,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF, UserRole.SHIPPER].includes(
+            profile.role
+          )
+        : false,
     },
     {
       name: "Customers",
       href: "/customers",
       Icon: User,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
     {
       name: "Team",
       href: "/users",
       Icon: UserCog,
+      isAccess: profile ? [UserRole.ADMIN].includes(profile.role) : false,
     },
     {
       name: "Settings",
       href: "/settings",
       Icon: Settings,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
     },
   ];
 
@@ -106,7 +132,7 @@ export default function Sidebar({
 
       <div className="space-y-2 py-4">
         {tabs.map((tab, index) => {
-          return (
+          return tab.isAccess ? (
             <Button
               key={index}
               variant={
@@ -138,7 +164,7 @@ export default function Sidebar({
                 )}
               </Link>
             </Button>
-          );
+          ) : null;
         })}
       </div>
     </div>

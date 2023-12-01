@@ -1,13 +1,16 @@
 import axiosClient from "@/lib/axios-instance";
 import { API_URL } from "@/lib/contants";
-import { Customer, Order, Product, ProductVariant } from "@/types/base";
+import { Customer, Order, Product, ProductVariant, User } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 interface Input {
   id: string;
 }
 
-export type OrderResponse = Omit<Order, "customerId" | "items"> & {
+export type OrderResponse = Omit<
+  Order,
+  "customerId" | "items" | "managerId" | "shipperId"
+> & {
   customerId: Customer;
 } & {
   items: {
@@ -16,6 +19,8 @@ export type OrderResponse = Omit<Order, "customerId" | "items"> & {
     quantity: number;
     _id: string;
   }[];
+  managerId?: User;
+  shipperId?: User;
 };
 
 export async function getOrder({ id }: Input): Promise<OrderResponse> {

@@ -44,6 +44,7 @@ import {
   TableHeader,
   TableRow,
 } from "@/components/ui/table";
+import { Authorization } from "@/lib/authorization";
 import axiosClient from "@/lib/axios-instance";
 import useRouterStuff from "@/lib/hooks/use-router-stuff";
 import { queryClient } from "@/lib/react-query";
@@ -52,7 +53,7 @@ import { NextPageWithLayout } from "@/pages/_app";
 import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 import { useOrdersQuery } from "@/services/orders/orders-query";
 
-import { Order, OrderStatus } from "@/types/base";
+import { Order, OrderStatus, UserRole } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import { CalendarIcon } from "lucide-react";
@@ -210,50 +211,56 @@ const Page: NextPageWithLayout = () => {
                           <DropdownMenuItem asChild>
                             <Link href={`/orders/${order._id}`}>View</Link>
                           </DropdownMenuItem>
-                          <DropdownMenuSeparator />
-                          <DropdownMenuItem asChild>
-                            <AlertDialog>
-                              <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                                Delete
-                              </AlertDialogTrigger>
-                              <AlertDialogContent>
-                                <AlertDialogHeader>
-                                  <AlertDialogTitle>
-                                    Are you absolutely sure?
-                                  </AlertDialogTitle>
-                                  <AlertDialogDescription>
-                                    This action cannot be undone. This will
-                                    permanently delete your account and remove
-                                    your data from our servers.
-                                  </AlertDialogDescription>
-                                </AlertDialogHeader>
-                                <AlertDialogFooter>
-                                  <AlertDialogCancel>Cancel</AlertDialogCancel>
-                                  <AlertDialogAction
-                                    onClick={async () => {
-                                      const res = await axiosClient.delete(
-                                        `/orders/${order._id}`
-                                      );
+                          <Authorization
+                            allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}
+                          >
+                            <DropdownMenuSeparator />
+                            <DropdownMenuItem asChild>
+                              <AlertDialog>
+                                <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
+                                  Delete
+                                </AlertDialogTrigger>
+                                <AlertDialogContent>
+                                  <AlertDialogHeader>
+                                    <AlertDialogTitle>
+                                      Are you absolutely sure?
+                                    </AlertDialogTitle>
+                                    <AlertDialogDescription>
+                                      This action cannot be undone. This will
+                                      permanently delete your account and remove
+                                      your data from our servers.
+                                    </AlertDialogDescription>
+                                  </AlertDialogHeader>
+                                  <AlertDialogFooter>
+                                    <AlertDialogCancel>
+                                      Cancel
+                                    </AlertDialogCancel>
+                                    <AlertDialogAction
+                                      onClick={async () => {
+                                        const res = await axiosClient.delete(
+                                          `/orders/${order._id}`
+                                        );
 
-                                      if (res.status !== 200) {
-                                        const error = res.data.message;
-                                        toast.error(error);
-                                        return;
-                                      }
+                                        if (res.status !== 200) {
+                                          const error = res.data.message;
+                                          toast.error(error);
+                                          return;
+                                        }
 
-                                      queryClient.invalidateQueries({
-                                        queryKey: ["orders"],
-                                      });
+                                        queryClient.invalidateQueries({
+                                          queryKey: ["orders"],
+                                        });
 
-                                      toast.success("Successfully deleted");
-                                    }}
-                                  >
-                                    Continue
-                                  </AlertDialogAction>
-                                </AlertDialogFooter>
-                              </AlertDialogContent>
-                            </AlertDialog>
-                          </DropdownMenuItem>
+                                        toast.success("Successfully deleted");
+                                      }}
+                                    >
+                                      Continue
+                                    </AlertDialogAction>
+                                  </AlertDialogFooter>
+                                </AlertDialogContent>
+                              </AlertDialog>
+                            </DropdownMenuItem>
+                          </Authorization>
                         </DropdownMenuContent>
                       </DropdownMenu>
                     </TableHead>

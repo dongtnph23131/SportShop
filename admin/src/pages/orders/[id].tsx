@@ -7,6 +7,7 @@ import {
   OrderDeliveryStatus,
   OrderPaymentStatus,
   OrderStatus,
+  UserRole,
 } from "@/types/base";
 import { format } from "date-fns";
 import {
@@ -18,23 +19,16 @@ import {
   Table,
 } from "@/components/ui/table";
 import { useRouter } from "next/router";
-import { ArrowLeft } from "lucide-react";
+import { ArrowLeft, Truck } from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
 import { toast } from "sonner";
 
 import axiosClient from "@/lib/axios-instance";
 import { queryClient } from "@/lib/react-query";
 import { formatPrice } from "@/lib/utils";
-import {
-  Dialog,
-  DialogContent,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "@/components/ui/dialog";
-import { Label } from "@/components/ui/label";
-import { Input } from "@/components/ui/input";
+
+import { ChooseShipperDialog } from "@/components/create-shipper-dialog";
+import { Authorization } from "@/lib/authorization";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -55,39 +49,43 @@ const Page: NextPageWithLayout = () => {
                 <CardHeader className="p-0">
                   <CardTitle>Order information</CardTitle>
                 </CardHeader>
-                {order.status === OrderStatus.PENDING && (
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center">
-                      <div className="h-1.5 w-1.5 self-center rounded-full bg-yellow-400"></div>
-                      <span className="ml-2 text-sm">Pending</span>
+                <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
+                  {order.status === OrderStatus.PENDING && (
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center">
+                        <div className="h-1.5 w-1.5 self-center rounded-full bg-yellow-400"></div>
+                        <span className="ml-2 text-sm">Pending</span>
+                      </div>
+                      <Button
+                        variant={"destructive"}
+                        onClick={async () => {
+                          const res = await axiosClient.post(
+                            `/orders/${order._id}/cancel`
+                          );
+
+                          if (res.status !== 200) {
+                            const error = res.data.message;
+                            toast.error(error);
+                            return;
+                          }
+
+                          toast.success("Successfully canceled this order");
+                          queryClient.invalidateQueries({
+                            queryKey: ["orders"],
+                          });
+                        }}
+                      >
+                        Cancel
+                      </Button>
                     </div>
-                    <Button
-                      variant={"destructive"}
-                      onClick={async () => {
-                        const res = await axiosClient.post(
-                          `/orders/${order._id}/cancel`
-                        );
-
-                        if (res.status !== 200) {
-                          const error = res.data.message;
-                          toast.error(error);
-                          return;
-                        }
-
-                        toast.success("Successfully canceled this order");
-                        queryClient.invalidateQueries({ queryKey: ["orders"] });
-                      }}
-                    >
-                      Cancel
-                    </Button>
-                  </div>
-                )}
-                {order.status === OrderStatus.COMPLETED && (
-                  <div className="flex items-center">
-                    <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
-                    <span className="ml-2 text-sm">Completed</span>
-                  </div>
-                )}
+                  )}
+                  {order.status === OrderStatus.COMPLETED && (
+                    <div className="flex items-center">
+                      <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
+                      <span className="ml-2 text-sm">Completed</span>
+                    </div>
+                  )}
+                </Authorization>
               </div>
 
               <CardContent>
@@ -135,6 +133,22 @@ const Page: NextPageWithLayout = () => {
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {formatPrice(order.totalPrice)}
+                    </dd>
+                  </div>
+                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
+                    <dt className="text-sm font-medium leading-6 text-gray-900">
+                      Managed by:
+                    </dt>
+                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                      {order.managerId ? (
+                        <>
+                          {order.managerId.firstName +
+                            " " +
+                            order.managerId.lastName}
+                        </>
+                      ) : (
+                        "-"
+                      )}
                     </dd>
                   </div>
                 </dl>
@@ -226,39 +240,43 @@ const Page: NextPageWithLayout = () => {
                 <CardHeader className="p-0">
                   <CardTitle>Payment</CardTitle>
                 </CardHeader>
-                {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
-                  <div className="flex items-center gap-2">
-                    <div className="flex items-center">
-                      <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
-                      <span className="ml-2 text-sm">Not Paid</span>
+                <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
+                  {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
+                    <div className="flex items-center gap-2">
+                      <div className="flex items-center">
+                        <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
+                        <span className="ml-2 text-sm">Not Paid</span>
+                      </div>
+                      <Button
+                        variant={"outline"}
+                        onClick={async () => {
+                          const res = await axiosClient.post(
+                            `/orders/${order._id}/pay`
+                          );
+
+                          if (res.status !== 200) {
+                            const error = res.data.message;
+                            toast.error(error);
+                            return;
+                          }
+
+                          toast.success("Successfully mask as paid");
+                          queryClient.invalidateQueries({
+                            queryKey: ["orders"],
+                          });
+                        }}
+                      >
+                        Paid
+                      </Button>
                     </div>
-                    <Button
-                      variant={"outline"}
-                      onClick={async () => {
-                        const res = await axiosClient.post(
-                          `/orders/${order._id}/pay`
-                        );
-
-                        if (res.status !== 200) {
-                          const error = res.data.message;
-                          toast.error(error);
-                          return;
-                        }
-
-                        toast.success("Successfully mask as paid");
-                        queryClient.invalidateQueries({ queryKey: ["orders"] });
-                      }}
-                    >
-                      Paid
-                    </Button>
-                  </div>
-                )}
-                {order.paymentStatus === OrderPaymentStatus.PAID && (
-                  <div className="flex items-center">
-                    <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
-                    <span className="ml-2 text-sm">Paid</span>
-                  </div>
-                )}
+                  )}
+                  {order.paymentStatus === OrderPaymentStatus.PAID && (
+                    <div className="flex items-center">
+                      <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
+                      <span className="ml-2 text-sm">Paid</span>
+                    </div>
+                  )}
+                </Authorization>
               </div>
               <CardContent>
                 <div className="mt-4 flex items-center justify-between text-sm">
@@ -302,48 +320,75 @@ const Page: NextPageWithLayout = () => {
                     )}
                   </dd>
                 </div>
-                {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
-                  <Button
-                    onClick={async () => {
-                      const res = await axiosClient.post(
-                        `/orders/${order._id}/ship/status`,
-                        { status: OrderDeliveryStatus.SHIPPING }
-                      );
-
-                      if (res.status !== 200) {
-                        const error = res.data.message;
-                        toast.error(error);
-                        return;
-                      }
-
-                      toast.success("Successfully ship this order");
-                      queryClient.invalidateQueries({ queryKey: ["orders"] });
-                    }}
-                  >
-                    Ship
-                  </Button>
+                {order.shipperId && (
+                  <div className="p-2 border border-gray-400 bg-gray-100 rounded-md">
+                    <h1 className="font-semibold text-lg">Shipper:</h1>
+                    <div className="mt-2 flex items-center justify-between text-sm">
+                      <dt className="leading-6 text-gray-900">Name:</dt>
+                      <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {order.shipperId.firstName}
+                      </dd>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between text-sm">
+                      <dt className="leading-6 text-gray-900">Email:</dt>
+                      <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {order.shipperId.email}
+                      </dd>
+                    </div>
+                    <div className="mt-2 flex items-center justify-between text-sm">
+                      <dt className="leading-6 text-gray-900">Phone:</dt>
+                      <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
+                        {order.shipperId.phone}
+                      </dd>
+                    </div>
+                  </div>
                 )}
-                {order.deliveryStatus === OrderDeliveryStatus.SHIPPING && (
-                  <Button
-                    onClick={async () => {
-                      const res = await axiosClient.post(
-                        `/orders/${order._id}/ship/status`,
-                        { status: OrderDeliveryStatus.SHIPPED }
-                      );
 
-                      if (res.status !== 200) {
-                        const error = res.data.message;
-                        toast.error(error);
-                        return;
-                      }
+                <div className="flex items-center gap-2 mt-4">
+                  {!order.shipperId && <ChooseShipperDialog />}
+                  {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
+                    <Button
+                      onClick={async () => {
+                        const res = await axiosClient.post(
+                          `/orders/${order._id}/ship/status`,
+                          { status: OrderDeliveryStatus.SHIPPING }
+                        );
 
-                      toast.success("Successfully ship this order");
-                      queryClient.invalidateQueries({ queryKey: ["orders"] });
-                    }}
-                  >
-                    Mask as delivered
-                  </Button>
-                )}
+                        if (res.status !== 200) {
+                          const error = res.data.message;
+                          toast.error(error);
+                          return;
+                        }
+
+                        toast.success("Successfully ship this order");
+                        queryClient.invalidateQueries({ queryKey: ["orders"] });
+                      }}
+                    >
+                      Ship
+                    </Button>
+                  )}
+                  {order.deliveryStatus === OrderDeliveryStatus.SHIPPING && (
+                    <Button
+                      onClick={async () => {
+                        const res = await axiosClient.post(
+                          `/orders/${order._id}/ship/status`,
+                          { status: OrderDeliveryStatus.SHIPPED }
+                        );
+
+                        if (res.status !== 200) {
+                          const error = res.data.message;
+                          toast.error(error);
+                          return;
+                        }
+
+                        toast.success("Successfully ship this order");
+                        queryClient.invalidateQueries({ queryKey: ["orders"] });
+                      }}
+                    >
+                      Mask as delivered
+                    </Button>
+                  )}
+                </div>
               </CardContent>
             </Card>
           </div>

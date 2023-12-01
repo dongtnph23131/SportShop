@@ -6,10 +6,11 @@ import { Input } from "@/components/ui/input";
 import { API_URL } from "@/lib/contants";
 import { useRouter } from "next/router";
 import { toast } from "sonner";
+import { User, UserRole } from "@/types/base";
 
 export default function AuthenticationPage() {
   const router = useRouter();
-  const [formValues, setFormValues] = useState({ email: "", password: "" });
+  const [isLoading, setIsLoading] = useState(false);
 
   return (
     <div className="container relative h-screen flex-col items-center justify-center md:grid lg:max-w-none lg:grid-cols-2 lg:px-0">
@@ -41,7 +42,53 @@ export default function AuthenticationPage() {
               Enter your email below to create your account
             </p>
           </div>
-          <div className="grid gap-2">
+          <form
+            onSubmit={async (e) => {
+              e.preventDefault();
+              const email = (e.target as HTMLFormElement)["email"].value;
+              const password = (e.target as HTMLFormElement)["password"].value;
+
+              try {
+                setIsLoading(true);
+                const res = await fetch(`${API_URL}/api/admin/auth/sign-in`, {
+                  method: "POST",
+                  body: JSON.stringify({
+                    email,
+                    password,
+                  }),
+                  headers: {
+                    "Content-Type": "application/json",
+                  },
+                });
+
+                if (!res.ok) {
+                  const errorMessage = await res.text();
+                  toast.error(errorMessage);
+                  console.error(errorMessage);
+                  return;
+                }
+
+                const data = (await res.json()) as {
+                  message: string;
+                  token: string;
+                  user: User;
+                };
+
+                localStorage.setItem("token", data.token);
+
+                if (data.user.role === UserRole.SHIPPER) {
+                  router.push("/orders");
+                } else {
+                  router.push("/");
+                }
+              } catch (error) {
+                toast.error("Something went wrong!");
+              } finally {
+                setIsLoading(false);
+              }
+            }}
+            className="grid gap-2"
+          >
             <div className="space-y-2">
               <Label htmlFor="email">Email</Label>
               <Input
@@ -52,58 +99,19 @@ export default function AuthenticationPage() {
                 autoCapitalize="none"
                 autoComplete="email"
                 autoCorrect="off"
-                onChange={(e) =>
-                  setFormValues((prev) => ({
-                    ...prev,
-                    email: e.target.value,
-                  }))
-                }
               />
             </div>
             <div className="space-y-2">
-              <Label htmlFor="email">Password</Label>
+              <Label htmlFor="password">Password</Label>
               <Input
                 id="password"
+                required
                 type="password"
                 placeholder="**********"
-                onChange={(e) =>
-                  setFormValues((prev) => ({
-                    ...prev,
-                    password: e.target.value,
-                  }))
-                }
               />
             </div>
-            <Button
-              onClick={async () => {
-                const res = await fetch(`${API_URL}/api/admin/auth/sign-in`, {
-                  method: "POST",
-                  body: JSON.stringify(formValues),
-                  headers: {
-                    "Content-Type": "application/json",
-                  },
-                });
-
-                if (!res.ok) {
-                  const errorMessage = await res.text();
-                  toast.error(errorMessage);
-                  setFormValues({ email: "", password: "" });
-                  console.error(errorMessage);
-                  return;
-                }
-
-                const data = (await res.json()) as {
-                  message: string;
-                  token: string;
-                };
-
-                localStorage.setItem("token", data.token);
-                router.push("/");
-              }}
-            >
-              Sign In
-            </Button>
-          </div>
+            <Button type="submit">Sign In</Button>
+          </form>
           <p className="px-8 text-center text-sm text-muted-foreground">
             By clicking continue, you agree to our{" "}
             <Link

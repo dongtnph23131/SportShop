@@ -14,12 +14,16 @@ router.get("/", async (req, res) => {
       status,
       date,
     } = req.query;
+
+    const role = req.user.role;
+
     const options = {
       page: _page,
       limit: _limit,
       sort: {
         [_sort]: _order === "desc" ? -1 : 1,
       },
+      populate: [{ path: "managerId" }],
     };
 
     const startOfDay = new Date(date);
@@ -35,6 +39,8 @@ router.get("/", async (req, res) => {
         : {}),
       ...(status !== "all" && status ? { status: status } : {}),
       ...(date ? { createdAt: { $gte: startOfDay, $lte: endOfDay } } : {}),
+      ...(role === "staff" ? { managerId: req.user._id } : {}),
+      ...(role === "shipper" ? { shipperId: req.user._id } : {}),
     };
 
     const orders = await Order.paginate(searchQuery, options);
@@ -49,7 +55,14 @@ router.get("/", async (req, res) => {
 
 router.get("/all", async (req, res) => {
   try {
-    const orders = await Order.find();
+    const role = req.user.role;
+
+    const options = {
+      ...(role === "staff" ? { managerId: req.user._id } : {}),
+      ...(role === "shipper" ? { shipperId: req.user._id } : {}),
+    };
+
+    const orders = await Order.find(options);
 
     return res.status(200).json(orders);
   } catch (error) {
@@ -62,7 +75,7 @@ router.get("/all", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(
-      "items.productId items.productVariantId customerId"
+      "items.productId items.productVariantId customerId managerId shipperId"
     );
     return res.status(200).json(order);
   } catch (error) {
@@ -151,6 +164,27 @@ router.post("/:id/cancel", async (req, res) => {
       status: "Canceled",
       paymentStatus: "Canceled",
       deliveryStatus: "Canceled",
+    });
+
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.put("/:id/ship", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { shipperId } = req.body;
+
+    if (!id) {
+      return res.status(400).end("Missing id");
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(id, {
+      shipperId: shipperId,
     });
 
     return res.status(200).json(updatedOrder);

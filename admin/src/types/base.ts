@@ -105,6 +105,8 @@ export interface Order {
     quantity: number;
     _id: string;
   }[];
+  managerId: string;
+  shipperId: string;
 }
 
 export interface Customer {
@@ -126,7 +128,7 @@ export interface Profile {
   email: string;
   firstName: string;
   lastName: string;
-  role: string;
+  role: UserRole;
 }
 
 export interface Comment {

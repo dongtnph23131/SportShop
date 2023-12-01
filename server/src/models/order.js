@@ -91,6 +91,10 @@ const orderSchema = mongoose.Schema(
       require: true,
       ref: "User",
     },
+    shipperId: {
+      type: mongoose.Types.ObjectId,
+      ref: "User",
+    },
     items: [
       {
         productId: {
