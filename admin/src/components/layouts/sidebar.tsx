@@ -7,6 +7,7 @@ import {
   User,
   Archive,
   Settings,
+  UserCog,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -66,6 +67,11 @@ export default function Sidebar({
       name: "Customers",
       href: "/customers",
       Icon: User,
+    },
+    {
+      name: "Team",
+      href: "/users",
+      Icon: UserCog,
     },
     {
       name: "Settings",

@@ -1,0 +1,118 @@
+import React from "react";
+import {
+  Dialog,
+  DialogContent,
+  DialogDescription,
+  DialogFooter,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
+import { Input } from "@/components/ui/input";
+import { Label } from "@/components/ui/label";
+import { Button } from "./ui/button";
+import { InventoryResponse } from "@/services/inventory/inventory-query";
+import axiosClient from "@/lib/axios-instance";
+import { toast } from "sonner";
+import { queryClient } from "@/lib/react-query";
+import { generateRandomString } from "@/lib/utils";
+import { UserRole } from "@/types/base";
+
+export const CreateUserDialog = () => {
+  const [isOpen, setIsOpen] = React.useState(false);
+  const [isLoading, setIsLoading] = React.useState(false);
+
+  return (
+    <Dialog open={isOpen} onOpenChange={setIsOpen}>
+      <DialogTrigger asChild>
+        <Button variant={"default"}>Create User</Button>
+      </DialogTrigger>
+      <DialogContent className="sm:max-w-[425px]">
+        <DialogHeader>
+          <DialogTitle>Create User</DialogTitle>
+        </DialogHeader>
+        <form
+          className="grid gap-4 py-4"
+          onSubmit={async (e) => {
+            e.preventDefault();
+            const firstName = (e.target as HTMLFormElement)["firstName"].value;
+            const lastName = (e.target as HTMLFormElement)["lastName"].value;
+            const email = (e.target as HTMLFormElement)["email"].value;
+            const password = (e.target as HTMLFormElement)["password"].value;
+            const role = (e.target as HTMLFormElement)["role"].value;
+
+            try {
+              setIsLoading(true);
+              const res = await axiosClient.post(`/user`, {
+                firstName,
+                lastName,
+                email,
+                password,
+                role,
+              });
+              if (res.status !== 200) {
+                toast.error(res.data.message);
+                setIsOpen(false);
+                return;
+              }
+              toast.success("User is created successfully!");
+              queryClient.invalidateQueries({ queryKey: ["users"] });
+              setIsOpen(false);
+            } catch (error) {
+              toast.error("Something went wrong!");
+            } finally {
+              setIsLoading(false);
+            }
+          }}
+        >
+          <div className="flex items-center gap-2">
+            <div className="space-y-2">
+              <Label htmlFor="firstName" className="text-right">
+                First Name
+              </Label>
+              <Input id="firstName" required className="col-span-3" />
+            </div>
+            <div className="space-y-2">
+              <Label htmlFor="firstName" className="text-right">
+                Last Name
+              </Label>
+              <Input id="lastName" required className="col-span-3" />
+            </div>
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="email" className="text-right">
+              Email
+            </Label>
+            <Input id="email" type="email" required />
+          </div>
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-right">
+              Password
+            </Label>
+            <Input id="password" type="password" required />
+          </div>
+
+          <div className="space-y-2">
+            <Label htmlFor="password" className="text-right">
+              Role
+            </Label>
+            <select
+              id="role"
+              className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              <option value={UserRole.ADMIN}>Admin</option>
+              <option value={UserRole.STAFF}>Staff</option>
+              <option value={UserRole.SHIPPER}>Shipper</option>
+            </select>
+          </div>
+
+          <DialogFooter>
+            <Button type="submit" disabled={isLoading}>
+              Save changes
+            </Button>
+          </DialogFooter>
+        </form>
+      </DialogContent>
+    </Dialog>
+  );
+};

@@ -24,9 +24,9 @@ const userSchema = new mongoose.Schema(
       type: String,
       enum: role,
     },
-    phone:{
-      type:String,
-      require:true
+    phone: {
+      type: String,
+      require: true,
     },
     avatar: {
       type: String,

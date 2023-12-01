@@ -1,8 +1,62 @@
 import { Router } from "express";
+import bcrypt from "bcryptjs";
 import { cloudinary } from "../../libs/cloudinary";
 import User from "../../models/user";
 
 const router = Router();
+
+router.get("/", async (req, res) => {
+  try {
+    const users = await User.find({}, "-password");
+
+    return res.status(200).json(users);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.post("/", async (req, res) => {
+  try {
+    const { firstName, lastName, email, password, role, phone } = req.body;
+
+    const hashedPassword = await bcrypt.hash(password, 10);
+
+    const user = new User({
+      firstName,
+      lastName,
+      email,
+      password: hashedPassword,
+      role,
+      phone,
+    });
+
+    await user.save();
+
+    return res.status(200).json(user);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.delete("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    await User.findByIdAndDelete(id);
+
+    return res.status(200).json({
+      message: "Delete user successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
 router.put("/", async (req, res) => {
   try {
