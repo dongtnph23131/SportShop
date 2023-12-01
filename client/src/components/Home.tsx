@@ -6,6 +6,7 @@ import "slick-carousel/slick/slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Slider from "react-slick";
+import axios from "axios";
 const Home = () => {
   const { data: products } = useGetAllProductsQuery({
     sort: "purchases",
@@ -62,16 +63,37 @@ const Home = () => {
     },
   };
   const navigate = useNavigate();
+
+  const [banners, setBanners] = useState([]);
+  const [isLoadingBanners, setIsLoadingBanners] = useState(true);
+
+  useEffect(() => {
+    const fetchBanners = async () => {
+      try {
+        const response = await axios.get("http://localhost:8080/api/getBanners");
+        setBanners(response.data);
+        setIsLoadingBanners(false);
+      } catch (error) {
+        console.error("Lỗi khi lấy banners:", error);
+        setIsLoadingBanners(false);
+      }
+    };
+
+    fetchBanners();
+  }, []);
   return (
     <div>
       <div className="banners">
-        <Slider {...bannerSettings}>
-          <div className="banner__item">
-            <img src="../../src/Assets/banner.webp" alt="" />
-          </div>
-          <div className="banner__item">
-            <img src="../../src/Assets/banner.webp" alt="" />
-          </div>
+      <Slider {...bannerSettings}>
+          {isLoadingBanners ? (
+            <p>Đang tải banners...</p>
+          ) : (
+            banners.map((banner, index) => (
+              <div className="banner__item" key={index + 1}>
+                <img src={banner.image} alt={banner.name} />
+              </div>
+            ))
+          )}
         </Slider>
       </div>
       <div className="new-arrival-product-area hp1-napa pt-60">
