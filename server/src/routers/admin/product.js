@@ -72,6 +72,28 @@ router.get("/:slug", async (req, res) => {
   }
 });
 
+router.post("/:slug/status", async (req, res) => {
+  try {
+    const product = await Product.findOneAndUpdate(
+      {
+        slug: req.params.slug,
+      },
+      {
+        status: req.body.status,
+      },
+      {
+        new: true,
+      }
+    );
+
+    return res.status(200).json(product);
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+});
+
 router.get("/:slug/review", async (req, res) => {
   try {
     const comments = await Comment.find({
@@ -88,6 +110,8 @@ router.get("/:slug/review", async (req, res) => {
   }
 });
 
+router.post("/:slug/review", async (req, res) => {});
+
 router.post("/", async (req, res) => {
   try {
     const {
@@ -99,6 +123,7 @@ router.post("/", async (req, res) => {
       options,
       variants,
       images,
+      status,
     } = productCreateBodySchema.parse(req.body);
     const numberPrice = variants.map((variant) => {
       return variant.price;
@@ -113,6 +138,7 @@ router.post("/", async (req, res) => {
       code: productCode,
       options,
       images,
+      status,
     });
     await Product.findByIdAndUpdate(
       product._id,

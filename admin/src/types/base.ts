@@ -3,6 +3,7 @@ export interface Product {
   slug: string;
   name: string;
   description: string;
+  status: ProductStatus;
   code: string;
   images: Image[];
   categoryId: { _id: string; name: string } | null;
@@ -71,6 +72,12 @@ export enum OrderDeliveryStatus {
   SHIPPING = "Shipping",
   SHIPPED = "Shipped",
   CANCELED = "Canceled",
+}
+
+export enum ProductStatus {
+  ACTIVE = "Active",
+  DRAFT = "Draft",
+  ARCHIVED = "Archived",
 }
 
 export interface Order {

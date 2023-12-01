@@ -38,12 +38,14 @@ import { generateRandomString, isArrayOfFile } from "@/lib/utils";
 import { OurFileRouter } from "@/lib/uploadthing";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import slugify from "@sindresorhus/slugify";
+import { productStatus } from "@/lib/contants";
 
 const formSchema = z.object({
   name: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
   description: z.string(),
+  status: z.string(),
   collectionId: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
@@ -84,7 +86,7 @@ export function AddProductForm() {
     resolver: zodResolver(formSchema),
     defaultValues: {
       options: [{ name: "", values: [] }],
-      collectionId: "6545efe34ecac8e22c9c8251",
+      status: "Active",
     },
   });
 
@@ -120,6 +122,7 @@ export function AddProductForm() {
             url: image.url,
             publicId: image.id,
           })) ?? [],
+        status: data.status,
       },
       {
         onSuccess: () => {
@@ -200,7 +203,7 @@ export function AddProductForm() {
               name="collectionId"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Collection</FormLabel>
+                  <FormLabel>Category</FormLabel>
                   <FormControl>
                     <Select
                       value={field.value}
@@ -225,6 +228,37 @@ export function AddProductForm() {
                   </FormControl>
                   <UncontrolledFormMessage
                     message={form.formState.errors.collectionId?.message}
+                  />
+                </FormItem>
+              )}
+            />
+
+            <FormField
+              control={form.control}
+              name="status"
+              render={({ field }) => (
+                <FormItem className="w-full">
+                  <FormLabel>Status</FormLabel>
+                  <FormControl>
+                    <Select
+                      defaultValue="Active"
+                      value={field.value}
+                      onValueChange={(value) => field.onChange(value)}
+                    >
+                      <SelectTrigger className="capitalize">
+                        <SelectValue placeholder={field.value} />
+                      </SelectTrigger>
+                      <SelectContent>
+                        {productStatus.map((status) => (
+                          <SelectItem key={status} value={status}>
+                            {status}
+                          </SelectItem>
+                        ))}
+                      </SelectContent>
+                    </Select>
+                  </FormControl>
+                  <UncontrolledFormMessage
+                    message={form.formState.errors.status?.message}
                   />
                 </FormItem>
               )}

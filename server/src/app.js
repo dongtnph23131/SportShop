@@ -14,11 +14,11 @@ import orderRouter from "./routers/order";
 import profileRouter from "./routers/profile";
 import commentRouter from "./routers/comment";
 import paymentRouter from "./routers/payment";
-import routerBanner from "./routers/banner"
+import routerBanner from "./routers/banner";
 dotenv.config();
 const app = express();
 
-app.use(express.json());
+app.use(express.json({ limit: "50mb" }));
 app.use(cors());
 
 //Admin routes
@@ -35,7 +35,7 @@ app.use("/api", profileRouter);
 app.use("/api", addreesRouter);
 app.use("/api", commentRouter);
 app.use("/api", paymentRouter);
-app.use("/api", routerBanner)
+app.use("/api", routerBanner);
 mongoose.connect(process.env.URL_DATABASE);
 
 export const viteNodeApp = app;

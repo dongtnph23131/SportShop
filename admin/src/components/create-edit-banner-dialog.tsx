@@ -165,8 +165,8 @@ export function CreateEditBannerDialog({ banner }: { banner?: Banner }) {
                 onChange={(e) => {
                   const file = e.target.files?.[0];
                   if (file) {
-                    if (file.size / 1024 / 1024 > 2) {
-                      toast.error("File size too big (max 2MB)");
+                    if (file.size / 1024 / 1024 > 50) {
+                      toast.error("File size too big (max 50MB)");
                     } else if (
                       file.type !== "image/png" &&
                       file.type !== "image/jpeg"

@@ -1,27 +1,12 @@
 import { Gallery } from "@/components/gallery";
 import LayoutAdmin from "@/components/layouts";
 import ProductReview from "@/components/product-review";
-import { UpdateProductForm } from "@/components/products/edit-product-form";
-import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from "@/components/ui/accordion";
-import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
-import {
-  Card,
-  CardContent,
-  CardDescription,
-  CardHeader,
-  CardTitle,
-} from "@/components/ui/card";
+import { Card, CardContent } from "@/components/ui/card";
 import { Separator } from "@/components/ui/separator";
 import { cn } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
-import { useCommentsByProductQuery } from "@/services/products/comments-query";
 import { useProductQuery } from "@/services/products/product-query";
 import { ArrowLeft } from "lucide-react";
 import Link from "next/link";

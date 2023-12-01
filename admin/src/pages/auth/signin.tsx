@@ -5,6 +5,7 @@ import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
 import { API_URL } from "@/lib/contants";
 import { useRouter } from "next/router";
+import { toast } from "sonner";
 
 export default function AuthenticationPage() {
   const router = useRouter();
@@ -85,6 +86,8 @@ export default function AuthenticationPage() {
 
                 if (!res.ok) {
                   const errorMessage = await res.text();
+                  toast.error(errorMessage);
+                  setFormValues({ email: "", password: "" });
                   console.error(errorMessage);
                   return;
                 }

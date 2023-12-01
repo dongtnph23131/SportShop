@@ -34,16 +34,22 @@ import {
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
+import { useProductStatusMutation } from "@/services/products/product-status-mutation";
 import { useProductsQuery } from "@/services/products/products-query";
-import { Product } from "@/types/base";
+import { Product, ProductStatus } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import Link from "next/link";
-import * as XLSX from "xlsx";
+import { toast } from "sonner";
 
 const Page: NextPageWithLayout = () => {
   const { data: products } = useProductsQuery();
   const deleteProductMutation = useProductDeleteMutation({
+    onSuccess: () => {
+      queryClient.invalidateQueries({ queryKey: ["products"] });
+    },
+  });
+  const setProductStatusMutation = useProductStatusMutation({
     onSuccess: () => {
       queryClient.invalidateQueries({ queryKey: ["products"] });
     },
@@ -73,6 +79,28 @@ const Page: NextPageWithLayout = () => {
       ),
     },
     {
+      id: "status",
+      accessorKey: "status",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Status" />
+      ),
+      cell: ({ row }) => {
+        return (
+          <>
+            {row.original.status === ProductStatus.ACTIVE && (
+              <Badge variant={"success"}>Active</Badge>
+            )}
+            {row.original.status === ProductStatus.DRAFT && (
+              <Badge variant="blue">{row.original.status}</Badge>
+            )}
+            {row.original.status === ProductStatus.ARCHIVED && (
+              <Badge variant="destructive">{row.original.status}</Badge>
+            )}
+          </>
+        );
+      },
+    },
+    {
       id: "code",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Code" />
@@ -97,7 +125,6 @@ const Page: NextPageWithLayout = () => {
         );
       },
       filterFn: (row, id, value) => {
-        console.log({ row, id, value });
         return value.includes(row.original.categoryId?._id);
       },
     },
@@ -142,34 +169,90 @@ const Page: NextPageWithLayout = () => {
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                  Delete
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={() => {
-                        deleteProductMutation.mutate({ id: row.original._id });
-                      }}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
+            <DropdownMenuItem
+              onClick={async () => {
+                setProductStatusMutation.mutate(
+                  {
+                    id: row.original.slug,
+                    status: ProductStatus.ACTIVE,
+                  },
+                  {
+                    onSuccess: () => {
+                      toast.success("Product activated successfully!");
+                    },
+                  }
+                );
+              }}
+            >
+              Active
             </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                setProductStatusMutation.mutate(
+                  {
+                    id: row.original.slug,
+                    status: ProductStatus.DRAFT,
+                  },
+                  {
+                    onSuccess: () => {
+                      toast.success("Set as draft successfully!");
+                    },
+                  }
+                );
+              }}
+            >
+              Set as draft
+            </DropdownMenuItem>
+            <DropdownMenuItem
+              onClick={async () => {
+                setProductStatusMutation.mutate(
+                  {
+                    id: row.original.slug,
+                    status: ProductStatus.ARCHIVED,
+                  },
+                  {
+                    onSuccess: () => {
+                      toast.success("Archived product successfully!");
+                    },
+                  }
+                );
+              }}
+            >
+              Archive
+            </DropdownMenuItem>
+            {row.original.status === ProductStatus.ARCHIVED && (
+              <DropdownMenuItem asChild>
+                <AlertDialog>
+                  <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
+                    Delete
+                  </AlertDialogTrigger>
+                  <AlertDialogContent>
+                    <AlertDialogHeader>
+                      <AlertDialogTitle>
+                        Are you absolutely sure?
+                      </AlertDialogTitle>
+                      <AlertDialogDescription>
+                        This action cannot be undone. This will permanently
+                        delete your account and remove your data from our
+                        servers.
+                      </AlertDialogDescription>
+                    </AlertDialogHeader>
+                    <AlertDialogFooter>
+                      <AlertDialogCancel>Cancel</AlertDialogCancel>
+                      <AlertDialogAction
+                        onClick={() => {
+                          deleteProductMutation.mutate({
+                            id: row.original._id,
+                          });
+                        }}
+                      >
+                        Continue
+                      </AlertDialogAction>
+                    </AlertDialogFooter>
+                  </AlertDialogContent>
+                </AlertDialog>
+              </DropdownMenuItem>
+            )}
           </DropdownMenuContent>
         </DropdownMenu>
       ),

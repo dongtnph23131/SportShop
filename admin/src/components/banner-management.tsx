@@ -39,10 +39,11 @@ import axiosClient from "@/lib/axios-instance";
 import { queryClient } from "@/lib/react-query";
 import { toast } from "sonner";
 import { Badge } from "./ui/badge";
-import { cn } from "@/lib/utils";
 
 const BannerManagement = () => {
   const { data: banners } = useBannersQuery();
+
+  console.log(banners);
 
   const columns: ColumnDef<Banner>[] = [
     {
@@ -51,13 +52,15 @@ const BannerManagement = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Name" />
       ),
-      cell: ({ row }) => (
-        <div className="flex gap-4 items-center">{row.original.name}</div>
-      ),
+      cell: ({ row }) => {
+        return (
+          console.log({ row }),
+          (<div className="flex gap-4 items-center">{row.original.name}</div>)
+        );
+      },
     },
     {
-      id: "status",
-      accessorKey: "name",
+      id: "fddsa",
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Status" />
       ),

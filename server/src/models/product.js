@@ -8,6 +8,11 @@ const productSchema = mongoose.Schema(
       type: String,
       required: true,
     },
+    status: {
+      type: String,
+      enum: ["Active", "Draft", "Archived"],
+      default: "Active",
+    },
     name: {
       type: String,
       required: true,
