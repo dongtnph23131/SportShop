@@ -296,7 +296,10 @@ p {
 .box-oder-carts {
   padding: 30px 0; 
 }
-
+.banner__item img {
+  width: 100%;
+  height: 450px;
+}
 h4.brackham {
   background: #eee;
   line-height: 35px;
@@ -550,6 +553,7 @@ section.comment {
   margin-top: 20px;
   padding-bottom: 20px;
   border-bottom: 1px solid #cdcdcd;
+  gap: 20px;
 }
 
 .old__comment {

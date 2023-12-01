@@ -48,7 +48,29 @@ const Home = () => {
     vertical: false,
     afterChange: () => {
       console.log("Slider initialized!");
-    },
+    }, responsive: [
+      {
+        breakpoint: 1200,
+        settings: {
+          slidesToShow: 3,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 992,
+        settings: {
+          slidesToShow: 2,
+          slidesToScroll: 1,
+        },
+      },
+      {
+        breakpoint: 768,
+        settings: {
+          slidesToShow: 1,
+          slidesToScroll: 1,
+        },
+      },
+    ],
   };
   const bannerSettings = {
     dots: true,
@@ -58,6 +80,7 @@ const Home = () => {
     slidesToScroll: 1,
     vertical: false,
     arrows: false,
+   
     afterChange: () => {
       console.log("Slider initialized!");
     },
@@ -111,7 +134,7 @@ const Home = () => {
               <div className="product-conttab-wrapper">
                 <div className="active-owl-product def-owl row">
                   {products?.map((product: any, index: any) => (
-                    <div className="col-md-12 col-lg-3" key={index + 1}>
+                    <div className="col-md-4 col-lg-3 col-sm-6" key={index + 1}>
                       <div className="single-product">
                         <div className="product-wrapper posr">
                           <div className="priduct-img-wrapper posr">
@@ -169,7 +192,7 @@ const Home = () => {
             <div className="col-lg-6 col-md-6 col-sm-12">
               <div className="product-banner-left">
                 <div className="pbanner-image hvreff-defm20 posr">
-                  <img src="../../src/Assets/cms7.webp" alt="" />
+                  <img src="../../src/Assets/img__bt.jpg" alt="" />
                 </div>
               </div>
             </div>
@@ -177,12 +200,12 @@ const Home = () => {
               <div className="product-banner-right">
                 <div className="img-banner">
                   <div className="pbanner-image hvreff-defm10 posr">
-                    <img src="../../src/Assets/cms9.webp" alt="" />
+                    <img src="../../src/Assets/img__bt_3.jpg" alt="" />
                   </div>
                 </div>
                 <div className="img-banner">
                   <div className="pbanner-image hvreff-defm10 posr">
-                    <img src="../../src/Assets/cms8.webp" alt="" />
+                    <img src="../../src/Assets/img__bt_4.jpg" alt="" />
                   </div>
                 </div>
               </div>
