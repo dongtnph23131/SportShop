@@ -5,8 +5,8 @@ import { useSignupMutation } from "../api/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 const schema = yup.object().shape({
-  firstName: yup.string().required("FirstName ko đc để trống "),
-  lastName: yup.string().required("LastName ko đc để trống"),
+  firstName: yup.string().required("FirstName không được để trống "),
+  lastName: yup.string().required("LastName không được để trống"),
   email: yup
     .string()
     .email("Email chưa đúng địng dạng")

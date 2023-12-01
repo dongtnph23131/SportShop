@@ -35,6 +35,8 @@ const Detail = () => {
   const navigate = useNavigate();
   const [products, setProducts] = useState<any>([]);
   const [productsNoPage, setProductsNoPage] = useState<any>([]);
+  const [quantityProduct, setQuantityProduct] = useState<any>();
+  const [isCheckQuantity, setIsCheckQuantity] = useState<any>(false);
   useEffect(() => {
     if (product) {
       getCategoryDetail(product.categoryId).then((data) => {
@@ -53,8 +55,25 @@ const Detail = () => {
           })
         );
       });
+      if (Object.keys(selectedAttributes).length === 0) {
+        setQuantityProduct(
+          product?.productVariantIds.reduce(
+            (total: any, variant: any) => total + variant.inventory,
+            0
+          )
+        );
+      } else {
+        const selectedVariant = product?.productVariantIds.find((item: any) =>
+          item.options.every((option: any) =>
+            Object.values(selectedAttributes).includes(option)
+          )
+        );
+        if (selectedVariant) {
+          setQuantityProduct(selectedVariant.inventory);
+        }
+      }
     }
-  }, [product, page]);
+  }, [product, page, selectedAttributes]);
   const { data: orders } = useGetOrderByUserQuery(token);
   const isMatch = orders?.orders
     ?.filter((item: any) => {
@@ -73,7 +92,7 @@ const Detail = () => {
     )
   );
 
-  const [quantity, setQuantity] = useState(1);
+  const [quantity, setQuantity] = useState<any>(1);
   const handleAddToCart = async () => {
     if (!selectedAttributes) {
       alert("Hãy chọn thuộc tính sản phẩm");
@@ -95,13 +114,6 @@ const Detail = () => {
         message.error("Vui lòng chọn thuộc tính sản phẩm!");
       }
     }
-  };
-  const calculateTotalInventoryAllVariants = (product: any) => {
-    const variants = product?.productVariantIds || [];
-    return variants.reduce(
-      (total , variant) => total + (variant.inventory || 0),
-      0
-    );
   };
 
   const handleAttributeChange = (attributeName: any, value: any) => {
@@ -218,14 +230,20 @@ const Detail = () => {
               </div>
             );
           })}
-          <div>
-          Số lượng còn: {selectedVariant?.inventory || calculateTotalInventoryAllVariants(product)}
-          </div>
+          <p>Số lượng còn: {quantityProduct}</p>
+          {isCheckQuantity ? <p>Quá số lượng tồn kho</p> : ""}
           <div className="acticon__addtocart">
             <div className="box__cremedetail">
               <button
                 className="decrement__cart"
-                onClick={() => setQuantity(quantity - 1)}
+                onClick={() => {
+                  if (quantity === 1) {
+                    return;
+                  } else {
+                    setIsCheckQuantity(false);
+                    setQuantity(quantity - 1);
+                  }
+                }}
               >
                 -
               </button>
@@ -233,11 +251,27 @@ const Detail = () => {
                 className="input__cart"
                 value={quantity}
                 min={1}
-                onChange={(value) => setQuantity(value as number)}
+                onChange={(value) => {
+                  if (value <= quantityProduct) {
+                    setIsCheckQuantity(false);
+                    setQuantity(value);
+                  } else {
+                    setIsCheckQuantity(true);
+                    return;
+                  }
+                }}
               />
               <button
                 className="increment__cart"
-                onClick={() => setQuantity(quantity + 1)}
+                onClick={() => {
+                  if (quantity >= quantityProduct) {
+                    setIsCheckQuantity(true);
+                    return;
+                  } else {
+                    setQuantity(quantity + 1);
+                    setIsCheckQuantity(false);
+                  }
+                }}
               >
                 +
               </button>

@@ -3,7 +3,7 @@ import CartItem from "../models/cartItem";
 import ProductVariant from "../models/productVariant";
 export const addCart = async (req, res) => {
   try {
-    const { productVariantIds , quantity} = req.body;
+    const { productVariantIds, quantity } = req.body;
     const user = req.user;
     const cart = await Cart.findOne({ customerId: user._id }).populate(
       "items",
@@ -15,7 +15,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
-        quantity
+        quantity,
       });
       const cartOfUser = await Cart.create({ customerId: user._id });
       await Cart.findByIdAndUpdate(cartOfUser._id, {
@@ -32,7 +32,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
-        quantity
+        quantity,
       });
       await Cart.findByIdAndUpdate(cart._id, {
         $addToSet: {
@@ -67,7 +67,7 @@ export const addCart = async (req, res) => {
         productVariantIds,
         productIds: productVariant.productId,
         customerId: user._id,
-        quantity
+        quantity,
       });
       await Cart.findByIdAndUpdate(cart._id, {
         $addToSet: {
@@ -220,6 +220,25 @@ export const removeItemCart = async (req, res) => {
     );
     return res.status(200).json({
       message: "Thành công",
+    });
+  } catch (error) {
+    return res.status(400).json({
+      message: error.message,
+    });
+  }
+};
+export const removeCart = async (req, res) => {
+  try {
+    const user = req.user;
+    await CartItem.deleteMany({
+      customerId: user._id,
+    });
+
+    const cart = await Cart.findOne({ customerId: user._id });
+    cart.items = [];
+    await cart.save({ validateBeforeSave: false });
+    return res.status(200).json({
+      message: "Xóa giỏ hàng thành công",
     });
   } catch (error) {
     return res.status(400).json({
