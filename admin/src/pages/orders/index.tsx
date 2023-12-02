@@ -1,3 +1,4 @@
+import { DateRangePicker } from "@/components/date-range-picker";
 import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import { SwitchGroup, SwitchGroupItem } from "@/components/switch-group";
@@ -31,11 +32,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { Input } from "@/components/ui/input";
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from "@/components/ui/popover";
 import { Separator } from "@/components/ui/separator";
 import {
   Table,
@@ -88,16 +84,18 @@ const Page: NextPageWithLayout = () => {
             <CardTitle>Orders</CardTitle>
             <CardDescription>Here&apos;s a list of the orders!</CardDescription>
           </CardHeader>
-          <ExportCSVButton
-            csvData={JSON.stringify(allOrders)}
-            fileName="orders"
-          />
+          <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
+            <ExportCSVButton
+              csvData={JSON.stringify(allOrders)}
+              fileName="orders"
+            />
+          </Authorization>
         </div>
 
         <CardContent>
           <div className="flex items-center gap-2 mb-4">
             <Input
-              placeholder="Search ..."
+              placeholder="Search by name, phone, order code"
               className="flex-1 h-10 shadow-none border-gray-300"
               onChange={(event) => {
                 queryParams({
@@ -108,40 +106,7 @@ const Page: NextPageWithLayout = () => {
                 });
               }}
             />
-
-            <Popover>
-              <PopoverTrigger asChild>
-                <Button
-                  variant={"outline"}
-                  className={cn(
-                    "w-[140px] justify-start text-left font-normal h-10 shadow-none border-gray-300",
-                    !date && "text-muted-foreground"
-                  )}
-                >
-                  <CalendarIcon className="mr-2 h-4 w-4" />
-                  {date ? (
-                    format(new Date(date), "yyyy-MM-dd")
-                  ) : (
-                    <span>Pick a date</span>
-                  )}
-                </Button>
-              </PopoverTrigger>
-              <PopoverContent className="w-auto p-0">
-                <Calendar
-                  mode="single"
-                  selected={date ? new Date(date) : null}
-                  onSelect={(date) => {
-                    queryParams({
-                      set: {
-                        date: date ? date.toISOString() : "",
-                        _page: "1",
-                      },
-                    });
-                  }}
-                  initialFocus
-                />
-              </PopoverContent>
-            </Popover>
+            <DateRangePicker dayCount={30} className="!bg-white" />
 
             <SwitchGroup
               defaultValue={searchParams.get("status") ?? "all"}
