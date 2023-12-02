@@ -12,8 +12,18 @@ router.get("/", async (req, res) => {
       _order = "desc",
       q,
       status,
-      date,
+      from,
+      to,
     } = req.query;
+
+    const formDay = from ? new Date(from) : undefined;
+
+    //subtract 7 hours because of timezone
+    const toDay = to
+      ? new Date(new Date(to).setDate(new Date(to).getDate() + 1)).setHours(
+          new Date(to).getHours() - 7
+        )
+      : undefined;
 
     const role = req.user.role;
 
@@ -26,21 +36,27 @@ router.get("/", async (req, res) => {
       populate: [{ path: "managerId" }],
     };
 
-    const startOfDay = new Date(date);
-    const endOfDay = new Date(
-      new Date(date).setDate(new Date(date).getDate() + 1)
-    );
-
     let searchQuery = {
       ...(q
         ? {
-            code: { $regex: q, $options: "i" },
+            $or: [
+              { code: { $regex: q, $options: "i" } },
+              { phone: { $regex: q, $options: "i" } },
+              { fullName: { $regex: q, $options: "i" } },
+            ],
           }
         : {}),
       ...(status !== "all" && status ? { status: status } : {}),
-      ...(date ? { createdAt: { $gte: startOfDay, $lte: endOfDay } } : {}),
-      ...(role === "staff" ? { managerId: req.user._id } : {}),
-      ...(role === "shipper" ? { shipperId: req.user._id } : {}),
+      ...(formDay || toDay
+        ? {
+            createdAt: {
+              ...(formDay && { $gte: formDay }),
+              ...(toDay && { $lte: toDay }),
+            },
+          }
+        : {}),
+      ...(role === "staff" ? { managerId: req.user.id } : {}),
+      ...(role === "shipper" ? { shipperId: req.user.id } : {}),
     };
 
     const orders = await Order.paginate(searchQuery, options);
@@ -58,8 +74,8 @@ router.get("/all", async (req, res) => {
     const role = req.user.role;
 
     const options = {
-      ...(role === "staff" ? { managerId: req.user._id } : {}),
-      ...(role === "shipper" ? { shipperId: req.user._id } : {}),
+      ...(role === "staff" ? { managerId: req.user.id } : {}),
+      ...(role === "shipper" ? { shipperId: req.user.id } : {}),
     };
 
     const orders = await Order.find(options);

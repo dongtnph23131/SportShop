@@ -58,16 +58,16 @@ const OrderClient = () => {
                                         </div>{" "}
                                         <div className="order-item-info">
                                           <a className="order-item-title">
-                                            {itemOrder.productId.name}
+                                            {itemOrder?.productId?.name}
                                           </a>{" "}
                                           <div className="order-item-variant-label">
-                                            {itemOrder.productVariantId.name}
+                                            {itemOrder?.productVariantId?.name}
                                           </div>{" "}
                                           <div className="order-item-quantity">
                                             x {itemOrder.quantity}
                                           </div>{" "}
                                           <div className="order-item-price">
-                                            $ {itemOrder.productVariantId.price}
+                                            $ {itemOrder?.productVariantId?.price}
                                           </div>
                                         </div>{" "}
                                       </div>

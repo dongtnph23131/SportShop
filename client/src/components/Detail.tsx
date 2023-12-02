@@ -106,7 +106,7 @@ const Detail = () => {
           const itemCart = carts?.find((item: any) => {
             return item.productVariantIds._id === selectedVariant._id;
           });
-          if (itemCart.quantity + quantity > selectedVariant.inventory) {
+          if (itemCart && itemCart.quantity + quantity > selectedVariant.inventory) {
             alert("Quá số lượng tồn kho");
             return;
           }
