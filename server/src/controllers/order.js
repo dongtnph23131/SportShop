@@ -6,6 +6,7 @@ import Customer from "../models/customer";
 import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
 import User from "../models/user";
+import Discount from "../models/discount";
 export const create = async (req, res) => {
   try {
     const user = req.user;
@@ -14,16 +15,41 @@ export const create = async (req, res) => {
     const validatedBody = orderSchema.parse(body);
     const data = await User.find({ role: "staff" });
     const staffs = data.sort((a, b) => a.orders.length - b.orders.length);
-    const order = await Order.create({
-      ...validatedBody,
-      managerId: staffs[0]._id,
-      customerId: user._id,
-      orderTotalPrice:
-        validatedBody.totalPrice -
-        validatedBody.shippingPrice -
-        `${body.couponPrice ? body.couponPrice : 0}`,
-      code: `DH-${generateRandomString()}`,
-    });
+    let order;
+    if (body.discountId) {
+      order = await Order.create({
+        ...validatedBody,
+        managerId: staffs[0]._id,
+        customerId: user._id,
+        couponPrice: body.couponPrice,
+        orderTotalPrice:
+          validatedBody.totalPrice -
+          validatedBody.shippingPrice -
+          body.couponPrice,
+        code: `DH-${generateRandomString()}`,
+        discountId: body.discountId,
+      });
+      const discount = await Discount.findById(body.discountId);
+      await Discount.findByIdAndUpdate(
+        body.discountId,
+        {
+          usageCount: discount.usageCount - 1,
+        },
+        { new: true }
+      );
+    } else {
+      order = await Order.create({
+        ...validatedBody,
+        managerId: staffs[0]._id,
+        customerId: user._id,
+        couponPrice: body.couponPrice,
+        orderTotalPrice:
+          validatedBody.totalPrice -
+          validatedBody.shippingPrice -
+          body.couponPrice,
+        code: `DH-${generateRandomString()}`,
+      });
+    }
     await Promise.all(
       validatedBody.items.map(async (item) => {
         const productVariant = await ProductVariant.findById(

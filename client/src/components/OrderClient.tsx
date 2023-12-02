@@ -99,7 +99,7 @@ const OrderClient = () => {
                                   <div className="order-footer__left"></div>{" "}
                                   <div className="order-footer__right">
                                     <div>
-                                      <b>${item.totalPrice}</b>
+                                      <b>${item.orderTotalPrice}</b>
                                     </div>{" "}
                                   </div>
                                 </div>

@@ -34,6 +34,7 @@ const Cart = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
+  const [couponPrice, setCouponPrice] = useState<any>(0);
   const [createOrder] = useCreateOrderMutation();
   const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
@@ -67,13 +68,17 @@ const Cart = () => {
         quantity: item.quantity,
       };
     });
-    const order = {
+    let order = {
       ...data,
       totalPrice: total,
       shippingPrice: 0,
+      couponPrice,
       items,
       email: Cookies.get("email"),
     };
+    if (discount) {
+      order = { ...order, discountId: discount?._id };
+    }
     if (data.typePayment === "Online") {
       const response: any = await payMomo({ ...order, token });
       if (response) {
@@ -109,6 +114,15 @@ const Cart = () => {
         .find((item: any) => item.default === true)
     );
   }, [addresses]);
+  useEffect(() => {
+    if (discount) {
+      setCouponPrice(
+        discount?.type === "Percentage"
+          ? (total * discount?.percentage) / 100
+          : total - discount?.percentage
+      );
+    }
+  }, [discount, code]);
   return (
     <div>
       <section id="page-header3" className="about-header"></section>
@@ -313,7 +327,7 @@ const Cart = () => {
                         const data = await axios.get(
                           `http://localhost:8080/api/discounts/${code}`
                         );
-                        setDiscount(data?.data.discount);
+                        setDiscount(data?.data?.discount);
                         setIsUseDiscount(true);
                       } catch (error) {
                         setIsUseDiscount(false);
@@ -342,20 +356,7 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>Discount</td>
-                    <td>
-                      ${" "}
-                      {discount ? (
-                        <>
-                          {discount.type === "Percentage" ? (
-                            <>{(total * discount.percentage) / 100}</>
-                          ) : (
-                            <></>
-                          )}
-                        </>
-                      ) : (
-                        0
-                      )}
-                    </td>
+                    <td>$ {couponPrice}</td>
                   </tr>
                   <tr>
                     <td>Quantity</td>
