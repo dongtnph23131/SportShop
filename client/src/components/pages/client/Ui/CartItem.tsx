@@ -15,12 +15,25 @@ const CartItem = ({ item }: any) => {
   const onChangeQuantity = async (quantity: any) => {
     if (quantity === "") {
       return;
+    } else {
+      if (quantity > item?.productVariantIds?.inventory) {
+        await updateItemCart({
+          productVariantIds: item.productVariantIds._id,
+          quantity: item?.productVariantIds?.inventory,
+          token,
+        });
+        alert(
+          `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`
+        );
+        return;
+      } else {
+        await updateItemCart({
+          productVariantIds: item.productVariantIds._id,
+          quantity,
+          token,
+        });
+      }
     }
-    await updateItemCart({
-      productVariantIds: item.productVariantIds._id,
-      quantity,
-      token,
-    });
   };
   return (
     <tr>
@@ -64,13 +77,20 @@ const CartItem = ({ item }: any) => {
           />
           <button
             className="increment__cart"
-            onClick={() =>
-              addCart({
-                productVariantIds: item?.productVariantIds?._id,
-                token,
-                quantity: 1,
-              })
-            }
+            onClick={() => {
+              if (item.quantity === item?.productVariantIds?.inventory) {
+                alert(
+                  `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`
+                );
+                return;
+              } else {
+                addCart({
+                  productVariantIds: item?.productVariantIds?._id,
+                  token,
+                  quantity: 1,
+                });
+              }
+            }}
           >
             +
           </button>

@@ -48,7 +48,8 @@ const Home = () => {
     vertical: false,
     afterChange: () => {
       console.log("Slider initialized!");
-    }, responsive: [
+    },
+    responsive: [
       {
         breakpoint: 1200,
         settings: {
@@ -80,7 +81,7 @@ const Home = () => {
     slidesToScroll: 1,
     vertical: false,
     arrows: false,
-   
+
     afterChange: () => {
       console.log("Slider initialized!");
     },
@@ -93,7 +94,9 @@ const Home = () => {
   useEffect(() => {
     const fetchBanners = async () => {
       try {
-        const response = await axios.get("http://localhost:8080/api/getBanners");
+        const response = await axios.get(
+          "http://localhost:8080/api/getBanners"
+        );
         setBanners(response.data);
         setIsLoadingBanners(false);
       } catch (error) {
@@ -107,11 +110,11 @@ const Home = () => {
   return (
     <div>
       <div className="banners">
-      <Slider {...bannerSettings}>
+        <Slider {...bannerSettings}>
           {isLoadingBanners ? (
             <p>Đang tải banners...</p>
           ) : (
-            banners.map((banner, index) => (
+            banners.map((banner: any, index) => (
               <div className="banner__item" key={index + 1}>
                 <img src={banner.image} alt={banner.name} />
               </div>

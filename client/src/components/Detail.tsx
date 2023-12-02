@@ -2,7 +2,7 @@ import { useNavigate, useParams } from "react-router-dom";
 import Cookies from "js-cookie";
 import { useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
-import { useAddItemCartMutation } from "../api/cart";
+import { useAddItemCartMutation, useGetCartOfUserQuery } from "../api/cart";
 
 import {
   Pagination,
@@ -74,6 +74,7 @@ const Detail = () => {
       }
     }
   }, [product, page, selectedAttributes]);
+  const { data: carts } = useGetCartOfUserQuery(token);
   const { data: orders } = useGetOrderByUserQuery(token);
   const isMatch = orders?.orders
     ?.filter((item: any) => {
@@ -94,10 +95,7 @@ const Detail = () => {
 
   const [quantity, setQuantity] = useState<any>(1);
   const handleAddToCart = async () => {
-    if (!selectedAttributes) {
-      alert("Hãy chọn thuộc tính sản phẩm");
-      return;
-    } else if (product) {
+    if (product) {
       if (selectedVariant) {
         const cart = {
           token: Cookies.get("token"),
@@ -105,6 +103,13 @@ const Detail = () => {
           quantity,
         };
         try {
+          const itemCart = carts?.find((item: any) => {
+            return item.productVariantIds._id === selectedVariant._id;
+          });
+          if (itemCart.quantity + quantity > selectedVariant.inventory) {
+            alert("Quá số lượng tồn kho");
+            return;
+          }
           await addItemToCart(cart);
           message.success("Sản phẩm đã được thêm vào giỏ hàng");
         } catch (error) {
@@ -117,6 +122,7 @@ const Detail = () => {
   };
 
   const handleAttributeChange = (attributeName: any, value: any) => {
+    setQuantity(1);
     setSelectedAttributes({
       ...selectedAttributes,
       [attributeName]: value,
@@ -231,7 +237,13 @@ const Detail = () => {
             );
           })}
           <p>Số lượng còn: {quantityProduct}</p>
-          {isCheckQuantity ? <p>Quá số lượng tồn kho</p> : ""}
+          {isCheckQuantity ? (
+            <p className="error">
+              Chỉ đc mua tối đa {selectedVariant?.inventory} sản phẩm
+            </p>
+          ) : (
+            ""
+          )}
           <div className="acticon__addtocart">
             <div className="box__cremedetail">
               <button
@@ -256,6 +268,7 @@ const Detail = () => {
                     setIsCheckQuantity(false);
                     setQuantity(value);
                   } else {
+                    setQuantity(selectedVariant?.inventory);
                     setIsCheckQuantity(true);
                     return;
                   }
