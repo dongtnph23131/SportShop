@@ -150,8 +150,8 @@ export interface Discount {
   type: DiscountType;
   amountPrice: number;
   percentage: number;
-  startAt: Date;
-  endAt: Date;
+  startAt: string;
+  endAt: string;
   usageLimit: number;
   usageCount: number;
   createdAt: string;

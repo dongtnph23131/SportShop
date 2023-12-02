@@ -43,6 +43,38 @@ router.post("/", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const { id } = req.params;
+    const { code, description, count, type, amount, startAt, endAt } = req.body;
+
+    const discount = await Discount.findByIdAndUpdate(
+      id,
+      {
+        code,
+        description,
+        type,
+        usageCount: count,
+        ...(type === "Percentage"
+          ? { percentage: amount }
+          : { amountPrice: 0 }),
+        ...(type === "Fixed Amount"
+          ? { amountPrice: amount }
+          : { percentage: 0 }),
+        startAt,
+        endAt,
+      },
+      { new: true }
+    );
+
+    return res.status(200).json(discount);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;
