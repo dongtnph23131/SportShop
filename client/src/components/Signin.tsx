@@ -23,7 +23,7 @@ const Signin = () => {
   } = useForm({
     resolver: yupResolver(schema),
   });
-  const [signin, { isLoading }] = useSigninMutation();
+  const [signin] = useSigninMutation();
   const navigate: any = useNavigate();
   const onSignin = async (data: any) => {
     const response: any = await signin(data);

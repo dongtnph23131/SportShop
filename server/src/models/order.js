@@ -113,6 +113,11 @@ const orderSchema = mongoose.Schema(
         },
       },
     ],
+    discountId: {
+      type: mongoose.Types.ObjectId,
+      require: true,
+      ref: "Discount",
+    },
   },
   { timestamps: true, versionKey: false }
 );

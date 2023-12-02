@@ -18,7 +18,10 @@ export const create = async (req, res) => {
       ...validatedBody,
       managerId: staffs[0]._id,
       customerId: user._id,
-      orderTotalPrice: validatedBody.totalPrice - validatedBody.shippingPrice,
+      orderTotalPrice:
+        validatedBody.totalPrice -
+        validatedBody.shippingPrice -
+        `${body.couponPrice ? body.couponPrice : 0}`,
       code: `DH-${generateRandomString()}`,
     });
     await Promise.all(

@@ -15,6 +15,7 @@ import profileRouter from "./routers/profile";
 import commentRouter from "./routers/comment";
 import paymentRouter from "./routers/payment";
 import routerBanner from "./routers/banner";
+import discountRouter from "./routers/discount";
 dotenv.config();
 const app = express();
 
@@ -36,6 +37,7 @@ app.use("/api", addreesRouter);
 app.use("/api", commentRouter);
 app.use("/api", paymentRouter);
 app.use("/api", routerBanner);
+app.use("/api", discountRouter);
 mongoose.connect(process.env.URL_DATABASE);
 
 export const viteNodeApp = app;

@@ -12,6 +12,7 @@ import { Modal } from "antd";
 import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
 import Swal from "sweetalert2";
+import axios from "axios";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại không được để trống"),
@@ -21,6 +22,8 @@ const schema = yup.object().shape({
   email: yup.string(),
 });
 const Cart = () => {
+  const [discount, setDiscount] = useState<any>();
+  const [code, setCode] = useState<any>("");
   const navigate = useNavigate();
   const [removeCart] = useRemoveCartMutation();
   const {
@@ -32,6 +35,7 @@ const Cart = () => {
     resolver: yupResolver(schema),
   });
   const [createOrder] = useCreateOrderMutation();
+  const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
   const [payMomo] = usePayMomoMutation();
   const { data: addresses } = useGetAddressByAcountQuery(token);
@@ -45,7 +49,9 @@ const Cart = () => {
         0
       )
     : "";
-
+  const onChange = (e: any) => {
+    setCode(e.target.value);
+  };
   const onAddOrder = async (data: any) => {
     if (carts?.length === 0) {
       Swal.fire({
@@ -291,6 +297,40 @@ const Cart = () => {
 
               <div id="subtotal">
                 <h3>Cart Totals</h3>
+                <div style={{ padding: "20px" }}>
+                  <button>Vouchers</button>
+                </div>
+                <div style={{ display: "flex", padding: "10px" }}>
+                  <input
+                    onChange={onChange}
+                    value={code}
+                    style={{ padding: "10px" }}
+                  />
+                  <button
+                    onClick={async (e) => {
+                      e.preventDefault();
+                      try {
+                        const data = await axios.get(
+                          `http://localhost:8080/api/discounts/${code}`
+                        );
+                        setDiscount(data?.data.discount);
+                        setIsUseDiscount(true);
+                      } catch (error) {
+                        setIsUseDiscount(false);
+                        message.error("Mã khuyến mại không tồn tại");
+                      }
+                    }}
+                    style={{ marginLeft: "20px" }}
+                    disabled={!code}
+                  >
+                    Áp dụng
+                  </button>
+                </div>
+                {isUseDiscount ? (
+                  <p style={{ color: "green" }}>Mã giảm giá được áp dụng</p>
+                ) : (
+                  <></>
+                )}
                 <table>
                   <tr>
                     <td>Cart Subtotal</td>
@@ -299,6 +339,23 @@ const Cart = () => {
                   <tr>
                     <td>Shipping</td>
                     <td>$ 0</td>
+                  </tr>
+                  <tr>
+                    <td>Discount</td>
+                    <td>
+                      ${" "}
+                      {discount ? (
+                        <>
+                          {discount.type === "Percentage" ? (
+                            <>{(total * discount.percentage) / 100}</>
+                          ) : (
+                            <></>
+                          )}
+                        </>
+                      ) : (
+                        0
+                      )}
+                    </td>
                   </tr>
                   <tr>
                     <td>Quantity</td>
