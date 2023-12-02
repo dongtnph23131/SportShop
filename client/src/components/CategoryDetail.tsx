@@ -42,7 +42,7 @@ const CategoryDetail = () => {
         </span>
       </h4>
       {isLoading ? (
-        <p>Loading ...</p>
+        <p style={{ textAlign: "center", marginTop: "20px" }}>Loading ...</p>
       ) : (
         <>
           {products?.length > 0 ? (

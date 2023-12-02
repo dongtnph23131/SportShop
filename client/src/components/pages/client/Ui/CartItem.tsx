@@ -5,6 +5,7 @@ import {
   useRemoveItemMutation,
   useUpdateItemCartMutation,
 } from "../../../../api/cart";
+import Swal from "sweetalert2";
 import { InputNumber } from "antd";
 const CartItem = ({ item }: any) => {
   const token = Cookies.get("token");
@@ -22,13 +23,15 @@ const CartItem = ({ item }: any) => {
           quantity: item?.productVariantIds?.inventory,
           token,
         });
-        alert(
-          `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`
-        );
+
+        Swal.fire({
+          icon: "error",
+          title: `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`,
+        });
         return;
       } else {
         await updateItemCart({
-          productVariantIds: item.productVariantIds._id,
+          productVariantIds: item?.productVariantIds?._id,
           quantity,
           token,
         });
@@ -79,9 +82,10 @@ const CartItem = ({ item }: any) => {
             className="increment__cart"
             onClick={() => {
               if (item.quantity === item?.productVariantIds?.inventory) {
-                alert(
-                  `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`
-                );
+                Swal.fire({
+                  icon: "error",
+                  title: `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`,
+                });
                 return;
               } else {
                 addCart({

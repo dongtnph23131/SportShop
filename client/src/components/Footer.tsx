@@ -173,21 +173,10 @@ const Footer = () => {
       <div className="footer-bottom-area">
         <div className="container">
           <div className="row">
-            <div className="col-lg-8 col-md-6 col-sm-12 footer-bottom-left">
-              <div className="footer-bottom-text">
-                <p>
-                  &copy; Domino 2022 Made With <i className="fa fa-heart"></i>{" "}
-                  by
-                  <a href="https://hasthemes.com/" rel="noopener">
-                    HasThemes
-                  </a>
-                </p>
-              </div>
-            </div>
             <div className="col-lg-4 col-md-6 col-sm-12 footer-bottom-right">
               <div className="footer-bottom-image">
-                <a href="#">
-                  <img src="images/payment/p.png" alt="domino" />{" "}
+                <a>
+                  <img src="../../src/Assets/sport-shop-logo.svg" alt="SportShop" />{" "}
                 </a>
               </div>
             </div>
