@@ -1,7 +1,43 @@
 import { Router } from "express";
+import PDFDocument from "pdfkit";
+import nodemailer from "nodemailer";
 import Order from "../../models/order";
 
 const router = Router();
+
+const generateInvoice = (order) => {
+  //Bảo: Tìm hiểu thư viện pdfkit, thiết kế lại file hóa đơn PDF cho đẹp
+  const doc = new PDFDocument();
+
+  doc.text("Invoice", {
+    align: "center",
+  });
+
+  doc.text(`Order code: ${order.code}`);
+
+  doc.text(`Customer: ${order.fullName}`);
+  doc.text(`Phone: ${order.phone}`);
+  doc.text(`Address: ${order.address}`);
+  doc.text(`Email: ${order.email}`);
+  doc.text(`Payment method: ${order.typePayment}`);
+  doc.text(`Payment status: ${order.status}`);
+  doc.text(`Delivery status: ${order.deliveryStatus}`);
+  doc.text(`Status: ${order.status}`);
+  doc.text(`Created at: ${order.createdAt}`);
+  doc.text(`Updated at: ${order.updatedAt}`);
+  doc.text(`Total: ${order.orderTotalPrice}`);
+
+  doc.text(`Items:`);
+  order.items.forEach((item) => {
+    doc.text(`Product: ${item.productId.name}`);
+    doc.text(`Variant: ${item.productVariantId.name}`);
+    doc.text(`Quantity: ${item.quantity}`);
+    doc.text(`Price: ${item.productVariantId.price}`);
+    doc.text(`Total: ${item.quantity * item.productVariantId.price}`);
+  });
+
+  return doc;
+};
 
 router.get("/", async (req, res) => {
   try {
@@ -113,9 +149,82 @@ router.get("/all", async (req, res) => {
 router.get("/:id", async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(
-      "items.productId items.productVariantId customerId managerId shipperId"
+      "items.productId items.productVariantId managerId shipperId"
     );
     return res.status(200).json(order);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.get("/:id/invoice", async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate(
+      "items.productId items.productVariantId"
+    );
+    const doc = generateInvoice(order);
+
+    res.setHeader("Content-Type", "application/pdf");
+    res.setHeader("Content-Disposition", "inline; filename=invoice.pdf");
+    doc.pipe(res);
+
+    doc.end();
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
+router.get("/:id/invoice/send-email", async (req, res) => {
+  try {
+    const order = await Order.findById(req.params.id).populate(
+      "items.productId items.productVariantId"
+    );
+
+    const doc = generateInvoice(order);
+
+    //Nam: Thiết kế một email gửi hóa đơn đơn giản
+    let buffers = [];
+    doc.on("data", buffers.push.bind(buffers));
+    doc.on("end", () => {
+      let pdfData = Buffer.concat(buffers);
+
+      let transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+          user: "tranngocdong2042003@gmail.com",
+          pass: process.env.PasswordMail,
+        },
+      });
+
+      let mailOptions = {
+        from: "tranngocdong2042003@gmail.com",
+        to: order.email,
+        subject: "Invoice",
+        text: "Please find attached the invoice for your recent purchase.",
+        attachments: [
+          {
+            filename: "invoice.pdf",
+            content: pdfData,
+          },
+        ],
+      };
+
+      transporter.sendMail(mailOptions, (error, info) => {
+        if (error) {
+          console.log(error);
+          res.status(500).json({ message: error });
+        } else {
+          console.log(`Email sent to ${order.email}: ` + info.response);
+          res.status(200).json({ message: "Email sent successfully." });
+        }
+      });
+    });
+
+    doc.end();
   } catch (error) {
     return res.status(500).json({
       message: error.message,
