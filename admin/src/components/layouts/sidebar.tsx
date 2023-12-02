@@ -8,6 +8,7 @@ import {
   Archive,
   Settings,
   UserCog,
+  PercentCircle,
 } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { cn } from "@/lib/utils";
@@ -86,6 +87,14 @@ export default function Sidebar({
       name: "Customers",
       href: "/customers",
       Icon: User,
+      isAccess: profile
+        ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
+        : false,
+    },
+    {
+      name: "Discounts",
+      href: "/discounts",
+      Icon: PercentCircle,
       isAccess: profile
         ? [UserRole.ADMIN, UserRole.STAFF].includes(profile.role)
         : false,

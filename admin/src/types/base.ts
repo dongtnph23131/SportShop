@@ -143,6 +143,26 @@ export interface Comment {
   updatedAt: string;
 }
 
+export interface Discount {
+  _id: string;
+  code: string;
+  description: string;
+  type: DiscountType;
+  amountPrice: number;
+  percentage: number;
+  startAt: Date;
+  endAt: Date;
+  usageLimit: number;
+  usageCount: number;
+  createdAt: string;
+  updatedAt: string;
+}
+
+export enum DiscountType {
+  PERCENTAGE = "Percentage",
+  FIXED_AMOUNT = "Fixed Amount",
+}
+
 export enum BannerStatus {
   ACTIVE = "Active",
   INACTIVE = "Inactive",

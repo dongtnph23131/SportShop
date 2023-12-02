@@ -9,3 +9,5 @@ export const productStatus = [
 ];
 
 export const roles = ["admin", "staff", "shipper"];
+
+export const discountTypes = ["Percentage", "Fixed Amount"];
