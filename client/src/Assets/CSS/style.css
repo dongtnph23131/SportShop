@@ -168,7 +168,6 @@ a.meanmenu-reveal {
 }
 
 
-@import url("https://fonts.googleapis.com/css?family=Montserrat:400,700|Roboto:300i,400,500,700");
 
 /*-----------------------------------------------------------------------------------
 
@@ -289,7 +288,6 @@ h4,
 h5,
 h6,
 a {
-    font-family: "Montserrat", sans-serif;
 
     margin: 0 0 10px;
 }
@@ -448,7 +446,6 @@ body {}
 }
 
 .header-currency-area .cur-usd>span {
-    font-family: Montserrat;
     font-size: 10px;
     font-weight: 700;
     line-height: 44px;
@@ -953,7 +950,6 @@ nav ul.main-menu {
 }
 
 .container.mean-container:before {
-    font-family: Montserrat;
     font-size: 19px;
 
     position: absolute;
@@ -1568,7 +1564,6 @@ nav ul.main-menu {
 }
 
 .discount-right-text-btm span {
-    font-family: Montserrat;
     font-size: 13px;
     font-weight: 700;
 
@@ -1761,14 +1756,12 @@ nav ul.main-menu {
 }
 
 .product-bottom-price>span {
-    font-family: Montserrat;
     font-size: 14px;
 
     color: #353535;
 }
 
 .product-bottom-price del {
-    font-family: Montserrat;
     font-size: 14px;
 
     color: #959595;
@@ -2006,7 +1999,6 @@ nav ul.main-menu {
 }
 
 .blog-small-text {
-    font-family: Montserrat;
     font-size: 12px;
     font-weight: 700;
 
@@ -2328,7 +2320,6 @@ nav ul.main-menu {
 }
 
 .footer-list-text a {
-    font-family: Montserrat;
     font-size: 12px;
 
     display: block;
@@ -2391,7 +2382,6 @@ nav ul.main-menu {
 }
 
 .footer-bottom-text p {
-    font-family: Montserrat;
     font-size: 14px;
 
     display: block;
@@ -2771,13 +2761,15 @@ nav ul.main-menu {
 
 .img-banner {
     margin-bottom: 29px;
-
     cursor: pointer;
 }
 
 .img-banner:hover .hvreff-defm10:before {
     -webkit-transform: scale(1);
     transform: scale(1);
+}
+.small-img-group .small-img-col img {
+    height: 100px;
 }
 
 .img-banner:hover .hvreff-defm10:after {
@@ -2804,7 +2796,6 @@ nav ul.main-menu {
 }
 
 .fullwidth-blog-area .blog-pdate>p {
-    font-family: Montserrat;
     font-size: 13px;
 
     color: #959595;
@@ -3342,7 +3333,6 @@ nav ul.main-menu {
 }
 
 .hp4-blog-wrapper .blog-pdate>p {
-    font-family: Montserrat;
     font-size: 13px;
 
     color: #959595;
@@ -3746,7 +3736,6 @@ nav ul.main-menu {
 }
 
 .breadcrumbs-style1 li {
-    font-family: Montserrat;
     font-size: 15px;
 
     text-transform: uppercase;
@@ -3784,7 +3773,6 @@ nav ul.main-menu {
 }
 
 .sidebar-main-ttl>h3 {
-    font-family: Montserrat;
     font-weight: 600;
 
     margin: 0;
@@ -3797,7 +3785,6 @@ nav ul.main-menu {
 }
 
 .sidebar-st p {
-    font-family: Montserrat;
     font-size: 17px;
     font-weight: 600;
 
@@ -3812,7 +3799,6 @@ nav ul.main-menu {
 
 .sidebar-cbox form label {
     font-family: Arial;
-    font-family: Montserrat;
     font-size: 15px;
     font-weight: 300;
 
@@ -4029,7 +4015,6 @@ nav ul.main-menu {
 }
 
 .full-ttlleft>p {
-    font-family: Montserrat;
     font-size: 18px;
     font-weight: 700;
     line-height: 18px;
@@ -4075,7 +4060,6 @@ nav ul.main-menu {
 }
 
 .top-product-short>label {
-    font-family: Montserrat;
     font-size: 12px;
 
     margin-left: 10px;
@@ -4086,7 +4070,6 @@ nav ul.main-menu {
 }
 
 .top-product-short>select {
-    font-family: Montserrat;
 
     width: 45%;
     height: 30px;
@@ -4099,7 +4082,6 @@ nav ul.main-menu {
 }
 
 .quantity-short select {
-    font-family: Montserrat;
 
     width: 50px;
     height: 30px;
@@ -4112,7 +4094,6 @@ nav ul.main-menu {
 }
 
 .quantity-short>label {
-    font-family: Montserrat;
     font-size: 12px;
     line-height: 30px;
 
@@ -4122,7 +4103,6 @@ nav ul.main-menu {
 }
 
 .selected-items>p {
-    font-family: Montserrat;
     font-size: 14px;
     font-weight: 600;
     line-height: 14px;
@@ -4131,7 +4111,6 @@ nav ul.main-menu {
 }
 
 .compare-items>a span {
-    font-family: Montserrat;
     font-size: 11px;
     font-weight: 600;
     line-height: 30px;
@@ -4254,7 +4233,6 @@ nav ul.main-menu {
 }
 
 .pagi-itemshow {
-    font-family: Montserrat;
     font-size: 15px;
 
     position: relative;
@@ -4306,7 +4284,6 @@ nav ul.main-menu {
 }
 
 .cart-product-desc>p {
-    font-family: Montserrat;
     font-size: 15px;
     font-weight: 700;
     line-height: 15px;
@@ -4341,7 +4318,6 @@ table.main-table {
 table.main-table th,
 tr1,
 td {
-    font-family: Montserrat;
     font-size: 15px;
 
     text-align: center;
@@ -4404,7 +4380,6 @@ td {
 
 .shopping-cart-table .td3 span,
 .td10 span {
-    font-family: Montserrat;
     font-size: 14px;
     font-weight: 600;
 
@@ -4504,7 +4479,6 @@ td {
 }
 
 .shopping-cart-table .td21 {
-    font-family: Montserrat;
     font-size: 18px;
 
     color: #333;
@@ -4613,7 +4587,6 @@ td {
 /* 31. Login
 /*----------------------------------------*/
 .lp-input label {
-    font-family: Montserrat;
     font-size: 15px;
 
     display: block;
@@ -6853,6 +6826,10 @@ a.order-btn-large:hover {
     .contact-map {
         height: 350px;
     }
+
+    .box-item-fillter{
+        width: 100%;
+    }
 }
 
 #googleMap {
@@ -6899,7 +6876,6 @@ a.order-btn-large:hover {
 }
 
 .send-email button {
-    font-family: Montserrat;
     font-size: 14px;
 
     padding: 15px 40px;
@@ -7686,7 +7662,6 @@ p.error {
 
 .posr img {
     height: 100%;
-    padding: 20px 10px;
 }
 .img-banner {
     height: 50%;
