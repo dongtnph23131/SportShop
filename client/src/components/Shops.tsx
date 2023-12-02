@@ -49,7 +49,7 @@ const Shops = () => {
       </section>
 
       <div className="breadcrumbs-wrapper breadcumbs-bg1">
-        <div className="container-brk" style={{ padding: "0px 80px" }}>
+        <div className="container-brk ctnr" style={{ padding: "0px 80px" }}>
           <div className="row">
             <div className="col-xs-12">
               <div className="breadcrumbs breadcrumbs-style1 sep1 posr">
@@ -69,7 +69,7 @@ const Shops = () => {
         </div>
       </div>
 
-      <section id="product1" className="section-p1">
+      <section id="product1" className="section-p1 ctnr">
         <div className="fiter">
           <div className="filter-shops">
             <span className="sct-filter" onClick={handleFilterClick}>
