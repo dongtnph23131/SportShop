@@ -72,6 +72,22 @@ router.put("/:id/active", async (req, res) => {
   }
 });
 
+router.put("/:id", async (req, res) => {
+  try {
+    const body = req.body;
+
+    await User.findByIdAndUpdate(req.params.id, body);
+
+    return res.status(200).json({
+      message: "Edited user successfully",
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.put("/:id/deactive", async (req, res) => {
   try {
     await User.findByIdAndUpdate(req.params.id, { isActive: false });

@@ -11,11 +11,10 @@ import {
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "./ui/button";
-import { InventoryResponse } from "@/services/inventory/inventory-query";
+
 import axiosClient from "@/lib/axios-instance";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
-import { generateRandomString } from "@/lib/utils";
 import { UserRole } from "@/types/base";
 
 export const CreateUserDialog = () => {
@@ -39,7 +38,8 @@ export const CreateUserDialog = () => {
             const lastName = (e.target as HTMLFormElement)["lastName"].value;
             const email = (e.target as HTMLFormElement)["email"].value;
             const password = (e.target as HTMLFormElement)["password"].value;
-            const role = (e.target as HTMLFormElement)["role"].value;
+            const role = (e.target as HTMLFormElement)["user-role"].value;
+            const phone = (e.target as HTMLFormElement)["phone"].value;
 
             try {
               setIsLoading(true);
@@ -49,6 +49,7 @@ export const CreateUserDialog = () => {
                 email,
                 password,
                 role,
+                phone,
               });
               if (res.status !== 200) {
                 toast.error(res.data.message);
@@ -91,13 +92,19 @@ export const CreateUserDialog = () => {
             </Label>
             <Input id="password" type="password" required />
           </div>
+          <div className="space-y-2">
+            <Label htmlFor="phone" className="text-right">
+              Phone
+            </Label>
+            <Input id="phone" required />
+          </div>
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-right">
               Role
             </Label>
             <select
-              id="role"
+              id="user-role"
               className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
             >
               <option value={UserRole.ADMIN}>Admin</option>

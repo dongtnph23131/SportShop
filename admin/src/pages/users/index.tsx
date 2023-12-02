@@ -42,10 +42,12 @@ import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 import { Badge } from "@/components/ui/badge";
 import { DataTableToolbar } from "@/components/users/data-table-toolbar";
+import { EditUserDialog } from "@/components/edit-user-dialog";
 
 const Page: NextPageWithLayout = () => {
   const { data: users } = useUsersQuery();
   const [isLoading, setIsLoading] = React.useState(false);
+  const [isOpen, setIsOpen] = React.useState(false);
 
   const columns: ColumnDef<User>[] = [
     {
@@ -76,6 +78,13 @@ const Page: NextPageWithLayout = () => {
         <DataTableColumnHeader column={column} title="Email" />
       ),
       cell: ({ row }) => <span>{row.original.email}</span>,
+    },
+    {
+      id: "phone",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Phone" />
+      ),
+      cell: ({ row }) => <span>{row.original.phone}</span>,
     },
     {
       id: "status",
