@@ -24,8 +24,9 @@ export const getAll = async (req, res) => {
     let searchQuery = q
       ? {
           name: { $regex: q, $options: "i" },
+          status: "Active",
         }
-      : {};
+      : { status: "Active" };
     if (categories) {
       searchQuery = {
         ...searchQuery,

@@ -34,7 +34,7 @@ export const get = async (req, res) => {
       },
       populate: [{ path: "categoryId" }],
     };
-    const data = await Product.paginate({ categoryId: categoryId }, options);
+    const data = await Product.paginate({ categoryId: categoryId,status:'Active' }, options);
     return res.status(200).json(data.docs);
   } catch (error) {
     return res.status(400).json({
