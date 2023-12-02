@@ -14,7 +14,6 @@ import { ColumnDef } from "@tanstack/react-table";
 import { User } from "@/types/base";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
-import { format } from "date-fns";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -23,7 +22,6 @@ import {
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
-import Link from "next/link";
 import {
   AlertDialog,
   AlertDialogAction,
@@ -36,18 +34,16 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { DataTable } from "@/components/data-table/data-table";
-import { CreateUserDialog } from "@/components/create-user-dialog";
 import axiosClient from "@/lib/axios-instance";
 import { toast } from "sonner";
 import { queryClient } from "@/lib/react-query";
 import { Badge } from "@/components/ui/badge";
 import { DataTableToolbar } from "@/components/users/data-table-toolbar";
-import { EditUserDialog } from "@/components/edit-user-dialog";
+import { EditUserDialog } from "@/components/users/edit-user-dialog";
+import { CreateUserDialog } from "@/components/users/create-user-dialog";
 
 const Page: NextPageWithLayout = () => {
   const { data: users } = useUsersQuery();
-  const [isLoading, setIsLoading] = React.useState(false);
-  const [isOpen, setIsOpen] = React.useState(false);
 
   const columns: ColumnDef<User>[] = [
     {
@@ -117,109 +113,50 @@ const Page: NextPageWithLayout = () => {
     {
       id: "actions",
       cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label="Open menu"
-              variant="ghost"
-              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-            >
-              <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[160px]">
-            {row.original.isActive ? (
-              <DropdownMenuItem
-                onClick={async () => {
-                  try {
-                    const res = await axiosClient.put(
-                      `/user/${row.original._id}/deactive`
-                    );
-                    if (res.status !== 200) {
-                      toast.error(res.data.message);
-                      return;
+        <div className="flex items-center gap-2 justify-end mr-4">
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <span className="text-red-500 hover:underline cursor-pointer font-semibold">
+                Delete
+              </span>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async () => {
+                    try {
+                      const res = await axiosClient.delete(
+                        `/user/${row.original._id}`
+                      );
+                      if (res.status !== 200) {
+                        toast.error(res.data.message);
+                        return;
+                      }
+                      toast.success("User is created successfully!");
+                      queryClient.invalidateQueries({
+                        queryKey: ["users"],
+                      });
+                    } catch (error) {
+                      toast.error("Something went wrong!");
                     }
-                    toast.success("Deactive user successfully!");
-                    queryClient.invalidateQueries({
-                      queryKey: ["users"],
-                    });
-                  } catch (error) {
-                    toast.error("Something went wrong!");
-                  }
-                }}
-              >
-                Deactive
-              </DropdownMenuItem>
-            ) : (
-              <DropdownMenuItem
-                onClick={async () => {
-                  try {
-                    const res = await axiosClient.put(
-                      `/user/${row.original._id}/active`
-                    );
-                    if (res.status !== 200) {
-                      toast.error(res.data.message);
-                      return;
-                    }
-                    toast.success("Active user successfully!");
-                    queryClient.invalidateQueries({
-                      queryKey: ["users"],
-                    });
-                  } catch (error) {
-                    toast.error("Something went wrong!");
-                  }
-                }}
-              >
-                Active
-              </DropdownMenuItem>
-            )}
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
 
-            <DropdownMenuSeparator />
-
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                  Delete
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={async () => {
-                        try {
-                          const res = await axiosClient.delete(
-                            `/user/${row.original._id}`
-                          );
-                          if (res.status !== 200) {
-                            toast.error(res.data.message);
-                            return;
-                          }
-                          toast.success("User is created successfully!");
-                          queryClient.invalidateQueries({
-                            queryKey: ["users"],
-                          });
-                        } catch (error) {
-                          toast.error("Something went wrong!");
-                        }
-                      }}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+          <EditUserDialog user={row.original} />
+        </div>
       ),
     },
   ];
