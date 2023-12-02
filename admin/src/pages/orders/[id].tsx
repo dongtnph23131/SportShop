@@ -9,7 +9,7 @@ import {
   OrderStatus,
   UserRole,
 } from "@/types/base";
-import { format } from "date-fns";
+import { format, set } from "date-fns";
 import {
   TableHead,
   TableRow,
@@ -19,7 +19,7 @@ import {
   Table,
 } from "@/components/ui/table";
 import { useRouter } from "next/router";
-import { ArrowLeft, Truck } from "lucide-react";
+import { ArrowLeft, Download, Loader2, Send, Truck } from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
 import { toast } from "sonner";
 
@@ -29,17 +29,81 @@ import { formatPrice } from "@/lib/utils";
 
 import { ChooseShipperDialog } from "@/components/create-shipper-dialog";
 import { Authorization } from "@/lib/authorization";
+import { useState } from "react";
+import is from "date-fns/esm/locale/is";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const { data: order } = useOrderQuery({ id: router.query.id as string });
+  const [isSendLoading, setIsSendLoading] = useState(false);
 
   return (
     <>
-      <Button variant="ghost" className="mb-2" onClick={() => router.back()}>
-        <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to orders
-      </Button>
+      <div className="flex justify-between items-center mb-1">
+        <Button variant="ghost" className="mb-2" onClick={() => router.back()}>
+          <ArrowLeft className="h-4 w-4 mr-2" />
+          Back to orders
+        </Button>
+
+        <div className="flex items-center gap-2">
+          <Button
+            variant={"secondary"}
+            onClick={async () => {
+              setIsSendLoading(true);
+              const res = await axiosClient.get(
+                `/orders/${order?._id}/invoice/send-email`
+              );
+
+              if (res.status !== 200) {
+                const error = res.data.message;
+                setIsSendLoading(false);
+                toast.error(error);
+                return;
+              }
+
+              setIsSendLoading(false);
+
+              toast.success("Successfully sent email to customer");
+            }}
+            disabled={isSendLoading}
+          >
+            {isSendLoading ? (
+              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+            ) : (
+              <Send className="h-4 w-4 mr-2" />
+            )}
+            Send Invoice
+          </Button>
+
+          <Button
+            onClick={async () => {
+              const res = await axiosClient.get(
+                `/orders/${order?._id}/invoice`,
+                {
+                  responseType: "blob",
+                }
+              );
+
+              if (res.status !== 200) {
+                const error = res.data.message;
+                toast.error(error);
+                return;
+              }
+
+              const url = window.URL.createObjectURL(new Blob([res.data]));
+              const link = document.createElement("a");
+              link.href = url;
+              link.setAttribute("download", `invoice-${order?.code}.pdf`);
+              document.body.appendChild(link);
+              link.click();
+              link.remove();
+            }}
+          >
+            <Download className="h-4 w-4 mr-2" />
+            Export Invoice
+          </Button>
+        </div>
+      </div>
 
       {order ? (
         <>
