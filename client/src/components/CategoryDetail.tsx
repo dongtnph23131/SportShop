@@ -118,7 +118,7 @@ const CategoryDetail = () => {
                   </div>
                 )}
               </div>
-              <section id="product1" className="section-p1">
+              <section id="product1" className="section-p1 ctnr">
                 <div className="pro-container">
                   {products?.map((product: any, index: any) => {
                     return (

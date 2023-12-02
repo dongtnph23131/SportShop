@@ -157,7 +157,7 @@ const Detail = () => {
 
   return (
     <div>
-      <section id="prodetails" className="section-p1">
+      <section id="prodetails" className="section-p1 ctnr">
         <div className="single-pro-image">
           <img
             src={`${product ? `${product.images[selectedImage].url}` : ``}`}
@@ -380,7 +380,7 @@ const Detail = () => {
           </Form>
         </div>
       </section>
-      <section id="product1" className="section-p1">
+      <section id="product1" className="section-p1 ctnr">
         <h2>OUR PRODUCTS</h2>
         <p>Summer Collection New Modern Design</p>
         <div className="pro-container">
