@@ -69,6 +69,28 @@ router.get("/", async (req, res) => {
   }
 });
 
+router.get("/statistic", async (req, res) => {
+  try {
+    const totalCanceled = await Order.countDocuments({})
+      .where({
+        status: "Canceled",
+      })
+      .count();
+
+    const totalCompleted = await Order.countDocuments({})
+      .where({
+        status: "Completed",
+      })
+      .count();
+
+    const total = await Order.countDocuments({});
+
+    return res.status(200).json({ totalCanceled, totalCompleted, total });
+  } catch (error) {
+    return res.status(500).json({ message: error.message });
+  }
+});
+
 router.get("/all", async (req, res) => {
   try {
     const role = req.user.role;
