@@ -11,6 +11,7 @@ import { useEffect, useState } from "react";
 import { Modal } from "antd";
 import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
+import Swal from "sweetalert2";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại không được để trống"),
@@ -21,7 +22,7 @@ const schema = yup.object().shape({
 });
 const Cart = () => {
   const navigate = useNavigate();
-  const [removeCart]=useRemoveCartMutation()
+  const [removeCart] = useRemoveCartMutation();
   const {
     register,
     handleSubmit,
@@ -34,7 +35,8 @@ const Cart = () => {
   const token = Cookies.get("token");
   const [payMomo] = usePayMomoMutation();
   const { data: addresses } = useGetAddressByAcountQuery(token);
-  const { data: carts } = useGetCartOfUserQuery(token);
+  const { data: carts, isLoading: isLoadingCart } =
+    useGetCartOfUserQuery(token);
   const total = token
     ? carts?.reduce(
         (accumulator: any, currentValue: any) =>
@@ -46,7 +48,10 @@ const Cart = () => {
 
   const onAddOrder = async (data: any) => {
     if (carts?.length === 0) {
-      alert("Giỏ hàng trống");
+      Swal.fire({
+        icon: "error",
+        title: "Giỏ hàng trống",
+      });
       return;
     }
     const items = carts.map((item: any) => {
@@ -70,9 +75,9 @@ const Cart = () => {
       }
       return;
     }
-    await createOrder({ token, order })
+    await createOrder({ token, order });
     await removeCart(token).then(() => {
-      message.success('Đặt hàng thành công');
+      message.success("Đặt hàng thành công");
       navigate("/OrderClient");
     });
   };
@@ -100,13 +105,11 @@ const Cart = () => {
   }, [addresses]);
   return (
     <div>
-      <section id="page-header3" className="about-header">
-        <h2>#Let's_talk</h2>
-        <p>LEAVE A MESSAGE, We love to hear from you!</p>
-      </section>
-
+      <section id="page-header3" className="about-header"></section>
       {!token ? (
-        <div>Chưa đăng nhập</div>
+        <div style={{ textAlign: "center", padding: "40px" }}>
+          Chưa đăng nhập
+        </div>
       ) : (
         <>
           {!carts?.message ? (
@@ -124,27 +127,33 @@ const Cart = () => {
                 </div>
               ) : (
                 <>
-                  <section id="cart" className="section-p1 cart__ss">
-                    <table width="100%">
-                      <thead>
-                        <tr>
-                          <td>Remove</td>
-                          <td>Image</td>
-                          <td>Product</td>
-                          <td>Price</td>
-                          <td>Quantity</td>
-                          <td>Subtotal</td>
-                        </tr>
-                      </thead>
-                      <tbody>
-                        {carts?.map((cartItem: any) => {
-                          return (
-                            <CartItem key={cartItem._id} item={cartItem} />
-                          );
-                        })}
-                      </tbody>
-                    </table>
-                  </section>
+                  {isLoadingCart ? (
+                    <div style={{ textAlign: "center", padding: "20px" }}>
+                      Loading ....
+                    </div>
+                  ) : (
+                    <section id="cart" className="section-p1 cart__ss">
+                      <table width="100%">
+                        <thead>
+                          <tr>
+                            <td>Remove</td>
+                            <td>Image</td>
+                            <td>Product</td>
+                            <td>Price</td>
+                            <td>Quantity</td>
+                            <td>Subtotal</td>
+                          </tr>
+                        </thead>
+                        <tbody>
+                          {carts?.map((cartItem: any) => {
+                            return (
+                              <CartItem key={cartItem._id} item={cartItem} />
+                            );
+                          })}
+                        </tbody>
+                      </table>
+                    </section>
+                  )}
                 </>
               )}
             </>
@@ -248,7 +257,7 @@ const Cart = () => {
                     />
                   </tr>
                   <p className="error">
-                    {errors.phone ? errors?.phone.message : ""}
+                    {errors.phone ? errors?.phone?.message : ""}
                   </p>
                   <tr>
                     <input
@@ -258,7 +267,7 @@ const Cart = () => {
                     />
                   </tr>
                   <p className="error">
-                    {errors.address ? errors?.address.message : ""}
+                    {errors.address ? errors?.address?.message : ""}
                   </p>
                   <tr>
                     <textarea
@@ -267,7 +276,7 @@ const Cart = () => {
                     />
                   </tr>
                   <p className="error">
-                    {errors.node ? errors?.node.message : ""}
+                    {errors.node ? errors?.node?.message : ""}
                   </p>
                 </table>
                 <div className="pro__checkout">
@@ -356,7 +365,7 @@ const Cart = () => {
                         </label>
                       </div>
                       <p className="error">
-                        {errors.typePayment ? errors?.typePayment.message : ""}
+                        {errors.typePayment ? errors?.typePayment?.message : ""}
                       </p>
                     </div>
                   </div>

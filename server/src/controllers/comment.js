@@ -7,7 +7,6 @@ export const create = async (req, res) => {
   try {
     const user = req.user;
     const body = req.body;
-    console.log(body);
     const { error } = commentValidators.validate(body);
     if (error) {
       return res.json({
@@ -18,10 +17,10 @@ export const create = async (req, res) => {
       "items.productId items.productVariantId"
     );
     const isMatch = orders.map((item) => {
-      console.log(item);
       const isCheck = item.items.find((itemChild) => {
-        console.log(itemChild.productId._id, body.productId);
-        return itemChild.productId._id.toString() == body.productId.toString();
+        return (
+          itemChild?.productId?._id.toString() == body?.productId.toString()
+        );
       });
       return isCheck ? true : false;
     });

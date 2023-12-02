@@ -250,7 +250,7 @@ const Header = () => {
                                       {item.name}
                                     </span>
                                     <button className="search-addCart">
-                                      buy
+                                      Buy
                                     </button>
                                   </div>
                                 </div>

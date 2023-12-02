@@ -1,6 +1,6 @@
 import { useState, useEffect } from "react";
 import { useGetAllProductsQuery } from "../api/product";
-import { Link, NavLink, useNavigate } from "react-router-dom";
+import { Link, useNavigate } from "react-router-dom";
 import { getCategories } from "../api/category";
 import "slick-carousel/slick/slick";
 import "slick-carousel/slick/slick.css";
@@ -25,7 +25,6 @@ const Home = () => {
         setCategories(response.data);
         setIsLoadingCategories(false);
       } catch (error) {
-        console.error("Error fetching categories:", error);
         setIsLoadingCategories(false);
       }
     };
@@ -46,9 +45,7 @@ const Home = () => {
     slidesToShow: 4,
     slidesToScroll: 1,
     vertical: false,
-    afterChange: () => {
-      console.log("Slider initialized!");
-    },
+    afterChange: () => {},
     responsive: [
       {
         breakpoint: 1200,
@@ -100,7 +97,6 @@ const Home = () => {
         setBanners(response.data);
         setIsLoadingBanners(false);
       } catch (error) {
-        console.error("Lỗi khi lấy banners:", error);
         setIsLoadingBanners(false);
       }
     };
@@ -151,7 +147,7 @@ const Home = () => {
                                 }}
                               >
                                 <i className=" product-search fa fa-search"></i>{" "}
-                                quick View
+                                Quick View
                               </a>
                               <a href={`/products/${product._id}`}>
                                 <img

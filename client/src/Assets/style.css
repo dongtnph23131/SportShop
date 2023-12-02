@@ -73,38 +73,48 @@ p {
 .bo .bow1 .bow1-child {
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(90deg,
-      rgba(26, 84, 158, 1) 0%,
-      rgba(62, 149, 216, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 84, 158, 1) 0%,
+    rgba(62, 149, 216, 1) 100%
+  );
   padding: 0 15px;
 }
 
 .bo .bow1:nth-child(2) .bow1-child {
   background: rgb(17, 145, 176);
-  background: linear-gradient(90deg,
-      rgba(17, 145, 176, 1) 0%,
-      rgba(78, 211, 190, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(17, 145, 176, 1) 0%,
+    rgba(78, 211, 190, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(3) .bow1-child {
   background: rgb(227, 114, 20);
-  background: linear-gradient(90deg,
-      rgba(227, 114, 20, 1) 0%,
-      rgba(245, 177, 42, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(227, 114, 20, 1) 0%,
+    rgba(245, 177, 42, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(4) .bow1-child {
   background: rgb(163, 39, 85);
-  background: linear-gradient(90deg,
-      rgba(163, 39, 85, 1) 0%,
-      rgba(222, 40, 80, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(163, 39, 85, 1) 0%,
+    rgba(222, 40, 80, 1) 100%
+  );
 }
 
 .bo .bow1:nth-child(5) .bow1-child {
   background: rgb(26, 84, 158);
-  background: linear-gradient(90deg,
-      rgba(26, 84, 158, 1) 0%,
-      rgba(62, 149, 216, 1) 100%);
+  background: linear-gradient(
+    90deg,
+    rgba(26, 84, 158, 1) 0%,
+    rgba(62, 149, 216, 1) 100%
+  );
 }
 
 .icon {
@@ -294,7 +304,7 @@ p {
 }
 
 .box-oder-carts {
-  padding: 30px 0; 
+  padding: 30px 0;
 }
 .banner__item img {
   width: 100%;
@@ -324,7 +334,10 @@ h4.brackham {
   font-weight: 600;
   color: #000;
 }
-
+.banners p {
+  text-align: center;
+  margin-top: 10px;
+}
 .items-sort-ul {
   border-radius: 0px 10px 10px 10px;
   position: absolute;
@@ -1437,7 +1450,8 @@ select {
   width: 50%;
 }
 
-.row__editAdres {}
+.row__editAdres {
+}
 
 .group__btn__action__remove {
   display: flex;
@@ -1544,7 +1558,7 @@ button.btn__save {
 }
 
 .single-pro-image img {
-  max-width: 400px; 
+  max-width: 400px;
   height: 450px;
   object-fit: contain;
 }
@@ -2577,10 +2591,9 @@ button.btn__save {
 .icon__reload__2 i::before {
   content: url(./iconreload2.png);
 }
-.icon__reload__3 i::before{
-content: url(./iconreload3.png);
+.icon__reload__3 i::before {
+  content: url(./iconreload3.png);
 }
-
 
 /* Media Query */
 @media (max-width: 799px) {
