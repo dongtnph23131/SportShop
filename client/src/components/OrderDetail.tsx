@@ -26,7 +26,7 @@ const OrderDetail = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{textAlign:'center',padding:'20px'}}>Loading...</div>
+        <div style={{ textAlign: "center", padding: "20px" }}>Loading...</div>
       ) : (
         <div className="container">
           <div className="account-page__content">
@@ -85,6 +85,18 @@ const OrderDetail = () => {
                         {data?.order?.typePayment}
                       </div>
                     </li>
+                    {data?.order?.discountId ? (
+                      <li>
+                        <div className="detail-order-info__title">
+                          Mã giảm giá
+                        </div>
+                        <div className="detail-order-info__content">
+                          {data?.order?.discountId?.code}
+                        </div>
+                      </li>
+                    ) : (
+                      <></>
+                    )}
                     <li>
                       <div className="detail-order-info__title">
                         Trạng thái giao hàng:
@@ -134,10 +146,14 @@ const OrderDetail = () => {
                         {data?.order?.address}
                       </div>
                     </li>
-                    <li>
-                      <div className="detail-order-info__title">Ghi chú:</div>
-                      <div className="detail-order-info__content"></div>
-                    </li>
+                    {data?.oder?.node ? (
+                      <li>
+                        <div className="detail-order-info__title">Ghi chú:</div>
+                        <div className="detail-order-info__content"></div>
+                      </li>
+                    ) : (
+                      <></>
+                    )}
                   </ul>
                 </div>
                 {data?.order?.deliveryStatus === "Shipping" ||
@@ -198,14 +214,11 @@ const OrderDetail = () => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan={4}>Mã giảm giá</td> <td></td>
-                    </tr>
-                    <tr>
                       <td colSpan={4}>Tổng giá trị sản phẩm</td>{" "}
                       <td>${data?.order?.totalPrice}</td>
                     </tr>
                     <tr>
-                      <td colSpan={4}>Tổng khuyến mãi</td>{" "}
+                      <td colSpan={4}>Giảm giá</td>{" "}
                       <td>${data?.order?.couponPrice}</td>
                     </tr>
                     <tr>
@@ -214,7 +227,7 @@ const OrderDetail = () => {
                     </tr>
                     <tr className="total_payment">
                       <td colSpan={4}>Tổng thanh toán</td>{" "}
-                      <td>${data?.order?.totalPrice}</td>
+                      <td>${data?.order?.orderTotalPrice}</td>
                     </tr>
                   </tfoot>
                 </table>
