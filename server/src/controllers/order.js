@@ -170,7 +170,7 @@ export const getOrderByUser = async (req, res) => {
 export const getOneOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(
-      "items.productId items.productVariantId managerId"
+      "items.productId items.productVariantId managerId discountId"
     );
     return res.status(200).json({
       message: "Lấy đơn hàng thành công",

@@ -119,7 +119,7 @@ const Cart = () => {
       setCouponPrice(
         discount?.type === "Percentage"
           ? (total * discount?.percentage) / 100
-          : total - discount?.percentage
+          : discount?.percentage
       );
     }
   }, [discount, code]);
@@ -127,8 +127,14 @@ const Cart = () => {
     <div>
       <section id="page-header3" className="about-header"></section>
       {!token ? (
-        <div style={{ textAlign: "center", padding: "40px" }}>
-          Chưa đăng nhập
+        <div className="cart__zero">
+          <div className="icon__cart__0">
+            <img src="../../src/Assets/icon__cart__0.png" alt="" />
+          </div>
+          <h3>Bạn chưa đăng nhập ? Hãy tiến hành đăng nhập !</h3>
+          <button className="payNow__cart0">
+            <a href="/signin">Đăng nhập</a>
+          </button>
         </div>
       ) : (
         <>
