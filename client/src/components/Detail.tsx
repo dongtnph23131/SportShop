@@ -115,6 +115,13 @@ const Detail = () => {
             });
             return;
           }
+          if (selectedVariant.inventory <= 0) {
+            Swal.fire({
+              icon: "error",
+              title: `Sản phẩm hết hàng`,
+            });
+            return;
+          }
           await addItemToCart(cart);
           if (token) {
             message.success("Sản phẩm đã được thêm vào giỏ hàng");

@@ -1,5 +1,6 @@
 import express from "express";
-import { searchDiscount } from "../controllers/discount";
+import { getDiscount, searchDiscount } from "../controllers/discount";
 const router = express.Router();
 router.get("/discounts/:code", searchDiscount);
+router.get('/discounts',getDiscount)
 export default router;

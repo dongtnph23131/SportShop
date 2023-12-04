@@ -88,7 +88,6 @@ export const create = async (req, res) => {
       },
       { new: true }
     );
-    await cart.save({ validateBeforeSave: false });
     const emailSubject = "Xác nhận đặt hàng thành công";
     const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;
     const customerName = `${user.firstName} ${user.lastName}`;
