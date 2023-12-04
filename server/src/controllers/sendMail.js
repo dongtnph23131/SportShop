@@ -17,8 +17,6 @@ export const sendEmail = async (
     </div>
   </div>
   `;
-
-  console.log("Đã gọi hàm gửi mail");
   const transporter = nodemailer.createTransport({
     tls: {
       rejectUnauthorized: false,
@@ -39,8 +37,5 @@ export const sendEmail = async (
 
   try {
     await transporter.sendMail(mailOptions);
-    console.log("Email sent successfully.");
-  } catch (error) {
-    console.error("Error sending email:", error);
-  }
+  } catch (error) {}
 };

@@ -13,6 +13,7 @@ import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useGetDiscountsQuery } from "../api/discount";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại không được để trống"),
@@ -35,6 +36,7 @@ const Cart = () => {
     resolver: yupResolver(schema),
   });
   const [couponPrice, setCouponPrice] = useState<any>(0);
+  const { data: discounts } = useGetDiscountsQuery();
   const [createOrder] = useCreateOrderMutation();
   const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
@@ -123,6 +125,23 @@ const Cart = () => {
       );
     }
   }, [discount, code]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    if (carts?.length === 0) {
+      message.error("Giỏ hàng trống !!!");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div>
       <section id="page-header3" className="about-header"></section>
@@ -206,47 +225,63 @@ const Cart = () => {
                     onCancel={handleAddressModalCancel}
                     footer={null}
                   >
-                    {addresses?.address?.map((item: any) => {
-                      return (
-                        <div
-                          key={item._id}
-                          onClick={() => {
-                            reset({
-                              fullName: `${item.name}`,
-                              phone: item.phone,
-                              address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
-                            });
-                            setAddressModalVisible(false);
-                          }}
-                          className="address-items"
-                        >
-                          <div
-                            data-v-46be4137=""
-                            data-v-17ff779a=""
-                            className="address-book-item-wrapper"
-                          >
-                            <div
-                              data-v-46be4137=""
-                              className="address-book-item selected"
-                            >
-                              <span
-                                data-v-46be4137=""
-                                className="default-address"
-                              >
-                                {item.default === true ? "★" : ""}
-                              </span>{" "}
-                              <div data-v-46be4137="" className="address-text">
-                                {item.address}, {item.ward}, {item.district},{" "}
-                                {item.province}
-                              </div>{" "}
-                              <div data-v-46be4137="" className="info-text">
-                                {item.phone},{item.name}
-                              </div>{" "}
-                            </div>
-                          </div>
+                    <>
+                      {addresses?.address?.length === 0 ? (
+                        <div style={{ textAlign: "center", padding: "20px" }}>
+                          Sổ địa chỉ trống
                         </div>
-                      );
-                    })}
+                      ) : (
+                        <>
+                          {addresses?.address?.map((item: any) => {
+                            return (
+                              <div
+                                key={item._id}
+                                onClick={() => {
+                                  reset({
+                                    fullName: `${item.name}`,
+                                    phone: item.phone,
+                                    address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
+                                  });
+                                  setAddressModalVisible(false);
+                                }}
+                                className="address-items"
+                              >
+                                <div
+                                  data-v-46be4137=""
+                                  data-v-17ff779a=""
+                                  className="address-book-item-wrapper"
+                                >
+                                  <div
+                                    data-v-46be4137=""
+                                    className="address-book-item selected"
+                                  >
+                                    <span
+                                      data-v-46be4137=""
+                                      className="default-address"
+                                    >
+                                      {item.default === true ? "★" : ""}
+                                    </span>{" "}
+                                    <div
+                                      data-v-46be4137=""
+                                      className="address-text"
+                                    >
+                                      {item.address}, {item.ward},{" "}
+                                      {item.district}, {item.province}
+                                    </div>{" "}
+                                    <div
+                                      data-v-46be4137=""
+                                      className="info-text"
+                                    >
+                                      {item.phone},{item.name}
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </>
+                      )}
+                    </>
                   </Modal>
                 </div>
                 <table>
@@ -317,11 +352,95 @@ const Cart = () => {
 
               <div id="subtotal">
                 <h3>Cart Totals</h3>
-                <div style={{ padding: "20px" }}>
-                  <button>Vouchers</button>
+                <div onClick={showModal} className="btn__add__default__adress">
+                  <div style={{ padding: "20px" }}>
+                    <i className="fas fa-tags"></i>Vouchers
+                  </div>
                 </div>
+                <Modal
+                  title="Thông tin mã giảm giá"
+                  open={isModalOpen}
+                  onOk={() => {
+                    handleOk();
+                  }}
+                  onCancel={() => {
+                    handleCancel();
+                  }}
+                >
+                  {discounts?.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          if (
+                            new Date(item.startAt).toLocaleDateString() >
+                            new Date().toLocaleDateString()
+                          ) {
+                            Swal.fire({
+                              icon: "error",
+                              title: `Mã giảm giá được áp dụng từ ngày ${new Date(
+                                item.startAt
+                              ).toLocaleDateString()}`,
+                            });
+                            return;
+                          }
+                          if (
+                            item.endAt &&
+                            new Date(item.endAt).toLocaleDateString() <
+                              new Date().toLocaleDateString()
+                          ) {
+                            Swal.fire({
+                              icon: "error",
+                              title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                                item?.endAt
+                              ).toLocaleDateString()}`,
+                            });
+                            return;
+                          }
+                          setDiscount(item);
+                          setCode(item.code);
+                          setIsUseDiscount(true);
+                          setIsModalOpen(false);
+                        }}
+                        key={item._id}
+                        className="address-items"
+                      >
+                        <div
+                          data-v-46be4137=""
+                          data-v-17ff779a=""
+                          className="address-book-item-wrapper"
+                        >
+                          <div
+                            data-v-46be4137=""
+                            className="address-book-item selected"
+                          >
+                            <h3>{item.code}</h3>
+                            <p>
+                              Giảm{" "}
+                              {item?.type === "Percentage"
+                                ? `${
+                                    (total * item?.percentage) / 100
+                                  }% tổng giá trị đơn hàng `
+                                : `${item?.percentage} $ tổng giá trị đơn hàng`}
+                            </p>
+                            <p>
+                              Áp dụng từ :{" "}
+                              {new Date(item.startAt).toLocaleDateString()}
+                            </p>
+                            <p>
+                              HSD :{" "}
+                              {item.endAt
+                                ? `${new Date(item.endAt).toLocaleDateString()}`
+                                : "Không giới hạn"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </Modal>
                 <div style={{ display: "flex", padding: "10px" }}>
                   <input
+                    placeholder="Nhập mã giảm giá"
                     onChange={onChange}
                     value={code}
                     style={{ padding: "10px" }}
@@ -333,6 +452,35 @@ const Cart = () => {
                         const data = await axios.get(
                           `http://localhost:8080/api/discounts/${code}`
                         );
+                        if (
+                          new Date(
+                            data?.data?.discount?.startAt
+                          ).toLocaleDateString() >
+                          new Date().toLocaleDateString()
+                        ) {
+                          Swal.fire({
+                            icon: "error",
+                            title: `Mã giảm giá được áp dụng từ ngày ${new Date(
+                              data?.data?.discount?.startAt
+                            ).toLocaleDateString()}`,
+                          });
+                          return;
+                        }
+                        if (
+                          data?.data?.discount.endAt &&
+                          new Date(
+                            data?.data?.discount.endAt
+                          ).toLocaleDateString() <
+                            new Date().toLocaleDateString()
+                        ) {
+                          Swal.fire({
+                            icon: "error",
+                            title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                              data?.data?.discount?.endAt
+                            ).toLocaleDateString()}`,
+                          });
+                          return;
+                        }
                         setDiscount(data?.data?.discount);
                         setIsUseDiscount(true);
                       } catch (error) {
@@ -354,7 +502,7 @@ const Cart = () => {
                 <table>
                   <tr>
                     <td>Cart Subtotal</td>
-                    <td>$ {total ? total : ""}</td>
+                    <td>$ {total ? total : 0}</td>
                   </tr>
                   <tr>
                     <td>Shipping</td>
@@ -381,7 +529,7 @@ const Cart = () => {
                       <strong>Total</strong>
                     </td>
                     <td>
-                      <strong>$ {total + 0}</strong>
+                      <strong>$ {total + 0 - couponPrice}</strong>
                     </td>
                   </tr>
                 </table>

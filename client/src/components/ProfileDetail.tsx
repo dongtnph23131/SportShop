@@ -749,7 +749,7 @@ const ProfileDetail = () => {
                                   })}
                                 </div>
                               ) : (
-                                <h1>Sổ địa chỉ trống</h1>
+                                <></>
                               )}
                             </>
                           ) : (
