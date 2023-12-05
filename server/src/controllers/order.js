@@ -15,6 +15,7 @@ export const create = async (req, res) => {
     const validatedBody = orderSchema.parse(body);
     const data = await User.find({ role: "staff" });
     const staffs = data.sort((a, b) => a.orders.length - b.orders.length);
+    console.log(staffs);
     let order;
     if (body.discountId) {
       order = await Order.create({
@@ -33,7 +34,7 @@ export const create = async (req, res) => {
       await Discount.findByIdAndUpdate(
         body.discountId,
         {
-          usageCount: discount.usageCount - 1,
+          usageLimit: discount.usageLimit + 1,
         },
         { new: true }
       );

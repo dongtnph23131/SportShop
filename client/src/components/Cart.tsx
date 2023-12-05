@@ -121,7 +121,7 @@ const Cart = () => {
       setCouponPrice(
         discount?.type === "Percentage"
           ? (total * discount?.percentage) / 100
-          : discount?.percentage
+          : discount?.amountPrice
       );
     }
   }, [discount, code]);
@@ -369,72 +369,74 @@ const Cart = () => {
                 >
                   {discounts?.map((item: any) => {
                     return (
-                      <div
-                        onClick={() => {
-                          if (
-                            new Date(item.startAt).toLocaleDateString() >
-                            new Date().toLocaleDateString()
-                          ) {
-                            Swal.fire({
-                              icon: "error",
-                              title: `Mã giảm giá được áp dụng từ ngày ${new Date(
-                                item.startAt
-                              ).toLocaleDateString()}`,
-                            });
-                            return;
-                          }
-                          if (
-                            item.endAt &&
-                            new Date(item.endAt).toLocaleDateString() <
-                              new Date().toLocaleDateString()
-                          ) {
-                            Swal.fire({
-                              icon: "error",
-                              title: `Mã giảm giá được hết hạn từ ngày ${new Date(
-                                item?.endAt
-                              ).toLocaleDateString()}`,
-                            });
-                            return;
-                          }
-                          setDiscount(item);
-                          setCode(item.code);
-                          setIsUseDiscount(true);
-                          setIsModalOpen(false);
-                        }}
-                        key={item._id}
-                        className="address-items"
-                      >
+                      item.usageLimit < item.usageCount && (
                         <div
-                          data-v-46be4137=""
-                          data-v-17ff779a=""
-                          className="address-book-item-wrapper"
+                          onClick={() => {
+                            if (
+                              new Date(item.startAt).toLocaleDateString() >
+                              new Date().toLocaleDateString()
+                            ) {
+                              Swal.fire({
+                                icon: "error",
+                                title: `Mã giảm giá được áp dụng từ ngày ${new Date(
+                                  item.startAt
+                                ).toLocaleDateString()}`,
+                              });
+                              return;
+                            }
+                            if (
+                              item.endAt &&
+                              new Date(item.endAt).toLocaleDateString() <
+                                new Date().toLocaleDateString()
+                            ) {
+                              Swal.fire({
+                                icon: "error",
+                                title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                                  item?.endAt
+                                ).toLocaleDateString()}`,
+                              });
+                              return;
+                            }
+                            setDiscount(item);
+                            setCode(item.code);
+                            setIsUseDiscount(true);
+                            setIsModalOpen(false);
+                          }}
+                          key={item._id}
+                          className="address-items"
                         >
                           <div
                             data-v-46be4137=""
-                            className="address-book-item selected"
+                            data-v-17ff779a=""
+                            className="address-book-item-wrapper"
                           >
-                            <h3>{item.code}</h3>
-                            <p>
-                              Giảm{" "}
-                              {item?.type === "Percentage"
-                                ? `${
-                                    (total * item?.percentage) / 100
-                                  }% tổng giá trị đơn hàng `
-                                : `${item?.percentage} VNĐ tổng giá trị đơn hàng`}
-                            </p>
-                            <p>
-                              Áp dụng từ :{" "}
-                              {new Date(item.startAt).toLocaleDateString()}
-                            </p>
-                            <p>
-                              HSD :{" "}
-                              {item.endAt
-                                ? `${new Date(item.endAt).toLocaleDateString()}`
-                                : "Không giới hạn"}
-                            </p>
+                            <div
+                              data-v-46be4137=""
+                              className="address-book-item selected"
+                            >
+                              <h3>{item.code}</h3>
+                              <p>
+                                Giảm{" "}
+                                {item?.type === "Percentage"
+                                  ? `${item?.percentage}% tổng giá trị đơn hàng `
+                                  : `${item?.amountPrice} VNĐ tổng giá trị đơn hàng`}
+                              </p>
+                              <p>
+                                Áp dụng từ :{" "}
+                                {new Date(item.startAt).toLocaleDateString()}
+                              </p>
+                              <p>
+                                HSD :{" "}
+                                {item.endAt
+                                  ? `${new Date(
+                                      item.endAt
+                                    ).toLocaleDateString()}`
+                                  : "Không giới hạn"}
+                              </p>
+                            </div>
                           </div>
                         </div>
-                      </div>
+                      )
                     );
                   })}
                 </Modal>
