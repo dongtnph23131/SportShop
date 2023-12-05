@@ -10,7 +10,8 @@ import CartItem from "../models/cartItem";
 import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
 import { generateOrderHtmlContent } from "./order";
-
+import User from "../models/user";
+import Discount from "../models/discount";
 export const PayMomo = (req, res) => {
   const body = req.body;
   const partnerCode = "MOMO";
@@ -21,15 +22,16 @@ export const PayMomo = (req, res) => {
   const orderInfo = "Thanh Toán MoMo";
   const redirectUrl = "http://localhost:8080/api/momo";
   const ipnUrl = "http://localhost:8080/api/momo";
-  const amount = (body.totalPrice + body.shippingPrice) * 22275;
+  const amount =
+    (body.totalPrice + body.shippingPrice - body.couponPrice) * 22275;
   const requestType = "payWithMethod";
   const extraData = `email=${body.email}&fullName=${body.fullName}&totalPrice=${
     body.totalPrice
-  }&token=${body.token}&shippingPrice=${body.shippingPrice}&phone=${
-    body.phone
-  }&address=${body.address}&note=${body.note}&items=${JSON.stringify(
-    body.items
-  )}`;
+  }&token=${body.token}&discountId=${body.discountId}&shippingPrice=${
+    body.shippingPrice
+  }&couponPrice=${body.couponPrice}&phone=${body.phone}&address=${
+    body.address
+  }&note=${body.note}&items=${JSON.stringify(body.items)}`;
 
   var rawSignature =
     "accessKey=" +
@@ -107,22 +109,48 @@ export const MomoSuccess = async (req, res) => {
       data[key] = decodeURIComponent(value);
     }
   });
+  const dataUsers = await User.find({ role: "staff" });
+  const staffs = dataUsers.sort((a, b) => a.orders.length - b.orders.length);
   const body = {
     ...data,
     shippingPrice: Number(data.shippingPrice),
     totalPrice: Number(data.totalPrice),
+    couponPrice: Number(data.couponPrice),
   };
 
   const { id } = jwt.verify(data.token, "dongtimo");
   const user = await Customer.findById(id);
-  const order = await Order.create({
-    ...body,
-    typePayment: "Online",
-    customerId: user._id,
-    orderTotalPrice: body.totalPrice - body.shippingPrice,
-    paymentStatus: query.message == "Successful." ? "Paid" : "Not paid",
-    code: `DH-${generateRandomString()}`,
-  });
+  let order;
+  if (body.discountId) {
+    order = await Order.create({
+      ...body,
+      typePayment: "Online",
+      customerId: user._id,
+      orderTotalPrice: body.totalPrice - body.shippingPrice - body.couponPrice,
+      managerId: staffs[0]._id,
+      paymentStatus: query.message == "Successful." ? "Paid" : "Not paid",
+      code: `DH-${generateRandomString()}`,
+      discountId: body.discountId,
+    });
+    const discount = await Discount.findById(body.discountId);
+    await Discount.findByIdAndUpdate(
+      body.discountId,
+      {
+        usageCount: discount.usageCount - 1,
+      },
+      { new: true }
+    );
+  } else {
+    order = await Order.create({
+      ...body,
+      typePayment: "Online",
+      customerId: user._id,
+      orderTotalPrice: body.totalPrice - body.shippingPrice - body.couponPrice,
+      managerId: staffs[0]._id,
+      paymentStatus: query.message == "Successful." ? "Paid" : "Not paid",
+      code: `DH-${generateRandomString()}`,
+    });
+  }
   await Promise.all(
     data.items.map(async (item) => {
       const productVariant = await ProductVariant.findById(
@@ -154,10 +182,6 @@ export const MomoSuccess = async (req, res) => {
   await CartItem.deleteMany({
     customerId: user._id,
   });
-
-  const cart = await Cart.findOne({ customerId: user._id });
-  cart.items = [];
-  await cart.save({ validateBeforeSave: false });
   const emailSubject = "Xác nhận đặt hàng thành công";
   const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;
   const customerName = `${user.firstName} ${user.lastName}`;

@@ -67,7 +67,7 @@ const ForgotToken = () => {
             </div>
             <div className="sign-up">
               <p>
-                Don't have account <a href="#">Sign up</a>
+                Bạn chưa có tài khoản? <a href="/signup">Đăng ký</a>
               </p>
             </div>
           </div>

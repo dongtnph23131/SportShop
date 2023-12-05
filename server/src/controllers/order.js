@@ -88,7 +88,6 @@ export const create = async (req, res) => {
       },
       { new: true }
     );
-    await cart.save({ validateBeforeSave: false });
     const emailSubject = "Xác nhận đặt hàng thành công";
     const emailContent = `Cảm ơn bạn, ${user.firstName} ${user.lastName}, đã đặt hàng! Đơn hàng của bạn đã được xác nhận thành công.`;
     const customerName = `${user.firstName} ${user.lastName}`;
@@ -170,7 +169,7 @@ export const getOrderByUser = async (req, res) => {
 export const getOneOrder = async (req, res) => {
   try {
     const order = await Order.findById(req.params.id).populate(
-      "items.productId items.productVariantId managerId"
+      "items.productId items.productVariantId managerId discountId"
     );
     return res.status(200).json({
       message: "Lấy đơn hàng thành công",

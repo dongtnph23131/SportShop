@@ -42,13 +42,13 @@ const CategoryDetail = () => {
         </span>
       </h4>
       {isLoading ? (
-        <p style={{ textAlign: "center", marginTop: "20px" }}>Loading ...</p>
+        <p style={{ textAlign: "center", marginTop: "20px" }}>Đang tải ...</p>
       ) : (
         <>
           {products?.length > 0 ? (
             <>
               <div className="sort-shops ctnr">
-                <span onClick={handleSortClick}>Sort</span>
+                <span onClick={handleSortClick}>Sắp xếp</span>
                 {ishandleSortVisible && (
                   <div className="box-sort-shops">
                     <div className="item-sort-shops">

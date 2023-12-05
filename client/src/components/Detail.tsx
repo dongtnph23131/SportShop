@@ -115,6 +115,13 @@ const Detail = () => {
             });
             return;
           }
+          if (selectedVariant.inventory <= 0) {
+            Swal.fire({
+              icon: "error",
+              title: `Sản phẩm hết hàng`,
+            });
+            return;
+          }
           await addItemToCart(cart);
           if (token) {
             message.success("Sản phẩm đã được thêm vào giỏ hàng");
@@ -164,7 +171,7 @@ const Detail = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ textAlign: "center", padding: "20px" }}>Loading</div>
+        <div style={{ textAlign: "center", padding: "20px" }}>Đang tải</div>
       ) : (
         <div>
           <section id="prodetails" className="section-p1 ctnr">
@@ -216,8 +223,7 @@ const Detail = () => {
                   ? product.minPrice === product.maxPrice
                     ? product.minPrice
                     : `${product.minPrice}-${product.maxPrice}`
-                  : ""}
-                $
+                  : ""} VNĐ
               </h2>
               {product?.options.map((productItem: any, index: any) => {
                 return (
@@ -251,7 +257,7 @@ const Detail = () => {
               </p>
               {isCheckQuantity ? (
                 <p className="error">
-                  Chỉ đc mua tối đa {selectedVariant?.inventory} sản phẩm
+                  Chỉ được mua tối đa {selectedVariant?.inventory} sản phẩm
                 </p>
               ) : (
                 ""
@@ -302,10 +308,10 @@ const Detail = () => {
                   </button>
                 </div>
                 <button className="normal" onClick={handleAddToCart}>
-                  Add to Cart{" "}
+                  Thêm vào giỏ hàng{" "}
                 </button>
               </div>
-              <h4>Descriptions</h4>
+              <h4>Mô tả</h4>
               <span>{product ? product.description : ""}</span>
             </div>
           </section>
@@ -409,8 +415,8 @@ const Detail = () => {
             </div>
           </section>
           <section id="product1" className="section-p1 ctnr">
-            <h2>OUR PRODUCTS</h2>
-            <p>Summer Collection New Modern Design</p>
+            <h2>SẢN PHẨM LIÊN QUAN</h2>
+            {/* <p>Summer Collection New Modern Design</p> */}
             <div className="pro-container">
               {products?.map((product: any, index: any) => {
                 return (
@@ -426,7 +432,7 @@ const Detail = () => {
                       <span>{product?.categoryId?.name}</span>
                       <h5>{product.name}</h5>
                       <h4>
-                        ${product.minPrice}-${product.maxPrice}
+                        {product.minPrice} VNĐ - {product.maxPrice} VNĐ
                       </h4>
                     </div>
                     <Rate value={product?.raitings} disabled />

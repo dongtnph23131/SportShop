@@ -13,6 +13,7 @@ import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
 import Swal from "sweetalert2";
 import axios from "axios";
+import { useGetDiscountsQuery } from "../api/discount";
 const schema = yup.object().shape({
   fullName: yup.string().required("Họ tên không được để trống"),
   phone: yup.string().required("Số điện thoại không được để trống"),
@@ -35,6 +36,7 @@ const Cart = () => {
     resolver: yupResolver(schema),
   });
   const [couponPrice, setCouponPrice] = useState<any>(0);
+  const { data: discounts } = useGetDiscountsQuery();
   const [createOrder] = useCreateOrderMutation();
   const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
@@ -119,16 +121,39 @@ const Cart = () => {
       setCouponPrice(
         discount?.type === "Percentage"
           ? (total * discount?.percentage) / 100
-          : total - discount?.percentage
+          : discount?.percentage
       );
     }
   }, [discount, code]);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  const showModal = () => {
+    if (carts?.length === 0) {
+      message.error("Giỏ hàng trống !!!");
+      return;
+    }
+    setIsModalOpen(true);
+  };
+
+  const handleOk = () => {
+    setIsModalOpen(false);
+  };
+
+  const handleCancel = () => {
+    setIsModalOpen(false);
+  };
   return (
     <div>
       <section id="page-header3" className="about-header"></section>
       {!token ? (
-        <div style={{ textAlign: "center", padding: "40px" }}>
-          Chưa đăng nhập
+        <div className="cart__zero">
+          <div className="icon__cart__0">
+            <img src="../../src/Assets/icon__cart__0.png" alt="" />
+          </div>
+          <h3>Bạn chưa đăng nhập ? Hãy tiến hành đăng nhập !</h3>
+          <button className="payNow__cart0">
+            <a href="/signin">Đăng nhập</a>
+          </button>
         </div>
       ) : (
         <>
@@ -149,19 +174,19 @@ const Cart = () => {
                 <>
                   {isLoadingCart ? (
                     <div style={{ textAlign: "center", padding: "20px" }}>
-                      Loading ....
+                      Đang tải ....
                     </div>
                   ) : (
                     <section id="cart" className="section-p1 cart__ss">
                       <table width="100%">
                         <thead>
                           <tr>
-                            <td>Remove</td>
-                            <td>Image</td>
-                            <td>Product</td>
-                            <td>Price</td>
-                            <td>Quantity</td>
-                            <td>Subtotal</td>
+                            <td>Xóa</td>
+                            <td>Hình ảnh</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Giá</td>
+                            <td>Số lượng</td>
+                            <td>Tổng </td>
                           </tr>
                         </thead>
                         <tbody>
@@ -200,47 +225,63 @@ const Cart = () => {
                     onCancel={handleAddressModalCancel}
                     footer={null}
                   >
-                    {addresses?.address?.map((item: any) => {
-                      return (
-                        <div
-                          key={item._id}
-                          onClick={() => {
-                            reset({
-                              fullName: `${item.name}`,
-                              phone: item.phone,
-                              address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
-                            });
-                            setAddressModalVisible(false);
-                          }}
-                          className="address-items"
-                        >
-                          <div
-                            data-v-46be4137=""
-                            data-v-17ff779a=""
-                            className="address-book-item-wrapper"
-                          >
-                            <div
-                              data-v-46be4137=""
-                              className="address-book-item selected"
-                            >
-                              <span
-                                data-v-46be4137=""
-                                className="default-address"
-                              >
-                                {item.default === true ? "★" : ""}
-                              </span>{" "}
-                              <div data-v-46be4137="" className="address-text">
-                                {item.address}, {item.ward}, {item.district},{" "}
-                                {item.province}
-                              </div>{" "}
-                              <div data-v-46be4137="" className="info-text">
-                                {item.phone},{item.name}
-                              </div>{" "}
-                            </div>
-                          </div>
+                    <>
+                      {addresses?.address?.length === 0 ? (
+                        <div style={{ textAlign: "center", padding: "20px" }}>
+                          Sổ địa chỉ trống
                         </div>
-                      );
-                    })}
+                      ) : (
+                        <>
+                          {addresses?.address?.map((item: any) => {
+                            return (
+                              <div
+                                key={item._id}
+                                onClick={() => {
+                                  reset({
+                                    fullName: `${item.name}`,
+                                    phone: item.phone,
+                                    address: `${item.address} ${item.ward} ${item.district} ${item.province} `,
+                                  });
+                                  setAddressModalVisible(false);
+                                }}
+                                className="address-items"
+                              >
+                                <div
+                                  data-v-46be4137=""
+                                  data-v-17ff779a=""
+                                  className="address-book-item-wrapper"
+                                >
+                                  <div
+                                    data-v-46be4137=""
+                                    className="address-book-item selected"
+                                  >
+                                    <span
+                                      data-v-46be4137=""
+                                      className="default-address"
+                                    >
+                                      {item.default === true ? "★" : ""}
+                                    </span>{" "}
+                                    <div
+                                      data-v-46be4137=""
+                                      className="address-text"
+                                    >
+                                      {item.address}, {item.ward},{" "}
+                                      {item.district}, {item.province}
+                                    </div>{" "}
+                                    <div
+                                      data-v-46be4137=""
+                                      className="info-text"
+                                    >
+                                      {item.phone},{item.name}
+                                    </div>{" "}
+                                  </div>
+                                </div>
+                              </div>
+                            );
+                          })}
+                        </>
+                      )}
+                    </>
                   </Modal>
                 </div>
                 <table>
@@ -304,18 +345,102 @@ const Cart = () => {
                     disabled={carts?.length === 0 || !token}
                     className="normal"
                   >
-                    Proceed to checkout
+                    Thanh toán
                   </button>
                 </div>
               </div>
 
               <div id="subtotal">
                 <h3>Cart Totals</h3>
-                <div style={{ padding: "20px" }}>
-                  <button>Vouchers</button>
+                <div onClick={showModal} className="btn__add__default__adress">
+                  <div style={{ padding: "20px" }}>
+                    <i className="fas fa-tags"></i>Vouchers
+                  </div>
                 </div>
+                <Modal
+                  title="Thông tin mã giảm giá"
+                  open={isModalOpen}
+                  onOk={() => {
+                    handleOk();
+                  }}
+                  onCancel={() => {
+                    handleCancel();
+                  }}
+                >
+                  {discounts?.map((item: any) => {
+                    return (
+                      <div
+                        onClick={() => {
+                          if (
+                            new Date(item.startAt).toLocaleDateString() >
+                            new Date().toLocaleDateString()
+                          ) {
+                            Swal.fire({
+                              icon: "error",
+                              title: `Mã giảm giá được áp dụng từ ngày ${new Date(
+                                item.startAt
+                              ).toLocaleDateString()}`,
+                            });
+                            return;
+                          }
+                          if (
+                            item.endAt &&
+                            new Date(item.endAt).toLocaleDateString() <
+                              new Date().toLocaleDateString()
+                          ) {
+                            Swal.fire({
+                              icon: "error",
+                              title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                                item?.endAt
+                              ).toLocaleDateString()}`,
+                            });
+                            return;
+                          }
+                          setDiscount(item);
+                          setCode(item.code);
+                          setIsUseDiscount(true);
+                          setIsModalOpen(false);
+                        }}
+                        key={item._id}
+                        className="address-items"
+                      >
+                        <div
+                          data-v-46be4137=""
+                          data-v-17ff779a=""
+                          className="address-book-item-wrapper"
+                        >
+                          <div
+                            data-v-46be4137=""
+                            className="address-book-item selected"
+                          >
+                            <h3>{item.code}</h3>
+                            <p>
+                              Giảm{" "}
+                              {item?.type === "Percentage"
+                                ? `${
+                                    (total * item?.percentage) / 100
+                                  }% tổng giá trị đơn hàng `
+                                : `${item?.percentage} VNĐ tổng giá trị đơn hàng`}
+                            </p>
+                            <p>
+                              Áp dụng từ :{" "}
+                              {new Date(item.startAt).toLocaleDateString()}
+                            </p>
+                            <p>
+                              HSD :{" "}
+                              {item.endAt
+                                ? `${new Date(item.endAt).toLocaleDateString()}`
+                                : "Không giới hạn"}
+                            </p>
+                          </div>
+                        </div>
+                      </div>
+                    );
+                  })}
+                </Modal>
                 <div style={{ display: "flex", padding: "10px" }}>
                   <input
+                    placeholder="Nhập mã giảm giá"
                     onChange={onChange}
                     value={code}
                     style={{ padding: "10px" }}
@@ -327,6 +452,35 @@ const Cart = () => {
                         const data = await axios.get(
                           `http://localhost:8080/api/discounts/${code}`
                         );
+                        if (
+                          new Date(
+                            data?.data?.discount?.startAt
+                          ).toLocaleDateString() >
+                          new Date().toLocaleDateString()
+                        ) {
+                          Swal.fire({
+                            icon: "error",
+                            title: `Mã giảm giá được áp dụng từ ngày ${new Date(
+                              data?.data?.discount?.startAt
+                            ).toLocaleDateString()}`,
+                          });
+                          return;
+                        }
+                        if (
+                          data?.data?.discount.endAt &&
+                          new Date(
+                            data?.data?.discount.endAt
+                          ).toLocaleDateString() <
+                            new Date().toLocaleDateString()
+                        ) {
+                          Swal.fire({
+                            icon: "error",
+                            title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                              data?.data?.discount?.endAt
+                            ).toLocaleDateString()}`,
+                          });
+                          return;
+                        }
                         setDiscount(data?.data?.discount);
                         setIsUseDiscount(true);
                       } catch (error) {
@@ -347,19 +501,19 @@ const Cart = () => {
                 )}
                 <table>
                   <tr>
-                    <td>Cart Subtotal</td>
-                    <td>$ {total ? total : ""}</td>
+                    <td>Tổng</td>
+                    <td>{total ? total : 0} VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Shipping</td>
-                    <td>$ 0</td>
+                    <td>Phí giao hàng</td>
+                    <td>0 VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Discount</td>
-                    <td>$ {couponPrice}</td>
+                    <td>Khuyến mại</td>
+                    <td>{couponPrice} VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Quantity</td>
+                    <td>Số lượng</td>
                     <td>
                       {token
                         ? carts?.reduce(
@@ -372,10 +526,10 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>
-                      <strong>Total</strong>
+                      <strong>Tổng</strong>
                     </td>
                     <td>
-                      <strong>$ {total + 0}</strong>
+                      <strong>{total + 0 - couponPrice} VNĐ</strong>
                     </td>
                   </tr>
                 </table>

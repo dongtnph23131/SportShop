@@ -31,7 +31,7 @@ const Header = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ textAlign: "center", padding: "20px" }}>Loading ...</div>
+        <div style={{ textAlign: "center", padding: "20px" }}>Đang tải ...</div>
       ) : (
         <div className="header-area">
           <div className="header-topbar-area-top">
@@ -41,10 +41,10 @@ const Header = () => {
                   <div className="header-login posr">
                     <ul>
                       <li>
-                        <a>My Account</a>
+                        {/* <a>My Account</a> */}
                       </li>
                       <li>
-                        <a>My wishlist</a>
+                        {/* <a>My wishlist</a> */}
                       </li>
                     </ul>
                   </div>
@@ -57,7 +57,7 @@ const Header = () => {
                           <div className="currency-dd posr">
                             <div className="cur-title1 currency-ttl">
                               <div className="cur-usd">
-                                <span>Currency : USD</span>
+                                {/* <span>Currency : USD</span> */}
                                 <a href="#">
                                   <i className="zmdi zmdi-chevron-down"></i>
                                 </a>
@@ -65,12 +65,12 @@ const Header = () => {
                               <div className="cur-text-wrapper cur-cury inner-btn currency-opt">
                                 <div className="inner-text">
                                   <span className="usd">
-                                    <a href="#">Dollar(USD)</a>
+                                    {/* <a href="#">Dollar(USD)</a> */}
                                   </span>
                                 </div>
                                 <div className="inner-text">
                                   <span className="cbp">
-                                    <a href="#">Pound(CBP)</a>
+                                    {/* <a href="#">Pound(CBP)</a> */}
                                   </span>
                                 </div>
                               </div>
@@ -83,7 +83,7 @@ const Header = () => {
                           <div className="currency-dd posr">
                             <div className="cur-title2 currency-ttl">
                               <div className="cur-usd">
-                                <span>English</span>
+                                {/* <span>English</span> */}
                                 <a href="#">
                                   <i className="zmdi zmdi-chevron-down"></i>
                                 </a>
@@ -91,12 +91,12 @@ const Header = () => {
                               <div className="cur-text-wrapper cur-lanpos inner-btn2 currency-opt">
                                 <div className="inner-text">
                                   <span className="usd">
-                                    <a href="#">English</a>
+                                    {/* <a href="#">English</a> */}
                                   </span>
                                 </div>
                                 <div className="inner-text">
                                   <span className="cbp">
-                                    <a href="#">Arabic</a>
+                                    {/* <a href="#">Arabic</a> */}
                                   </span>
                                 </div>
                               </div>

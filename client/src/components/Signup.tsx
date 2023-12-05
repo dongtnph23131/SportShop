@@ -5,16 +5,16 @@ import { useSignupMutation } from "../api/auth";
 import Swal from "sweetalert2";
 import { useNavigate } from "react-router-dom";
 const schema = yup.object().shape({
-  firstName: yup.string().required("FirstName không được để trống "),
-  lastName: yup.string().required("LastName không được để trống"),
+  firstName: yup.string().required("Họ không được để trống "),
+  lastName: yup.string().required("Tên không được để trống"),
   email: yup
     .string()
     .email("Email chưa đúng địng dạng")
     .required("Email không được để trống"),
   password: yup
     .string()
-    .required("Password không được để trống")
-    .min(6, "Password ít nhất 6 kí tự"),
+    .required("Mật khẩu không được để trống")
+    .min(6, "Mật khẩu ít nhất 6 kí tự"),
   confirmPassword: yup
     .string()
     .oneOf([yup.ref("password")], "Nhập lại mật khẩu chưa đúng")
@@ -50,16 +50,16 @@ const Signup = () => {
       <form onSubmit={handleSubmit(onSigup)}>
         <div className="login-box">
           <div className="login-header">
-            <h4>Welcome to Sportshop</h4>
-            <p>We are happy to have you back!</p>
-            <h4>SIGNUP</h4>
+            <h4>Chào mừng đến với Sportshop</h4>
+            {/* <p>We are happy to have you back!</p> */}
+            <h4>ĐĂNG KÝ</h4>
           </div>
           <div className="input-box">
             <input
               {...register("firstName")}
               type="text"
               className="input-field"
-              placeholder="First name"
+              placeholder="Họ"
               id="First name"
             />
             <p className="error">
@@ -71,7 +71,7 @@ const Signup = () => {
               {...register("lastName")}
               type="text"
               className="input-field"
-              placeholder="Last name"
+              placeholder="Tên"
               id="Lastname"
             />
             <p className="error">
@@ -93,7 +93,7 @@ const Signup = () => {
               {...register("password")}
               type="password"
               className="input-field"
-              placeholder="Password"
+              placeholder="Mật khẩu"
               id="password"
             />
             <p className="error">
@@ -106,7 +106,7 @@ const Signup = () => {
               {...register("confirmPassword")}
               type="password"
               className="input-field"
-              placeholder="ConfirmPassword"
+              placeholder="Nhập lại mật khẩu"
             />
             <p className="error">
               {errors.confirmPassword ? errors?.confirmPassword.message : ""}
@@ -116,16 +116,17 @@ const Signup = () => {
           <div className="forgot">
             <section>
               <a href="/forgot" className="forgot-link">
-                Forgot password?
+                Quên mật khẩu?
               </a>
             </section>
           </div>
           <div className="input-box">
-            <input type="submit" className="input-submit" />
+            {/* <input type="submit" className="input-submit" /> */}
+            <button type="submit" className="input-submit">Đăng ký</button>
           </div>
           <div className="sign-up">
             <p>
-              Don't have account <a href="/signin">Signin</a>
+              Bạn đã có tài khoản?  <a href="/signin">Đăng nhập</a>
             </p>
           </div>
         </div>
