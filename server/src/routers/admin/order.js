@@ -8,35 +8,104 @@ const router = Router();
 const generateInvoice = (order) => {
   //Bảo: Tìm hiểu thư viện pdfkit, thiết kế lại file hóa đơn PDF cho đẹp
   const doc = new PDFDocument();
-
+  doc.fontSize(12);
   doc.text("Invoice", {
     align: "center",
+    font: "Helvetica-Bold",
+    fontSize: 20,
   });
+  
 
-  doc.text(`Order code: ${order.code}`);
+  const orderInfoTable = {
+    headers: ['Field', 'Value'],
+    rows: [
+      ['Order code', order.code],
+      ['Customer', order.fullName],
+      ['Phone', order.phone],
+      ['Address', order.address],
+      ['Email', order.email],
+      ['Payment method', order.typePayment],
+      ['Payment status', order.status],
+      ['Delivery status', order.deliveryStatus],
+      ['Status', order.status],
+      ['Created at', order.createdAt],
+      ['Updated at', order.updatedAt],
+      ['Total', order.orderTotalPrice],
+    ],
+  };
+  
+  // Vẽ bảng thông tin đơn hàng
+  drawTable(doc, orderInfoTable, 20, 100);
+  function drawTable(doc, table, startX, startY) {
+    const cellWidth = 280;
+    const cellHeight = 20;
+  
+    // Vẽ header
+    doc.font('Helvetica-Bold').fontSize(12);
+    table.headers.forEach((header, i) => {
+      doc.rect(startX + i * cellWidth, startY, cellWidth, cellHeight).stroke();
+      doc.text(header, startX + i * cellWidth + 5, startY + 5);
+    });
+  
+    // Vẽ dữ liệu
+    doc.font('Helvetica').fontSize(12);
+    table.rows.forEach((row, rowIndex) => {
+      row.forEach((cell, colIndex) => {
+        doc.rect(startX + colIndex * cellWidth, startY + (rowIndex + 1) * cellHeight, cellWidth, cellHeight).stroke();
+        doc.text(cell.toString(), startX + colIndex * cellWidth + 5, startY + (rowIndex + 1) * cellHeight + 5);
+      });
+    });
+  }
 
-  doc.text(`Customer: ${order.fullName}`);
-  doc.text(`Phone: ${order.phone}`);
-  doc.text(`Address: ${order.address}`);
-  doc.text(`Email: ${order.email}`);
-  doc.text(`Payment method: ${order.typePayment}`);
-  doc.text(`Payment status: ${order.status}`);
-  doc.text(`Delivery status: ${order.deliveryStatus}`);
-  doc.text(`Status: ${order.status}`);
-  doc.text(`Created at: ${order.createdAt}`);
-  doc.text(`Updated at: ${order.updatedAt}`);
-  doc.text(`Total: ${order.orderTotalPrice}`);
 
-  doc.text(`Items:`);
-  order.items.forEach((item) => {
-    doc.text(`Product: ${item.productId.name}`);
-    doc.text(`Variant: ${item.productVariantId.name}`);
-    doc.text(`Quantity: ${item.quantity}`);
-    doc.text(`Price: ${item.productVariantId.price}`);
-    doc.text(`Total: ${item.quantity * item.productVariantId.price}`);
-  });
+  
 
-  return doc;
+
+  const startX = 50; // Điểm bắt đầu x cho bảng
+const startY = 400; // Điểm bắt đầu y cho bảng
+
+const columnWidth = 100;
+const cellHeight = 80;
+const borderWidth = 1; // Độ rộng của đường viền
+
+// Vẽ header
+
+doc.rect(startX, startY, columnWidth, cellHeight).stroke(); // Product
+doc.text(`Product`, startX, startY, { width: columnWidth });
+
+doc.rect(startX + columnWidth, startY, columnWidth, cellHeight).stroke(); // Variant
+doc.text(`Variant`, startX + columnWidth, startY, { width: columnWidth });
+
+doc.rect(startX + 2 * columnWidth, startY, columnWidth, cellHeight).stroke(); // Quantity
+doc.text(`Quantity`, startX + 2 * columnWidth, startY, { width: columnWidth });
+
+doc.rect(startX + 3 * columnWidth, startY, columnWidth, cellHeight).stroke(); // Price
+doc.text(`Price`, startX + 3 * columnWidth, startY, { width: columnWidth });
+
+doc.rect(startX + 4 * columnWidth, startY, columnWidth, cellHeight).stroke(); // Total
+doc.text(`Total`, startX + 4 * columnWidth, startY, { width: columnWidth });
+
+order.items.forEach((item, index) => {
+  const currentY = startY + (index + 1) * cellHeight; // Dòng mới sau mỗi mục
+
+  // Vẽ ô và nội dung của từng ô
+  doc.rect(startX, currentY, columnWidth, cellHeight).stroke();
+  doc.text(`Product: ${item.productId.name}`, startX, currentY, { width: columnWidth, align: 'center' });
+
+  doc.rect(startX + columnWidth, currentY, columnWidth, cellHeight).stroke();
+  doc.text(`Variant: ${item.productVariantId.name}`, startX + columnWidth, currentY, { width: columnWidth, align: 'center' });
+
+  doc.rect(startX + 2 * columnWidth, currentY, columnWidth, cellHeight).stroke();
+  doc.text(`Quantity: ${item.quantity}`, startX + 2 * columnWidth, currentY, { width: columnWidth, align: 'center' });
+
+  doc.rect(startX + 3 * columnWidth, currentY, columnWidth, cellHeight).stroke();
+  doc.text(`Price: ${item.productVariantId.price}`, startX + 3 * columnWidth, currentY, { width: columnWidth, align: 'center' });
+
+  doc.rect(startX + 4 * columnWidth, currentY, columnWidth, cellHeight).stroke();
+  doc.text(`Total: ${item.quantity * item.productVariantId.price}`, startX + 4 * columnWidth, currentY, { width: columnWidth, align: 'center' });
+});
+
+return doc;
 };
 
 router.get("/", async (req, res) => {
