@@ -77,7 +77,13 @@ table.table {
   position: relative;
   z-index: 1;
 }
-
+.address-book-item p {
+  color: #fff;
+  margin-bottom: 0;
+}
+.ant-modal-title {
+  font-size: 22px !important;
+}
 .table thead tr th {
   color: #fff;
   background-color: #333;

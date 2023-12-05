@@ -357,7 +357,7 @@ const Cart = () => {
                     <i className="fas fa-tags"></i>Vouchers
                   </div>
                 </div>
-                <Modal
+                <Modal className="title___vocher"
                   title="Thông tin mã giảm giá"
                   open={isModalOpen}
                   onOk={() => {
