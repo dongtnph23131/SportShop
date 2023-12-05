@@ -42,7 +42,7 @@ const Page: NextPageWithLayout = () => {
       <div className="flex justify-between items-center mb-1">
         <Button variant="ghost" className="mb-2" onClick={() => router.back()}>
           <ArrowLeft className="h-4 w-4 mr-2" />
-          Back to orders
+          Quay lại
         </Button>
 
         <div className="flex items-center gap-2">
@@ -72,7 +72,7 @@ const Page: NextPageWithLayout = () => {
             ) : (
               <Send className="h-4 w-4 mr-2" />
             )}
-            Send Invoice
+            Gửi hóa đơn
           </Button>
 
           <Button
@@ -100,7 +100,7 @@ const Page: NextPageWithLayout = () => {
             }}
           >
             <Download className="h-4 w-4 mr-2" />
-            Export Invoice
+            Xuất hóa đơn
           </Button>
         </div>
       </div>
@@ -111,14 +111,14 @@ const Page: NextPageWithLayout = () => {
             <Card>
               <div className="flex justify-between p-6">
                 <CardHeader className="p-0">
-                  <CardTitle>Order information</CardTitle>
+                  <CardTitle>Thông tin đơn hàng</CardTitle>
                 </CardHeader>
                 <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
                   {order.status === OrderStatus.PENDING && (
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
                         <div className="h-1.5 w-1.5 self-center rounded-full bg-yellow-400"></div>
-                        <span className="ml-2 text-sm">Pending</span>
+                        <span className="ml-2 text-sm">Đang xử lý</span>
                       </div>
                       <Button
                         variant={"destructive"}
@@ -139,14 +139,14 @@ const Page: NextPageWithLayout = () => {
                           });
                         }}
                       >
-                        Cancel
+                        Hủy đơn hàng
                       </Button>
                     </div>
                   )}
                   {order.status === OrderStatus.COMPLETED && (
                     <div className="flex items-center">
                       <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
-                      <span className="ml-2 text-sm">Completed</span>
+                      <span className="ml-2 text-sm">Đã hoàn thành</span>
                     </div>
                   )}
                 </Authorization>
@@ -156,7 +156,7 @@ const Page: NextPageWithLayout = () => {
                 <dl className="divide-y divide-gray-100">
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      ID:
+                      Mã đơn hàng:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {order.code}
@@ -164,7 +164,7 @@ const Page: NextPageWithLayout = () => {
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Date:
+                      Ngày giờ tạo:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {format(
@@ -175,7 +175,7 @@ const Page: NextPageWithLayout = () => {
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Status:
+                      Trạng thái:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       <Badge
@@ -193,15 +193,7 @@ const Page: NextPageWithLayout = () => {
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Total Amount:
-                    </dt>
-                    <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      {formatPrice(order.totalPrice)}
-                    </dd>
-                  </div>
-                  <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
-                    <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Managed by:
+                      Nhân viên quản lý:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {order.managerId ? (
@@ -221,13 +213,13 @@ const Page: NextPageWithLayout = () => {
 
             <Card>
               <CardHeader>
-                <CardTitle>Customer Details</CardTitle>
+                <CardTitle>Thông tin khách hàng</CardTitle>
               </CardHeader>
               <CardContent>
                 <dl className="divide-y divide-gray-100">
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Name
+                      Tên
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {order.fullName}
@@ -243,7 +235,7 @@ const Page: NextPageWithLayout = () => {
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Phone
+                      Số điện thoại
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {order.phone}
@@ -251,7 +243,7 @@ const Page: NextPageWithLayout = () => {
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                     <dt className="text-sm font-medium leading-6 text-gray-900">
-                      Address
+                      Địa chỉ
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                       {order.address}
@@ -264,17 +256,17 @@ const Page: NextPageWithLayout = () => {
 
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle>Products</CardTitle>
+              <CardTitle>Danh sách sản phẩm đặt hàng</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Product Name</TableHead>
-                    <TableHead>Option</TableHead>
-                    <TableHead>Quantity</TableHead>
-                    <TableHead>Price</TableHead>
-                    <TableHead>Total</TableHead>
+                    <TableHead>Tên sản phẩm</TableHead>
+                    <TableHead>Biến thể</TableHead>
+                    <TableHead>Số lượng</TableHead>
+                    <TableHead>Giá</TableHead>
+                    <TableHead>Tổng</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -302,14 +294,14 @@ const Page: NextPageWithLayout = () => {
             <Card className="mt-4">
               <div className="flex justify-between p-6">
                 <CardHeader className="p-0">
-                  <CardTitle>Payment</CardTitle>
+                  <CardTitle>Thanh toán</CardTitle>
                 </CardHeader>
                 <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
                   {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
                     <div className="flex items-center gap-2">
                       <div className="flex items-center">
                         <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
-                        <span className="ml-2 text-sm">Not Paid</span>
+                        <span className="ml-2 text-sm">Chưa thanh toán</span>
                       </div>
                       <Button
                         variant={"outline"}
@@ -330,39 +322,41 @@ const Page: NextPageWithLayout = () => {
                           });
                         }}
                       >
-                        Paid
+                        Đã thanh toán
                       </Button>
                     </div>
                   )}
                   {order.paymentStatus === OrderPaymentStatus.PAID && (
                     <div className="flex items-center">
                       <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
-                      <span className="ml-2 text-sm">Paid</span>
+                      <span className="ml-2 text-sm">Đã thanh toán</span>
                     </div>
                   )}
                 </Authorization>
               </div>
               <CardContent>
                 <div className="mt-4 flex items-center justify-between text-sm">
-                  <dt className="leading-6 text-gray-900">Subtotal:</dt>
+                  <dt className="leading-6 text-gray-900">
+                    Tổng tiền sản phẩm:
+                  </dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {formatPrice(order.totalPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
-                  <dt className="leading-6 text-gray-900">Discount:</dt>
+                  <dt className="leading-6 text-gray-900">Giảm giá:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {formatPrice(order.couponPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-sm">
-                  <dt className="leading-6 text-gray-900">Shipping:</dt>
+                  <dt className="leading-6 text-gray-900">Phí vận chuyển:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {formatPrice(order.shippingPrice)}
                   </dd>
                 </div>
                 <div className="mt-4 flex items-center justify-between text-lg">
-                  <dt className="font-semibold leading-6">Total:</dt>
+                  <dt className="font-semibold leading-6">Tổng cộng:</dt>
                   <dd className="font-semibold leading-6 sm:col-span-2 sm:mt-0">
                     {formatPrice(order.orderTotalPrice)}
                   </dd>
@@ -371,14 +365,14 @@ const Page: NextPageWithLayout = () => {
             </Card>
             <Card className="mt-4">
               <CardHeader>
-                <CardTitle>Shipping</CardTitle>
+                <CardTitle>Giao hàng</CardTitle>
               </CardHeader>
               <CardContent>
                 <div className="mt-4 flex items-center justify-between text-sm mb-4">
-                  <dt className="leading-6 text-gray-900">Status:</dt>
+                  <dt className="leading-6 text-gray-900">Trạng thái:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {order.deliveryStatus === OrderDeliveryStatus.SHIPPED ? (
-                      <Badge variant="success">Shipped</Badge>
+                      <Badge variant="success">Đã giao hàng</Badge>
                     ) : (
                       <Badge variant="default">{order.deliveryStatus}</Badge>
                     )}
@@ -386,9 +380,9 @@ const Page: NextPageWithLayout = () => {
                 </div>
                 {order.shipperId && (
                   <div className="p-2 border border-gray-400 bg-gray-100 rounded-md">
-                    <h1 className="font-semibold text-lg">Shipper:</h1>
+                    <h1 className="font-semibold text-lg">Người giao hàng:</h1>
                     <div className="mt-2 flex items-center justify-between text-sm">
-                      <dt className="leading-6 text-gray-900">Name:</dt>
+                      <dt className="leading-6 text-gray-900">Tên:</dt>
                       <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         {order.shipperId.firstName}
                       </dd>
@@ -400,7 +394,9 @@ const Page: NextPageWithLayout = () => {
                       </dd>
                     </div>
                     <div className="mt-2 flex items-center justify-between text-sm">
-                      <dt className="leading-6 text-gray-900">Phone:</dt>
+                      <dt className="leading-6 text-gray-900">
+                        Số điện thoại:
+                      </dt>
                       <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                         {order.shipperId.phone}
                       </dd>
@@ -428,7 +424,7 @@ const Page: NextPageWithLayout = () => {
                         queryClient.invalidateQueries({ queryKey: ["orders"] });
                       }}
                     >
-                      Ship
+                      Giao hàng
                     </Button>
                   )}
                   {order.deliveryStatus === OrderDeliveryStatus.SHIPPING && (
@@ -449,7 +445,7 @@ const Page: NextPageWithLayout = () => {
                         queryClient.invalidateQueries({ queryKey: ["orders"] });
                       }}
                     >
-                      Mask as delivered
+                      Đã giao hàng
                     </Button>
                   )}
                 </div>

@@ -169,14 +169,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         <Separator />
 
         <div>
-          <h1 className="font-semibold text-lg">General information</h1>
+          <h1 className="font-semibold text-lg">Thông tin chung</h1>
           <p className="text-sm text-slate-500 mb-4">
-            To start selling, all you need is a name and a price.
+            Để bắt đầu bán hàng, tất cả những gì bạn cần là tên và giá.
           </p>
 
           <div className="space-y-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Tên sản phẩm</FormLabel>
               <FormControl>
                 <Input
                   aria-invalid={!!form.formState.errors.name}
@@ -191,7 +191,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
             </FormItem>
 
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Mô tả</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Type product description here."
@@ -206,7 +206,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
 
             <div className="flex items-end gap-2">
               <FormItem className="flex-1">
-                <FormLabel>Product Code</FormLabel>
+                <FormLabel>Mã sản phẩm</FormLabel>
                 <FormControl>
                   <FormControl>
                     <Input
@@ -226,7 +226,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
                   form.setValue("productCode", `SP-${generateRandomString()}`);
                 }}
               >
-                Generate
+                Tạo ngẫu nhiên
               </Button>
             </div>
 
@@ -235,7 +235,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
               name="collectionId"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Collection</FormLabel>
+                  <FormLabel>Danh mục</FormLabel>
                   <FormControl>
                     <Select
                       value={field.value}
@@ -268,9 +268,9 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         <Separator />
 
         <div>
-          <h1 className="font-semibold text-lg">Variants</h1>
+          <h1 className="font-semibold text-lg">Biến thể</h1>
           <p className="text-sm text-slate-500 mb-4">
-            Add variations of this product.
+            Thêm biến thể cho sản phẩm này.
           </p>
 
           <ProductOptions />
@@ -281,12 +281,12 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         <Separator />
 
         <div>
-          <h1 className="font-semibold text-lg">Image</h1>
+          <h1 className="font-semibold text-lg">Ảnh</h1>
           <p className="text-sm text-slate-500 mb-4">
-            Add images to this product.
+            Thêm ảnh cho sản phẩm này.
           </p>
           <FormItem className="flex w-full flex-col gap-1.5">
-            <FormLabel>Images</FormLabel>
+            <FormLabel>Ảnh</FormLabel>
             {files?.length ? (
               <div className="flex items-center gap-2">
                 {files.map((file, i) => (
@@ -326,7 +326,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
               aria-hidden="true"
             />
           )}
-          Update Product
+          Cập nhật sản phẩm
           <span className="sr-only">Update product</span>
         </Button>
       </form>

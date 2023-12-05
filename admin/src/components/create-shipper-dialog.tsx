@@ -34,12 +34,12 @@ export const ChooseShipperDialog = () => {
       <DialogTrigger asChild>
         <Button variant={"secondary"}>
           <Truck className="h-4 w4 mr-2" />
-          Choose Shipper
+          Chọn NV giao
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Choose Shipper</DialogTitle>
+          <DialogTitle>Chọn nhân viên giao hàng</DialogTitle>
         </DialogHeader>
         <ul className="max-h-80 overflow-y-scroll">
           {shippers?.map((shipper) => {

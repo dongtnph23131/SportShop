@@ -141,14 +141,14 @@ export function AddProductForm() {
       >
         <Separator />
         <div>
-          <h1 className="font-semibold text-lg">General information</h1>
+          <h1 className="font-semibold text-xl">Thông tin chung</h1>
           <p className="text-sm text-slate-500 mb-4">
-            To start selling, all you need is a name and a price.
+            Để bắt đầu bán hàng, tất cả những gì bạn cần là tên và giá.
           </p>
 
           <div className="space-y-4">
             <FormItem>
-              <FormLabel>Name</FormLabel>
+              <FormLabel>Tên sản phẩm</FormLabel>
               <FormControl>
                 <Input
                   aria-invalid={!!form.formState.errors.name}
@@ -162,7 +162,7 @@ export function AddProductForm() {
             </FormItem>
 
             <FormItem>
-              <FormLabel>Description</FormLabel>
+              <FormLabel>Mô tả</FormLabel>
               <FormControl>
                 <Textarea
                   placeholder="Type product description here."
@@ -176,7 +176,7 @@ export function AddProductForm() {
 
             <div className="flex gap-2 items-end">
               <FormItem className="flex-1">
-                <FormLabel>Product Code</FormLabel>
+                <FormLabel>Mã sản phẩm</FormLabel>
                 <FormControl>
                   <Input
                     aria-invalid={!!form.formState.errors.productCode}
@@ -203,7 +203,7 @@ export function AddProductForm() {
               name="collectionId"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Category</FormLabel>
+                  <FormLabel>Danh mục</FormLabel>
                   <FormControl>
                     <Select
                       value={field.value}
@@ -238,7 +238,7 @@ export function AddProductForm() {
               name="status"
               render={({ field }) => (
                 <FormItem className="w-full">
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>Trạng thái</FormLabel>
                   <FormControl>
                     <Select
                       defaultValue="Active"
@@ -269,9 +269,9 @@ export function AddProductForm() {
         <Separator />
 
         <div>
-          <h1 className="font-semibold text-lg">Variants</h1>
+          <h1 className="font-semibold text-lg">Biến thể</h1>
           <p className="text-sm text-slate-500 mb-4">
-            Add variations of this product.
+            Thêm những biến thể cho sản phẩm này.
           </p>
 
           <ProductOptions />
@@ -282,13 +282,13 @@ export function AddProductForm() {
         <Separator />
 
         <div>
-          <h1 className="font-semibold text-lg">Image</h1>
+          <h1 className="font-semibold text-lg">Ảnh</h1>
           <p className="text-sm text-slate-500 mb-4">
-            Add images to this product.
+            Thêm ảnh cho sản phẩm này.
           </p>
 
           <FormItem className="flex w-full flex-col gap-1.5">
-            <FormLabel>Images</FormLabel>
+            <FormLabel>ẢNh</FormLabel>
             {files?.length ? (
               <div className="flex items-center gap-2">
                 {files.map((file, i) => (

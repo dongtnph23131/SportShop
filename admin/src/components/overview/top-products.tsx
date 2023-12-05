@@ -12,7 +12,7 @@ export function TopProducts({ topProducts }: { topProducts?: Product[] }) {
   return (
     <Card className="col-span-3">
       <CardHeader>
-        <CardTitle>Top selling products</CardTitle>
+        <CardTitle>Danh sách sản phẩm bán chạy</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
@@ -33,10 +33,9 @@ export function TopProducts({ topProducts }: { topProducts?: Product[] }) {
                   {product.name}
                 </p>
                 <p className="text-sm text-muted-foreground">
-                  Purchases: {product.purchases}
+                  Lượt mua hàng: {product.purchases}
                 </p>
               </div>
-              {/* <div className="ml-auto font-medium">+$1,999.00</div> */}
             </div>
           ))}
         </div>

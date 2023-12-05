@@ -23,13 +23,15 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to products
+        Quay lại sản phẩm
       </Button>
 
       <Card className="mt-2">
         <CardHeader>
-          <CardTitle>Add product</CardTitle>
-          <CardDescription>Add a new product to your store</CardDescription>
+          <CardTitle>Thêm sản phẩm</CardTitle>
+          <CardDescription>
+            Thêm một sản phẩm vào cửa hàng của bạn
+          </CardDescription>
         </CardHeader>
 
         <CardContent>

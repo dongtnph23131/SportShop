@@ -65,13 +65,13 @@ export const CreateProductVariantDialog = ({
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
         <DialogHeader>
-          <DialogTitle>Create Variant</DialogTitle>
+          <DialogTitle>Tạo biến thể</DialogTitle>
         </DialogHeader>
 
         <div className="space-y-2">
-          <Label>Name</Label>
+          <Label>Tên</Label>
           <Input
-            placeholder="Black / XL"
+            placeholder="Đen / XL"
             value={formState.name}
             onChange={(e) => {
               setFormState((prev) => ({
@@ -83,7 +83,7 @@ export const CreateProductVariantDialog = ({
         </div>
 
         <div>
-          <h3 className="font-semibold mb-2">Options</h3>
+          <h3 className="font-semibold mb-2">Tùy chọn</h3>
 
           <div className="gap-4 grid grid-cols-2">
             {addProductForm
@@ -131,7 +131,7 @@ export const CreateProductVariantDialog = ({
 
         <div className="flex flex-col items-start gap-6 sm:flex-row">
           <FormItem className="w-full">
-            <FormLabel>Price</FormLabel>
+            <FormLabel>Giá</FormLabel>
             <FormControl>
               <Input
                 type="number"
@@ -147,7 +147,7 @@ export const CreateProductVariantDialog = ({
             </FormControl>
           </FormItem>
           <FormItem className="w-full">
-            <FormLabel>Inventory</FormLabel>
+            <FormLabel>Số lượng trong kho</FormLabel>
             <FormControl>
               <Input
                 type="number"
@@ -198,7 +198,7 @@ export const CreateProductVariantDialog = ({
               }));
             }}
           >
-            Generate
+            <span className="whitespace-nowrap">Tạo ngẫu nhiên</span>
           </Button>
         </div>
 
@@ -208,7 +208,7 @@ export const CreateProductVariantDialog = ({
             variant={"outline"}
             onClick={() => setOpen(false)}
           >
-            Cancel
+            Hủy
           </Button>
           <Button
             type="submit"
@@ -217,7 +217,7 @@ export const CreateProductVariantDialog = ({
               setOpen(false);
             }}
           >
-            Save changes
+            Lưu thay đổi
           </Button>
         </DialogFooter>
       </DialogContent>

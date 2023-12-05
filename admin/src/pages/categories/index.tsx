@@ -13,6 +13,7 @@ import {
   DropdownMenu,
   DropdownMenuContent,
   DropdownMenuItem,
+  DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -38,20 +39,6 @@ import { queryClient } from "@/lib/react-query";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { ExportCSVButton } from "@/components/export-button";
 
-interface Collection {
-  name: string;
-  id: string;
-  createdAt: string;
-  updatedAt: string;
-  products: {
-    name: string;
-    price: number;
-    collectionId: string | null;
-    description: string | null;
-    updatedAt: string;
-  }[];
-}
-
 const Page: NextPageWithLayout = () => {
   const { data: categories } = useCategoriesQuery();
   const deleteCategoryMutation = useCategoryDeleteMutation({
@@ -64,7 +51,7 @@ const Page: NextPageWithLayout = () => {
     {
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Danh mục" />
       ),
       cell: ({ row }) => (
         <div className="flex gap-4 items-center">
@@ -85,7 +72,7 @@ const Page: NextPageWithLayout = () => {
     {
       accessorKey: "createdAt",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Created At" />
+        <DataTableColumnHeader column={column} title="Ngày tạo" />
       ),
       cell: ({ row }) => {
         return format(new Date(row.original.createdAt), "dd MMM yyyy");
@@ -94,7 +81,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "productLength",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Products" />
+        <DataTableColumnHeader column={column} title="Số lượng sản phẩm" />
       ),
       cell: ({ row }) => {
         return row.original.productIds.length;
@@ -115,12 +102,15 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/categories/${row.original.slug}`}>Edit</Link>
+              <Link href={`/categories/${row.original.slug}`}>Cập nhật</Link>
             </DropdownMenuItem>
+
+            <DropdownMenuSeparator />
+
             <DropdownMenuItem asChild>
               <AlertDialog>
                 <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                  Delete
+                  Xóa
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>
@@ -158,10 +148,7 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Category</CardTitle>
-            <CardDescription>
-              Here&apos;s a list of your products!
-            </CardDescription>
+            <CardTitle>Danh mục</CardTitle>
           </CardHeader>
           <div className="flex items-center gap-2">
             <ExportCSVButton
@@ -169,7 +156,7 @@ const Page: NextPageWithLayout = () => {
               fileName="categories"
             />
             <Button asChild>
-              <Link href="/categories/add">New Collection</Link>
+              <Link href="/categories/add">Tạo danh mục</Link>
             </Button>
           </div>
         </div>

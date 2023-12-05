@@ -14,7 +14,7 @@ import {
   startOfMonth,
 } from "date-fns";
 import { useSearchParams } from "next/navigation";
-import { OrderAnalytics } from "@/services/analytics/analytics";
+import { OrderAnalytics as OrderAnalyticsType } from "@/services/analytics/analytics";
 import {
   Card,
   CardContent,
@@ -23,7 +23,7 @@ import {
   CardTitle,
 } from "../ui/card";
 
-export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
+export function OrderAnalytics({ orders }: { orders?: OrderAnalyticsType }) {
   const searchParams = useSearchParams();
 
   const from = searchParams.get("from");
@@ -53,7 +53,7 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalytics }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Total Orders</CardTitle>
+        <CardTitle>Tổng đơn hàng</CardTitle>
         <CardDescription className="text-2xl font-bold text-black">
           {orders?.total ?? 0}
         </CardDescription>

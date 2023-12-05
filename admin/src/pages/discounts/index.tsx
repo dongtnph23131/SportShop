@@ -51,7 +51,7 @@ const Page: NextPageWithLayout = () => {
       id: "code",
       accessorKey: "code",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Title" />
+        <DataTableColumnHeader column={column} title="Mã giảm giá" />
       ),
       cell: ({ row }) => (
         <span className="font-semibold text-lg">{row.original.code}</span>
@@ -60,7 +60,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "start_at",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Start At" />
+        <DataTableColumnHeader column={column} title="Ngày giờ áp dụng" />
       ),
       cell: ({ row }) =>
         format(new Date(row.original.startAt), "dd MMM yyyy hh:mm a"),
@@ -69,7 +69,7 @@ const Page: NextPageWithLayout = () => {
       id: "type",
       accessorKey: "type",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Type" />
+        <DataTableColumnHeader column={column} title="Loại" />
       ),
       cell: ({ row }) => <Badge>{row.original.type}</Badge>,
       filterFn: (row, id, value) => {
@@ -80,14 +80,14 @@ const Page: NextPageWithLayout = () => {
       id: "usageLimit",
       accessorKey: "usageLimit",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Count" />
+        <DataTableColumnHeader column={column} title="Số lượng sử dụng" />
       ),
       cell: ({ row }) => <span>{row.original.usageLimit}</span>,
     },
     {
       id: "usageCount",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Usage Count" />
+        <DataTableColumnHeader column={column} title="Số lượng giới hạn" />
       ),
       cell: ({ row }) => <span>{row.original.usageCount}</span>,
     },
@@ -97,7 +97,7 @@ const Page: NextPageWithLayout = () => {
         <div className="flex items-center gap-2 justify-end mr-4">
           <AlertDialog>
             <AlertDialogTrigger className="text-red-500 hover:underline cursor-pointer font-semibold">
-              Delete
+              Xóa
             </AlertDialogTrigger>
             <AlertDialogContent>
               <AlertDialogHeader>
@@ -144,10 +144,7 @@ const Page: NextPageWithLayout = () => {
     <Card>
       <div className="flex justify-between p-6">
         <CardHeader className="p-0">
-          <CardTitle>Discounts</CardTitle>
-          <CardDescription>
-            Manage discounts of your Sport Shop!
-          </CardDescription>
+          <CardTitle>Mã giảm giá</CardTitle>
         </CardHeader>
         <div className="flex items-center gap-2">
           <ExportCSVButton

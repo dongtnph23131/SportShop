@@ -7,6 +7,7 @@ import {
   CardTitle,
 } from "../ui/card";
 import { Customer } from "@/types/base";
+import { formatPrice } from "@/lib/utils";
 
 export function TopCustomers({
   topCustomers,
@@ -16,7 +17,7 @@ export function TopCustomers({
   return (
     <Card className="col-span-3">
       <CardHeader>
-        <CardTitle>Top customers</CardTitle>
+        <CardTitle>Danh sách khách hàng</CardTitle>
       </CardHeader>
       <CardContent>
         <div className="space-y-8">
@@ -35,7 +36,7 @@ export function TopCustomers({
                 </p>
               </div>
               <div className="ml-auto font-medium">
-                +${customer.totalOrderPrice}
+                {formatPrice(customer.totalOrderPrice)}
               </div>
             </div>
           ))}

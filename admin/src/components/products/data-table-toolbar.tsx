@@ -2,7 +2,7 @@ import { Table } from "@tanstack/react-table";
 
 import { Input } from "@/components/ui/input";
 
-import { DataTableFacetedFilter } from "./data-table-faceted-filter";
+import { DataTableFacetedFilter } from "../data-table/data-table-faceted-filter";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import { useEffect } from "react";
 import { ProductStatus } from "@/types/base";
@@ -34,18 +34,22 @@ export function DataTableToolbar<TData>({
             }
           }}
         >
-          <SwitchGroupItem value="all">All</SwitchGroupItem>
-          <SwitchGroupItem value={ProductStatus.ACTIVE}>Active</SwitchGroupItem>
-          <SwitchGroupItem value={ProductStatus.DRAFT}>Draft</SwitchGroupItem>
+          <SwitchGroupItem value="all">Tất cả</SwitchGroupItem>
+          <SwitchGroupItem value={ProductStatus.ACTIVE}>
+            Hoạt động
+          </SwitchGroupItem>
+          <SwitchGroupItem value={ProductStatus.DRAFT}>
+            Bản nháp
+          </SwitchGroupItem>
           <SwitchGroupItem value={ProductStatus.ARCHIVED}>
-            Archived
+            Lưu trữ
           </SwitchGroupItem>
         </SwitchGroup>
       )}
 
       <div className="mt-4 flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search by name..."
+          placeholder="Tìm kiếm theo tên..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -55,7 +59,7 @@ export function DataTableToolbar<TData>({
         {table.getColumn("category") && (
           <DataTableFacetedFilter
             column={table.getColumn("category")}
-            title="Category"
+            title="Danh mục"
             options={
               categories?.map((category) => ({
                 label: category.name,

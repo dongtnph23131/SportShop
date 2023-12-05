@@ -30,13 +30,13 @@ export const ProductVariants = () => {
 
   return (
     <div>
-      <h3 className="mt-4 font-medium">Product Variants</h3>
+      <h3 className="mt-4 font-medium">Biến thể</h3>
 
       <div className="mt-2">
         <div className="grid grid-cols-[1fr_160px_160px_160px_40px] gap-2">
-          <Label>Variant</Label>
-          <Label>Price</Label>
-          <Label>Inventory</Label>
+          <Label>Tên</Label>
+          <Label>Giá</Label>
+          <Label>Kho</Label>
           <Label>SKU</Label>
         </div>
       </div>
@@ -125,7 +125,7 @@ export const ProductVariants = () => {
           .getValues("options")
           .every((item) => !item.name.length || !item.values.length)}
       >
-        Add a variant
+        Thêm biến thể
       </Button>
 
       {open && (

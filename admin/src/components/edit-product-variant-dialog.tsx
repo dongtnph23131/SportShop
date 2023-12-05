@@ -28,11 +28,11 @@ export const EditProductVariantDialog = ({
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant={"default"}>Edit</Button>
+        <Button variant={"default"}>Cập nhật</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Product Variant</DialogTitle>
+          <DialogTitle>Cập nhật biến thể sản phẩm</DialogTitle>
           <div className="text-sm text-slate-600">
             <h6 className="font-semibold">{productVariant.productId.name}</h6>
             <p>{productVariant.options.join(" / ")}</p>
@@ -75,7 +75,7 @@ export const EditProductVariantDialog = ({
         >
           <div className="space-y-2">
             <Label htmlFor="price" className="text-right">
-              Price
+              Giá
             </Label>
             <Input
               id="price"
@@ -88,7 +88,7 @@ export const EditProductVariantDialog = ({
           </div>
           <div className="space-y-2">
             <Label htmlFor="inventory" className="text-right">
-              Inventory
+              Sẵn hàng
             </Label>
             <Input
               id="inventory"
@@ -119,13 +119,13 @@ export const EditProductVariantDialog = ({
                     generateRandomString();
                 }}
               >
-                Generate
+                <span className="whitespace-nowrap">Tạo ngẫu nhiên</span>
               </Button>
             </div>
           </div>
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              Save changes
+              Lưu thay đổi
             </Button>
           </DialogFooter>
         </form>

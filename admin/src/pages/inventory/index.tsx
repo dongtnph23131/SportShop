@@ -44,8 +44,7 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Inventory</CardTitle>
-            <CardDescription>Here&apos;s a list of inventory!</CardDescription>
+            <CardTitle>Kho hàng</CardTitle>
           </CardHeader>
           <div className="flex items-center gap-2">
             <ExportCSVButton
@@ -53,13 +52,13 @@ const Page: NextPageWithLayout = () => {
               fileName="inventory"
             />
             <Button asChild>
-              <Link href={"/products"}>View products</Link>
+              <Link href={"/products"}>Xem sản phẩm</Link>
             </Button>
           </div>
         </div>
         <CardContent>
           <Input
-            placeholder="Search by product variant name..."
+            placeholder="Tìm theo tên biến thể sản phẩm..."
             className="h-8 w-[150px] lg:w-[250px] mb-4"
             onChange={(event) => {
               queryParams({
@@ -76,12 +75,12 @@ const Page: NextPageWithLayout = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Product</TableHead>
-                <TableHead>Category</TableHead>
+                <TableHead>Sản phẩm</TableHead>
+                <TableHead>Danh mục</TableHead>
                 <TableHead>SKU</TableHead>
-                <TableHead>Price</TableHead>
-                <TableHead>Inventory</TableHead>
-                <TableHead>Action</TableHead>
+                <TableHead>Giá</TableHead>
+                <TableHead>Sẵn hàng</TableHead>
+                <TableHead>Hành động</TableHead>
               </TableRow>
             </TableHeader>
             <TableBody>

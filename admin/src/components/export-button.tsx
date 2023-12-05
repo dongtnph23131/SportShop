@@ -3,6 +3,7 @@ import * as FileSaver from "file-saver";
 import * as XLSX from "xlsx";
 import { Button } from "./ui/button";
 import { cs } from "date-fns/locale";
+import { Download } from "lucide-react";
 
 export const ExportCSVButton = ({
   csvData,
@@ -25,7 +26,8 @@ export const ExportCSVButton = ({
 
   return (
     <Button variant="secondary" onClick={(e) => exportToCSV(csvData, fileName)}>
-      Export
+      <Download className="mr-2 h-4 w-4" />
+      Xuất
     </Button>
   );
 };

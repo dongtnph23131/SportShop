@@ -14,7 +14,6 @@ import {
   startOfMonth,
 } from "date-fns";
 import { useSearchParams } from "next/navigation";
-import { SaleAnalytics } from "@/services/analytics/analytics";
 import {
   Card,
   CardContent,
@@ -22,8 +21,10 @@ import {
   CardHeader,
   CardTitle,
 } from "../ui/card";
+import { SaleAnalytics as SaleAnalyticsType } from "@/services/analytics/analytics";
+import { formatPrice } from "@/lib/utils";
 
-export function SaleAnalytics({ sale }: { sale?: SaleAnalytics }) {
+export function SaleAnalytics({ sale }: { sale?: SaleAnalyticsType }) {
   const searchParams = useSearchParams();
 
   const from = searchParams.get("from");
@@ -53,9 +54,9 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalytics }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Total Sale</CardTitle>
+        <CardTitle>Tổng doanh thu</CardTitle>
         <CardDescription className="text-2xl font-bold text-black">
-          ${sale?.total ?? 0}
+          {formatPrice(sale?.total ?? 0)}
         </CardDescription>
       </CardHeader>
       <CardContent className="pl-2">
@@ -73,7 +74,7 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalytics }) {
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => `$${value}`}
+              tickFormatter={(value) => formatPrice(value)}
             />
             <Tooltip />
             <Line

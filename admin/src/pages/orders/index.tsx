@@ -76,18 +76,16 @@ const Page: NextPageWithLayout = () => {
   const { data: allOrders } = useAllOrdersQuery();
   const { data: statisticOrders } = useStatisticOrdersQuery();
 
-  console.log(statisticOrders);
-
   return (
     <>
       <div className="flex items-center justify-between space-y-2 mb-4">
-        <h2 className="text-3xl font-bold tracking-tight">Order</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Đơn hàng</h2>
       </div>
       <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Canceled
+              Tổng đơn đã hủy
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -117,7 +115,7 @@ const Page: NextPageWithLayout = () => {
                     (statisticOrders?.totalCanceled / statisticOrders?.total) *
                     100
                   ).toFixed(2)}
-                  % of total orders
+                  % trên tổng đơn
                 </p>
               </>
             )}
@@ -126,7 +124,7 @@ const Page: NextPageWithLayout = () => {
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
             <CardTitle className="text-sm font-medium">
-              Total Completed
+              Tổng đơn đã hoàn thành
             </CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
@@ -155,7 +153,7 @@ const Page: NextPageWithLayout = () => {
                     (statisticOrders?.totalCompleted / statisticOrders?.total) *
                     100
                   ).toFixed(2)}
-                  % of total orders
+                  % trên tổng đơn
                 </p>
               </>
             )}
@@ -163,7 +161,7 @@ const Page: NextPageWithLayout = () => {
         </Card>
         <Card>
           <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-            <CardTitle className="text-sm font-medium">Total Orders</CardTitle>
+            <CardTitle className="text-sm font-medium">Tổng đơn hàng</CardTitle>
             <svg
               xmlns="http://www.w3.org/2000/svg"
               width="24"
@@ -197,8 +195,7 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Orders</CardTitle>
-            <CardDescription>Here&apos;s a list of the orders!</CardDescription>
+            <CardTitle>Danh sách đơn hàng</CardTitle>
           </CardHeader>
           <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
             <ExportCSVButton
@@ -211,7 +208,7 @@ const Page: NextPageWithLayout = () => {
         <CardContent>
           <div className="flex items-center gap-2 mb-4">
             <Input
-              placeholder="Search by name, phone, order code"
+              placeholder="Tìm kiếm theo tên, số điện thoại, mã đơn hàng"
               className="flex-1 h-10 shadow-none border-gray-300"
               onChange={(event) => {
                 queryParams({
@@ -235,15 +232,15 @@ const Page: NextPageWithLayout = () => {
                 });
               }}
             >
-              <SwitchGroupItem value="all">All</SwitchGroupItem>
+              <SwitchGroupItem value="all">Tất cả</SwitchGroupItem>
               <SwitchGroupItem value={OrderStatus.PENDING}>
-                Pending
+                Đang xử lý
               </SwitchGroupItem>
               <SwitchGroupItem value={OrderStatus.COMPLETED}>
-                Completed
+                Đã hoàn thành
               </SwitchGroupItem>
               <SwitchGroupItem value={OrderStatus.CANCELED}>
-                Canceled
+                Đã hủy
               </SwitchGroupItem>
             </SwitchGroup>
           </div>
@@ -253,12 +250,12 @@ const Page: NextPageWithLayout = () => {
           <Table>
             <TableHeader>
               <TableRow>
-                <TableHead>Order</TableHead>
-                <TableHead>Create At</TableHead>
-                <TableHead>Customer</TableHead>
-                <TableHead>Phone</TableHead>
-                <TableHead>Status</TableHead>
-                <TableHead>Total</TableHead>
+                <TableHead>Đơn hàng</TableHead>
+                <TableHead>Ngày giờ tạo</TableHead>
+                <TableHead>Khách hàng</TableHead>
+                <TableHead>Số điện thoại</TableHead>
+                <TableHead>Trạng thái</TableHead>
+                <TableHead>Tổng tiền</TableHead>
                 <TableHead></TableHead>
               </TableRow>
             </TableHeader>
@@ -290,7 +287,9 @@ const Page: NextPageWithLayout = () => {
                         </DropdownMenuTrigger>
                         <DropdownMenuContent align="end" className="w-[160px]">
                           <DropdownMenuItem asChild>
-                            <Link href={`/orders/${order._id}`}>View</Link>
+                            <Link href={`/orders/${order._id}`}>
+                              Xem chi tiết
+                            </Link>
                           </DropdownMenuItem>
                           <Authorization
                             allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}
@@ -299,7 +298,7 @@ const Page: NextPageWithLayout = () => {
                             <DropdownMenuItem asChild>
                               <AlertDialog>
                                 <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                                  Delete
+                                  Xóa
                                 </AlertDialogTrigger>
                                 <AlertDialogContent>
                                   <AlertDialogHeader>

@@ -31,7 +31,7 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.push("/products")}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to products
+        Quay lại
       </Button>
 
       <Card className="mt-2">
@@ -77,9 +77,7 @@ const Page: NextPageWithLayout = () => {
               <Separator className="my-4" />
 
               <dl className="mb-8">
-                <dt className="mb-4 text-sm uppercase tracking-wide">
-                  Description
-                </dt>
+                <dt className="mb-4 text-sm uppercase tracking-wide">Mô tả</dt>
                 <dd className="flex flex-wrap gap-3 h-40 overflow-y-scroll">
                   {product?.description}
                 </dd>
@@ -88,14 +86,14 @@ const Page: NextPageWithLayout = () => {
               <Separator className="my-4" />
 
               <dl className="mb-4 flex gap-2">
-                <dt className="uppercase">Display Code:</dt>
+                <dt className="uppercase">Mã sản phẩm:</dt>
                 <dd className="flex flex-wrap gap-3 font-medium">
                   <Badge variant={"outline"}>{product.code}</Badge>
                 </dd>
               </dl>
 
               <dl className="mb-4 flex gap-2">
-                <dt className="uppercase">Purchases:</dt>
+                <dt className="uppercase">Lượt mua hàng:</dt>
                 <dd className="flex flex-wrap gap-3 font-medium">
                   <Badge variant={"outline"}>{product.purchases}</Badge>
                 </dd>
@@ -105,7 +103,7 @@ const Page: NextPageWithLayout = () => {
 
               <Button size={"lg"} asChild>
                 <Link href={`/products/${product.slug}/edit`}>
-                  Edit product
+                  Cập nhật sản phẩm
                 </Link>
               </Button>
             </div>

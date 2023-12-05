@@ -42,7 +42,7 @@ export default function Sidebar({
 
   const tabs = [
     {
-      name: "Overview",
+      name: "Tổng quan",
       href: "/",
       Icon: BarChart3,
       isAccess: profile
@@ -50,7 +50,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Products",
+      name: "Sản phẩm",
       href: "/products",
       Icon: Tag,
       isAccess: profile
@@ -58,7 +58,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Inventory",
+      name: "Kho hàng",
       href: "/inventory",
       Icon: Archive,
       isAccess: profile
@@ -66,7 +66,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Categories",
+      name: "Danh mục",
       href: "/categories",
       Icon: Folder,
       isAccess: profile
@@ -74,7 +74,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Orders",
+      name: "Đơn hàng",
       href: "/orders",
       Icon: ShoppingCart,
       isAccess: profile
@@ -84,7 +84,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Customers",
+      name: "Khách hàng",
       href: "/customers",
       Icon: User,
       isAccess: profile
@@ -92,7 +92,7 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Discounts",
+      name: "Mã giảm giá",
       href: "/discounts",
       Icon: PercentCircle,
       isAccess: profile
@@ -100,13 +100,13 @@ export default function Sidebar({
         : false,
     },
     {
-      name: "Team",
+      name: "Thành viên",
       href: "/users",
       Icon: UserCog,
       isAccess: profile ? [UserRole.ADMIN].includes(profile.role) : false,
     },
     {
-      name: "Settings",
+      name: "Cài đặt",
       href: "/settings",
       Icon: Settings,
       isAccess: profile

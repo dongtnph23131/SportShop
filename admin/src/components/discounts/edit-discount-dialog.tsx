@@ -27,7 +27,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span className="font-semibold cursor-pointer text-blue-600 hover:underline">
-          Edit
+          Cập nhật
         </span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">

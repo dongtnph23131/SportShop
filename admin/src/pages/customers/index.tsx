@@ -57,7 +57,7 @@ const Page: NextPageWithLayout = () => {
       id: "name",
       accessorKey: "firstName",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Tên khách hàng" />
       ),
       cell: ({ row }) => (
         <div className="flex gap-4 items-center">
@@ -85,7 +85,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "createdAt",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Created At" />
+        <DataTableColumnHeader column={column} title="Ngày tạo" />
       ),
       cell: ({ row }) => (
         <span>{format(new Date(row.original.createdAt), "dd MMM yyyy")}</span>
@@ -94,14 +94,14 @@ const Page: NextPageWithLayout = () => {
     {
       id: "orders",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Orders" />
+        <DataTableColumnHeader column={column} title="Số lượng đơn hàng" />
       ),
       cell: ({ row }) => <span>{row.original.orderIds.length}</span>,
     },
     {
       id: "amountSpent",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Amount Spent" />
+        <DataTableColumnHeader column={column} title="Số tiền chi" />
       ),
       cell: ({ row }) => {
         const amountSpent = row.original.orderIds.reduce((acc, curr) => {
@@ -168,8 +168,7 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Customers</CardTitle>
-            <CardDescription>Here&apos;s a list of customers!</CardDescription>
+            <CardTitle>Khách hàng</CardTitle>
           </CardHeader>
           <ExportCSVButton
             csvData={JSON.stringify(customers)}

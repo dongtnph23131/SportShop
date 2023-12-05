@@ -22,8 +22,6 @@ const Page: NextPageWithLayout = () => {
     { enabled: Boolean(slug) }
   );
 
-  console.log({ category });
-
   return (
     <>
       <Button
@@ -32,12 +30,12 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Collections
+        Quay lại
       </Button>
 
       <Card className="mt-2">
         <CardHeader>
-          <CardTitle>Edit collection</CardTitle>
+          <CardTitle>Cập nhật danh mục</CardTitle>
         </CardHeader>
         <CardContent>
           {category ? <EditCategoryForm collection={category} /> : "Loading..."}

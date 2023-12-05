@@ -47,16 +47,15 @@ export const generateRandomString = (length = 6) => {
 export function formatPrice(
   price: number | string,
   options: {
-    currency?: "USD" | "EUR" | "GBP" | "BDT";
+    currency?: "USD" | "EUR" | "GBP" | "BDT" | "VND" | "JPY" | "CNY" | "KRW";
     notation?: Intl.NumberFormatOptions["notation"];
   } = {}
 ) {
-  const { currency = "USD", notation = "compact" } = options;
+  const { currency = "VND" } = options;
 
-  return new Intl.NumberFormat("en-US", {
+  return new Intl.NumberFormat("vi", {
     style: "currency",
     currency,
-    notation,
   }).format(Number(price));
 }
 

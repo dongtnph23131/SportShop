@@ -18,7 +18,7 @@ export function DataTableToolbar<TData>({
     <div>
       <div className="mt-4 flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search by code..."
+          placeholder="Tìm kiếm theo mã..."
           value={(table.getColumn("code")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("code")?.setFilterValue(event.target.value)
@@ -57,7 +57,6 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      {/* <DataTableViewOptions table={table} /> */}
     </div>
   );
 }

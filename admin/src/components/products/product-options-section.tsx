@@ -27,12 +27,12 @@ export const ProductOptions = () => {
 
   return (
     <div>
-      <h3 className="mt-4 font-medium">Product Options</h3>
+      <h3 className="mt-4 font-medium">Tùy chọn</h3>
 
       <div className="mt-2">
         <div className="grid grid-cols-[230px_1fr_40px] gap-2">
-          <Label>Option name</Label>
-          <Label>Variants (comma separated)</Label>
+          <Label>Tên</Label>
+          <Label>Giá trị (Ngăn cách bằng dấu phẩy)</Label>
         </div>
 
         <div className="mt-2 flex flex-col gap-2">

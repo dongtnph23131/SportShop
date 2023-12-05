@@ -84,7 +84,7 @@ export default function AddCategoryForm() {
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên danh mục</FormLabel>
           <FormControl>
             <Input
               aria-invalid={!!form.formState.errors.name}
@@ -98,7 +98,7 @@ export default function AddCategoryForm() {
         </FormItem>
 
         <FormItem>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>Mô tả</FormLabel>
           <FormControl>
             <Textarea
               aria-invalid={!!form.formState.errors.name}
@@ -111,7 +111,7 @@ export default function AddCategoryForm() {
         </FormItem>
 
         <FormItem className="flex w-full flex-col gap-1.5">
-          <FormLabel>Image</FormLabel>
+          <FormLabel>Ảnh</FormLabel>
           {files?.length ? (
             <div className="flex items-center gap-2">
               {files.map((file, i) => (
@@ -153,7 +153,7 @@ export default function AddCategoryForm() {
               aria-hidden="true"
             />
           )}
-          Add Collection
+          Thêm danh mục
           <span className="sr-only">Add Collection</span>
         </Button>
       </form>

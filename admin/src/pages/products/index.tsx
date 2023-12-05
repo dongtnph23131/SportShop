@@ -39,6 +39,7 @@ import { useProductsQuery } from "@/services/products/products-query";
 import { Product, ProductStatus } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
+import { Plus } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
 
@@ -60,7 +61,7 @@ const Page: NextPageWithLayout = () => {
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Product" />
+        <DataTableColumnHeader column={column} title="Sản phẩm" />
       ),
       cell: ({ row }) => (
         <div className="flex gap-4 items-center">
@@ -74,7 +75,7 @@ const Page: NextPageWithLayout = () => {
             />
             <AvatarFallback>OM</AvatarFallback>
           </Avatar>
-          {row.original.name}
+          <span className="w-56 truncate">{row.original.name}</span>
         </div>
       ),
     },
@@ -82,19 +83,19 @@ const Page: NextPageWithLayout = () => {
       id: "status",
       accessorKey: "status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
+        <DataTableColumnHeader column={column} title="Trạng thái" />
       ),
       cell: ({ row }) => {
         return (
           <>
             {row.original.status === ProductStatus.ACTIVE && (
-              <Badge variant={"success"}>Active</Badge>
+              <Badge variant={"success"}>Đang hoạt động</Badge>
             )}
             {row.original.status === ProductStatus.DRAFT && (
-              <Badge variant="blue">{row.original.status}</Badge>
+              <Badge variant="blue">Bản nháp</Badge>
             )}
             {row.original.status === ProductStatus.ARCHIVED && (
-              <Badge variant="destructive">{row.original.status}</Badge>
+              <Badge variant="destructive">Lưu trữ</Badge>
             )}
           </>
         );
@@ -103,7 +104,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "code",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Code" />
+        <DataTableColumnHeader column={column} title="Mã SP" />
       ),
       cell: ({ row }) => <div>{row.original.code}</div>,
     },
@@ -111,7 +112,7 @@ const Page: NextPageWithLayout = () => {
       id: "category",
       accessorKey: "category",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Category" />
+        <DataTableColumnHeader column={column} title="Danh mục" />
       ),
       cell: ({ row }) => {
         return (
@@ -131,7 +132,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "inventory",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Inventory" />
+        <DataTableColumnHeader column={column} title="Hàng trong kho" />
       ),
       cell: ({ row }) => {
         const inventory = row.original.productVariantIds.reduce(
@@ -139,7 +140,7 @@ const Page: NextPageWithLayout = () => {
           0
         );
 
-        return `${inventory} in stock for ${row.original.productVariantIds.length} variant(s)`;
+        return `còn ${inventory} trong kho cho ${row.original.productVariantIds.length} biến thể`;
       },
     },
     {
@@ -160,12 +161,12 @@ const Page: NextPageWithLayout = () => {
               <Link
                 href={`/products/${encodeURIComponent(row.original.slug)}/edit`}
               >
-                Edit
+                Chỉnh sửa
               </Link>
             </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link href={`/products/${encodeURIComponent(row.original.slug)}`}>
-                View
+                Xem chi tiết
               </Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
@@ -184,7 +185,7 @@ const Page: NextPageWithLayout = () => {
                 );
               }}
             >
-              Active
+              Lưu trữ
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
@@ -201,7 +202,7 @@ const Page: NextPageWithLayout = () => {
                 );
               }}
             >
-              Set as draft
+              Đặt thành bản nháp
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
@@ -224,7 +225,7 @@ const Page: NextPageWithLayout = () => {
               <DropdownMenuItem asChild>
                 <AlertDialog>
                   <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                    Delete
+                    Xóa
                   </AlertDialogTrigger>
                   <AlertDialogContent>
                     <AlertDialogHeader>
@@ -264,10 +265,10 @@ const Page: NextPageWithLayout = () => {
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
-            <CardTitle>Products</CardTitle>
-            <CardDescription>
-              Here&apos;s a list of your products!
-            </CardDescription>
+            <CardTitle>Sản phẩm</CardTitle>
+            {/* <CardDescription>
+              Danh sách tất cả các sản phẩm của bạn
+            </CardDescription> */}
           </CardHeader>
           <div className="flex gap-2 items-center">
             <ExportCSVButton
@@ -275,7 +276,10 @@ const Page: NextPageWithLayout = () => {
               fileName="products"
             />
             <Button asChild>
-              <Link href="/products/add">Add Product</Link>
+              <div>
+                <Plus className="h-4 w-4 mr-2" />
+                <Link href="/products/add">Thêm sản phẩm</Link>
+              </div>
             </Button>
           </div>
         </div>

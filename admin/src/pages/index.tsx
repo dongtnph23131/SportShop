@@ -23,7 +23,7 @@ const Page: NextPageWithLayout = () => {
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-between space-y-2">
-        <h2 className="text-3xl font-bold tracking-tight">Dashboard</h2>
+        <h2 className="text-3xl font-bold tracking-tight">Thống kê</h2>
       </div>
       <div className="grid grid-cols-2 gap-4">
         <div className="col-span-1 h-full">
@@ -38,7 +38,7 @@ const Page: NextPageWithLayout = () => {
 
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Analytics</h2>
+          <h2 className="text-3xl font-bold tracking-tight">Thống kê</h2>
           <div className="flex items-center space-x-2">
             <DateRangePicker dayCount={30} className="!bg-white" />
           </div>

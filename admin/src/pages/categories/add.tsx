@@ -23,12 +23,12 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to Categories
+        Quay lại
       </Button>
 
       <Card className="mt-2">
         <CardHeader>
-          <CardTitle>Add Categories</CardTitle>
+          <CardTitle>Thêm danh mục</CardTitle>
         </CardHeader>
         <CardContent>
           <AddCategoryForm />

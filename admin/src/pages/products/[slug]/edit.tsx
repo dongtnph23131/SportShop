@@ -27,15 +27,12 @@ const Page: NextPageWithLayout = () => {
         onClick={() => router.back()}
       >
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to products
+        Quay lại
       </Button>
 
       <Card className="mt-2">
         <CardHeader>
-          <CardTitle>Edit product</CardTitle>
-          <CardDescription>
-            Edit your product information, or delete it
-          </CardDescription>
+          <CardTitle>Cập nhật sản phẩm</CardTitle>
         </CardHeader>
         <CardContent>
           {product ? (

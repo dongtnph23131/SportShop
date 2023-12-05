@@ -39,8 +39,10 @@ const ProductReview = ({ productId }: { productId: string }) => {
   return (
     <Card className="mt-4">
       <CardHeader>
-        <CardTitle>Reviews</CardTitle>
-        <CardDescription>Here&apos;s reviews for this product</CardDescription>
+        <CardTitle>Đánh giá</CardTitle>
+        <CardDescription>
+          Danh sách đánh giá, bình luận của khách hàng cho sản phẩm này.
+        </CardDescription>
       </CardHeader>
 
       <CardContent className="space-y-4">
@@ -65,9 +67,7 @@ const ProductReview = ({ productId }: { productId: string }) => {
                 </div>
               </div>
 
-              {comment.isHidden && (
-                <Badge variant={"destructive"}>Hidden</Badge>
-              )}
+              {comment.isHidden && <Badge variant={"destructive"}>Đã ẩn</Badge>}
 
               <div className="flex gap-2 items-center">
                 {!comment.isHidden && (
@@ -85,12 +85,12 @@ const ProductReview = ({ productId }: { productId: string }) => {
                       }
                     }}
                   >
-                    Hide review
+                    Ẩn đánh giá
                   </Button>
                 )}
                 <Button asChild>
                   <Link href={`/customers/${comment.customerId._id}`}>
-                    View Customer
+                    Xem khách hàng
                   </Link>
                 </Button>
               </div>
@@ -99,22 +99,22 @@ const ProductReview = ({ productId }: { productId: string }) => {
             <Separator className="my-4" />
 
             <dl className="mt-2 flex gap-2">
-              <dt>Created At:</dt>
+              <dt>Ngày tạo:</dt>
               <dd className="flex flex-wrap gap-3 font-medium">
                 {format(new Date(comment.createdAt), "dd MMM yyyy hh:mm a")}
               </dd>
             </dl>
 
             <dl className="mt-2 flex gap-2">
-              <dt>Rating:</dt>
+              <dt>Đánh giá:</dt>
               <dd className="flex flex-wrap gap-3 font-medium">
-                <Badge variant={"outline"}>{comment.raiting}</Badge>
+                <Badge variant={"blue"}>{comment.raiting}</Badge>
               </dd>
             </dl>
 
             <Accordion type="single" collapsible>
               <AccordionItem value="description">
-                <AccordionTrigger>Comment</AccordionTrigger>
+                <AccordionTrigger>Bình luận</AccordionTrigger>
                 <AccordionContent>{comment.content}</AccordionContent>
               </AccordionItem>
             </Accordion>

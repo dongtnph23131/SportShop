@@ -111,7 +111,7 @@ export default function EditCategoryForm({
         onSubmit={(...args) => void form.handleSubmit(onSubmit)(...args)}
       >
         <FormItem>
-          <FormLabel>Name</FormLabel>
+          <FormLabel>Tên danh mục</FormLabel>
           <FormControl>
             <Input
               aria-invalid={!!form.formState.errors.name}
@@ -125,7 +125,7 @@ export default function EditCategoryForm({
         </FormItem>
 
         <FormItem>
-          <FormLabel>Description</FormLabel>
+          <FormLabel>Mô tả</FormLabel>
           <FormControl>
             <Textarea
               aria-invalid={!!form.formState.errors.name}
@@ -138,7 +138,7 @@ export default function EditCategoryForm({
         </FormItem>
 
         <FormItem className="flex w-full flex-col gap-1.5">
-          <FormLabel>Image</FormLabel>
+          <FormLabel>Ảnh</FormLabel>
           {files?.length ? (
             <div className="flex items-center gap-2">
               {files.map((file, i) => (
@@ -180,7 +180,7 @@ export default function EditCategoryForm({
               aria-hidden="true"
             />
           )}
-          Edit Collection
+          Cập nhật danh mục
           <span className="sr-only">Edit Collection</span>
         </Button>
       </form>
