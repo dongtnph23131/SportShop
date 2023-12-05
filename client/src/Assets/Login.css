@@ -50,6 +50,9 @@
 }
 .input-box {
   position: relative;
+  justify-content: center;
+  display: flex;
+  padding-bottom: 30px;
   width: 100%;
 }
 .input-box label {
@@ -62,6 +65,9 @@
 .input-box input {
   width: 100%;
   height: 50px;
+}
+.input-box button {
+  padding: 10px 30px;
 }
 .input-box .input-field {
   font-size: 1em;

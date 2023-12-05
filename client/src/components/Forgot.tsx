@@ -56,7 +56,7 @@ const Forgot = () => {
             </div>
             <div className="sign-up">
               <p>
-                Don't have account <a href="/signin">Sign in</a>
+                Bạn chưa có tài khoản? <a href="/signup">Đăng ký</a>
               </p>
             </div>
           </div>

@@ -34,15 +34,15 @@ const schema = yup.object().shape({
 });
 const schemaProfile = yup.object().shape({
   email: yup.string().email("Email chưa đúng địng dạng"),
-  lastName: yup.string().required("Lastname không được để trống"),
-  firstName: yup.string().required("Firstname không được để trống"),
+  lastName: yup.string().required("Họ không được để trống"),
+  firstName: yup.string().required("Tên không được để trống"),
 });
 const schemaAddress = yup.object().shape({
   address: yup.string().required("Địa chỉ không để trống"),
-  district: yup.string().required("District không để trống"),
-  ward: yup.string().required("Ward không để trống"),
-  province: yup.string().required("Province không để trống"),
-  phone: yup.string().required("Phone không để trống"),
+  district: yup.string().required("Quận/huyện không để trống"),
+  ward: yup.string().required("Phường/xã không để trống"),
+  province: yup.string().required("Tỉnh/thành phố không để trống"),
+  phone: yup.string().required("Số điện thoại không để trống"),
   name: yup.string().required("Name không  để trống"),
   default: yup.boolean(),
 });
@@ -181,7 +181,7 @@ const ProfileDetail = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ padding: "20px", textAlign: "center" }}>Loading ...</div>
+        <div style={{ padding: "20px", textAlign: "center" }}>Đang tải ...</div>
       ) : (
         <div>
           <div className="box__profileDetail">

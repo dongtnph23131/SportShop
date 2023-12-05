@@ -71,14 +71,14 @@ const Shops = () => {
         <div className="fiter">
           <div className="filter-shops">
             <span className="sct-filter" onClick={handleFilterClick}>
-              Filter
+              Lọc
             </span>
             {isFilterVisible && (
               <div className="box-container-filter">
                 <div className="box-item-fillter">
                   <div className="item__filter__top">
                     <div className="title-filter-shops">
-                      <h3> Filters</h3>
+                      <h3> Lọc sản phẩm</h3>
                       <span>
                         <a href="" onClick={handleHideFilter}>
                           X
@@ -145,14 +145,14 @@ const Shops = () => {
                   </div>
 
                   <div className="btn-filter">
-                    <a href="">Clear Filters</a>
+                    <a href="">Thoát</a>
                   </div>
                 </div>
               </div>
             )}
           </div>
           <div className="sort-shops">
-            <span onClick={handleSortClick}>Sort</span>
+            <span onClick={handleSortClick}>Sắp xếp</span>
             {ishandleSortVisible && (
               <div className="box-sort-shops">
                 <div className="item-sort-shops">
@@ -224,7 +224,7 @@ const Shops = () => {
           </div>
         </div>
         {isLoading ? (
-          <p>Loading ...</p>
+          <p>Đang tải ...</p>
         ) : (
           <>
             {products?.length > 0 ? (

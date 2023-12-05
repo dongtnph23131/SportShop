@@ -26,7 +26,7 @@ const CartItem = ({ item }: any) => {
 
         Swal.fire({
           icon: "error",
-          title: `Bạn chỉ đc mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`,
+          title: `Bạn chỉ được mua tối đa ${item?.productVariantIds?.inventory} sản phẩm`,
         });
         return;
       } else {
@@ -58,7 +58,7 @@ const CartItem = ({ item }: any) => {
       <td>
         {item?.productIds?.name} -- {item?.productVariantIds?.name}
       </td>
-      <td>${item?.productVariantIds?.price}</td>
+      <td>{item?.productVariantIds?.price} VNĐ</td>
 
       <td>
         <div className="box__crement">
@@ -103,7 +103,7 @@ const CartItem = ({ item }: any) => {
 
       <td>
         <div className="priceAll">
-          ${item?.productVariantIds?.price * Number(item?.quantity)}
+          {item?.productVariantIds?.price * Number(item?.quantity)} VNĐ
         </div>
       </td>
     </tr>

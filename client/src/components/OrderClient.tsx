@@ -15,7 +15,7 @@ const OrderClient = () => {
   return (
     <>
       {isLoading ? (
-        <div style={{ textAlign: "center", padding: "20px" }}>Loading ...</div>
+        <div style={{ textAlign: "center", padding: "20px" }}>Đang tải ...</div>
       ) : (
         <div className="container">
           <div className="box-oder-carts">

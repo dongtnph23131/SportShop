@@ -174,19 +174,19 @@ const Cart = () => {
                 <>
                   {isLoadingCart ? (
                     <div style={{ textAlign: "center", padding: "20px" }}>
-                      Loading ....
+                      Đang tải ....
                     </div>
                   ) : (
                     <section id="cart" className="section-p1 cart__ss">
                       <table width="100%">
                         <thead>
                           <tr>
-                            <td>Remove</td>
-                            <td>Image</td>
-                            <td>Product</td>
-                            <td>Price</td>
-                            <td>Quantity</td>
-                            <td>Subtotal</td>
+                            <td>Xóa</td>
+                            <td>Hình ảnh</td>
+                            <td>Tên sản phẩm</td>
+                            <td>Giá</td>
+                            <td>Số lượng</td>
+                            <td>Tổng </td>
                           </tr>
                         </thead>
                         <tbody>
@@ -345,7 +345,7 @@ const Cart = () => {
                     disabled={carts?.length === 0 || !token}
                     className="normal"
                   >
-                    Proceed to checkout
+                    Thanh toán
                   </button>
                 </div>
               </div>
@@ -420,7 +420,7 @@ const Cart = () => {
                                 ? `${
                                     (total * item?.percentage) / 100
                                   }% tổng giá trị đơn hàng `
-                                : `${item?.percentage} $ tổng giá trị đơn hàng`}
+                                : `${item?.percentage} VNĐ tổng giá trị đơn hàng`}
                             </p>
                             <p>
                               Áp dụng từ :{" "}
@@ -501,19 +501,19 @@ const Cart = () => {
                 )}
                 <table>
                   <tr>
-                    <td>Cart Subtotal</td>
-                    <td>$ {total ? total : 0}</td>
+                    <td>Tổng</td>
+                    <td>{total ? total : 0} VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Shipping</td>
-                    <td>$ 0</td>
+                    <td>Phí giao hàng</td>
+                    <td>0 VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Discount</td>
-                    <td>$ {couponPrice}</td>
+                    <td>Khuyến mại</td>
+                    <td>{couponPrice} VNĐ</td>
                   </tr>
                   <tr>
-                    <td>Quantity</td>
+                    <td>Số lượng</td>
                     <td>
                       {token
                         ? carts?.reduce(
@@ -526,10 +526,10 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>
-                      <strong>Total</strong>
+                      <strong>Tổng</strong>
                     </td>
                     <td>
-                      <strong>$ {total + 0 - couponPrice}</strong>
+                      <strong>{total + 0 - couponPrice} VNĐ</strong>
                     </td>
                   </tr>
                 </table>

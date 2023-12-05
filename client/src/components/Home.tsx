@@ -125,7 +125,7 @@ const Home = () => {
               <div className="col-xs-12">
                 <div className="home-product-tab-category text-center">
                   <div className="section-title title-head">
-                    <h3>FEATURED PRODUCTS</h3>
+                    <h3>SẢN PHẨM NỔI BẬT</h3>
                     <img src="../../src/Assets/icon-title.png" alt="" />
                   </div>
                 </div>
@@ -147,7 +147,7 @@ const Home = () => {
                                 }}
                               >
                                 <i className=" product-search fa fa-search"></i>{" "}
-                                Quick View
+                                Chi tiết
                               </a>
                               <a href={`/products/${product._id}`}>
                                 <img
@@ -169,8 +169,8 @@ const Home = () => {
                             <div className="product-bottom-price">
                               <span>
                                 {product.minPrice === product.maxPrice
-                                  ? `${product.maxPrice}$`
-                                  : `${product.minPrice}$-${product.maxPrice}$`}
+                                  ? `${product.maxPrice} VNĐ`
+                                  : `${product.minPrice} VNĐ - ${product.maxPrice} VNĐ`}
                               </span>
                             </div>
                           </div>
@@ -220,7 +220,7 @@ const Home = () => {
               <div className="col-xs-12">
                 <div className="home-product-tab-category text-center">
                   <div className="section-title title-head">
-                    <h3>Featured categories</h3>
+                    <h3>DANH MỤC NỔI BẬT</h3>
                     <img src="../../src/Assets/icon-title.png" alt="" />
                   </div>
                 </div>
@@ -236,7 +236,7 @@ const Home = () => {
                     <div className="active-owl-product categorySlider def-owl ">
                       <Slider {...sliderSettings}>
                         {isLoadingCategories ? (
-                          <p>Loading categories...</p>
+                          <p>Đang tải danh mục...</p>
                         ) : (
                           categories.map((category) => (
                             <div

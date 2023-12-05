@@ -12,8 +12,8 @@ const schema = yup.object().shape({
     .required("Email không được để trống"),
   password: yup
     .string()
-    .required("Password không được để trống")
-    .min(6, "Password ít nhất 6 kí tự"),
+    .required("Mật khẩu không được để trống")
+    .min(6, "mật khẩu ít nhất 6 kí tự"),
 });
 const Signin = () => {
   const {
@@ -49,9 +49,9 @@ const Signin = () => {
       <form onSubmit={handleSubmit(onSignin)}>
         <div className="login-box">
           <div className="login-header">
-            <h4>Welcome to Sportshop</h4>
-            <p>We are happy to have you back!</p>
-            <h4>SIGNIN</h4>
+            <h4>Chào mừng đến với Sportshop</h4>
+            <p>Chúng tôi rất vui khi bạn trở lại!</p>
+            <h4>ĐĂNG NHẬP</h4>
           </div>
           <div className="input-box">
             <input
@@ -68,7 +68,7 @@ const Signin = () => {
               {...register("password")}
               type="password"
               className="input-field"
-              placeholder="Password"
+              placeholder="Mật khẩu"
               id="password"
             />
             <p className="error">
@@ -78,16 +78,17 @@ const Signin = () => {
           <div className="forgot">
             <section>
               <a href="/forgot" className="forgot-link">
-                Forgot password?
+                Quên mật khẩu?
               </a>
             </section>
           </div>
           <div className="input-box">
-            <input type="submit" className="input-submit" />
+            {/* <input type="submit" className="input-submit" /> */}
+            <button type="submit" className="input-submit">Đăng nhập</button>
           </div>
           <div className="sign-up">
             <p>
-              Don't have account <a href="/signup">Sign up</a>
+              Bạn chưa có tài khoản? <a href="/signup">Đăng ký</a>
             </p>
           </div>
         </div>
