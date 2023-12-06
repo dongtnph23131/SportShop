@@ -183,7 +183,7 @@ const Header = () => {
                         </div>
                       </li>
 
-                      {categories?.map((category: any) => (
+                      {categories?.slice(0 ,4).map((category: any) => (
                         <li className="mega-parent" key={category?._id}>
                           <a href={`/categories/${category._id}`}>
                             {category.name}
