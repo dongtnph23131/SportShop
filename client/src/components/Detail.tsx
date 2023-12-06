@@ -223,7 +223,7 @@ const Detail = () => {
                   ? product.minPrice === product.maxPrice
                     ? product.minPrice
                     : `${product.minPrice}-${product.maxPrice}`
-                  : ""} VNĐ
+                  : ""}.000 VNĐ
               </h2>
               {product?.options.map((productItem: any, index: any) => {
                 return (
@@ -432,7 +432,7 @@ const Detail = () => {
                       <span>{product?.categoryId?.name}</span>
                       <h5>{product.name}</h5>
                       <h4>
-                        {product.minPrice} VNĐ - {product.maxPrice} VNĐ
+                        {product.minPrice}.000 VNĐ - {product.maxPrice}.000 VNĐ
                       </h4>
                     </div>
                     <Rate value={product?.raitings} disabled />

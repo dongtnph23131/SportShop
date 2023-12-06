@@ -257,8 +257,8 @@ const Shops = () => {
                           <h5>{product.name}</h5>
                           <h4>
                             {product.minPrice === product.maxPrice
-                              ? `${product.maxPrice}$`
-                              : `${product.minPrice}$-${product.maxPrice}$`}
+                              ? `${product.maxPrice}.000 VNĐ`
+                              : `${product.minPrice}.000 VNĐ-${product.maxPrice}.000 VNĐ`}
                           </h4>
                         </div>
                         <Rate value={product?.raitings} disabled />

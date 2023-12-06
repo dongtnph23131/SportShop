@@ -169,8 +169,8 @@ const Home = () => {
                             <div className="product-bottom-price">
                               <span>
                                 {product.minPrice === product.maxPrice
-                                  ? `${product.maxPrice} VNĐ`
-                                  : `${product.minPrice} VNĐ - ${product.maxPrice} VNĐ`}
+                                  ? `${product.maxPrice}.000 VNĐ`
+                                  : `${product.minPrice}.000 VNĐ - ${product.maxPrice} VNĐ`}
                               </span>
                             </div>
                           </div>

@@ -504,7 +504,7 @@ const Cart = () => {
                 <table>
                   <tr>
                     <td>Tổng</td>
-                    <td>{total ? total : 0} VNĐ</td>
+                    <td>{total ? total : 0}.000 VNĐ</td>
                   </tr>
                   <tr>
                     <td>Phí giao hàng</td>
@@ -531,7 +531,7 @@ const Cart = () => {
                       <strong>Tổng</strong>
                     </td>
                     <td>
-                      <strong>{total + 0 - couponPrice} VNĐ</strong>
+                      <strong>{total + 0 - couponPrice}.000 VNĐ</strong>
                     </td>
                   </tr>
                 </table>

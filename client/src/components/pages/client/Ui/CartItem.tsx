@@ -58,7 +58,7 @@ const CartItem = ({ item }: any) => {
       <td>
         {item?.productIds?.name} -- {item?.productVariantIds?.name}
       </td>
-      <td>{item?.productVariantIds?.price} VNĐ</td>
+      <td>{item?.productVariantIds?.price}.000 VNĐ</td>
 
       <td>
         <div className="box__crement">
@@ -103,7 +103,7 @@ const CartItem = ({ item }: any) => {
 
       <td>
         <div className="priceAll">
-          {item?.productVariantIds?.price * Number(item?.quantity)} VNĐ
+          {item?.productVariantIds?.price * Number(item?.quantity)}.000 VNĐ
         </div>
       </td>
     </tr>
