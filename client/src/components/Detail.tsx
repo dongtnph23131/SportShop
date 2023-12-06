@@ -167,7 +167,13 @@ const Detail = () => {
       });
     }
   };
-
+  const formatPrice = (price) => {
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+    return formattedPrice;
+  };
   return (
     <>
       {isLoading ? (
@@ -218,12 +224,12 @@ const Detail = () => {
               <h2 className="price-detail">
                 {" "}
                 {selectedVariant
-                  ? selectedVariant?.price
+                  ?formatPrice(selectedVariant?.price) 
                   : product
-                  ? product.minPrice === product.maxPrice
-                    ? product.minPrice
-                    : `${product.minPrice}-${product.maxPrice}`
-                  : ""}.000 VNĐ
+                  ?formatPrice(product.minPrice === product.maxPrice) 
+                    ?formatPrice(product.minPrice) 
+                    : `${formatPrice(product.minPrice)}-${formatPrice(product.maxPrice)}`
+                  : ""}
               </h2>
               {product?.options.map((productItem: any, index: any) => {
                 return (
@@ -432,7 +438,7 @@ const Detail = () => {
                       <span>{product?.categoryId?.name}</span>
                       <h5>{product.name}</h5>
                       <h4>
-                        {product.minPrice}.000 VNĐ - {product.maxPrice}.000 VNĐ
+                        {formatPrice(product.minPrice)} - {formatPrice(product.maxPrice)}
                       </h4>
                     </div>
                     <Rate value={product?.raitings} disabled />

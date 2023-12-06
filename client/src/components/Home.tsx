@@ -103,6 +103,13 @@ const Home = () => {
 
     fetchBanners();
   }, []);
+  const formatPrice = (price) => {
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+    return formattedPrice;
+  };
   return (
     <div>
       <div className="banners">
@@ -169,8 +176,8 @@ const Home = () => {
                             <div className="product-bottom-price">
                               <span>
                                 {product.minPrice === product.maxPrice
-                                  ? `${product.maxPrice}.000 VNĐ`
-                                  : `${product.minPrice}.000 VNĐ - ${product.maxPrice} VNĐ`}
+                                  ? `${formatPrice(product.maxPrice)}`
+                                  : `${formatPrice(product.minPrice)} - ${formatPrice(product.maxPrice)} `}
                               </span>
                             </div>
                           </div>

@@ -41,6 +41,13 @@ const Shops = () => {
       setCategories(data.data);
     });
   }, []);
+  const formatPrice = (price) => {
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+    return formattedPrice;
+  };
   return (
     <div>
       <section id="page-header">
@@ -257,8 +264,8 @@ const Shops = () => {
                           <h5>{product.name}</h5>
                           <h4>
                             {product.minPrice === product.maxPrice
-                              ? `${product.maxPrice}.000 VNĐ`
-                              : `${product.minPrice}.000 VNĐ-${product.maxPrice}.000 VNĐ`}
+                              ? `${formatPrice(product.maxPrice)}`
+                              : `${formatPrice(product.minPrice)}-${formatPrice(product.maxPrice)}`}
                           </h4>
                         </div>
                         <Rate value={product?.raitings} disabled />

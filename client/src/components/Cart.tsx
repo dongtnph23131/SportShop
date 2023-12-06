@@ -142,6 +142,13 @@ const Cart = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const formatPrice = (price) => {
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+    return formattedPrice;
+  };
   return (
     <div>
       <section id="page-header3" className="about-header"></section>
@@ -504,7 +511,7 @@ const Cart = () => {
                 <table>
                   <tr>
                     <td>Tổng</td>
-                    <td>{total ? total : 0}.000 VNĐ</td>
+                    <td>{formatPrice(total ? total : 0)}</td>
                   </tr>
                   <tr>
                     <td>Phí giao hàng</td>
@@ -512,7 +519,7 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>Khuyến mại</td>
-                    <td>{couponPrice} VNĐ</td>
+                    <td>{formatPrice(couponPrice)}</td>
                   </tr>
                   <tr>
                     <td>Số lượng</td>
@@ -531,7 +538,7 @@ const Cart = () => {
                       <strong>Tổng</strong>
                     </td>
                     <td>
-                      <strong>{total + 0 - couponPrice}.000 VNĐ</strong>
+                      <strong>{formatPrice(total + 0 - couponPrice)}</strong>
                     </td>
                   </tr>
                 </table>

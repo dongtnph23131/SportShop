@@ -23,6 +23,13 @@ const OrderDetail = () => {
     setIsModalOpen(false);
   };
   const [infoStaff, setInforStaff] = useState<any>("");
+  const formatPrice = (price) => {
+    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+      style: "currency",
+      currency: "VND",
+    }).format(price);
+    return formattedPrice;
+  };
   return (
     <>
       {isLoading ? (
@@ -203,10 +210,10 @@ const OrderDetail = () => {
                             </div>
                           </td>
                           <td>{item.quantity}</td>
-                          <td>${item?.productVariantId?.price}</td>
-                          <td>{item?.productVariantId?.name}</td>{" "}
+                          <td>{formatPrice(item?.productVariantId?.price)}</td>
+                          <td>{formatPrice(item?.productVariantId?.name)}</td>{" "}
                           <td>
-                            ${item?.quantity * item?.productVariantId?.price}
+                            {item?.quantity * item?.productVariantId?.price}
                           </td>
                         </tr>
                       );
@@ -215,19 +222,19 @@ const OrderDetail = () => {
                   <tfoot>
                     <tr>
                       <td colSpan={4}>Tổng giá trị sản phẩm</td>{" "}
-                      <td>${data?.order?.totalPrice}</td>
+                      <td>{formatPrice(data?.order?.totalPrice)}</td>
                     </tr>
                     <tr>
                       <td colSpan={4}>Giảm giá</td>{" "}
-                      <td>${data?.order?.couponPrice}</td>
+                      <td>{formatPrice(data?.order?.couponPrice)}</td>
                     </tr>
                     <tr>
                       <td colSpan={4}>Phí giao hàng</td>{" "}
-                      <td>${data?.order?.shippingPrice}</td>
+                      <td>{formatPrice(data?.order?.shippingPrice)}</td>
                     </tr>
                     <tr className="total_payment">
                       <td colSpan={4}>Tổng thanh toán</td>{" "}
-                      <td>${data?.order?.orderTotalPrice}</td>
+                      <td>{formatPrice(data?.order?.orderTotalPrice)}</td>
                     </tr>
                   </tfoot>
                 </table>

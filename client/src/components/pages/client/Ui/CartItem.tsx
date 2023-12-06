@@ -38,6 +38,20 @@ const CartItem = ({ item }: any) => {
       }
     }
   };
+  function formatPrice(
+    price: number | string,
+    options: {
+      currency?: "USD" | "EUR" | "GBP" | "BDT" | "VND" | "JPY" | "CNY" | "KRW";
+      notation?: Intl.NumberFormatOptions["notation"];
+    } = {}
+  ) {
+    const { currency = "VND" } = options;
+  
+    return new Intl.NumberFormat("vi", {
+      style: "currency",
+      currency,
+    }).format(Number(price));
+  }
   return (
     <tr>
       <td>
@@ -58,7 +72,7 @@ const CartItem = ({ item }: any) => {
       <td>
         {item?.productIds?.name} -- {item?.productVariantIds?.name}
       </td>
-      <td>{item?.productVariantIds?.price}.000 VNĐ</td>
+      <td>{formatPrice(item?.productVariantIds?.price)}</td>
 
       <td>
         <div className="box__crement">
@@ -103,7 +117,7 @@ const CartItem = ({ item }: any) => {
 
       <td>
         <div className="priceAll">
-          {item?.productVariantIds?.price * Number(item?.quantity)}.000 VNĐ
+          {formatPrice(item?.productVariantIds?.price * Number(item?.quantity))}
         </div>
       </td>
     </tr>
