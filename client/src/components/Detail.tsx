@@ -174,6 +174,19 @@ const Detail = () => {
     }).format(price);
     return formattedPrice;
   };
+
+  const sensitiveWords = ["clm", "Buồi", "dmm"];
+  const validateContent = (rule, value, callback) => {
+    const containsSensitiveWord = sensitiveWords.some((word) =>
+      value.toLowerCase().includes(word.toLowerCase())
+    );
+
+    if (containsSensitiveWord) {
+      callback && callback("Bình luận không được chứa từ ngữ nhạy cảm");
+    } else {
+      callback && callback();
+    }
+  };
   return (
     <>
       {isLoading ? (
@@ -224,11 +237,13 @@ const Detail = () => {
               <h2 className="price-detail">
                 {" "}
                 {selectedVariant
-                  ?formatPrice(selectedVariant?.price) 
+                  ? formatPrice(selectedVariant?.price)
                   : product
-                  ?formatPrice(product.minPrice === product.maxPrice) 
-                    ?formatPrice(product.minPrice) 
-                    : `${formatPrice(product.minPrice)}-${formatPrice(product.maxPrice)}`
+                  ? formatPrice(product.minPrice === product.maxPrice)
+                    ? formatPrice(product.minPrice)
+                    : `${formatPrice(product.minPrice)}-${formatPrice(
+                        product.maxPrice
+                      )}`
                   : ""}
               </h2>
               {product?.options.map((productItem: any, index: any) => {
@@ -392,6 +407,9 @@ const Detail = () => {
                           required: true,
                           message: "Không được bỏ trống bình luận",
                         },
+                        {
+                          validator: validateContent,
+                        },
                       ]}
                     >
                       <TextArea
@@ -438,7 +456,8 @@ const Detail = () => {
                       <span>{product?.categoryId?.name}</span>
                       <h5>{product.name}</h5>
                       <h4>
-                        {formatPrice(product.minPrice)} - {formatPrice(product.maxPrice)}
+                        {formatPrice(product.minPrice)} -{" "}
+                        {formatPrice(product.maxPrice)}
                       </h4>
                     </div>
                     <Rate value={product?.raitings} disabled />
