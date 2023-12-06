@@ -51,9 +51,6 @@
 .input-box {
   position: relative;
   justify-content: center;
-  display: flex;
-  padding-bottom: 30px;
-  width: 100%;
 }
 .input-box label {
   position: absolute;
