@@ -21,6 +21,8 @@ import { useForm } from "antd/es/form/Form";
 import { useGetOrderByUserQuery } from "../api/order";
 import { getCategoryDetail } from "../api/category";
 
+const sensitiveWords = ["clm", "Buồi", "dmm"];
+
 const Detail = () => {
   const { id } = useParams();
   const token = Cookies.get("token");
@@ -150,7 +152,12 @@ const Detail = () => {
     window.scrollTo(0, 0);
   }, [id]);
   const { TextArea } = Input;
+  const containsSensitiveWord = sensitiveWords.some((word) =>
+    content.toLowerCase().includes(word.toLowerCase())
+  );
   const onFinish = async () => {
+    if (containsSensitiveWord) return;
+
     const comment: any = await createComment({
       token,
       comment: { raiting, content, productId: id },
@@ -175,7 +182,6 @@ const Detail = () => {
     return formattedPrice;
   };
 
-  const sensitiveWords = ["clm", "Buồi", "dmm"];
   const validateContent = (rule, value, callback) => {
     const containsSensitiveWord = sensitiveWords.some((word) =>
       value.toLowerCase().includes(word.toLowerCase())
@@ -423,8 +429,8 @@ const Detail = () => {
                     </Form.Item>
                     <div className="wrap__button">
                       <Button
-                        disabled={!content}
-                        onClick={onFinish}
+                        disabled={!content || containsSensitiveWord}
+                        onClick={() => onFinish()}
                         type="primary"
                         className="bg-blue-500"
                       >

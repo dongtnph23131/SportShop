@@ -40,12 +40,8 @@ const Header = () => {
                 <div className="col-lg-4 col-md-4 col-sm-12">
                   <div className="header-login posr">
                     <ul>
-                      <li>
-                        {/* <a>My Account</a> */}
-                      </li>
-                      <li>
-                        {/* <a>My wishlist</a> */}
-                      </li>
+                      <li>{/* <a>My Account</a> */}</li>
+                      <li>{/* <a>My wishlist</a> */}</li>
                     </ul>
                   </div>
                 </div>
@@ -163,14 +159,14 @@ const Header = () => {
                     <ul className="main-menu">
                       <li className="active">
                         <a href="/Home">
-                          Home <i className="zmdi zmdi-chevron-down"></i>
+                          Trang chủ <i className="zmdi zmdi-chevron-down"></i>
                         </a>
                       </li>
                       <li className="mega-parent">
                         <a href="/shops">
-                          Shop <i className="zmdi zmdi-chevron-down"></i>
+                          Tất cả <i className="zmdi zmdi-chevron-down"></i>
                         </a>
-                        <div className="mega-menu-area hp1-style1">
+                        {/* <div className="mega-menu-area hp1-style1">
                           <ul className="single-mega-item mega-underline1 mega-underline3">
                             {categories?.map((category: any) => (
                               <li className="mega-title" key={category?._id}>
@@ -180,10 +176,10 @@ const Header = () => {
                               </li>
                             ))}
                           </ul>
-                        </div>
+                        </div> */}
                       </li>
 
-                      {categories?.slice(0 ,4).map((category: any) => (
+                      {categories?.slice(0, 4).map((category: any) => (
                         <li className="mega-parent" key={category?._id}>
                           <a href={`/categories/${category._id}`}>
                             {category.name}
