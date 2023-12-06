@@ -24,11 +24,11 @@ export const CreateUserDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant={"default"}>Create User</Button>
+        <Button variant={"default"}>Tạo mới thành viên</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create User</DialogTitle>
+          <DialogTitle>Tạo mới thành viên</DialogTitle>
         </DialogHeader>
         <form
           className="grid gap-4 py-4"
@@ -69,13 +69,13 @@ export const CreateUserDialog = () => {
           <div className="flex items-center gap-2">
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-right">
-                First Name
+                Tên
               </Label>
               <Input id="firstName" required className="col-span-3" />
             </div>
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-right">
-                Last Name
+                Họ
               </Label>
               <Input id="lastName" required className="col-span-3" />
             </div>
@@ -88,20 +88,20 @@ export const CreateUserDialog = () => {
           </div>
           <div className="space-y-2">
             <Label htmlFor="password" className="text-right">
-              Password
+              Mật khẩu
             </Label>
             <Input id="password" type="password" required />
           </div>
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-right">
-              Phone
+              Số điện thoại
             </Label>
             <Input id="phone" required />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-right">
-              Role
+              Vai trò
             </Label>
             <select
               id="user-role"
@@ -115,7 +115,7 @@ export const CreateUserDialog = () => {
 
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              Save changes
+              Lưu thay đổi
             </Button>
           </DialogFooter>
         </form>

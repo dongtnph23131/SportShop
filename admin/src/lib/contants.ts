@@ -10,4 +10,13 @@ export const productStatus = [
 
 export const roles = ["admin", "staff", "shipper"];
 
-export const discountTypes = ["Percentage", "Fixed Amount"];
+export const discountTypes = [
+  {
+    label: "Phần trăm",
+    value: "Percentage",
+  },
+  {
+    label: "Giá tiền",
+    value: "Fixed Amount",
+  },
+];

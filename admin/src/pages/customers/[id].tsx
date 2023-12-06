@@ -24,6 +24,7 @@ import { useCustomerQuery } from "@/services/customers/customer-query";
 import { format } from "date-fns";
 import { OrderStatus } from "@/types/base";
 import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
+import { formatPrice } from "@/lib/utils";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
@@ -35,7 +36,7 @@ const Page: NextPageWithLayout = () => {
     <>
       <Button variant="ghost" className="mb-2" onClick={() => router.back()}>
         <ArrowLeft className="h-4 w-4 mr-2" />
-        Back to customers
+        Quay lại
       </Button>
 
       {customer ? (
@@ -58,7 +59,7 @@ const Page: NextPageWithLayout = () => {
               <dl className="divide-y divide-gray-100">
                 <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-sm font-medium leading-6 text-gray-900">
-                    First Name:
+                    Tên:
                   </dt>
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {customer.firstName}
@@ -68,7 +69,7 @@ const Page: NextPageWithLayout = () => {
               <dl className="divide-y divide-gray-100">
                 <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Last Name:
+                    Họ:
                   </dt>
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {customer.lastName}
@@ -88,7 +89,7 @@ const Page: NextPageWithLayout = () => {
               <dl className="divide-y divide-gray-100">
                 <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
                   <dt className="text-sm font-medium leading-6 text-gray-900">
-                    Created At:
+                    Ngày tạo:
                   </dt>
                   <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
                     {format(new Date(customer.createdAt), "dd MMM yyyy")}
@@ -100,18 +101,17 @@ const Page: NextPageWithLayout = () => {
 
           <Card className="mt-4">
             <CardHeader>
-              <CardTitle>Orders</CardTitle>
-              <CardDescription>An overview of Customer Orders</CardDescription>
+              <CardTitle>Đơn hàng</CardTitle>
             </CardHeader>
             <CardContent>
               <Table>
                 <TableHeader>
                   <TableRow>
-                    <TableHead>Order</TableHead>
-                    <TableHead>Products</TableHead>
-                    <TableHead>Date</TableHead>
-                    <TableHead>Status</TableHead>
-                    <TableHead>Total</TableHead>
+                    <TableHead>Đơn hàng</TableHead>
+                    <TableHead>Số lượng sản phẩm</TableHead>
+                    <TableHead>Ngày mua</TableHead>
+                    <TableHead>Trạng thái</TableHead>
+                    <TableHead>Tổng tiền</TableHead>
                   </TableRow>
                 </TableHeader>
                 <TableBody>
@@ -136,7 +136,7 @@ const Page: NextPageWithLayout = () => {
                           <Badge variant={"success"}>{item.status}</Badge>
                         )}
                       </TableCell>
-                      <TableCell>{item.totalPrice}</TableCell>
+                      <TableCell>{formatPrice(item.orderTotalPrice)}</TableCell>
                     </TableRow>
                   ))}
                 </TableBody>

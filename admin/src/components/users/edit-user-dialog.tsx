@@ -24,12 +24,12 @@ export const EditUserDialog = ({ user }: { user?: User }) => {
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
         <span className="text-blue-600 hover:underline cursor-pointer font-semibold">
-          Edit
+          Cập nhật
         </span>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit User</DialogTitle>
+          <DialogTitle>Cập nhật thành viên</DialogTitle>
         </DialogHeader>
         <form
           className="grid gap-4 py-4"
@@ -68,7 +68,7 @@ export const EditUserDialog = ({ user }: { user?: User }) => {
           <div className="flex items-center gap-2">
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-right">
-                First Name
+                Tên
               </Label>
               <Input
                 defaultValue={user?.firstName}
@@ -79,7 +79,7 @@ export const EditUserDialog = ({ user }: { user?: User }) => {
             </div>
             <div className="space-y-2">
               <Label htmlFor="firstName" className="text-right">
-                Last Name
+                Họ
               </Label>
               <Input
                 defaultValue={user?.lastName}
@@ -105,14 +105,14 @@ export const EditUserDialog = ({ user }: { user?: User }) => {
 
           <div className="space-y-2">
             <Label htmlFor="phone" className="text-right">
-              Phone
+              Số điện thoại
             </Label>
             <Input defaultValue={user?.phone} id="phone" required />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="password" className="text-right">
-              Role
+              Vai trò
             </Label>
             <select
               id="user-role"
@@ -127,7 +127,7 @@ export const EditUserDialog = ({ user }: { user?: User }) => {
 
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              Save changes
+              Lưu thay đổi
             </Button>
           </DialogFooter>
         </form>

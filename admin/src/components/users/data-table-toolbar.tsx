@@ -18,7 +18,7 @@ export function DataTableToolbar<TData>({
     <div>
       <div className="mt-4 flex flex-1 items-center space-x-2">
         <Input
-          placeholder="Search by name..."
+          placeholder="Tìm kiếm theo tên..."
           value={(table.getColumn("name")?.getFilterValue() as string) ?? ""}
           onChange={(event) =>
             table.getColumn("name")?.setFilterValue(event.target.value)
@@ -28,7 +28,7 @@ export function DataTableToolbar<TData>({
         {table.getColumn("role") && (
           <DataTableFacetedFilter
             column={table.getColumn("role")}
-            title="Role"
+            title="Vai trò"
             options={roles.map((role) => ({
               label: role,
               value: role,
@@ -38,7 +38,7 @@ export function DataTableToolbar<TData>({
         {table.getColumn("status") && (
           <DataTableFacetedFilter
             column={table.getColumn("status")}
-            title="Status"
+            title="Trạng thái"
             options={["Active", "Inactive"].map((role) => ({
               label: role,
               value: role,
@@ -57,7 +57,6 @@ export function DataTableToolbar<TData>({
           </Button>
         )}
       </div>
-      {/* <DataTableViewOptions table={table} /> */}
     </div>
   );
 }

@@ -136,7 +136,7 @@ export const MomoSuccess = async (req, res) => {
     await Discount.findByIdAndUpdate(
       body.discountId,
       {
-        usageusageLimit: discount.usageLimit + 1,
+        usageLimit: discount.usageLimit + 1,
       },
       { new: true }
     );
