@@ -126,13 +126,13 @@ const Page: NextPageWithLayout = () => {
           </DropdownMenuTrigger>
           <DropdownMenuContent align="end" className="w-[160px]">
             <DropdownMenuItem asChild>
-              <Link href={`/customers/${row.original._id}`}>View</Link>
+              <Link href={`/customers/${row.original._id}`}>Xem chi tiết</Link>
             </DropdownMenuItem>
             <DropdownMenuSeparator />
             <DropdownMenuItem asChild>
               <AlertDialog>
                 <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                  Delete
+                  Xóa
                 </AlertDialogTrigger>
                 <AlertDialogContent>
                   <AlertDialogHeader>

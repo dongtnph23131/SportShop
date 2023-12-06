@@ -28,10 +28,10 @@ export function DataTableToolbar<TData>({
         {table.getColumn("type") && (
           <DataTableFacetedFilter
             column={table.getColumn("type")}
-            title="Type"
+            title="Loại giảm giá"
             options={discountTypes.map((role) => ({
-              label: role,
-              value: role,
+              label: role.label,
+              value: role.value,
             }))}
           />
         )}

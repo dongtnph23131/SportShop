@@ -32,7 +32,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit Discount</DialogTitle>
+          <DialogTitle>Cập nhật mã giảm giá</DialogTitle>
         </DialogHeader>
         <form
           className="grid gap-4 py-4"
@@ -75,7 +75,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="code" className="text-right">
-                Discount code
+                Mã giảm giá
               </Label>
               <p
                 className="text-xs text-blue-500 hover:underline cursor-pointer"
@@ -84,25 +84,25 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
                     generateRandomString(10);
                 }}
               >
-                Generate random code
+                Tạo ngẫu nhiên
               </p>
             </div>
             <Input id="code" defaultValue={discount.code} required />
             <p className={"text-[0.8rem] text-muted-foreground"}>
-              Customers must enter this code at checkout.
+              Khách hàng phải nhập mã này khi thanh toán.
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="desc" className="text-right">
-              Description
+              Mô tả
             </Label>
             <Textarea id="desc" defaultValue={discount.description} />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="count" className="text-right">
-              Count
+              Số lượng mã tối đa
             </Label>
             <Input
               id="count"
@@ -115,17 +115,16 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
               <Label htmlFor="type" className="text-right">
-                Type
+                Loại
               </Label>
               <select
                 id="type"
                 defaultValue={discount.type}
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value={DiscountType.PERCENTAGE}>
-                  {DiscountType.PERCENTAGE}
-                </option>
+                <option value={DiscountType.PERCENTAGE}>Phần trăm</option>
                 <option value={DiscountType.FIXED_AMOUNT}>
+                  Giá tiền cố định
                   {DiscountType.FIXED_AMOUNT}
                 </option>
               </select>
@@ -133,7 +132,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
 
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-right">
-                Amount
+                Giá trị
               </Label>
               <Input
                 id="amount"
@@ -151,7 +150,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
 
           <div className="space-y-2">
             <Label htmlFor="start-at" className="text-right">
-              Start At:
+              Ngày tạo áp dụng:
             </Label>
             <Input
               id="start-at"
@@ -165,7 +164,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
 
           <div className="space-y-2">
             <Label htmlFor="end-at" className="text-right">
-              End At:
+              Ngày giờ kết thúc:
             </Label>
             <Input
               defaultValue={
@@ -180,7 +179,7 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
 
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              Save changes
+              Lưu thay đổi
             </Button>
           </DialogFooter>
         </form>

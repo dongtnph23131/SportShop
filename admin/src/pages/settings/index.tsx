@@ -22,8 +22,8 @@ const Page: NextPageWithLayout = () => {
     <>
       <Card className="mt-2 max-w-2xl">
         <CardHeader>
-          <CardTitle>Personal information</CardTitle>
-          <CardDescription>Manage your profile</CardDescription>
+          <CardTitle>Thông tin tài khoản</CardTitle>
+          <CardDescription>Quản lý tài khoản của bạn</CardDescription>
         </CardHeader>
 
         <CardContent>

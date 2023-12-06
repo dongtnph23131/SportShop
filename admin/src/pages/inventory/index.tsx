@@ -36,7 +36,7 @@ import { useInventoryQuery } from "@/services/inventory/inventory-query";
 import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
-  const { queryParams } = useRouterStuff();
+  const { queryParams, searchParams } = useRouterStuff();
   const { data: productVariants } = useInventoryQuery();
 
   return (
@@ -58,6 +58,7 @@ const Page: NextPageWithLayout = () => {
         </div>
         <CardContent>
           <Input
+            defaultValue={searchParams.get("q") ?? ""}
             placeholder="Tìm theo tên biến thể sản phẩm..."
             className="h-8 w-[150px] lg:w-[250px] mb-4"
             onChange={(event) => {

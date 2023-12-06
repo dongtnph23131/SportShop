@@ -43,26 +43,23 @@ import { Badge } from "./ui/badge";
 const BannerManagement = () => {
   const { data: banners } = useBannersQuery();
 
-  console.log(banners);
-
   const columns: ColumnDef<Banner>[] = [
     {
       id: "name",
       accessorKey: "name",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Tên" />
       ),
       cell: ({ row }) => {
         return (
-          console.log({ row }),
-          (<div className="flex gap-4 items-center">{row.original.name}</div>)
+          <div className="flex gap-4 items-center">{row.original.name}</div>
         );
       },
     },
     {
       id: "fddsa",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
+        <DataTableColumnHeader column={column} title="Trạng thái" />
       ),
       cell: ({ row }) => (
         <Badge
@@ -79,7 +76,7 @@ const BannerManagement = () => {
     {
       id: "image",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Image" />
+        <DataTableColumnHeader column={column} title="Ảnh" />
       ),
       cell: ({ row }) => {
         return (
@@ -93,64 +90,46 @@ const BannerManagement = () => {
     {
       id: "actions",
       cell: ({ row }) => (
-        <DropdownMenu>
-          <DropdownMenuTrigger asChild>
-            <Button
-              aria-label="Open menu"
-              variant="ghost"
-              className="flex h-8 w-8 p-0 data-[state=open]:bg-muted"
-            >
-              <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
-            </Button>
-          </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[160px]">
-            <DropdownMenuItem asChild>
-              <CreateEditBannerDialog banner={row.original} />
-            </DropdownMenuItem>
-            <DropdownMenuSeparator />
-            <DropdownMenuItem asChild>
-              <AlertDialog>
-                <AlertDialogTrigger className="w-full text-left hover:bg-red-100 hover:text-red-600 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50 ">
-                  Delete
-                </AlertDialogTrigger>
-                <AlertDialogContent>
-                  <AlertDialogHeader>
-                    <AlertDialogTitle>
-                      Are you absolutely sure?
-                    </AlertDialogTitle>
-                    <AlertDialogDescription>
-                      This action cannot be undone. This will permanently delete
-                      your account and remove your data from our servers.
-                    </AlertDialogDescription>
-                  </AlertDialogHeader>
-                  <AlertDialogFooter>
-                    <AlertDialogCancel>Cancel</AlertDialogCancel>
-                    <AlertDialogAction
-                      onClick={async () => {
-                        try {
-                          const res = await axiosClient.delete(
-                            `/banners/${row.original._id}`
-                          );
+        <div className="flex items-center gap-2">
+          <AlertDialog>
+            <AlertDialogTrigger className="text-red-500 font-semibold">
+              Xóa
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>Are you absolutely sure?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  This action cannot be undone. This will permanently delete
+                  your account and remove your data from our servers.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel>Cancel</AlertDialogCancel>
+                <AlertDialogAction
+                  onClick={async () => {
+                    try {
+                      const res = await axiosClient.delete(
+                        `/banners/${row.original._id}`
+                      );
 
-                          if (res.status === 200) {
-                            toast.success("Successfully deleted banner");
-                            queryClient.invalidateQueries({
-                              queryKey: ["banners"],
-                            });
-                          } else {
-                            toast.error("Something went wrong");
-                          }
-                        } catch (error) {}
-                      }}
-                    >
-                      Continue
-                    </AlertDialogAction>
-                  </AlertDialogFooter>
-                </AlertDialogContent>
-              </AlertDialog>
-            </DropdownMenuItem>
-          </DropdownMenuContent>
-        </DropdownMenu>
+                      if (res.status === 200) {
+                        toast.success("Successfully deleted banner");
+                        queryClient.invalidateQueries({
+                          queryKey: ["banners"],
+                        });
+                      } else {
+                        toast.error("Something went wrong");
+                      }
+                    } catch (error) {}
+                  }}
+                >
+                  Continue
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+          <CreateEditBannerDialog banner={row.original} />
+        </div>
       ),
     },
   ];

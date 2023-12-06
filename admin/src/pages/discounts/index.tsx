@@ -10,7 +10,7 @@ import {
 } from "@/components/ui/card";
 import { Button } from "@/components/ui/button";
 import { ColumnDef } from "@tanstack/react-table";
-import { Discount, User } from "@/types/base";
+import { Discount, DiscountType, User } from "@/types/base";
 import { DataTableColumnHeader } from "@/components/data-table/data-table-column-header";
 import { format } from "date-fns";
 import {
@@ -71,7 +71,12 @@ const Page: NextPageWithLayout = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Loại" />
       ),
-      cell: ({ row }) => <Badge>{row.original.type}</Badge>,
+      cell: ({ row }) => {
+        if (row.original.type === DiscountType.PERCENTAGE)
+          return <Badge>Phần trăm</Badge>;
+
+        return <Badge>Số tiền</Badge>;
+      },
       filterFn: (row, id, value) => {
         return value.includes(row.original.type);
       },

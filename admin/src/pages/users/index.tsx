@@ -50,7 +50,7 @@ const Page: NextPageWithLayout = () => {
       id: "name",
       accessorKey: "firstName",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Name" />
+        <DataTableColumnHeader column={column} title="Tên" />
       ),
       cell: ({ row }) => (
         <div className="flex gap-4 items-center">
@@ -78,7 +78,7 @@ const Page: NextPageWithLayout = () => {
     {
       id: "phone",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Phone" />
+        <DataTableColumnHeader column={column} title="Số điện thoại" />
       ),
       cell: ({ row }) => <span>{row.original.phone}</span>,
     },
@@ -86,7 +86,7 @@ const Page: NextPageWithLayout = () => {
       id: "status",
       accessorKey: "status",
       header: ({ column }) => (
-        <DataTableColumnHeader column={column} title="Status" />
+        <DataTableColumnHeader column={column} title="Trạng thái" />
       ),
       cell: ({ row }) =>
         row.original.isActive ? (
@@ -105,7 +105,9 @@ const Page: NextPageWithLayout = () => {
       header: ({ column }) => (
         <DataTableColumnHeader column={column} title="Role" />
       ),
-      cell: ({ row }) => <Badge>{row.original.role}</Badge>,
+      cell: ({ row }) => (
+        <Badge className="capitalize">{row.original.role}</Badge>
+      ),
       filterFn: (row, id, value) => {
         return value.includes(row.original.role);
       },
@@ -117,7 +119,7 @@ const Page: NextPageWithLayout = () => {
           <AlertDialog>
             <AlertDialogTrigger asChild>
               <span className="text-red-500 hover:underline cursor-pointer font-semibold">
-                Delete
+                Xóa{" "}
               </span>
             </AlertDialogTrigger>
             <AlertDialogContent>
@@ -165,8 +167,7 @@ const Page: NextPageWithLayout = () => {
     <Card>
       <div className="flex justify-between p-6">
         <CardHeader className="p-0">
-          <CardTitle>User management</CardTitle>
-          <CardDescription>Manage users of your Sport Shop!</CardDescription>
+          <CardTitle>Quản lý thành viên</CardTitle>
         </CardHeader>
         <CreateUserDialog />
       </div>

@@ -26,11 +26,11 @@ export const CreateDiscountDialog = () => {
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
       <DialogTrigger asChild>
-        <Button variant={"default"}>Create Discount</Button>
+        <Button variant={"default"}>Tạo mã giảm giá</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Create Discount</DialogTitle>
+          <DialogTitle>Tạo mã giảm giá</DialogTitle>
         </DialogHeader>
         <form
           className="grid gap-4 py-4"
@@ -73,7 +73,7 @@ export const CreateDiscountDialog = () => {
           <div className="space-y-2">
             <div className="flex items-center justify-between">
               <Label htmlFor="code" className="text-right">
-                Discount code
+                Mã giảm giá
               </Label>
               <p
                 className="text-xs text-blue-500 hover:underline cursor-pointer"
@@ -82,25 +82,25 @@ export const CreateDiscountDialog = () => {
                     generateRandomString(10);
                 }}
               >
-                Generate random code
+                Tạo ngẫu nhiên mã
               </p>
             </div>
             <Input id="code" required />
             <p className={"text-[0.8rem] text-muted-foreground"}>
-              Customers must enter this code at checkout.
+              Khách hàng phải nhập mã này khi thanh toán.
             </p>
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="desc" className="text-right">
-              Description
+              Mô tả
             </Label>
             <Textarea id="desc" />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="count" className="text-right">
-              Count
+              Số lượng mã tối đa
             </Label>
             <Input id="count" type="number" required />
           </div>
@@ -108,24 +108,20 @@ export const CreateDiscountDialog = () => {
           <div className="grid grid-cols-2 gap-2">
             <div className="space-y-2">
               <Label htmlFor="type" className="text-right">
-                Type
+                Loại
               </Label>
               <select
                 id="type"
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
-                <option value={DiscountType.PERCENTAGE}>
-                  {DiscountType.PERCENTAGE}
-                </option>
-                <option value={DiscountType.FIXED_AMOUNT}>
-                  {DiscountType.FIXED_AMOUNT}
-                </option>
+                <option value={DiscountType.PERCENTAGE}>Phần trăm</option>
+                <option value={DiscountType.FIXED_AMOUNT}>Số tiền</option>
               </select>
             </div>
 
             <div className="space-y-2">
               <Label htmlFor="amount" className="text-right">
-                Amount
+                Giá trị
               </Label>
               <Input id="amount" required type="number" min={0} />
             </div>
@@ -133,21 +129,21 @@ export const CreateDiscountDialog = () => {
 
           <div className="space-y-2">
             <Label htmlFor="start-at" className="text-right">
-              Start At:
+              Ngày giờ áp dụng:
             </Label>
             <Input id="start-at" required type="datetime-local" />
           </div>
 
           <div className="space-y-2">
             <Label htmlFor="end-at" className="text-right">
-              End At:
+              Ngày giờ kết thúc: (Để trống nếu không muốn giới hạn)
             </Label>
             <Input id="end-at" type="datetime-local" />
           </div>
 
           <DialogFooter>
             <Button type="submit" disabled={isLoading}>
-              Save changes
+              Lưu thay đổi
             </Button>
           </DialogFooter>
         </form>

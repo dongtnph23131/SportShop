@@ -94,15 +94,21 @@ export function CreateEditBannerDialog({ banner }: { banner?: Banner }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button
-          className={cn(
-            banner &&
-              "w-full text-left hover:bg-gray-100 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
-          )}
-          variant={banner ? "ghost" : "default"}
-        >
-          {banner ? "Edit" : "Create Banner"}
-        </Button>
+        {!banner ? (
+          <Button
+            className={cn(
+              banner &&
+                "w-full text-left hover:bg-gray-100 cursor-default select-none rounded-sm px-2 py-1.5 text-sm outline-none transition-colors focus:bg-accent focus:text-accent-foreground data-[disabled]:pointer-events-none data-[disabled]:opacity-50"
+            )}
+            variant={banner ? "ghost" : "default"}
+          >
+            {banner ? "Edit" : "Create Banner"}
+          </Button>
+        ) : (
+          <span className="text-blue-600 hover:underline cursor-pointer font-semibold">
+            Cập nhật
+          </span>
+        )}
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>

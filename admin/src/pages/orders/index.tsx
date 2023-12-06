@@ -208,6 +208,7 @@ const Page: NextPageWithLayout = () => {
         <CardContent>
           <div className="flex items-center gap-2 mb-4">
             <Input
+              defaultValue={searchParams.get("q") ?? ""}
               placeholder="Tìm kiếm theo tên, số điện thoại, mã đơn hàng"
               className="flex-1 h-10 shadow-none border-gray-300"
               onChange={(event) => {

@@ -84,11 +84,11 @@ export function ProfileForm() {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <Button>Edit Profile</Button>
+        <Button>Chỉnh sửa thông tin</Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
         <DialogHeader>
-          <DialogTitle>Edit profile</DialogTitle>
+          <DialogTitle>Chỉnh sửa thông tin</DialogTitle>
         </DialogHeader>
 
         <Form {...form}>
@@ -99,7 +99,7 @@ export function ProfileForm() {
                 name="firstName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>First Name</FormLabel>
+                    <FormLabel>Tên</FormLabel>
                     <FormControl>
                       <Input placeholder="Huy" {...field} />
                     </FormControl>
@@ -112,7 +112,7 @@ export function ProfileForm() {
                 name="lastName"
                 render={({ field }) => (
                   <FormItem>
-                    <FormLabel>Last Name</FormLabel>
+                    <FormLabel>Họ</FormLabel>
                     <FormControl>
                       <Input placeholder="Luu" {...field} />
                     </FormControl>
@@ -152,7 +152,7 @@ export function ProfileForm() {
 
             <Button type="submit" disabled={isLoading}>
               {isLoading && <Loader2 className="h-4 w-4 animate-spin mr-2" />}
-              Update profile
+              Cập nhật tài khoản
             </Button>
           </form>
         </Form>
