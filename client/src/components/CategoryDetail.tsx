@@ -34,7 +34,7 @@ const CategoryDetail = () => {
       setCategory(data.data);
     });
   }, [sort, order, page]);
-  const formatPrice = (price) => {
+  const formatPrice = (price:any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",

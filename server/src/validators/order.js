@@ -12,6 +12,9 @@ export const orderSchema = z.object({
       productId: z.string(),
       productVariantId: z.string(),
       quantity: z.number().min(0),
+      productVariantName: z.string(),
+      productVariantPrice: z.number(),
+      image: z.string(),
     })
   ),
 });

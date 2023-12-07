@@ -130,6 +130,9 @@ const Detail = () => {
           }
         } catch (error) {}
       } else {
+         
+        console.log(selectedVariant);
+        
         message.error("Vui lòng chọn thuộc tính sản phẩm!");
       }
     }
@@ -153,7 +156,7 @@ const Detail = () => {
   }, [id]);
   const { TextArea } = Input;
   const containsSensitiveWord = sensitiveWords.some((word) =>
-    content.toLowerCase().includes(word.toLowerCase())
+    content?.toLowerCase().includes(word.toLowerCase())
   );
   const onFinish = async () => {
     if (containsSensitiveWord) return;
@@ -174,7 +177,7 @@ const Detail = () => {
       });
     }
   };
-  const formatPrice = (price) => {
+  const formatPrice = (price:any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -182,9 +185,9 @@ const Detail = () => {
     return formattedPrice;
   };
 
-  const validateContent = (rule, value, callback) => {
+  const validateContent = (rule:any, value:any, callback:any) => {
     const containsSensitiveWord = sensitiveWords.some((word) =>
-      value.toLowerCase().includes(word.toLowerCase())
+      value?.toLowerCase().includes(word?.toLowerCase())
     );
 
     if (containsSensitiveWord) {
@@ -380,7 +383,7 @@ const Detail = () => {
                                 <Rate disabled value={item.raiting} />
                               </div>
                               <div className="date__comment">
-                                {new Date(item?.createdAt).toLocaleString()}
+                                {new Date(item?.createdAt)?.toLocaleString()}
                               </div>
                             </div>
                             <div className="last__comment">{item.content}</div>

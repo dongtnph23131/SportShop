@@ -12,7 +12,7 @@ const OrderClient = () => {
   useEffect(() => {
     setOrders(data?.orders.slice((page - 1) * 4, page * 4));
   }, [page, data]);
-  const formatPrice = (price) => {
+  const formatPrice = (price:any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -77,12 +77,11 @@ const OrderClient = () => {
                                             </div>{" "}
                                             <div className="order-item-info">
                                               <a className="order-item-title">
-                                                {itemOrder?.productId?.name}
+                                                {itemOrder?.productVariantName}
                                               </a>{" "}
                                               <div className="order-item-variant-label">
                                                 {
-                                                  itemOrder?.productVariantId
-                                                    ?.name
+                                                  itemOrder?.productVariantName
                                                 }
                                               </div>{" "}
                                               <div className="order-item-quantity">
@@ -91,8 +90,7 @@ const OrderClient = () => {
                                               <div className="order-item-price">
                                                 {" "}
                                                 {formatPrice(
-                                                  itemOrder?.productVariantId
-                                                    ?.price
+                                                  itemOrder?.productVariantPrice
                                                 )}
                                               </div>
                                             </div>{" "}

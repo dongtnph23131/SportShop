@@ -41,7 +41,7 @@ const Shops = () => {
       setCategories(data.data);
     });
   }, []);
-  const formatPrice = (price) => {
+  const formatPrice = (price:any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -151,8 +151,8 @@ const Shops = () => {
                     </div>
                   </div>
 
-                  <div className="btn-filter">
-                    <a href="">Thoát</a>
+                  <div className="btn-filter" onClick={()=>setIsFilterVisible(false)}>
+                    <a>Thoát</a>
                   </div>
                 </div>
               </div>

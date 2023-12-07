@@ -68,6 +68,9 @@ const Cart = () => {
         productId: item.productIds._id,
         productVariantId: item.productVariantIds._id,
         quantity: item.quantity,
+        productVariantPrice: item.productVariantIds.price,
+        image: item.productIds.images[0].url,
+        productVariantName: item.productVariantIds.name,
       };
     });
     let order = {
@@ -142,7 +145,7 @@ const Cart = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
-  const formatPrice = (price) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -364,7 +367,8 @@ const Cart = () => {
                     <i className="fas fa-tags"></i>Vouchers
                   </div>
                 </div>
-                <Modal className="title___vocher"
+                <Modal
+                  className="title___vocher"
                   title="Thông tin mã giảm giá"
                   open={isModalOpen}
                   onOk={() => {
@@ -515,7 +519,7 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>Phí giao hàng</td>
-                    <td>0 VNĐ</td>
+                    <td>{formatPrice(0)}</td>
                   </tr>
                   <tr>
                     <td>Khuyến mại</td>

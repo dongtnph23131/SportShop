@@ -107,6 +107,18 @@ const orderSchema = mongoose.Schema(
           require: true,
           ref: "ProductVariant",
         },
+        productVariantName: {
+          type: String,
+          require: true,
+        },
+        productVariantPrice: {
+          type: Number,
+          require: true,
+        },
+        image: {
+          type: String,
+          require: true,
+        },
         quantity: {
           type: Number,
           require: true,

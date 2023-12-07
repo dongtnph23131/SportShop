@@ -23,7 +23,7 @@ const OrderDetail = () => {
     setIsModalOpen(false);
   };
   const [infoStaff, setInforStaff] = useState<any>("");
-  const formatPrice = (price) => {
+  const formatPrice = (price:any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -202,18 +202,20 @@ const OrderDetail = () => {
                           <td className="text--left">
                             <div>
                               <div className="detail-order-item__thumbnail">
-                                <img src={item?.productId?.images[0]?.url} />
+                                <img src={item?.image} />
                               </div>
                               <div className="detail-order-item__title">
-                                {item?.productId?.name} <br />
+                                {item?.productVariantName} <br />
                               </div>
                             </div>
                           </td>
                           <td>{item.quantity}</td>
-                          <td>{formatPrice(item?.productVariantId?.price)}</td>
-                          <td>{formatPrice(item?.productVariantId?.name)}</td>{" "}
+                          <td>{formatPrice(item?.productVariantPrice)}</td>
+                          <td>{item?.productVariantName}</td>{" "}
                           <td>
-                            {item?.quantity * item?.productVariantId?.price}
+                            {formatPrice(
+                              item?.quantity * item?.productVariantId?.price
+                            )}
                           </td>
                         </tr>
                       );

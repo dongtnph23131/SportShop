@@ -166,17 +166,6 @@ const Header = () => {
                         <a href="/shops">
                           Tất cả <i className="zmdi zmdi-chevron-down"></i>
                         </a>
-                        {/* <div className="mega-menu-area hp1-style1">
-                          <ul className="single-mega-item mega-underline1 mega-underline3">
-                            {categories?.map((category: any) => (
-                              <li className="mega-title" key={category?._id}>
-                                <a href={`/categories/${category._id}`}>
-                                  {category.name}
-                                </a>
-                              </li>
-                            ))}
-                          </ul>
-                        </div> */}
                       </li>
 
                       {categories?.slice(0, 4).map((category: any) => (
