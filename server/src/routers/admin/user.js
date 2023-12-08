@@ -20,7 +20,13 @@ router.get("/", async (req, res) => {
 router.post("/", async (req, res) => {
   try {
     const { firstName, lastName, email, password, role, phone } = req.body;
+    const userExist = await User.find({ email });
 
+    if (userExist.length > 0) {
+      return res.status(400).json({
+        message: "Email already exists",
+      });
+    }
     const hashedPassword = await bcrypt.hash(password, 10);
 
     const user = new User({
