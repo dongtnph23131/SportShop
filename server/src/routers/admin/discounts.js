@@ -56,10 +56,10 @@ router.put("/:id", async (req, res) => {
         type,
         usageCount: count,
         ...(type === "Percentage"
-          ? { percentage: amount }
+          ? { percentage: Number(amount) }
           : { amountPrice: 0 }),
         ...(type === "Fixed Amount"
-          ? { amountPrice: amount }
+          ? { amountPrice: Number(amount) }
           : { percentage: 0 }),
         startAt,
         endAt,
