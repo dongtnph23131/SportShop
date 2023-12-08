@@ -64,6 +64,7 @@
   height: 50px;
 }
 .input-box button {
+  margin: 0 auto;
   padding: 10px 30px;
 }
 .input-box .input-field {

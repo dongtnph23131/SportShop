@@ -52,7 +52,8 @@ const Forgot = () => {
               </p>
             </div>
             <div className="input-box">
-              <input type="submit" className="input-submit" />
+              {/* <input type="submit" className="input-submit" /> */}
+              <button type="submit" className="input-submit">Gửi</button>
             </div>
             <div className="sign-up">
               <p>
