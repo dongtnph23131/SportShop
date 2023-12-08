@@ -17,6 +17,8 @@ const OrderDetail = () => {
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [isModalOpenReview, setIsModalOpenReview] = useState(false);
   const [productId, setProductId] = useState();
+  const [raiting, setRaiting] = useState<any>(0);
+  const [content, setContent] = useState<any>();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -33,10 +35,16 @@ const OrderDetail = () => {
   };
 
   const handleOkReview = () => {
+    form.resetFields();
+    setContent("");
+    setRaiting(0);
     setIsModalOpenReview(false);
   };
 
   const handleCancelReview = () => {
+    form.resetFields();
+    setContent("");
+    setRaiting(0);
     setIsModalOpenReview(false);
   };
   const [infoStaff, setInforStaff] = useState<any>("");
@@ -49,8 +57,6 @@ const OrderDetail = () => {
   };
   const [createComment] = useCreateCommentMutation();
   const [form] = useForm();
-  const [raiting, setRaiting] = useState<any>(0);
-  const [content, setContent] = useState<any>();
   const containsSensitiveWord = sensitiveWords.some((word) =>
     content?.toLowerCase().includes(word.toLowerCase())
   );
@@ -311,45 +317,52 @@ const OrderDetail = () => {
                                   handleCancelReview();
                                 }}
                               >
-                                <div className="box_rating">
-                                  <Form.Item name="rating" initialValue={0}>
-                                    <Rate
-                                      value={raiting}
-                                      onChange={(value) => setRaiting(value)}
+                                <Form form={form}>
+                                  <div className="box_rating">
+                                    <Form.Item name="rating" initialValue={0}>
+                                      <Rate
+                                        value={raiting}
+                                        onChange={(value) => setRaiting(value)}
+                                      />
+                                    </Form.Item>
+                                  </div>
+                                  <Form.Item
+                                    name="review"
+                                    rules={[
+                                      {
+                                        required: true,
+                                        message:
+                                          "Không được bỏ trống bình luận",
+                                      },
+                                      {
+                                        validator: validateContent,
+                                      },
+                                    ]}
+                                  >
+                                    <TextArea
+                                      onChange={(e) =>
+                                        setContent(e.target.value)
+                                      }
+                                      value={content}
+                                      showCount
+                                      maxLength={100}
+                                      style={{ height: 120, resize: "none" }}
+                                      placeholder="Hãy bình luận sản phẩm này"
                                     />
                                   </Form.Item>
-                                </div>
-                                <Form.Item
-                                  name="review"
-                                  rules={[
-                                    {
-                                      required: true,
-                                      message: "Không được bỏ trống bình luận",
-                                    },
-                                    {
-                                      validator: validateContent,
-                                    },
-                                  ]}
-                                >
-                                  <TextArea
-                                    onChange={(e) => setContent(e.target.value)}
-                                    value={content}
-                                    showCount
-                                    maxLength={100}
-                                    style={{ height: 120, resize: "none" }}
-                                    placeholder="Hãy bình luận sản phẩm này"
-                                  />
-                                </Form.Item>
-                                <div className="wrap__button">
-                                  <Button
-                                    disabled={!content || containsSensitiveWord}
-                                    onClick={() => onFinish()}
-                                    type="primary"
-                                    className="bg-blue-500"
-                                  >
-                                    Đánh giá
-                                  </Button>
-                                </div>
+                                  <div className="wrap__button">
+                                    <Button
+                                      disabled={
+                                        !content || containsSensitiveWord
+                                      }
+                                      onClick={() => onFinish()}
+                                      type="primary"
+                                      className="bg-blue-500"
+                                    >
+                                      Đánh giá
+                                    </Button>
+                                  </div>
+                                </Form>
                               </Modal>
                             </td>
                           ) : (
@@ -361,33 +374,25 @@ const OrderDetail = () => {
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td
-                        colSpan={data?.order?.status === "Completed" ? 5 : 4}
-                      >
+                      <td colSpan={data?.order?.status === "Completed" ? 5 : 4}>
                         Tổng giá trị sản phẩm
                       </td>{" "}
                       <td>{formatPrice(data?.order?.totalPrice)}</td>
                     </tr>
                     <tr>
-                      <td
-                      colSpan={data?.order?.status === "Completed" ? 5 : 4}
-                      >
+                      <td colSpan={data?.order?.status === "Completed" ? 5 : 4}>
                         Giảm giá
                       </td>{" "}
                       <td>{formatPrice(data?.order?.couponPrice)}</td>
                     </tr>
                     <tr>
-                      <td
-                       colSpan={data?.order?.status === "Completed" ? 5 : 4}
-                      >
+                      <td colSpan={data?.order?.status === "Completed" ? 5 : 4}>
                         Phí giao hàng
                       </td>{" "}
                       <td>{formatPrice(data?.order?.shippingPrice)}</td>
                     </tr>
                     <tr className="total_payment">
-                      <td
-                        colSpan={data?.order?.status === "Completed" ? 5 : 4}
-                      >
+                      <td colSpan={data?.order?.status === "Completed" ? 5 : 4}>
                         Tổng thanh toán
                       </td>{" "}
                       <td>{formatPrice(data?.order?.orderTotalPrice)}</td>
