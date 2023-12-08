@@ -53,7 +53,7 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalyticsType }) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Tổng đơn hàng</CardTitle>
+        <CardTitle>Tổng đơn hàng đã hoàn thành</CardTitle>
         <CardDescription className="text-2xl font-bold text-black">
           {orders?.total ?? 0}
         </CardDescription>

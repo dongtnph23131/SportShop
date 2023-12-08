@@ -7,3 +7,12 @@ export const generateRandomString = (length = 6) => {
   }
   return result;
 };
+
+export function formatPrice(price) {
+  return new Intl.NumberFormat("vi", {
+    style: "currency",
+    currency: "VND",
+  })
+    .format(Number(price))
+    .replace("₫", "VND");
+}
