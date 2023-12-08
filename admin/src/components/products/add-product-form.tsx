@@ -194,7 +194,7 @@ export function AddProductForm() {
                   form.setValue("productCode", `SP-${generateRandomString()}`);
                 }}
               >
-                Generate
+                Tạo mã ngẫu nhiên
               </Button>
             </div>
 
@@ -288,7 +288,7 @@ export function AddProductForm() {
           </p>
 
           <FormItem className="flex w-full flex-col gap-1.5">
-            <FormLabel>ẢNh</FormLabel>
+            <FormLabel>Ảnh</FormLabel>
             {files?.length ? (
               <div className="flex items-center gap-2">
                 {files.map((file, i) => (
@@ -308,8 +308,8 @@ export function AddProductForm() {
               <FileDialog
                 setValue={form.setValue}
                 name="images"
-                maxFiles={3}
-                maxSize={1024 * 1024 * 4}
+                maxFiles={5}
+                maxSize={1024 * 1024 * 50}
                 files={files}
                 setFiles={setFiles}
                 isUploading={isUploading}
@@ -331,7 +331,7 @@ export function AddProductForm() {
               aria-hidden="true"
             />
           )}
-          Add Product
+          Thêm sản phẩm
           <span className="sr-only">Add Product</span>
         </Button>
       </form>

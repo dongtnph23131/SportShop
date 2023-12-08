@@ -119,13 +119,13 @@ export function FileDialog<TFieldValues extends FieldValues>({
     <Dialog>
       <DialogTrigger asChild>
         <Button variant="outline" disabled={disabled}>
-          Upload Images
+          Tải ảnh
           <span className="sr-only">Upload Images</span>
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[480px]">
         <p className="absolute left-5 top-4 text-base font-medium text-muted-foreground">
-          Upload your images
+          Tải ảnh của bạn
         </p>
         <div
           {...getRootProps()}
@@ -152,7 +152,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
                 className={cn("h-8 w-8", isDragActive && "animate-bounce")}
                 aria-hidden="true"
               />
-              <p className="text-base font-medium">Drop the file here</p>
+              <p className="text-base font-medium">Thả ảnh vào đây</p>
             </div>
           ) : (
             <div className="grid place-items-center gap-1 sm:px-5">
@@ -161,16 +161,16 @@ export function FileDialog<TFieldValues extends FieldValues>({
                 aria-hidden="true"
               />
               <p className="mt-2 text-base font-medium text-muted-foreground">
-                Drag {`'n'`} drop file here, or click to select file
+                Kéo thả ảnh vào đây, hoặc nhấn để chọn ảnh
               </p>
               <p className="text-sm text-slate-500">
-                Please upload file with size less than {formatBytes(maxSize)}
+                Vui lòng tải file dưới {formatBytes(maxSize)}
               </p>
             </div>
           )}
         </div>
         <p className="text-center text-sm font-medium text-muted-foreground">
-          You can upload up to {maxFiles} {maxFiles === 1 ? "file" : "files"}
+          Bạn có thể tải lên đến {maxFiles} {maxFiles === 1 ? "file" : "files"}
         </p>
         {files?.length ? (
           <div className="grid gap-5">
@@ -194,7 +194,7 @@ export function FileDialog<TFieldValues extends FieldValues>({
             onClick={() => setFiles(null)}
           >
             <TrashIcon className="mr-2 h-4 w-4" aria-hidden="true" />
-            Remove All
+            Bỏ tất cả
             <span className="sr-only">Remove all</span>
           </Button>
         ) : null}

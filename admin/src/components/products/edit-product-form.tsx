@@ -6,7 +6,12 @@ import { generateReactHelpers } from "@uploadthing/react/hooks";
 import { useForm } from "react-hook-form";
 import { toast } from "sonner";
 
-import { generateRandomString, isArrayOfFile } from "@/lib/utils";
+import {
+  UploadButton,
+  UploadDropzone,
+  generateRandomString,
+  isArrayOfFile,
+} from "@/lib/utils";
 import { Button } from "@/components/ui/button";
 import {
   Form,
@@ -70,7 +75,7 @@ const formSchema = z.object({
   ),
 });
 
-type Inputs = z.infer<typeof formSchema> & { images: string[] };
+type Inputs = z.infer<typeof formSchema> & { images: File[] };
 
 interface UpdateProductFormProps {
   product: Product;
@@ -128,17 +133,25 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
   });
 
   async function onSubmit(data: Inputs) {
+    const newFiles =
+      files?.filter(
+        (file) =>
+          product.images?.find((image) => image.name === file.name) ===
+          undefined
+      ) ?? [];
+
     setUpload(true);
-    const images = isArrayOfFile(data.images)
-      ? await startUpload(data.images).then((res) => {
+    const images = isArrayOfFile(newFiles)
+      ? await startUpload(newFiles).then((res) => {
           const formattedImages = res?.map((image) => ({
-            id: image.key,
+            publicId: image.key,
             name: image.key.split("_")[1] ?? image.key,
             url: image.url,
           }));
           return formattedImages ?? null;
         })
       : null;
+
     setUpload(false);
 
     updateProductMutation.mutate({
@@ -148,13 +161,27 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
       description: data.description,
       productCode: data.productCode,
       categoryId: data.collectionId,
-      images: images
-        ? images?.map((image) => ({
-            name: image.name,
-            url: image.url,
-            publicId: image.id,
-          }))
-        : product.images,
+      images:
+        newFiles.length > 0
+          ? images
+            ? [
+                ...product.images.map((item) => ({
+                  publicId: item.publicId,
+                  name: item.name,
+                  url: item.url,
+                })),
+                ...images,
+              ].map((image) => ({
+                name: image.name,
+                url: image.url,
+                publicId: image.publicId,
+              }))
+            : product.images
+          : data.images.map((image) => ({
+              name: image.name,
+              url: `https://utfs.io/f/${image.name}`,
+              publicId: image.name,
+            })),
       options: data.options,
       variants: data.variants,
     });
@@ -306,7 +333,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
               <FileDialog
                 setValue={form.setValue}
                 name="images"
-                maxFiles={3}
+                maxFiles={5}
                 maxSize={1024 * 1024 * 4}
                 files={files}
                 setFiles={setFiles}
