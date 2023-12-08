@@ -125,7 +125,6 @@ export const EditDiscountDialog = ({ discount }: { discount: Discount }) => {
                 <option value={DiscountType.PERCENTAGE}>Phần trăm</option>
                 <option value={DiscountType.FIXED_AMOUNT}>
                   Giá tiền cố định
-                  {DiscountType.FIXED_AMOUNT}
                 </option>
               </select>
             </div>

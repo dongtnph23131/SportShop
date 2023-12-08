@@ -185,7 +185,7 @@ const Page: NextPageWithLayout = () => {
                 );
               }}
             >
-              Lưu trữ
+              Hoạt động
             </DropdownMenuItem>
             <DropdownMenuItem
               onClick={async () => {
@@ -219,7 +219,7 @@ const Page: NextPageWithLayout = () => {
                 );
               }}
             >
-              Archive
+              Lưu trữ
             </DropdownMenuItem>
             {row.original.status === ProductStatus.ARCHIVED && (
               <DropdownMenuItem asChild>

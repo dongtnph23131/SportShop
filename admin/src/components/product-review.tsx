@@ -22,6 +22,7 @@ import Link from "next/link";
 import { format } from "date-fns";
 import axiosClient from "@/lib/axios-instance";
 import { toast } from "sonner";
+import { queryClient } from "@/lib/react-query";
 
 const PAGE_SIZE = 5;
 
@@ -46,80 +47,124 @@ const ProductReview = ({ productId }: { productId: string }) => {
       </CardHeader>
 
       <CardContent className="space-y-4">
-        {filteredComments?.map((comment) => (
-          <div
-            key={comment._id}
-            className="border border-gray-300 rounded-md p-4"
-          >
-            <div className="flex justify-between items-center">
-              <div className="flex flex-row items-center gap-4">
-                <Avatar className="h-9 w-9">
-                  <AvatarImage src={comment.customerId.avatar} alt="Avatar" />
-                  <AvatarFallback>OM</AvatarFallback>
-                </Avatar>
-                <div>
-                  <h6 className="font-bold">
-                    {comment.customerId.firstName +
-                      " " +
-                      comment.customerId.lastName}
-                  </h6>
-                  <p className="text-sm">{comment.customerId.email}</p>
+        {filteredComments && filteredComments.length > 0 ? (
+          filteredComments.map((comment) => (
+            <div
+              key={comment._id}
+              className="border border-gray-300 rounded-md p-4"
+            >
+              <div className="flex justify-between items-center">
+                <div className="flex gap-4 items-center">
+                  <div className="flex flex-row items-center gap-4">
+                    <Avatar className="h-9 w-9">
+                      <AvatarImage
+                        src={comment.customerId.avatar}
+                        alt="Avatar"
+                      />
+                      <AvatarFallback>OM</AvatarFallback>
+                    </Avatar>
+                    <div>
+                      <h6 className="font-bold">
+                        {comment.customerId.firstName +
+                          " " +
+                          comment.customerId.lastName}
+                      </h6>
+                      <p className="text-sm">{comment.customerId.email}</p>
+                    </div>
+                  </div>
+
+                  {comment.isHidden ? (
+                    <Badge variant={"destructive"}>Đã ẩn</Badge>
+                  ) : (
+                    <Badge variant={"success"}>Đang hiện</Badge>
+                  )}
+                </div>
+
+                <div className="flex gap-2 items-center">
+                  {comment.isHidden ? (
+                    <Button
+                      variant={"secondary"}
+                      onClick={async () => {
+                        try {
+                          const res = await axiosClient.put(
+                            `/comments/${comment._id}/show`
+                          );
+
+                          if (res.status === 200) {
+                            toast.success("Showed comment successfully");
+                            queryClient.invalidateQueries({
+                              queryKey: ["products", "comments", productId],
+                            });
+                          } else {
+                            toast.error("Failed to hide comment");
+                          }
+                        } catch (error) {
+                          toast.error("Failed to show comment");
+                        }
+                      }}
+                    >
+                      Hiện đánh giá
+                    </Button>
+                  ) : (
+                    <Button
+                      variant={"secondary"}
+                      onClick={async () => {
+                        try {
+                          const res = await axiosClient.put(
+                            `/comments/${comment._id}/hide`
+                          );
+
+                          if (res.status === 200) {
+                            toast.success("Comment hidden successfully");
+                            queryClient.invalidateQueries({
+                              queryKey: ["products", "comments", productId],
+                            });
+                          } else {
+                            toast.error("Failed to hide comment");
+                          }
+                        } catch (error) {
+                          toast.error("Failed to hide comment");
+                        }
+                      }}
+                    >
+                      Ẩn đánh giá
+                    </Button>
+                  )}
+                  <Button asChild>
+                    <Link href={`/customers/${comment.customerId._id}`}>
+                      Xem khách hàng
+                    </Link>
+                  </Button>
                 </div>
               </div>
 
-              {comment.isHidden && <Badge variant={"destructive"}>Đã ẩn</Badge>}
+              <Separator className="my-4" />
 
-              <div className="flex gap-2 items-center">
-                {!comment.isHidden && (
-                  <Button
-                    variant={"secondary"}
-                    onClick={async () => {
-                      const res = await axiosClient.put(
-                        `/comments/${comment._id}/hide`
-                      );
+              <dl className="mt-2 flex gap-2">
+                <dt>Ngày tạo:</dt>
+                <dd className="flex flex-wrap gap-3 font-medium">
+                  {format(new Date(comment.createdAt), "dd MMM yyyy hh:mm a")}
+                </dd>
+              </dl>
 
-                      if (res.status === 200) {
-                        toast.success("Comment hidden successfully");
-                      } else {
-                        toast.error("Failed to hide comment");
-                      }
-                    }}
-                  >
-                    Ẩn đánh giá
-                  </Button>
-                )}
-                <Button asChild>
-                  <Link href={`/customers/${comment.customerId._id}`}>
-                    Xem khách hàng
-                  </Link>
-                </Button>
-              </div>
+              <dl className="mt-2 flex gap-2">
+                <dt>Đánh giá:</dt>
+                <dd className="flex flex-wrap gap-3 font-medium">
+                  <Badge variant={"blue"}>{comment.raiting}</Badge>
+                </dd>
+              </dl>
+
+              <Accordion type="single" collapsible>
+                <AccordionItem value="description">
+                  <AccordionTrigger>Bình luận</AccordionTrigger>
+                  <AccordionContent>{comment.content}</AccordionContent>
+                </AccordionItem>
+              </Accordion>
             </div>
-
-            <Separator className="my-4" />
-
-            <dl className="mt-2 flex gap-2">
-              <dt>Ngày tạo:</dt>
-              <dd className="flex flex-wrap gap-3 font-medium">
-                {format(new Date(comment.createdAt), "dd MMM yyyy hh:mm a")}
-              </dd>
-            </dl>
-
-            <dl className="mt-2 flex gap-2">
-              <dt>Đánh giá:</dt>
-              <dd className="flex flex-wrap gap-3 font-medium">
-                <Badge variant={"blue"}>{comment.raiting}</Badge>
-              </dd>
-            </dl>
-
-            <Accordion type="single" collapsible>
-              <AccordionItem value="description">
-                <AccordionTrigger>Bình luận</AccordionTrigger>
-                <AccordionContent>{comment.content}</AccordionContent>
-              </AccordionItem>
-            </Accordion>
-          </div>
-        ))}
+          ))
+        ) : (
+          <p className="text-center">Sản phẩm này chưa có đánh giá nào!</p>
+        )}
       </CardContent>
 
       <Separator className="my-4" />

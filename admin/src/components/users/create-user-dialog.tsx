@@ -51,16 +51,12 @@ export const CreateUserDialog = () => {
                 role,
                 phone,
               });
-              if (res.status !== 200) {
-                toast.error(res.data.message);
-                setIsOpen(false);
-                return;
-              }
+
               toast.success("User is created successfully!");
               queryClient.invalidateQueries({ queryKey: ["users"] });
               setIsOpen(false);
             } catch (error) {
-              toast.error("Something went wrong!");
+              toast.error((error as any).response.data.message);
             } finally {
               setIsLoading(false);
             }

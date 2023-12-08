@@ -115,7 +115,9 @@ export const CreateDiscountDialog = () => {
                 className="flex h-9 w-full rounded-md border border-input bg-transparent px-3 py-1 text-sm shadow-sm transition-colors file:border-0 file:bg-transparent file:text-sm file:font-medium placeholder:text-muted-foreground focus-visible:outline-none focus-visible:ring-1 focus-visible:ring-ring disabled:cursor-not-allowed disabled:opacity-50"
               >
                 <option value={DiscountType.PERCENTAGE}>Phần trăm</option>
-                <option value={DiscountType.FIXED_AMOUNT}>Số tiền</option>
+                <option value={DiscountType.FIXED_AMOUNT}>
+                  Giá tiền cố định
+                </option>
               </select>
             </div>
 
