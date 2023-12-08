@@ -3,25 +3,10 @@ import Cookies from "js-cookie";
 import { useGetProductQuery } from "../api/product";
 import { useEffect, useState } from "react";
 import { useAddItemCartMutation, useGetCartOfUserQuery } from "../api/cart";
-import {
-  Pagination,
-  message,
-  Form,
-  Rate,
-  Button,
-  Input,
-  InputNumber,
-} from "antd";
-import {
-  useCreateCommentMutation,
-  useGetAllCommentByProductQuery,
-} from "../api/comment";
+import { Pagination, message, Rate, InputNumber } from "antd";
+import { useGetAllCommentByProductQuery } from "../api/comment";
 import Swal from "sweetalert2";
-import { useForm } from "antd/es/form/Form";
-import { useGetOrderByUserQuery } from "../api/order";
 import { getCategoryDetail } from "../api/category";
-
-const sensitiveWords = ["clm", "Buồi", "dmm"];
 
 const Detail = () => {
   const { id } = useParams();
@@ -32,7 +17,6 @@ const Detail = () => {
   const [selectedImage, setSelectedImage] = useState<number>(0);
   const [page, setPage] = useState<any>(1);
   const { data } = useGetAllCommentByProductQuery(id);
-  const [raiting, setRaiting] = useState<any>(0);
   const navigate = useNavigate();
   const [products, setProducts] = useState<any>([]);
   const [productsNoPage, setProductsNoPage] = useState<any>([]);
@@ -76,18 +60,7 @@ const Detail = () => {
     }
   }, [product, page, selectedAttributes]);
   const { data: carts } = useGetCartOfUserQuery(token);
-  const { data: orders } = useGetOrderByUserQuery(token);
-  const isMatch = orders?.orders
-    ?.filter((item: any) => {
-      return item.status === "Completed";
-    })
-    .map((item: any) => {
-      const isCheck = item.items.find(
-        (itemChild: any) => itemChild.productId._id === id
-      );
-      return isCheck ? true : false;
-    });
-  const [createComment] = useCreateCommentMutation();
+
   const selectedVariant = product?.productVariantIds.find((item: any) =>
     item.options.every((option: any) =>
       Object.values(selectedAttributes).includes(option)
@@ -130,9 +103,8 @@ const Detail = () => {
           }
         } catch (error) {}
       } else {
-         
         console.log(selectedVariant);
-        
+
         message.error("Vui lòng chọn thuộc tính sản phẩm!");
       }
     }
@@ -149,52 +121,16 @@ const Detail = () => {
   const handleImageClick = (index: number) => {
     setSelectedImage(index);
   };
-  const [form] = useForm();
-  const [content, setContent] = useState<any>();
+
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
-  const { TextArea } = Input;
-  const containsSensitiveWord = sensitiveWords.some((word) =>
-    content?.toLowerCase().includes(word.toLowerCase())
-  );
-  const onFinish = async () => {
-    if (containsSensitiveWord) return;
-
-    const comment: any = await createComment({
-      token,
-      comment: { raiting, content, productId: id },
-    });
-    if (!comment?.error) {
-      Swal.fire("Good job!", comment.data.message, "success");
-      form.resetFields();
-      setContent("");
-      setRaiting(0);
-    } else {
-      Swal.fire({
-        icon: "error",
-        title: comment?.error.data.message,
-      });
-    }
-  };
-  const formatPrice = (price:any) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(price);
     return formattedPrice;
-  };
-
-  const validateContent = (rule:any, value:any, callback:any) => {
-    const containsSensitiveWord = sensitiveWords.some((word) =>
-      value?.toLowerCase().includes(word?.toLowerCase())
-    );
-
-    if (containsSensitiveWord) {
-      callback && callback("Bình luận không được chứa từ ngữ nhạy cảm");
-    } else {
-      callback && callback();
-    }
   };
   return (
     <>
@@ -347,109 +283,48 @@ const Detail = () => {
           </section>
           <section className="comment">
             <div className="container">
-              <Form
-                form={form}
-                name="wrap"
-                labelAlign="left"
-                labelWrap
-                wrapperCol={{ flex: 1 }}
-                colon={false}
-              >
-                <div className="form-title">
-                  <h3 className="text-xl">Nhận xét - Đánh giá !</h3>
+              <div className="form-title">
+                <h3 className="text-xl">Nhận xét - Đánh giá !</h3>
+              </div>
+              {data?.comments?.length === 0 && (
+                <div
+                  style={{
+                    textAlign: "center",
+                    fontSize: "20px",
+                    marginTop: "20px",
+                  }}
+                >
+                 Sản phẩm chưa có đánh giá nào
                 </div>
-                {data?.comments?.length === 0 && (
-                  <div
-                    style={{
-                      textAlign: "center",
-                      fontSize: "20px",
-                      marginTop: "20px",
-                    }}
-                  >
-                    Chưa có đánh giá nào
-                  </div>
-                )}
-                {data?.comments?.map((item: any) => {
-                  return (
-                    item.isHidden === false && (
-                      <div key={item._id} className="rating__old">
-                        <div className="rating__old__item">
-                          <div className="avt">
-                            <img src={`${item.customerId.avatar}`} alt="" />
-                          </div>
-                          <div className="old__comment">
-                            <div className="old__comment__item">
-                              <div className="ratings">
-                                <Rate disabled value={item.raiting} />
-                              </div>
-                              <div className="date__comment">
-                                {new Date(item?.createdAt)?.toLocaleString()}
-                              </div>
+              )}
+              {data?.comments?.map((item: any) => {
+                return (
+                  item.isHidden === false && (
+                    <div key={item._id} className="rating__old">
+                      <div className="rating__old__item">
+                        <div className="avt">
+                          <img src={`${item.customerId.avatar}`} alt="" />
+                        </div>
+                        <div className="old__comment">
+                          <div className="old__comment__item">
+                            <div className="ratings">
+                              <Rate disabled value={item.raiting} />
                             </div>
-                            <div className="last__comment">{item.content}</div>
+                            <div style={{marginTop:'10px'}} className="date__comment">
+                              {new Date(item?.createdAt)?.toLocaleString()}
+                            </div>
                           </div>
+                          <div className="last__comment">{item.content}</div>
                         </div>
                       </div>
-                    )
-                  );
-                })}
-                {isMatch?.includes(true) ? (
-                  <>
-                    {" "}
-                    <div className="box_rating">
-                      <Form.Item
-                        name="rating"
-                        label="Đánh giá"
-                        initialValue={0}
-                      >
-                        <Rate
-                          value={raiting}
-                          onChange={(value) => setRaiting(value)}
-                        />
-                      </Form.Item>
                     </div>
-                    <Form.Item
-                      name="review"
-                      label="Nhận xét của bạn"
-                      rules={[
-                        {
-                          required: true,
-                          message: "Không được bỏ trống bình luận",
-                        },
-                        {
-                          validator: validateContent,
-                        },
-                      ]}
-                    >
-                      <TextArea
-                        onChange={(e) => setContent(e.target.value)}
-                        value={content}
-                        showCount
-                        maxLength={100}
-                        style={{ height: 120, resize: "none" }}
-                        placeholder="Hãy bình luận sản phẩm này"
-                      />
-                    </Form.Item>
-                    <div className="wrap__button">
-                      <Button
-                        disabled={!content || containsSensitiveWord}
-                        onClick={() => onFinish()}
-                        type="primary"
-                        className="bg-blue-500"
-                      >
-                        Đánh giá
-                      </Button>
-                    </div>
-                  </>
-                ) : (
-                  <></>
-                )}
-              </Form>
+                  )
+                );
+              })}
             </div>
           </section>
           <section id="product1" className="section-p1 ctnr">
             <h2>SẢN PHẨM LIÊN QUAN</h2>
-            {/* <p>Summer Collection New Modern Design</p> */}
             <div className="pro-container">
               {products?.map((product: any, index: any) => {
                 return (

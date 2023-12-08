@@ -75,9 +75,9 @@ const Cart = () => {
     });
     let order = {
       ...data,
-      totalPrice: total,
+      totalPrice: Math.ceil(total),
       shippingPrice: 0,
-      couponPrice,
+      couponPrice: Math.ceil(couponPrice),
       items,
       email: Cookies.get("email"),
     };
@@ -383,10 +383,7 @@ const Cart = () => {
                       item.usageLimit < item.usageCount && (
                         <div
                           onClick={() => {
-                            if (
-                              new Date(item.startAt).toLocaleDateString() >
-                              new Date().toLocaleDateString()
-                            ) {
+                            if (new Date(item.startAt) > new Date()) {
                               Swal.fire({
                                 icon: "error",
                                 title: `Mã giảm giá được áp dụng từ ngày ${new Date(
@@ -397,8 +394,7 @@ const Cart = () => {
                             }
                             if (
                               item.endAt &&
-                              new Date(item.endAt).toLocaleDateString() <
-                                new Date().toLocaleDateString()
+                              new Date(item.endAt) < new Date()
                             ) {
                               Swal.fire({
                                 icon: "error",

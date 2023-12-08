@@ -13,4 +13,5 @@ export const commentValidators = joi.object({
     "number.empty": "Đánh giá sao không được để trống",
     "any.required": "Đánh giá sao là bắt buộc bắt buộc",
   }),
+  orderId: joi.string(),
 });

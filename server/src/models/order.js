@@ -123,6 +123,10 @@ const orderSchema = mongoose.Schema(
           type: Number,
           require: true,
         },
+        isReview: {
+          type: Boolean,
+          default: false,
+        },
       },
     ],
     discountId: {

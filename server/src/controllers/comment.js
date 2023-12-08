@@ -30,7 +30,13 @@ export const create = async (req, res) => {
       });
     }
     const comment = await Comment.create({ ...req.body, customerId: user._id });
-
+    const order = await Order.findById(body.orderId);
+    order.items = order.items.map((item) => {
+      return item.productId.toString() === body.productId.toString()
+        ? { ...item, isReview: true }
+        : item;
+    });
+    await order.save();
     const product = await Product.findByIdAndUpdate(
       req.body.productId,
       {
