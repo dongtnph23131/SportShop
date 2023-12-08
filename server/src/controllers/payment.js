@@ -14,6 +14,7 @@ import User from "../models/user";
 import Discount from "../models/discount";
 export const PayMomo = (req, res) => {
   const body = req.body;
+  console.log(body);
   const partnerCode = "MOMO";
   const accessKey = "F8BBA842ECF85";
   const secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";

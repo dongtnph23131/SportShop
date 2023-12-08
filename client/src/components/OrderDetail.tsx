@@ -1,16 +1,22 @@
-import { useParams } from "react-router-dom";
+import { NavLink, useNavigate, useParams } from "react-router-dom";
 import "../../src/Assets/orderDetail.css";
 import { useCancelOrderMutation, useGetOneOrderQuery } from "../api/order";
 import Cookies from "js-cookie";
-import { Button, Modal, message } from "antd";
+import { Button, Form, Modal, Rate, message } from "antd";
 import { useState } from "react";
+import TextArea from "antd/es/input/TextArea";
+import { useCreateCommentMutation } from "../api/comment";
+import Swal from "sweetalert2";
+import { useForm } from "antd/es/form/Form";
+const sensitiveWords = ["clm", "Buồi", "dmm"];
 const OrderDetail = () => {
   const { id }: any = useParams();
   const token = Cookies.get("token");
   const { data, isLoading } = useGetOneOrderQuery(id);
   const [cancelOrder] = useCancelOrderMutation();
   const [isModalOpen, setIsModalOpen] = useState(false);
-
+  const [isModalOpenReview, setIsModalOpenReview] = useState(false);
+  const [productId, setProductId] = useState();
   const showModal = () => {
     setIsModalOpen(true);
   };
@@ -22,13 +28,62 @@ const OrderDetail = () => {
   const handleCancel = () => {
     setIsModalOpen(false);
   };
+  const showModalReview = () => {
+    setIsModalOpenReview(true);
+  };
+
+  const handleOkReview = () => {
+    setIsModalOpenReview(false);
+  };
+
+  const handleCancelReview = () => {
+    setIsModalOpenReview(false);
+  };
   const [infoStaff, setInforStaff] = useState<any>("");
-  const formatPrice = (price:any) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
     }).format(price);
     return formattedPrice;
+  };
+  const [createComment] = useCreateCommentMutation();
+  const [form] = useForm();
+  const [raiting, setRaiting] = useState<any>(0);
+  const [content, setContent] = useState<any>();
+  const containsSensitiveWord = sensitiveWords.some((word) =>
+    content?.toLowerCase().includes(word.toLowerCase())
+  );
+  const navigate = useNavigate();
+  const validateContent = (rule: any, value: any, callback: any) => {
+    const containsSensitiveWord = sensitiveWords.some((word) =>
+      value?.toLowerCase().includes(word?.toLowerCase())
+    );
+
+    if (containsSensitiveWord) {
+      callback && callback("Bình luận không được chứa từ ngữ nhạy cảm");
+    } else {
+      callback && callback();
+    }
+  };
+  const onFinish = async () => {
+    if (containsSensitiveWord) return;
+    const comment: any = await createComment({
+      token,
+      comment: { raiting, content, productId, orderId: id },
+    });
+    if (!comment?.error) {
+      Swal.fire("Good job!", comment.data.message, "success");
+      form.resetFields();
+      setContent("");
+      setRaiting(0);
+      navigate(`/products/${productId}`);
+    } else {
+      Swal.fire({
+        icon: "error",
+        title: comment?.error.data.message,
+      });
+    }
   };
   return (
     <>
@@ -193,6 +248,13 @@ const OrderDetail = () => {
                       <th>Giá niêm yết</th>
                       <th>Biến thể</th>
                       <th className="text-righted">Thành tiền</th>
+                      {data?.order?.status === "Completed" ? (
+                        <>
+                          <th>Đánh giá sản phẩm</th>
+                        </>
+                      ) : (
+                        <></>
+                      )}
                     </tr>
                   </thead>
                   <tbody>
@@ -217,25 +279,117 @@ const OrderDetail = () => {
                               item?.quantity * item?.productVariantId?.price
                             )}
                           </td>
+                          {data?.order?.status === "Completed" ? (
+                            <td>
+                              {item?.isReview === true ? (
+                                <>
+                                  Đã đánh giá{" "}
+                                  <NavLink
+                                    to={`/products/${item.productId._id}`}
+                                  >
+                                    <Button>View</Button>
+                                  </NavLink>
+                                </>
+                              ) : (
+                                <Button
+                                  type="primary"
+                                  onClick={() => {
+                                    showModalReview();
+                                    setProductId(item.productId._id);
+                                  }}
+                                >
+                                  Đánh giá
+                                </Button>
+                              )}
+                              <Modal
+                                title="Đánh giá sản phẩm"
+                                open={isModalOpenReview}
+                                onOk={() => {
+                                  handleOkReview();
+                                }}
+                                onCancel={() => {
+                                  handleCancelReview();
+                                }}
+                              >
+                                <div className="box_rating">
+                                  <Form.Item name="rating" initialValue={0}>
+                                    <Rate
+                                      value={raiting}
+                                      onChange={(value) => setRaiting(value)}
+                                    />
+                                  </Form.Item>
+                                </div>
+                                <Form.Item
+                                  name="review"
+                                  rules={[
+                                    {
+                                      required: true,
+                                      message: "Không được bỏ trống bình luận",
+                                    },
+                                    {
+                                      validator: validateContent,
+                                    },
+                                  ]}
+                                >
+                                  <TextArea
+                                    onChange={(e) => setContent(e.target.value)}
+                                    value={content}
+                                    showCount
+                                    maxLength={100}
+                                    style={{ height: 120, resize: "none" }}
+                                    placeholder="Hãy bình luận sản phẩm này"
+                                  />
+                                </Form.Item>
+                                <div className="wrap__button">
+                                  <Button
+                                    disabled={!content || containsSensitiveWord}
+                                    onClick={() => onFinish()}
+                                    type="primary"
+                                    className="bg-blue-500"
+                                  >
+                                    Đánh giá
+                                  </Button>
+                                </div>
+                              </Modal>
+                            </td>
+                          ) : (
+                            <></>
+                          )}
                         </tr>
                       );
                     })}
                   </tbody>
                   <tfoot>
                     <tr>
-                      <td colSpan={4}>Tổng giá trị sản phẩm</td>{" "}
+                      <td
+                        colSpan={data?.order?.status === "Completed" ? 5 : 4}
+                      >
+                        Tổng giá trị sản phẩm
+                      </td>{" "}
                       <td>{formatPrice(data?.order?.totalPrice)}</td>
                     </tr>
                     <tr>
-                      <td colSpan={4}>Giảm giá</td>{" "}
+                      <td
+                      colSpan={data?.order?.status === "Completed" ? 5 : 4}
+                      >
+                        Giảm giá
+                      </td>{" "}
                       <td>{formatPrice(data?.order?.couponPrice)}</td>
                     </tr>
                     <tr>
-                      <td colSpan={4}>Phí giao hàng</td>{" "}
+                      <td
+                       colSpan={data?.order?.status === "Completed" ? 5 : 4}
+                      >
+                        Phí giao hàng
+                      </td>{" "}
                       <td>{formatPrice(data?.order?.shippingPrice)}</td>
                     </tr>
                     <tr className="total_payment">
-                      <td colSpan={4}>Tổng thanh toán</td>{" "}
+                      <td
+                        colSpan={data?.order?.status === "Completed" ? 5 : 4}
+                      >
+                        Tổng thanh toán
+                      </td>{" "}
                       <td>{formatPrice(data?.order?.orderTotalPrice)}</td>
                     </tr>
                   </tfoot>
