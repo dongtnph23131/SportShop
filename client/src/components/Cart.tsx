@@ -7,7 +7,7 @@ import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateOrderMutation } from "../api/order";
 import { message } from "antd";
 import { useNavigate } from "react-router-dom";
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Modal } from "antd";
 import { useGetAddressByAcountQuery } from "../api/address";
 import { usePayMomoMutation } from "../api/payment";
@@ -41,6 +41,7 @@ const Cart = () => {
   const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
   const [payMomo] = usePayMomoMutation();
+  const isUseGiftCard = useRef(false);
   const { data: addresses } = useGetAddressByAcountQuery(token);
   const { data: carts, isLoading: isLoadingCart } =
     useGetCartOfUserQuery(token);
@@ -81,8 +82,10 @@ const Cart = () => {
       items,
       email: Cookies.get("email"),
     };
-    if (discount) {
+    if (discount && !isUseGiftCard.current) {
       order = { ...order, discountId: discount?._id };
+    } else {
+      order = { ...order, giftCardId: discount?._id };
     }
     if (data.typePayment === "Online") {
       const response: any = await payMomo({ ...order, token });
@@ -363,7 +366,7 @@ const Cart = () => {
               <div id="subtotal">
                 <h3>Cart Totals</h3>
                 <div onClick={showModal} className="btn__add__default__adress">
-                  <div style={{ padding: "20px" }}>
+                  <div style={{ padding: "12px" }}>
                     <i className="fas fa-tags"></i>Vouchers
                   </div>
                 </div>
@@ -461,11 +464,9 @@ const Cart = () => {
                         const data = await axios.get(
                           `http://localhost:8080/api/discounts/${code}`
                         );
+
                         if (
-                          new Date(
-                            data?.data?.discount?.startAt
-                          ).toLocaleDateString() >
-                          new Date().toLocaleDateString()
+                          new Date(data?.data?.discount?.startAt) > new Date()
                         ) {
                           Swal.fire({
                             icon: "error",
@@ -477,10 +478,7 @@ const Cart = () => {
                         }
                         if (
                           data?.data?.discount.endAt &&
-                          new Date(
-                            data?.data?.discount.endAt
-                          ).toLocaleDateString() <
-                            new Date().toLocaleDateString()
+                          new Date(data?.data?.discount.endAt) < new Date()
                         ) {
                           Swal.fire({
                             icon: "error",
@@ -493,8 +491,39 @@ const Cart = () => {
                         setDiscount(data?.data?.discount);
                         setIsUseDiscount(true);
                       } catch (error) {
-                        setIsUseDiscount(false);
-                        message.error("Mã khuyến mại không tồn tại");
+                        try {
+                          const res = await axios.get(
+                            `http://localhost:8080/api/gifts/${code}`,
+                            {
+                              headers: {
+                                Authorization: `Bearer ${token}`,
+                              },
+                            }
+                          );
+
+                          if (
+                            res.data?.endAt &&
+                            new Date(res.data?.endAt) < new Date()
+                          ) {
+                            Swal.fire({
+                              icon: "error",
+                              title: `Mã giảm giá được hết hạn từ ngày ${new Date(
+                                res.data?.endAt
+                              ).toLocaleDateString()}`,
+                            });
+                            return;
+                          }
+
+                          isUseGiftCard.current = true;
+                          setCouponPrice(res.data?.amountPrice);
+                          setDiscount(res.data);
+                          setIsUseDiscount(true);
+                        } catch (error) {
+                          setCouponPrice(0);
+                          setDiscount(undefined);
+                          setIsUseDiscount(false);
+                          message.error("Mã khuyến mại không tồn tại");
+                        }
                       }
                     }}
                     style={{ marginLeft: "20px" }}

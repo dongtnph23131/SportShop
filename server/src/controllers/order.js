@@ -7,6 +7,7 @@ import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
 import User from "../models/user";
 import Discount from "../models/discount";
+import Gift from "../models/gift";
 export const create = async (req, res) => {
   try {
     const user = req.user;
@@ -15,7 +16,11 @@ export const create = async (req, res) => {
     const validatedBody = orderSchema.parse(body);
     const data = await User.find({ role: "staff" });
     const staffs = data.sort((a, b) => a.orders.length - b.orders.length);
-    console.log(staffs);
+    if (body.giftCardId) {
+      await Gift.findByIdAndUpdate(body.giftCardId, {
+        isDisabled: true,
+      });
+    }
     let order;
     if (body.discountId) {
       order = await Order.create({
