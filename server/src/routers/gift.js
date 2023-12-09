@@ -27,9 +27,9 @@ router.get("/gifts/:code", authenticate, async (req, res) => {
 
 router.get("/gifts", authenticate, async (req, res) => {
   try {
-    const customerId = req.user._id;
+    const customerId = req.user._id; 
 
-    const gift = await Gift.findOne({ customerId, isDisabled: false });
+    const gift = await Gift.find({ customerId, isDisabled: false });
 
     return res.status(200).json(gift);
   } catch (error) {
