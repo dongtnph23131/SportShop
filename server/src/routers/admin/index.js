@@ -12,6 +12,7 @@ import User from "../../models/user";
 import { bannerRoutes } from "./banner";
 import { commentRoutes } from "./comment";
 import { discountRoutes } from "./discounts";
+import { giftRoutes } from "./gift";
 
 const router = Router();
 
@@ -25,6 +26,7 @@ router.use("/user", verifyToken, userRoutes);
 router.use("/banners", verifyToken, bannerRoutes);
 router.use("/comments", verifyToken, commentRoutes);
 router.use("/discounts", verifyToken, discountRoutes);
+router.use("/gifts", verifyToken, giftRoutes);
 router.use("/auth", authRoutes);
 router.use("/me", verifyToken, async (req, res) => {
   if (!req.user) return res.status(401).json("You need to login!");

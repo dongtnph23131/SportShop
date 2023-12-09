@@ -56,11 +56,12 @@ export function formatPrice(
     notation?: Intl.NumberFormatOptions["notation"];
   } = {}
 ) {
-  const { currency = "VND" } = options;
+  const { currency = "VND", notation = "compact" } = options;
 
   return new Intl.NumberFormat("vi", {
     style: "currency",
     currency,
+    notation,
   }).format(Number(price));
 }
 

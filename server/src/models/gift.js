@@ -1,6 +1,6 @@
 import mongoose from "mongoose";
 
-const discountSchema = new mongoose.Schema(
+const giftSchema = new mongoose.Schema(
   {
     code: {
       type: String,
@@ -19,8 +19,12 @@ const discountSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    customerId: {
+      type: mongoose.Schema.Types.ObjectId,
+      ref: "Customer",
+    },
   },
   { timestamps: true, versionKey: false }
 );
 
-export default mongoose.model("Discount", discountSchema);
+export default mongoose.model("Gift", giftSchema);

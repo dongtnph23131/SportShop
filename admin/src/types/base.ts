@@ -112,6 +112,7 @@ export interface Order {
 export interface Customer {
   addressIds: string[];
   orderIds: string[];
+  giftIds: string[];
   _id: string;
   firstName: string;
   lastName: string;
@@ -195,6 +196,18 @@ export enum UserRole {
   ADMIN = "admin",
   STAFF = "staff",
   SHIPPER = "shipper",
+}
+
+export interface Gift {
+  _id: string;
+  code: string;
+  description: string | null;
+  amountPrice: number;
+  endAt: string | null;
+  isDisabled: boolean;
+  customerId: string;
+  createdAt: string;
+  updatedAt: string;
 }
 
 export interface Pagination {

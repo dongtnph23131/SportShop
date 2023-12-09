@@ -1,5 +1,5 @@
 import axiosClient from "@/lib/axios-instance";
-import { Customer, Order } from "@/types/base";
+import { Customer, Gift, Order } from "@/types/base";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export type CustomersResponse = Omit<Customer, "orderIds"> & {

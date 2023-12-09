@@ -47,6 +47,12 @@ const customerSchema = new mongoose.Schema(
         ref: "Order",
       },
     ],
+    giftIds: [
+      {
+        type: mongoose.Types.ObjectId,
+        ref: "Gift",
+      },
+    ],
   },
   {
     timestamps: true,
