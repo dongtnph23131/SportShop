@@ -1,5 +1,5 @@
 import { yupResolver } from "@hookform/resolvers/yup";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 import * as yup from "yup";
 import {
@@ -7,6 +7,7 @@ import {
   useUpdatePasswordMutation,
   useUpdateProfileMutation,
 } from "../api/acount";
+import { useGetDiscountsQuery } from "../api/discount";
 import Swal from "sweetalert2";
 import Cookies from "js-cookie";
 import {
@@ -178,6 +179,25 @@ const ProfileDetail = () => {
       setIsUpdateProfilePopupOpen(false);
     });
   };
+  const {
+    data: discounts,
+    error,
+    isLoading: discountsLoading,
+  } = useGetDiscountsQuery();
+  useEffect(() => {
+    if (error) {
+      console.error("Error fetching discounts:", error);
+    }
+  }, [error]);
+
+  if (isLoading) {
+    return <p>Loading...</p>;
+  }
+
+  if (!discounts) {
+    return <p>No discounts available.</p>;
+  }
+
   return (
     <>
       {isLoading ? (
@@ -219,6 +239,17 @@ const ProfileDetail = () => {
                         <img src="../../src/Assets/icon__map.webp" alt="" />
                       </div>
                       Sổ địa chỉ
+                    </a>
+                    <a
+                      className={`account__sidebar__item ${
+                        activeTab === "discount" ? "active" : ""
+                      }`}
+                      onClick={() => handleTabClick("discount")}
+                    >
+                      <div className="icon__sidebar">
+                        <i className="fa-solid fa-tag"></i>
+                      </div>
+                      Mã giảm giá
                     </a>
                   </div>
                 </div>
@@ -755,6 +786,51 @@ const ProfileDetail = () => {
                           ) : (
                             ""
                           )}
+                        </div>
+                      </div>
+                    )}
+                    {activeTab === "discount" && (
+                      <div className="content__profile">
+                        <div className="header__discount">
+                          <h3 className="title__profile">Mã giảm giá</h3>
+                        </div>
+                        <div className="main__discount">
+                          <ul>
+                            {discounts.map((discount) => (
+                              <li key={discount._id}>
+                                <div className="discount__item">
+                                  <h4>
+                                    {discount.code}{" "}
+                                    <div className="icon__discounts">
+                                      <i className="fa-solid fa-tag"></i>
+                                    </div>
+                                  </h4>
+                                  <div className="content__discounts">
+                                    <p>{discount.description}</p>
+                                    <div className="date__discount">
+                                      <p>
+                                        Starts:{" "}
+                                        {new Date(
+                                          discount.startAt
+                                        ).toLocaleDateString()}
+                                      </p>
+                                      {discount.endAt && (
+                                        <p>
+                                          Ends:{" "}
+                                          {new Date(
+                                            discount.endAt
+                                          ).toLocaleDateString()}
+                                        </p>
+                                      )}
+                                    </div>
+                                    <div className="buy__to__discount">
+                                      <button><a href="/shops">Sử dụng</a></button>
+                                    </div>
+                                  </div>
+                                </div>
+                              </li>
+                            ))}
+                          </ul>
                         </div>
                       </div>
                     )}
