@@ -405,7 +405,10 @@ const Page: NextPageWithLayout = () => {
                 )}
 
                 <div className="flex items-center gap-2 mt-4">
-                  {!order.shipperId && <ChooseShipperDialog />}
+                  {!order.shipperId &&
+                    order.deliveryStatus !== OrderDeliveryStatus.SHIPPED && (
+                      <ChooseShipperDialog />
+                    )}
                   {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
                     <Button
                       onClick={async () => {
