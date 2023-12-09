@@ -567,7 +567,13 @@ const Cart = () => {
                       <strong>Tổng</strong>
                     </td>
                     <td>
-                      <strong>{formatPrice(total + 0 - couponPrice)}</strong>
+                      <strong>
+                        {formatPrice(
+                          total + 0 - couponPrice > 0
+                            ? total + 0 - couponPrice
+                            : 0
+                        )}
+                      </strong>
                     </td>
                   </tr>
                 </table>

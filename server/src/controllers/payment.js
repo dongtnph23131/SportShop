@@ -5,16 +5,15 @@ import Customer from "../models/customer";
 import Order from "../models/order";
 import ProductVariant from "../models/productVariant";
 import Product from "../models/product";
-import Cart from "../models/cart";
 import CartItem from "../models/cartItem";
 import { generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
 import { generateOrderHtmlContent } from "./order";
 import User from "../models/user";
 import Discount from "../models/discount";
+import Gift from "../models/gift";
 export const PayMomo = (req, res) => {
   const body = req.body;
-  console.log(body);
   const partnerCode = "MOMO";
   const accessKey = "F8BBA842ECF85";
   const secretkey = "K951B6PE1waDMi640xX08PD3vg6EkVlz";
@@ -25,14 +24,34 @@ export const PayMomo = (req, res) => {
   const ipnUrl = "http://localhost:8080/api/momo";
   const amount = body.totalPrice + body.shippingPrice - body.couponPrice;
   const requestType = "payWithMethod";
-  const extraData = `email=${body.email}&fullName=${body.fullName}&totalPrice=${
-    body.totalPrice
-  }&token=${body.token}&discountId=${body.discountId}&shippingPrice=${
-    body.shippingPrice
-  }&couponPrice=${body.couponPrice}&phone=${body.phone}&address=${
-    body.address
-  }&note=${body.note}&items=${JSON.stringify(body.items)}`;
-
+  let extraData;
+  if (body.discountId) {
+    extraData = `email=${body.email}&fullName=${body.fullName}&totalPrice=${
+      body.totalPrice
+    }&token=${body.token}&discountId=${body.discountId}&shippingPrice=${
+      body.shippingPrice
+    }&couponPrice=${body.couponPrice}&phone=${body.phone}&address=${
+      body.address
+    }&note=${body.note}&items=${JSON.stringify(body.items)}`;
+  } else {
+    if (body.giftCardId) {
+      extraData = `email=${body.email}&fullName=${body.fullName}&totalPrice=${
+        body.totalPrice
+      }&token=${body.token}&giftCardId=${body.giftCardId}&shippingPrice=${
+        body.shippingPrice
+      }&couponPrice=${body.couponPrice}&phone=${body.phone}&address=${
+        body.address
+      }&note=${body.note}&items=${JSON.stringify(body.items)}`;
+    } else {
+      extraData = `email=${body.email}&fullName=${body.fullName}&totalPrice=${
+        body.totalPrice
+      }&token=${body.token}&shippingPrice=${body.shippingPrice}&couponPrice=${
+        body.couponPrice
+      }&phone=${body.phone}&address=${body.address}&note=${
+        body.note
+      }&items=${JSON.stringify(body.items)}`;
+    }
+  }
   var rawSignature =
     "accessKey=" +
     accessKey +
@@ -63,7 +82,7 @@ export const PayMomo = (req, res) => {
     storeId: "MomoTestStore",
     accessKey: accessKey,
     requestId: requestId,
-    amount: amount,
+    amount: amount > 0 ? amount : 0,
     orderId: orderId,
     orderInfo: orderInfo,
     redirectUrl: redirectUrl,
@@ -121,7 +140,7 @@ export const MomoSuccess = async (req, res) => {
   const { id } = jwt.verify(data.token, "dongtimo");
   const user = await Customer.findById(id);
   let order;
-  if (body.discountId) {
+  if (body?.discountId) {
     order = await Order.create({
       ...body,
       typePayment: "Online",
@@ -141,6 +160,11 @@ export const MomoSuccess = async (req, res) => {
       { new: true }
     );
   } else {
+    if (body.giftCardId) {
+      await Gift.findByIdAndUpdate(body.giftCardId, {
+        isDisabled: true,
+      });
+    }
     order = await Order.create({
       ...body,
       typePayment: "Online",
@@ -151,6 +175,7 @@ export const MomoSuccess = async (req, res) => {
       code: `DH-${generateRandomString()}`,
     });
   }
+  console.log(1, body);
   await Promise.all(
     data.items.map(async (item) => {
       const productVariant = await ProductVariant.findById(
