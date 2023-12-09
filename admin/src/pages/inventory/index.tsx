@@ -1,6 +1,7 @@
 import { EditProductVariantDialog } from "@/components/edit-product-variant-dialog";
 import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
+import { SwitchGroup, SwitchGroupItem } from "@/components/switch-group";
 import TablePagination from "@/components/table-pagination";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
@@ -32,15 +33,85 @@ import {
 import useRouterStuff from "@/lib/hooks/use-router-stuff";
 import { formatPrice } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
+import { useAnalyticsInventoryQuery } from "@/services/inventory/inventory-analytics-query";
 import { useInventoryQuery } from "@/services/inventory/inventory-query";
+import { BadgeDollarSign, XCircle } from "lucide-react";
 import Link from "next/link";
 
 const Page: NextPageWithLayout = () => {
   const { queryParams, searchParams } = useRouterStuff();
   const { data: productVariants } = useInventoryQuery();
+  const { data: analytics } = useAnalyticsInventoryQuery();
 
   return (
     <>
+      <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Giá trị kho hàng
+            </CardTitle>
+            <BadgeDollarSign className="text-blue-600" />
+          </CardHeader>
+          <CardContent>
+            {analytics && (
+              <>
+                <div className="text-2xl font-bold">
+                  {formatPrice(analytics.totalPriceProductVariants)}
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">Số lượng</CardTitle>
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              className="lucide lucide-check-square-2 h-6 w6 bg-green-100 text-green-600 rounded-md p-1 cursor-pointer hover:bg-green-200 hover:text-green-700 transition-colors"
+            >
+              <rect width="18" height="18" x="3" y="3" rx="2" />
+              <path d="m9 12 2 2 4-4" />
+            </svg>
+          </CardHeader>
+          <CardContent>
+            {analytics && (
+              <>
+                <div className="text-2xl font-bold">
+                  {analytics.totalProductVariants}
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+        <Card>
+          <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+            <CardTitle className="text-sm font-medium">
+              Sản phẩm đã hết hàng
+            </CardTitle>
+            <XCircle className="text-red-500" />
+          </CardHeader>
+
+          <CardContent>
+            {analytics && (
+              <>
+                <div className="text-2xl font-bold">
+                  {analytics.totalOutOfStockProductVariants}
+                </div>
+              </>
+            )}
+          </CardContent>
+        </Card>
+      </div>
+
       <Card>
         <div className="flex justify-between p-6">
           <CardHeader className="p-0">
@@ -57,19 +128,37 @@ const Page: NextPageWithLayout = () => {
           </div>
         </div>
         <CardContent>
-          <Input
-            defaultValue={searchParams.get("q") ?? ""}
-            placeholder="Tìm theo tên biến thể sản phẩm..."
-            className="h-8 w-[150px] lg:w-[250px] mb-4"
-            onChange={(event) => {
-              queryParams({
-                set: {
-                  q: event.target.value,
-                  _page: "1",
-                },
-              });
-            }}
-          />
+          <div className="flex items-center gap-4 mb-4">
+            <Input
+              defaultValue={searchParams.get("q") ?? ""}
+              placeholder="Tìm theo tên biến thể sản phẩm..."
+              className="w-[150px] lg:w-[250px]"
+              onChange={(event) => {
+                queryParams({
+                  set: {
+                    q: event.target.value,
+                    _page: "1",
+                  },
+                });
+              }}
+            />
+            <SwitchGroup
+              defaultValue="all"
+              onValueChange={(value) => {
+                queryParams({
+                  set: {
+                    _page: "1",
+                    _status: value,
+                  },
+                });
+              }}
+            >
+              <SwitchGroupItem value="all">Tất cả</SwitchGroupItem>
+              <SwitchGroupItem value="in-stock">Còn hàng</SwitchGroupItem>
+              <SwitchGroupItem value="out-of-stock">Hết hàng</SwitchGroupItem>
+              <SwitchGroupItem value="ordered">Đã có khách đặt</SwitchGroupItem>
+            </SwitchGroup>
+          </div>
 
           <Separator />
 
@@ -80,6 +169,7 @@ const Page: NextPageWithLayout = () => {
                 <TableHead>Danh mục</TableHead>
                 <TableHead>SKU</TableHead>
                 <TableHead>Giá</TableHead>
+                <TableHead>Đã có khách đặt</TableHead>
                 <TableHead>Sẵn hàng</TableHead>
                 <TableHead>Hành động</TableHead>
               </TableRow>
@@ -105,6 +195,7 @@ const Page: NextPageWithLayout = () => {
                   </TableCell>
                   <TableCell>{item.sku}</TableCell>
                   <TableCell>{formatPrice(item.price)}</TableCell>
+                  <TableCell>{item.pendingOrders.length}</TableCell>
                   <TableCell>{item.inventory}</TableCell>
                   <TableCell>
                     <EditProductVariantDialog productVariant={item} />

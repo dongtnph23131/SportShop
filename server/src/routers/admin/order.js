@@ -1,4 +1,5 @@
 import { Router } from "express";
+import ProductVariant from "../../models/productVariant";
 import nodemailer from "nodemailer";
 import Order from "../../models/order";
 import { generateInvoice } from "../../libs/generate-invoice";
@@ -265,7 +266,16 @@ router.post("/:id/cancel", async (req, res) => {
       return res.status(400).end("Missing id");
     }
 
-    const order = await Order.findById(id);
+    const order = await Order.findById(id).populate(
+      "items items.productVariantId"
+    );
+
+    //Cập nhật lại số lượng sản phẩm khi hủy đơn hàng
+    for (const item of order.items) {
+      await ProductVariant.findByIdAndUpdate(item.productVariantId._id, {
+        inventory: item.quantity + item.productVariantId.inventory,
+      });
+    }
 
     if (order.status === "Completed") {
       return res
@@ -279,7 +289,7 @@ router.post("/:id/cancel", async (req, res) => {
       deliveryStatus: "Canceled",
     });
 
-    return res.status(200).json(updatedOrder);
+    return res.status(200).json({});
   } catch (error) {
     return res.status(500).json({
       message: error.message,

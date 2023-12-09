@@ -3,6 +3,7 @@ import useRouterStuff from "@/lib/hooks/use-router-stuff";
 import {
   Category,
   Customer,
+  Order,
   Pagination,
   Product,
   ProductVariant,
@@ -13,6 +14,7 @@ export type InventoryResponse = {
   docs: (Omit<ProductVariant, "productId"> & {
     productId: Product;
     category: Category;
+    pendingOrders: Order[];
   })[];
 } & Pagination;
 
@@ -39,6 +41,7 @@ export const useInventoryQuery = <TData = InventoryData>({
       searchParams.get("q"),
       searchParams.get("_page"),
       searchParams.get("_limit"),
+      searchParams.get("_status"),
     ],
     queryFn: async () => getInventory({ queryString: getQueryString() }),
     ...options,

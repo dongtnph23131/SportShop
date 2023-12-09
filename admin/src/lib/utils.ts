@@ -56,7 +56,7 @@ export function formatPrice(
     notation?: Intl.NumberFormatOptions["notation"];
   } = {}
 ) {
-  const { currency = "VND", notation = "compact" } = options;
+  const { currency = "VND", notation } = options;
 
   return new Intl.NumberFormat("vi", {
     style: "currency",

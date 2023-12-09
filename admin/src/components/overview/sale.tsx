@@ -74,7 +74,11 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalyticsType }) {
               fontSize={12}
               tickLine={false}
               axisLine={false}
-              tickFormatter={(value) => formatPrice(value)}
+              tickFormatter={(value) =>
+                formatPrice(value, {
+                  notation: "compact",
+                })
+              }
             />
             <Tooltip />
             <Line

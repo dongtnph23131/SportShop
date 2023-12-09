@@ -1,8 +1,31 @@
 import { Router } from "express";
 import ProductVariant from "../../models/productVariant";
 import Category from "../../models/category";
+import Order from "../../models/order";
 
 const router = Router();
+
+router.get("/analytics", async (req, res) => {
+  try {
+    const productVariants = await ProductVariant.find();
+
+    const totalPriceProductVariants = productVariants.reduce((acc, item) => {
+      return item.price + acc;
+    }, 0);
+
+    return res.status(200).json({
+      totalPriceProductVariants,
+      totalProductVariants: productVariants.length,
+      totalOutOfStockProductVariants: productVariants.filter(
+        (item) => item.inventory === 0
+      ).length,
+    });
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
 
 router.get("/", async (req, res) => {
   try {
@@ -11,6 +34,7 @@ router.get("/", async (req, res) => {
       _sort = "createAt",
       _page = 1,
       _order = "asc",
+      _status = "all",
       q,
     } = req.query;
     const options = {
@@ -22,30 +46,55 @@ router.get("/", async (req, res) => {
       populate: [{ path: "productId" }],
     };
 
-    let searchQuery = q
-      ? {
-          name: { $regex: q, $options: "i" },
-        }
-      : {};
+    let searchQuery = {
+      ...(q
+        ? {
+            $or: [
+              { name: { $regex: q, $options: "i" } },
+              { "productId.name": { $regex: q, $options: "i" } },
+            ],
+          }
+        : {}),
+      ...(_status === "in-stock" && _status ? { inventory: { $gt: 0 } } : {}),
+      ...(_status === "out-of-stock" && _status
+        ? { inventory: { $eq: 0 } }
+        : {}),
+    };
 
     const productVariants = await ProductVariant.paginate(searchQuery, options);
     const categories = await Category.find();
+    const orders = await Order.find({ status: "Pending" });
+
+    let newProductVariants = productVariants.docs.map((productVariant) => {
+      const category = categories.find((category) => {
+        return (
+          category._id.toString() ===
+          productVariant.productId.categoryId.toString()
+        );
+      });
+
+      return {
+        ...productVariant._doc,
+        category,
+        pendingOrders: orders.filter((order) => {
+          return order.items.some((item) => {
+            return (
+              item.productVariantId.toString() === productVariant._id.toString()
+            );
+          });
+        }),
+      };
+    });
+
+    if (_status === "ordered") {
+      newProductVariants = newProductVariants.filter(
+        (productVariant) => productVariant.pendingOrders.length > 0
+      );
+    }
 
     return res.status(200).json({
       ...productVariants,
-      docs: productVariants.docs.map((productVariant) => {
-        const category = categories.find((category) => {
-          return (
-            category._id.toString() ===
-            productVariant.productId.categoryId.toString()
-          );
-        });
-
-        return {
-          ...productVariant._doc,
-          category,
-        };
-      }),
+      docs: newProductVariants,
     });
   } catch (error) {
     return res.status(500).json({
