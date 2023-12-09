@@ -179,25 +179,20 @@ const ProfileDetail = () => {
       setIsUpdateProfilePopupOpen(false);
     });
   };
-  const {
-    data: discounts,
-    error,
-    isLoading: discountsLoading,
-  } = useGetDiscountsQuery();
+  const [gifts, setGifts] = useState<any>([]);
   useEffect(() => {
-    if (error) {
-      console.error("Error fetching discounts:", error);
-    }
-  }, [error]);
-
-  if (isLoading) {
-    return <p>Loading...</p>;
-  }
-
-  if (!discounts) {
-    return <p>No discounts available.</p>;
-  }
-
+    (async () => {
+      await axios
+        .get("http://localhost:8080/api/gifts", {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        })
+        .then((data) => {
+          setGifts(data?.data);
+        });
+    })();
+  }, []);
   return (
     <>
       {isLoading ? (
@@ -249,7 +244,7 @@ const ProfileDetail = () => {
                       <div className="icon__sidebar">
                         <i className="fa-solid fa-tag"></i>
                       </div>
-                      Mã giảm giá
+                      Quà tặng của tôi
                     </a>
                   </div>
                 </div>
@@ -792,44 +787,50 @@ const ProfileDetail = () => {
                     {activeTab === "discount" && (
                       <div className="content__profile">
                         <div className="header__discount">
-                          <h3 className="title__profile">Mã giảm giá</h3>
+                          <h3 className="title__profile">Quà tặng của tôi</h3>
                         </div>
                         <div className="main__discount">
                           <ul>
-                            {discounts.map((discount) => (
-                              <li key={discount._id}>
-                                <div className="discount__item">
-                                  <h4>
-                                    {discount.code}{" "}
-                                    <div className="icon__discounts">
-                                      <i className="fa-solid fa-tag"></i>
+                            {gifts?.length > 0 ? (
+                              <>
+                                {" "}
+                                {gifts?.map((discount: any) => (
+                                  <li key={discount._id}>
+                                    <div className="discount__item">
+                                      <h4>
+                                        {discount.code}{" "}
+                                        <div className="icon__discounts">
+                                          <i className="fa-solid fa-tag"></i>
+                                        </div>
+                                      </h4>
+                                      <div className="content__discounts">
+                                        <p>{discount.description}</p>
+                                        <div className="date__discount">
+                                          {discount.endAt && (
+                                            <p>
+                                              HSD:{" "}
+                                              {new Date(
+                                                discount.endAt
+                                              ).toLocaleDateString()}
+                                            </p>
+                                          )}
+                                          {!discount.endAt && (
+                                            <p>Không giới hạn ngày</p>
+                                          )}
+                                        </div>
+                                        <div className="buy__to__discount">
+                                          <button>
+                                            <a href="/shops">Sử dụng</a>
+                                          </button>
+                                        </div>
+                                      </div>
                                     </div>
-                                  </h4>
-                                  <div className="content__discounts">
-                                    <p>{discount.description}</p>
-                                    <div className="date__discount">
-                                      <p>
-                                        Starts:{" "}
-                                        {new Date(
-                                          discount.startAt
-                                        ).toLocaleDateString()}
-                                      </p>
-                                      {discount.endAt && (
-                                        <p>
-                                          Ends:{" "}
-                                          {new Date(
-                                            discount.endAt
-                                          ).toLocaleDateString()}
-                                        </p>
-                                      )}
-                                    </div>
-                                    <div className="buy__to__discount">
-                                      <button><a href="/shops">Sử dụng</a></button>
-                                    </div>
-                                  </div>
-                                </div>
-                              </li>
-                            ))}
+                                  </li>
+                                ))}
+                              </>
+                            ) : (
+                              <p>Bạn không có quà tặng nào</p>
+                            )}
                           </ul>
                         </div>
                       </div>

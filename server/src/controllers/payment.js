@@ -22,7 +22,10 @@ export const PayMomo = (req, res) => {
   const orderInfo = "Thanh Toán MoMo";
   const redirectUrl = "http://localhost:8080/api/momo";
   const ipnUrl = "http://localhost:8080/api/momo";
-  const amount = body.totalPrice + body.shippingPrice - body.couponPrice;
+  const amount =
+    body.totalPrice + body.shippingPrice - body.couponPrice > 0
+      ? body.totalPrice + body.shippingPrice - body.couponPrice
+      : 0;
   const requestType = "payWithMethod";
   let extraData;
   if (body.discountId) {
