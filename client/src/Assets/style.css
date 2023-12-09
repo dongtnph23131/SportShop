@@ -73,48 +73,38 @@ p {
 .bo .bow1 .bow1-child {
   height: 100%;
   border-radius: 20px;
-  background: linear-gradient(
-    90deg,
-    rgba(26, 84, 158, 1) 0%,
-    rgba(62, 149, 216, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(26, 84, 158, 1) 0%,
+      rgba(62, 149, 216, 1) 100%);
   padding: 0 15px;
 }
 
 .bo .bow1:nth-child(2) .bow1-child {
   background: rgb(17, 145, 176);
-  background: linear-gradient(
-    90deg,
-    rgba(17, 145, 176, 1) 0%,
-    rgba(78, 211, 190, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(17, 145, 176, 1) 0%,
+      rgba(78, 211, 190, 1) 100%);
 }
 
 .bo .bow1:nth-child(3) .bow1-child {
   background: rgb(227, 114, 20);
-  background: linear-gradient(
-    90deg,
-    rgba(227, 114, 20, 1) 0%,
-    rgba(245, 177, 42, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(227, 114, 20, 1) 0%,
+      rgba(245, 177, 42, 1) 100%);
 }
 
 .bo .bow1:nth-child(4) .bow1-child {
   background: rgb(163, 39, 85);
-  background: linear-gradient(
-    90deg,
-    rgba(163, 39, 85, 1) 0%,
-    rgba(222, 40, 80, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(163, 39, 85, 1) 0%,
+      rgba(222, 40, 80, 1) 100%);
 }
 
 .bo .bow1:nth-child(5) .bow1-child {
   background: rgb(26, 84, 158);
-  background: linear-gradient(
-    90deg,
-    rgba(26, 84, 158, 1) 0%,
-    rgba(62, 149, 216, 1) 100%
-  );
+  background: linear-gradient(90deg,
+      rgba(26, 84, 158, 1) 0%,
+      rgba(62, 149, 216, 1) 100%);
 }
 
 .icon {
@@ -306,10 +296,12 @@ p {
 .box-oder-carts {
   padding: 30px 0;
 }
+
 .banner__item img {
   width: 100%;
   height: 450px;
 }
+
 h4.brackham {
   background: #eee;
   line-height: 35px;
@@ -334,10 +326,12 @@ h4.brackham {
   font-weight: 600;
   color: #000;
 }
+
 .banners p {
   text-align: center;
   margin-top: 10px;
 }
+
 .items-sort-ul {
   border-radius: 0px 10px 10px 10px;
   position: absolute;
@@ -1450,8 +1444,7 @@ select {
   width: 50%;
 }
 
-.row__editAdres {
-}
+.row__editAdres {}
 
 .group__btn__action__remove {
   display: flex;
@@ -2095,11 +2088,67 @@ button.btn__save {
 }
 
 .icon__sidebar {
-  display: block;
+  display: flex;
   width: 29px;
   height: 29px;
   margin-right: 0.5rem;
   transition: all 0.3s;
+  justify-content: center;
+  align-items: center;
+}
+
+.date__discount {
+  display: flex;
+  gap: 20px;
+}
+
+.discount__item h4 {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  font-size: 18px;
+  color: #fff;
+}
+
+.content__discounts {
+  display: flex;
+  gap: 20px;
+}
+
+.main__discount ul li {
+  background-color: #2f5acf;
+  border: 1px solid #2f5acf;
+  margin-bottom: 20px;
+  padding: 10px;
+  border-radius: 10px;
+}
+
+.content__discounts p {
+  color: #fff;
+}
+
+.main__discount ul li:hover {
+  background: #000;
+}
+
+.buy__to__discount button {
+  padding: 5px 10px;
+  background: #fff;
+  border: none;
+}
+
+.buy__to__discount a {
+  margin-bottom: 0;
+  color: #000;
+}
+
+.buy__to__discount button:hover {
+  background: #2f5acf;
+}
+
+.buy__to__discount button:hover a {
+  color: #fff;
 }
 
 .box__profileDetail {
@@ -2591,6 +2640,7 @@ button.btn__save {
 .icon__reload__2 i::before {
   content: url(./iconreload2.png);
 }
+
 .icon__reload__3 i::before {
   content: url(./iconreload3.png);
 }
