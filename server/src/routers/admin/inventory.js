@@ -51,6 +51,7 @@ router.get("/", async (req, res) => {
         ? {
             $or: [
               { name: { $regex: q, $options: "i" } },
+              //search by product name that is retrieved from productId in MongoDB
               { "productId.name": { $regex: q, $options: "i" } },
             ],
           }
@@ -87,7 +88,33 @@ router.get("/", async (req, res) => {
     });
 
     if (_status === "ordered") {
-      newProductVariants = newProductVariants.filter(
+      const allProductVariants = (
+        await ProductVariant.find().populate("productId")
+      )
+        .map((item) => item._doc)
+        .map((productVariant) => {
+          const category = categories.find((category) => {
+            return (
+              category._id.toString() ===
+              productVariant.productId.categoryId.toString()
+            );
+          });
+
+          return {
+            ...productVariant,
+            category,
+            pendingOrders: orders.filter((order) => {
+              return order.items.some((item) => {
+                return (
+                  item.productVariantId.toString() ===
+                  productVariant._id.toString()
+                );
+              });
+            }),
+          };
+        });
+
+      newProductVariants = allProductVariants.filter(
         (productVariant) => productVariant.pendingOrders.length > 0
       );
     }

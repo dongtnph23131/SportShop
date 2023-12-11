@@ -143,7 +143,8 @@ const Page: NextPageWithLayout = () => {
               }}
             />
             <SwitchGroup
-              defaultValue="all"
+              defaultValue={searchParams.get("_status") ?? "all"}
+              value={searchParams.get("_status") ?? "all"}
               onValueChange={(value) => {
                 queryParams({
                   set: {
