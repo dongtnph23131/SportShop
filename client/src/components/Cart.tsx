@@ -88,15 +88,6 @@ const Cart = () => {
       order = { ...order, giftCardId: discount?._id };
     }
     if (data.typePayment === "Online") {
-      if(total+0-couponPrice<=0){
-        order={...order,paymentStatus:'Paid'}
-        await createOrder({ token, order });
-        await removeCart(token).then(() => {
-          message.success("Đặt hàng thành công");
-          navigate("/OrderClient");
-        });
-        return
-      }
       const response: any = await payMomo({ ...order, token });
       if (response) {
         window.location.href = response?.data?.payUrl;
