@@ -395,7 +395,13 @@ const OrderDetail = () => {
                       <td colSpan={data?.order?.status === "Completed" ? 5 : 4}>
                         Tổng thanh toán
                       </td>{" "}
-                      <td>{formatPrice(data?.order?.orderTotalPrice)}</td>
+                      <td>
+                        {formatPrice(
+                          data?.order?.orderTotalPrice > 0
+                            ? data?.order?.orderTotalPrice
+                            : 0
+                        )}
+                      </td>
                     </tr>
                   </tfoot>
                 </table>

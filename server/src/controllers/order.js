@@ -30,8 +30,13 @@ export const create = async (req, res) => {
         couponPrice: body.couponPrice,
         orderTotalPrice:
           validatedBody.totalPrice -
-          validatedBody.shippingPrice -
-          body.couponPrice,
+            validatedBody.shippingPrice -
+            body.couponPrice >
+          0
+            ? validatedBody.totalPrice -
+              validatedBody.shippingPrice -
+              body.couponPrice
+            : 0,
         code: `DH-${generateRandomString()}`,
         discountId: body.discountId,
       });
@@ -49,10 +54,16 @@ export const create = async (req, res) => {
         managerId: staffs[0]._id,
         customerId: user._id,
         couponPrice: body.couponPrice,
+
         orderTotalPrice:
           validatedBody.totalPrice -
-          validatedBody.shippingPrice -
-          body.couponPrice,
+            validatedBody.shippingPrice -
+            body.couponPrice >
+          0
+            ? validatedBody.totalPrice -
+              validatedBody.shippingPrice -
+              body.couponPrice
+            : 0,
         code: `DH-${generateRandomString()}`,
       });
     }
@@ -192,6 +203,13 @@ export const cancelOrderByAcount = async (req, res) => {
     const user = req.user;
     const { id } = req.params;
     const order = await Order.findOne({ _id: id, customerId: user._id });
+    order.items.forEach(async (item) => {
+      const productVariant = await ProductVariant.findById(
+        item.productVariantId
+      );
+      productVariant.inventory = productVariant.inventory + item.quantity;
+      await productVariant.save();
+    });
     if (!order) {
       return res.status(500).json({
         message: "Bạn k có quyền hủy đơn hàng này",
@@ -215,6 +233,7 @@ export const cancelOrderByAcount = async (req, res) => {
         deliveryStatus: "Canceled",
       });
     }
+
     return res.status(200).json({
       message: "Hủy đơn hàng thành công",
     });

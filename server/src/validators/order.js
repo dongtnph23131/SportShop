@@ -7,6 +7,7 @@ export const orderSchema = z.object({
   shippingPrice: z.number().min(0),
   totalPrice: z.number().min(0),
   typePayment: z.string(),
+  paymentStatus:z.string(),
   items: z.array(
     z.object({
       productId: z.string(),
