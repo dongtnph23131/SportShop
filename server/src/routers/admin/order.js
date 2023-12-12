@@ -318,6 +318,26 @@ router.put("/:id/ship", async (req, res) => {
   }
 });
 
+router.put("/:id/refuse-ship", async (req, res) => {
+  try {
+    const { id } = req.params;
+
+    if (!id) {
+      return res.status(400).end("Missing id");
+    }
+
+    const updatedOrder = await Order.findByIdAndUpdate(id, {
+      shipperId: null,
+    });
+
+    return res.status(200).json(updatedOrder);
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.delete("/:id", async (req, res) => {
   try {
     const { id } = req.params;

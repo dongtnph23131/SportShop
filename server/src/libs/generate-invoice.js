@@ -80,8 +80,6 @@ function generateInvoiceTable(doc, invoice) {
   for (i = 0; i < invoice.items.length; i++) {
     const item = invoice.items[i];
 
-    console.log({ item });
-
     const position = invoiceTableTop + (i + 1) * 30;
     generateTableRow(
       doc,
