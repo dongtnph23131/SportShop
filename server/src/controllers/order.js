@@ -14,18 +14,46 @@ export const create = async (req, res) => {
     const body = req.body;
 
     const validatedBody = orderSchema.parse(body);
-    const data = await User.find({ role: "staff" });
-    const staffs = data.sort((a, b) => a.orders.length - b.orders.length);
+    const data = await User.find({
+      role: { $in: ["staff", "shipper"] },
+    }).populate("orders");
+
+    const SevenDays = 7 * 24 * 60 * 60 * 1000;
+
+    const shippers = data
+      .map((user) => user._doc)
+      .filter((user) => user.role === "shipper")
+      .map((user) => ({
+        ...user,
+        orders: user.orders.filter(
+          (item) => item.createdAt.getTime() > Date.now() - SevenDays
+        ),
+      }))
+      .sort((a, b) => a.orders.length - b.orders.length);
+
+    const staffs = data
+      .map((user) => user._doc)
+      .filter((user) => user.role === "staff")
+      .map((staff) => ({
+        ...staff,
+        orders: staff.orders.filter(
+          (item) => item.createdAt.getTime() > Date.now() - SevenDays
+        ),
+      }))
+      .sort((a, b) => a.orders.length - b.orders.length);
+
     if (body.giftCardId) {
       await Gift.findByIdAndUpdate(body.giftCardId, {
         isDisabled: true,
       });
     }
+
     let order;
     if (body.discountId) {
       order = await Order.create({
         ...validatedBody,
         managerId: staffs[0]._id,
+        shipperId: shippers[0]._id,
         customerId: user._id,
         couponPrice: body.couponPrice,
         orderTotalPrice:
@@ -52,6 +80,7 @@ export const create = async (req, res) => {
       order = await Order.create({
         ...validatedBody,
         managerId: staffs[0]._id,
+        shipperId: shippers[0]._id,
         customerId: user._id,
         couponPrice: body.couponPrice,
 
@@ -67,6 +96,7 @@ export const create = async (req, res) => {
         code: `DH-${generateRandomString()}`,
       });
     }
+
     await Promise.all(
       validatedBody.items.map(async (item) => {
         const productVariant = await ProductVariant.findById(
@@ -87,6 +117,7 @@ export const create = async (req, res) => {
         );
       })
     );
+
     await User.findByIdAndUpdate(
       staffs[0]._id,
       {
@@ -98,6 +129,19 @@ export const create = async (req, res) => {
         new: true,
       }
     );
+
+    await User.findByIdAndUpdate(
+      shippers[0]._id,
+      {
+        $addToSet: {
+          orders: order._id,
+        },
+      },
+      {
+        new: true,
+      }
+    );
+
     await Customer.findByIdAndUpdate(
       user._id,
       {

@@ -20,7 +20,7 @@ import { Truck } from "lucide-react";
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar";
 import { useRouter } from "next/router";
 
-export const ChooseShipperDialog = () => {
+export const ChooseShipperDialog = ({ title }: { title: string }) => {
   const router = useRouter();
   const [isOpen, setIsOpen] = React.useState(false);
   const [isLoading, setIsLoading] = React.useState(false);
@@ -34,7 +34,7 @@ export const ChooseShipperDialog = () => {
       <DialogTrigger asChild>
         <Button variant={"secondary"}>
           <Truck className="h-4 w4 mr-2" />
-          Chọn NV giao
+          {title}
         </Button>
       </DialogTrigger>
       <DialogContent className="sm:max-w-[425px]">
