@@ -107,6 +107,10 @@ const orderSchema = mongoose.Schema(
           require: true,
           ref: "ProductVariant",
         },
+        productName: {
+          type: String,
+          require: true,
+        },
         productVariantName: {
           type: String,
           require: true,

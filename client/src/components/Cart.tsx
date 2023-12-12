@@ -72,6 +72,7 @@ const Cart = () => {
         productVariantPrice: item.productVariantIds.price,
         image: item.productIds.images[0].url,
         productVariantName: item.productVariantIds.name,
+        productName: item.productIds.name,
       };
     });
     let order = {
