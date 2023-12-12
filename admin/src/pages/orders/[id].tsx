@@ -46,34 +46,36 @@ const Page: NextPageWithLayout = () => {
         </Button>
 
         <div className="flex items-center gap-2">
-          <Button
-            variant={"secondary"}
-            onClick={async () => {
-              setIsSendLoading(true);
-              const res = await axiosClient.get(
-                `/orders/${order?._id}/invoice/send-email`
-              );
+          <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
+            <Button
+              variant={"secondary"}
+              onClick={async () => {
+                setIsSendLoading(true);
+                const res = await axiosClient.get(
+                  `/orders/${order?._id}/invoice/send-email`
+                );
 
-              if (res.status !== 200) {
-                const error = res.data.message;
+                if (res.status !== 200) {
+                  const error = res.data.message;
+                  setIsSendLoading(false);
+                  toast.error(error);
+                  return;
+                }
+
                 setIsSendLoading(false);
-                toast.error(error);
-                return;
-              }
 
-              setIsSendLoading(false);
-
-              toast.success("Successfully sent email to customer");
-            }}
-            disabled={isSendLoading}
-          >
-            {isSendLoading ? (
-              <Loader2 className="h-4 w-4 mr-2 animate-spin" />
-            ) : (
-              <Send className="h-4 w-4 mr-2" />
-            )}
-            Gửi hóa đơn
-          </Button>
+                toast.success("Successfully sent email to customer");
+              }}
+              disabled={isSendLoading}
+            >
+              {isSendLoading ? (
+                <Loader2 className="h-4 w-4 mr-2 animate-spin" />
+              ) : (
+                <Send className="h-4 w-4 mr-2" />
+              )}
+              Gửi hóa đơn
+            </Button>
+          </Authorization>
 
           <Button
             onClick={async () => {
@@ -405,13 +407,41 @@ const Page: NextPageWithLayout = () => {
                 )}
 
                 <div className="flex items-center gap-2 mt-4">
-                  {!order.shipperId &&
-                    order.deliveryStatus !== OrderDeliveryStatus.SHIPPED && (
-                      <ChooseShipperDialog title="Chọn NV giao" />
+                  <Authorization
+                    allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}
+                  >
+                    {!order.shipperId &&
+                      order.deliveryStatus !== OrderDeliveryStatus.SHIPPED && (
+                        <ChooseShipperDialog title="Chọn NV giao" />
+                      )}
+                    {order.deliveryStatus ===
+                      OrderDeliveryStatus.NOT_SHIPPED && (
+                      <ChooseShipperDialog title="Chọn NV giao khác" />
                     )}
-                  {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
-                    <ChooseShipperDialog title="Chọn NV giao khác" />
-                  )}
+                  </Authorization>
+
+                  <Authorization allowedRoles={[UserRole.SHIPPER]}>
+                    <Button
+                      variant={"destructive"}
+                      onClick={async () => {
+                        try {
+                          const res = await axiosClient.put(
+                            `/orders/${order._id}/refuse-ship`
+                          );
+
+                          toast.success("Từ chối giao hàng thành công");
+                          router.push("/orders");
+                          queryClient.invalidateQueries({
+                            queryKey: ["orders"],
+                          });
+                        } catch (error) {
+                          toast.error("Something went wrong");
+                        }
+                      }}
+                    >
+                      Từ chối giao
+                    </Button>
+                  </Authorization>
                   {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
                     <Button
                       onClick={async () => {
