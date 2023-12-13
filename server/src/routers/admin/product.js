@@ -7,6 +7,7 @@ import {
   productUpdateBodySchema,
 } from "../../validators/product";
 import Comment from "../../models/comment";
+import { cloudinary } from "../../libs/cloudinary";
 
 const router = Router();
 
@@ -148,14 +149,29 @@ router.post("/", async (req, res) => {
         new: true,
       }
     );
+
     const productVariants = await Promise.all(
-      variants.map((variant) => {
+      variants.map(async (variant) => {
+        let image = variant.image;
+
+        if (variant.image) {
+          const { secure_url } = await cloudinary.uploader.upload(image, {
+            public_id: variant.name,
+            folder: "products",
+            overwrite: true,
+            invalidate: true,
+          });
+
+          image = secure_url;
+        }
+
         return ProductVariant.create({
           name: variant.name,
           price: variant.price,
           inventory: variant.inventory,
           options: variant.options,
           sku: variant.sku,
+          image,
           productId: product._id,
         });
       })

@@ -20,6 +20,7 @@ export const productCreateBodySchema = z.object({
       inventory: z.number(),
       options: z.array(z.string()),
       sku: z.string(),
+      image: z.string().nullable(),
     })
   ),
   images: z.array(
