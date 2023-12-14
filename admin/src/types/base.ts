@@ -21,6 +21,7 @@ export interface ProductVariant {
   price: number;
   inventory: number;
   options: string[];
+  image: string;
   productId: string;
   createdAt: string;
   updatedAt: string;

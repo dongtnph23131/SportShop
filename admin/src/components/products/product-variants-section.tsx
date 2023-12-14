@@ -1,6 +1,7 @@
+/* eslint-disable @next/next/no-img-element */
 import { Button } from "@/components/ui/button";
 import React, { useState } from "react";
-import { useFieldArray, useFormContext } from "react-hook-form";
+import { Controller, useFieldArray, useFormContext } from "react-hook-form";
 import { Inputs } from "./add-product-form";
 import { Label } from "@/components/ui/label";
 import { Input } from "@/components/ui/input";
@@ -8,19 +9,18 @@ import {
   FormControl,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
-  UncontrolledFormMessage,
 } from "@/components/ui/form";
 
-import { Trash2 } from "lucide-react";
+import { Trash2, UploadCloud } from "lucide-react";
 import { CreateProductVariantDialog } from "./create-product-variant-dialog";
+import { toast } from "sonner";
 
 export const ProductVariants = () => {
   const form = useFormContext<Inputs>();
   const [open, setOpen] = useState(false);
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     name: "variants",
     control: form.control,
   });
@@ -33,7 +33,8 @@ export const ProductVariants = () => {
       <h3 className="mt-4 font-medium">Biến thể</h3>
 
       <div className="mt-2">
-        <div className="grid grid-cols-[1fr_160px_160px_160px_40px] gap-2">
+        <div className="grid grid-cols-[80px_1fr_160px_160px_160px_40px] gap-2">
+          <Label>Ảnh</Label>
           <Label>Tên</Label>
           <Label>Giá</Label>
           <Label>Kho</Label>
@@ -46,8 +47,72 @@ export const ProductVariants = () => {
           return (
             <div
               key={field.id}
-              className="grid grid-cols-[1fr_160px_160px_160px_40px] gap-2"
+              className="grid grid-cols-[80px_1fr_160px_160px_160px_40px] gap-2"
             >
+              <Controller
+                control={form.control}
+                name={`variants.${index}.image`}
+                render={({ field }) => {
+                  return (
+                    <div>
+                      <label
+                        htmlFor={`imgae-${index}`}
+                        className="group relative mt-1 flex h-[80px] w-[80px] cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
+                      >
+                        <div
+                          className={`absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md bg-white transition-all ${
+                            field.value
+                              ? "opacity-0 group-hover:opacity-100"
+                              : "group-hover:bg-gray-50"
+                          }`}
+                        >
+                          <UploadCloud
+                            className={`h-5 w-5 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
+                          />
+                        </div>
+                        {field.value && (
+                          // eslint-disable-next-line @next/next/no-img-element
+                          <img
+                            src={field.value}
+                            alt="Preview"
+                            className="h-full w-full rounded-md object-cover"
+                          />
+                        )}
+                      </label>
+                      <div className="mt-1 flex rounded-md shadow-sm">
+                        <input
+                          id={`imgae-${index}`}
+                          type="file"
+                          accept="image/*"
+                          className="sr-only"
+                          onChange={(e) => {
+                            const file = e.target.files?.[0];
+                            if (file) {
+                              if (file.size / 1024 / 1024 > 2) {
+                                toast.error("File size too big (max 2MB)");
+                              } else if (
+                                file.type !== "image/png" &&
+                                file.type !== "image/jpeg"
+                              ) {
+                                toast.error(
+                                  "File type not supported (.png or .jpg only)"
+                                );
+                              } else {
+                                const reader = new FileReader();
+                                reader.onload = (e) => {
+                                  field.onChange(e.target?.result as string);
+                                };
+                                reader.readAsDataURL(file);
+                              }
+                            }
+                          }}
+                        />
+                      </div>
+                    </div>
+                  );
+                }}
+              />
+
               <div className="flex items-center">
                 <FormField
                   control={form.control}
@@ -62,6 +127,7 @@ export const ProductVariants = () => {
                   )}
                 />
               </div>
+
               <div className="flex items-center">
                 <FormItem>
                   <FormControl>

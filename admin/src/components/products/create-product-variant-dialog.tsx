@@ -7,7 +7,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from "@/components/ui/dialog";
-import React, { useEffect, useState } from "react";
+import React, { useCallback, useEffect, useState } from "react";
 import {
   UseFieldArrayAppend,
   useFieldArray,
@@ -25,6 +25,8 @@ import {
   SelectTrigger,
   SelectValue,
 } from "@/components/ui/select";
+import { toast } from "sonner";
+import { UploadCloud } from "lucide-react";
 
 interface CreateProductVariantDialogProps {
   open: boolean;
@@ -46,7 +48,10 @@ export const CreateProductVariantDialog = ({
     options: addProductForm
       .getValues("options")
       .map((item) => ({ name: item.name, value: "" })),
+    image: "",
   });
+
+  const [dragActive, setDragActive] = useState(false);
 
   useEffect(() => {
     //Create name for variant based on options
@@ -61,6 +66,26 @@ export const CreateProductVariantDialog = ({
     }
   }, [formState]);
 
+  const onChangePicture = useCallback((e) => {
+    const file = e.target.files[0];
+    if (file) {
+      if (file.size / 1024 / 1024 > 2) {
+        toast.error("File size too big (max 2MB)");
+      } else if (file.type !== "image/png" && file.type !== "image/jpeg") {
+        toast.error("File type not supported (.png or .jpg only)");
+      } else {
+        const reader = new FileReader();
+        reader.onload = (e) => {
+          setFormState((prev) => ({
+            ...prev,
+            image: e.target?.result as string,
+          }));
+        };
+        reader.readAsDataURL(file);
+      }
+    }
+  }, []);
+
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -68,18 +93,109 @@ export const CreateProductVariantDialog = ({
           <DialogTitle>Tạo biến thể</DialogTitle>
         </DialogHeader>
 
-        <div className="space-y-2">
-          <Label>Tên</Label>
-          <Input
-            placeholder="Đen / XL"
-            value={formState.name}
-            onChange={(e) => {
-              setFormState((prev) => ({
-                ...prev,
-                name: e.target.value,
-              }));
-            }}
-          />
+        <div className="flex items-center gap-8">
+          <div>
+            <label
+              htmlFor="image"
+              className="group relative mt-1 flex h-24 w-24 cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
+            >
+              <div
+                className="absolute z-[5] h-full w-full rounded-full"
+                onDragOver={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDragActive(true);
+                }}
+                onDragEnter={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDragActive(true);
+                }}
+                onDragLeave={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDragActive(false);
+                }}
+                onDrop={(e) => {
+                  e.preventDefault();
+                  e.stopPropagation();
+                  setDragActive(false);
+                  const file = e.dataTransfer.files && e.dataTransfer.files[0];
+                  if (file) {
+                    if (file.size / 1024 / 1024 > 2) {
+                      toast.error("File size too big (max 2MB)");
+                    } else if (
+                      file.type !== "image/png" &&
+                      file.type !== "image/jpeg"
+                    ) {
+                      toast.error(
+                        "File type not supported (.png or .jpg only)"
+                      );
+                    } else {
+                      const reader = new FileReader();
+                      reader.onload = (e) => {
+                        setFormState((prev) => ({
+                          ...prev,
+                          image: e.target?.result as string,
+                        }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }
+                }}
+              />
+              <div
+                className={`${
+                  dragActive
+                    ? "cursor-copy border-2 border-black bg-gray-50 opacity-100"
+                    : ""
+                } absolute z-[3] flex h-full w-full flex-col items-center justify-center rounded-md bg-white transition-all ${
+                  formState.image
+                    ? "opacity-0 group-hover:opacity-100"
+                    : "group-hover:bg-gray-50"
+                }`}
+              >
+                <UploadCloud
+                  className={`${
+                    dragActive ? "scale-110" : "scale-100"
+                  } h-5 w-5 text-gray-500 transition-all duration-75 group-hover:scale-110 group-active:scale-95`}
+                />
+              </div>
+              {formState.image && (
+                // eslint-disable-next-line @next/next/no-img-element
+                <img
+                  src={formState.image}
+                  alt="Preview"
+                  className="h-full w-full rounded-md object-cover"
+                />
+              )}
+            </label>
+            <div className="mt-1 flex rounded-md shadow-sm">
+              <input
+                id="image"
+                name="image"
+                type="file"
+                accept="image/*"
+                className="sr-only"
+                onChange={onChangePicture}
+              />
+            </div>
+          </div>
+
+          <div className="space-y-2 flex-1">
+            <Label>Tên</Label>
+            <Input
+              required
+              placeholder="Đen / XL"
+              value={formState.name}
+              onChange={(e) => {
+                setFormState((prev) => ({
+                  ...prev,
+                  name: e.target.value,
+                }));
+              }}
+            />
+          </div>
         </div>
 
         <div>

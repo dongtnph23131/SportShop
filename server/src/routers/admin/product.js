@@ -7,44 +7,17 @@ import {
   productUpdateBodySchema,
 } from "../../validators/product";
 import Comment from "../../models/comment";
+import { cloudinary } from "../../libs/cloudinary";
 
 const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const {
-      _limit = 100,
-      _sort = "createAt",
-      _page = 1,
-      _order = "asc",
-      categories,
-      q,
-    } = req.query;
-    const options = {
-      page: _page,
-      limit: _limit,
-      sort: {
-        [_sort]: _order === "desc" ? -1 : 1,
-      },
-      populate: [{ path: "categoryId" }, { path: "productVariantIds" }],
-    };
-    let searchQuery = q
-      ? {
-          name: { $regex: q, $options: "i" },
-        }
-      : {};
-    if (categories) {
-      searchQuery = {
-        ...searchQuery,
-        categoryId: {
-          $in: categories.split("."),
-        },
-      };
-    }
+    const products = await Product.find().populate(
+      "categoryId productVariantIds"
+    );
 
-    const data = await Product.paginate(searchQuery, options);
-
-    return res.status(200).json(data.docs);
+    return res.status(200).json(products);
   } catch (error) {
     return res.status(500).json({
       message: error.message,
@@ -137,31 +110,59 @@ router.post("/", async (req, res) => {
       options,
       images,
       status,
+      minPrice,
+      maxPrice,
     });
-    await Product.findByIdAndUpdate(
-      product._id,
-      {
-        minPrice,
-        maxPrice,
-      },
-      {
-        new: true,
-      }
-    );
-    const productVariants = await Promise.all(
-      variants.map((variant) => {
-        return ProductVariant.create({
-          name: variant.name,
-          price: variant.price,
-          inventory: variant.inventory,
-          options: variant.options,
-          sku: variant.sku,
-          productId: product._id,
-        });
-      })
-    );
 
-    const productVariantIds = productVariants.map((item) => item._id);
+    const imageSet = new Set();
+
+    let productVariantIds = [];
+
+    for (const variant of variants) {
+      let image = variant.image;
+
+      if (variant.image) {
+        const { secure_url } = await cloudinary.uploader.upload(image, {
+          public_id: variant.name,
+          folder: "products",
+          overwrite: true,
+          invalidate: true,
+        });
+
+        image = secure_url;
+      }
+
+      if (!imageSet.has(variant.image)) {
+        await Product.findByIdAndUpdate(
+          product._id,
+          {
+            $addToSet: {
+              images: {
+                name: variant.name,
+                url: image,
+                publicId: variant.name,
+              },
+            },
+          },
+          {
+            new: true,
+          }
+        );
+      }
+      imageSet.add(variant.image);
+
+      const productVariant = await ProductVariant.create({
+        name: variant.name,
+        price: variant.price,
+        inventory: variant.inventory,
+        options: variant.options,
+        sku: variant.sku,
+        image,
+        productId: product._id,
+      });
+
+      productVariantIds.push(productVariant._id);
+    }
 
     const newProduct = await Product.findByIdAndUpdate(
       product._id,
@@ -182,8 +183,6 @@ router.post("/", async (req, res) => {
 
     return res.status(200).json({
       message: "Thêm sản phẩm thành công",
-      product: newProduct,
-      productVariants,
     });
   } catch (error) {
     console.error(error.message);
@@ -224,6 +223,12 @@ router.put("/:id", async (req, res) => {
       variants,
     } = productUpdateBodySchema.parse(req.body);
 
+    const numberPrice = variants.map((variant) => {
+      return variant.price;
+    });
+    const minPrice = Math.min(...numberPrice);
+    const maxPrice = Math.max(...numberPrice);
+
     const data = await Product.findOneAndUpdate(
       { _id: req.params.id },
       {
@@ -234,6 +239,8 @@ router.put("/:id", async (req, res) => {
         categoryId,
         options,
         images,
+        minPrice,
+        maxPrice,
       },
       {
         new: true,
@@ -246,7 +253,41 @@ router.put("/:id", async (req, res) => {
       });
     }
 
+    const imageSet = new Set();
+
     for (const variant of variants) {
+      let image = variant.image;
+
+      if (variant.image) {
+        const { secure_url } = await cloudinary.uploader.upload(image, {
+          public_id: variant.name,
+          folder: "products",
+          overwrite: true,
+          invalidate: true,
+        });
+
+        image = secure_url;
+      }
+
+      if (!imageSet.has(variant.image)) {
+        await Product.findByIdAndUpdate(
+          req.params.id,
+          {
+            $addToSet: {
+              images: {
+                name: variant.name,
+                url: image,
+                publicId: variant.name,
+              },
+            },
+          },
+          {
+            new: true,
+          }
+        );
+      }
+      imageSet.add(variant.image);
+
       await ProductVariant.findOneAndUpdate(
         { _id: variant.id },
         {
@@ -255,6 +296,7 @@ router.put("/:id", async (req, res) => {
           price: variant.price,
           inventory: variant.inventory,
           options: variant.options,
+          image,
         },
         {
           new: true,
@@ -266,7 +308,7 @@ router.put("/:id", async (req, res) => {
       message: "Cập nhật sản phẩm thành công",
     });
   } catch (error) {
-    return res.status(400).json({
+    return res.status(500).json({
       message: error.message,
     });
   }
