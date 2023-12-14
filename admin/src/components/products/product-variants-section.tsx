@@ -20,15 +20,13 @@ export const ProductVariants = () => {
   const form = useFormContext<Inputs>();
   const [open, setOpen] = useState(false);
 
-  const { fields, append, remove } = useFieldArray({
+  const { fields, append, remove, update } = useFieldArray({
     name: "variants",
     control: form.control,
   });
 
   form.watch("options");
   form.watch("variants");
-
-  console.log({ fields });
 
   return (
     <div>
@@ -58,7 +56,7 @@ export const ProductVariants = () => {
                   return (
                     <div>
                       <label
-                        htmlFor="image"
+                        htmlFor={`imgae-${index}`}
                         className="group relative mt-1 flex h-[80px] w-[80px] cursor-pointer flex-col items-center justify-center rounded-md border border-gray-300 bg-white shadow-sm transition-all hover:bg-gray-50"
                       >
                         <div
@@ -83,8 +81,7 @@ export const ProductVariants = () => {
                       </label>
                       <div className="mt-1 flex rounded-md shadow-sm">
                         <input
-                          id="image"
-                          name="image"
+                          id={`imgae-${index}`}
                           type="file"
                           accept="image/*"
                           className="sr-only"

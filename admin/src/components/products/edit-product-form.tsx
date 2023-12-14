@@ -71,6 +71,7 @@ const formSchema = z.object({
       price: z.number(),
       inventory: z.number(),
       options: z.array(z.string()),
+      image: z.string(),
     })
   ),
 });
@@ -128,6 +129,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         price: variant.price,
         inventory: variant.inventory,
         options: variant.options,
+        image: variant.image,
       })),
     },
   });

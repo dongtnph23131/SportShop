@@ -53,6 +53,7 @@ export const productUpdateBodySchema = z.object({
       price: z.number(),
       inventory: z.number(),
       options: z.array(z.string()),
+      image: z.string().nullable(),
     })
   ),
   images: z.array(
