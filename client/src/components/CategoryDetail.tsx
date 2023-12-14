@@ -158,7 +158,7 @@ const CategoryDetail = () => {
                   defaultCurrent={page}
                   onChange={(value) => setPage(value)}
                   total={productsNoPage?.length}
-                  pageSize={12}
+                  pageSize={8}
                 />
               </section>
             </>
