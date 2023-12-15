@@ -13,9 +13,9 @@ const router = Router();
 
 router.get("/", async (req, res) => {
   try {
-    const products = await Product.find().populate(
-      "categoryId productVariantIds"
-    );
+    const products = await Product.find()
+      .populate("categoryId productVariantIds")
+      .sort({ createdAt: -1 });
 
     return res.status(200).json(products);
   } catch (error) {
