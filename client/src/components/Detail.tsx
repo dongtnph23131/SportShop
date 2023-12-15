@@ -74,6 +74,10 @@ const Detail = () => {
         const cart = {
           token: Cookies.get("token"),
           productVariantIds: selectedVariant._id,
+          productVariantName: selectedVariant.name,
+          productName: product.name,
+          productVariantPrice: selectedVariant.price,
+          image: product.images[0].url,
           quantity,
         };
         try {
@@ -97,14 +101,18 @@ const Detail = () => {
             });
             return;
           }
-          await addItemToCart(cart);
           if (token) {
-            message.success("Sản phẩm đã được thêm vào giỏ hàng");
+            const data: any = await addItemToCart(cart);
+            if (data?.error) {
+              message.error(data?.error?.data?.message);
+            } else {
+              message.success("Sản phẩm đã được thêm vào giỏ hàng");
+            }
+          } else {
+            message.error("Đăng nhập mới được thêm sản phẩm vào giỏ hàng");
           }
         } catch (error) {}
       } else {
-        console.log(selectedVariant);
-
         message.error("Vui lòng chọn thuộc tính sản phẩm!");
       }
     }
@@ -137,229 +145,252 @@ const Detail = () => {
       {isLoading ? (
         <div style={{ textAlign: "center", padding: "20px" }}>Đang tải</div>
       ) : (
-        <div>
-          <section id="prodetails" className="section-p1 ctnr">
-            <div className="single-pro-image">
-              <img
-                src={`${product ? `${product.images[selectedImage].url}` : ``}`}
-                width="100%"
-                id="MainImg"
-                alt=""
-              />
+        <>
+          {!product ? (
+            <p style={{textAlign:'center',padding:'20px'}}>Sản phẩm không tồn tại</p>
+          ) : (
+            <>
+              <div>
+                <section id="prodetails" className="section-p1 ctnr">
+                  <div className="single-pro-image">
+                    <img
+                      src={`${
+                        product ? `${product.images[selectedImage].url}` : ``
+                      }`}
+                      width="100%"
+                      id="MainImg"
+                      alt=""
+                    />
 
-              <div className="small-img-group">
-                {product?.images?.map((item: any, index: any) => {
-                  return (
-                    <div
-                      key={index + 1}
-                      className="small-img-col"
-                      onClick={() => handleImageClick(index)}
-                    >
-                      <img
-                        src={`${item.url}`}
-                        width="100%"
-                        className="small-img"
-                        alt=""
-                      />
-                    </div>
-                  );
-                })}
-              </div>
-            </div>
-
-            <div className="single-pro-details">
-              <h4>{product ? `${product.name}` : ``}</h4>
-              <Rate
-                value={
-                  data?.comments.reduce(
-                    (accumulator: any, currentValue: any) =>
-                      accumulator + currentValue.raiting,
-                    0
-                  ) / data?.comments.length
-                }
-                disabled
-              />
-              <h2 className="price-detail">
-                {" "}
-                {selectedVariant
-                  ? formatPrice(selectedVariant?.price)
-                  : product
-                  ? formatPrice(product.minPrice === product.maxPrice)
-                    ? formatPrice(product.minPrice)
-                    : `${formatPrice(product.minPrice)}-${formatPrice(
-                        product.maxPrice
-                      )}`
-                  : ""}
-              </h2>
-              {product?.options.map((productItem: any, index: any) => {
-                return (
-                  <div key={index + 1} className="box-qlt">
-                    <span>{productItem.name}:</span>
-                    <ul>
-                      {productItem?.values.map((item: any, indexItem: any) => {
-                        const isSelected =
-                          selectedAttributes[productItem.name] === item;
+                    <div className="small-img-group">
+                      {product?.images?.map((item: any, index: any) => {
                         return (
-                          <li
-                            className={isSelected ? "selected" : ""}
-                            key={indexItem + 1}
+                          <div
+                            key={index + 1}
+                            className="small-img-col"
+                            onClick={() => handleImageClick(index)}
                           >
-                            <a
-                              onClick={() =>
-                                handleAttributeChange(productItem.name, item)
-                              }
-                            >
-                              {item}
-                            </a>
-                          </li>
+                            <img
+                              src={`${item.url}`}
+                              width="100%"
+                              className="small-img"
+                              alt=""
+                            />
+                          </div>
                         );
                       })}
-                    </ul>
+                    </div>
                   </div>
-                );
-              })}
-              <p style={{ marginTop: "30px" }}>
-                Số lượng còn: {quantityProduct}
-              </p>
-              {isCheckQuantity ? (
-                <p className="error">
-                  Chỉ được mua tối đa {selectedVariant?.inventory} sản phẩm
-                </p>
-              ) : (
-                ""
-              )}
-              <div className="acticon__addtocart">
-                <div className="box__cremedetail">
-                  <button
-                    className="decrement__cart"
-                    onClick={() => {
-                      if (quantity === 1) {
-                        return;
-                      } else {
-                        setIsCheckQuantity(false);
-                        setQuantity(quantity - 1);
+
+                  <div className="single-pro-details">
+                    <h4>{product ? `${product.name}` : ``}</h4>
+                    <Rate
+                      value={
+                        data?.comments.reduce(
+                          (accumulator: any, currentValue: any) =>
+                            accumulator + currentValue.raiting,
+                          0
+                        ) / data?.comments.length
                       }
-                    }}
-                  >
-                    -
-                  </button>
-                  <InputNumber
-                    className="input__cart"
-                    value={quantity}
-                    min={1}
-                    onChange={(value) => {
-                      if (value <= quantityProduct) {
-                        setIsCheckQuantity(false);
-                        setQuantity(value);
-                      } else {
-                        setQuantity(selectedVariant?.inventory);
-                        setIsCheckQuantity(true);
-                        return;
-                      }
-                    }}
-                  />
-                  <button
-                    className="increment__cart"
-                    onClick={() => {
-                      if (quantity >= quantityProduct) {
-                        setIsCheckQuantity(true);
-                        return;
-                      } else {
-                        setQuantity(quantity + 1);
-                        setIsCheckQuantity(false);
-                      }
-                    }}
-                  >
-                    +
-                  </button>
-                </div>
-                <button className="normal" onClick={handleAddToCart}>
-                  Thêm vào giỏ hàng{" "}
-                </button>
-              </div>
-              <h4>Mô tả</h4>
-              <span>{product ? product.description : ""}</span>
-            </div>
-          </section>
-          <section className="comment">
-            <div className="container">
-              <div className="form-title">
-                <h3 className="text-xl">Nhận xét - Đánh giá !</h3>
-              </div>
-              {data?.comments?.length === 0 && (
-                <div
-                  style={{
-                    textAlign: "center",
-                    fontSize: "20px",
-                    marginTop: "20px",
-                  }}
-                >
-                 Sản phẩm chưa có đánh giá nào
-                </div>
-              )}
-              {data?.comments?.map((item: any) => {
-                return (
-                  item.isHidden === false && (
-                    <div key={item._id} className="rating__old">
-                      <div className="rating__old__item">
-                        <div className="avt">
-                          <img src={`${item.customerId.avatar}`} alt="" />
+                      disabled
+                    />
+                    <h2 className="price-detail">
+                      {" "}
+                      {selectedVariant
+                        ? formatPrice(selectedVariant?.price)
+                        : product
+                        ? formatPrice(product.minPrice === product.maxPrice)
+                          ? formatPrice(product.minPrice)
+                          : `${formatPrice(product.minPrice)}-${formatPrice(
+                              product.maxPrice
+                            )}`
+                        : ""}
+                    </h2>
+                    {product?.options.map((productItem: any, index: any) => {
+                      return (
+                        <div key={index + 1} className="box-qlt">
+                          <span>{productItem.name}:</span>
+                          <ul>
+                            {productItem?.values.map(
+                              (item: any, indexItem: any) => {
+                                const isSelected =
+                                  selectedAttributes[productItem.name] === item;
+                                return (
+                                  <li
+                                    className={isSelected ? "selected" : ""}
+                                    key={indexItem + 1}
+                                  >
+                                    <a
+                                      onClick={() =>
+                                        handleAttributeChange(
+                                          productItem.name,
+                                          item
+                                        )
+                                      }
+                                    >
+                                      {item}
+                                    </a>
+                                  </li>
+                                );
+                              }
+                            )}
+                          </ul>
                         </div>
-                        <div className="old__comment">
-                          <div className="old__comment__item">
-                            <div className="ratings">
-                              <Rate disabled value={item.raiting} />
-                            </div>
-                            <div style={{marginTop:'10px'}} className="date__comment">
-                              {new Date(item?.createdAt)?.toLocaleString()}
+                      );
+                    })}
+                    <p style={{ marginTop: "30px" }}>
+                      Số lượng còn: {quantityProduct}
+                    </p>
+                    {isCheckQuantity ? (
+                      <p className="error">
+                        Chỉ được mua tối đa {selectedVariant?.inventory} sản
+                        phẩm
+                      </p>
+                    ) : (
+                      ""
+                    )}
+                    <div className="acticon__addtocart">
+                      <div className="box__cremedetail">
+                        <button
+                          className="decrement__cart"
+                          onClick={() => {
+                            if (quantity === 1) {
+                              return;
+                            } else {
+                              setIsCheckQuantity(false);
+                              setQuantity(quantity - 1);
+                            }
+                          }}
+                        >
+                          -
+                        </button>
+                        <InputNumber
+                          className="input__cart"
+                          value={quantity}
+                          min={1}
+                          onChange={(value) => {
+                            if (value <= quantityProduct) {
+                              setIsCheckQuantity(false);
+                              setQuantity(value);
+                            } else {
+                              setQuantity(selectedVariant?.inventory);
+                              setIsCheckQuantity(true);
+                              return;
+                            }
+                          }}
+                        />
+                        <button
+                          className="increment__cart"
+                          onClick={() => {
+                            if (quantity >= quantityProduct) {
+                              setIsCheckQuantity(true);
+                              return;
+                            } else {
+                              setQuantity(quantity + 1);
+                              setIsCheckQuantity(false);
+                            }
+                          }}
+                        >
+                          +
+                        </button>
+                      </div>
+                      <button className="normal" onClick={handleAddToCart}>
+                        Thêm vào giỏ hàng{" "}
+                      </button>
+                    </div>
+                    <h4>Mô tả</h4>
+                    <span>{product ? product.description : ""}</span>
+                  </div>
+                </section>
+                <section className="comment">
+                  <div className="container">
+                    <div className="form-title">
+                      <h3 className="text-xl">Nhận xét - Đánh giá !</h3>
+                    </div>
+                    {data?.comments?.length === 0 && (
+                      <div
+                        style={{
+                          textAlign: "center",
+                          fontSize: "20px",
+                          marginTop: "20px",
+                        }}
+                      >
+                        Sản phẩm chưa có đánh giá nào
+                      </div>
+                    )}
+                    {data?.comments?.map((item: any) => {
+                      return (
+                        item.isHidden === false && (
+                          <div key={item._id} className="rating__old">
+                            <div className="rating__old__item">
+                              <div className="avt">
+                                <img src={`${item.customerId.avatar}`} alt="" />
+                              </div>
+                              <div className="old__comment">
+                                <div className="old__comment__item">
+                                  <div className="ratings">
+                                    <Rate disabled value={item.raiting} />
+                                  </div>
+                                  <div
+                                    style={{ marginTop: "10px" }}
+                                    className="date__comment"
+                                  >
+                                    {new Date(
+                                      item?.createdAt
+                                    )?.toLocaleString()}
+                                  </div>
+                                </div>
+                                <div className="last__comment">
+                                  {item.content}
+                                </div>
+                              </div>
                             </div>
                           </div>
-                          <div className="last__comment">{item.content}</div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                );
-              })}
-            </div>
-          </section>
-          <section id="product1" className="section-p1 ctnr">
-            <h2>SẢN PHẨM LIÊN QUAN</h2>
-            <div className="pro-container">
-              {products?.map((product: any, index: any) => {
-                return (
-                  <div
-                    onClick={() => {
-                      navigate(`/products/${product._id}`);
-                    }}
-                    className="pro"
-                    key={index + 1}
-                  >
-                    <img src={`${product?.images[0].url}`} alt="" />
-                    <div className="des">
-                      <span>{product?.categoryId?.name}</span>
-                      <h5>{product.name}</h5>
-                      <h4>
-                        {formatPrice(product.minPrice)} -{" "}
-                        {formatPrice(product.maxPrice)}
-                      </h4>
-                    </div>
-                    <Rate value={product?.raitings} disabled />
-                    <a>
-                      <i className="fab fa-opencart cart"></i>
-                    </a>
+                        )
+                      );
+                    })}
                   </div>
-                );
-              })}
-            </div>
-            <Pagination
-              defaultCurrent={page}
-              total={productsNoPage?.length}
-              onChange={(value) => setPage(value)}
-              pageSize={4}
-            />
-          </section>
-        </div>
+                </section>
+                <section id="product1" className="section-p1 ctnr">
+                  <h2>SẢN PHẨM LIÊN QUAN</h2>
+                  <div className="pro-container">
+                    {products?.map((product: any, index: any) => {
+                      return (
+                        <div
+                          onClick={() => {
+                            navigate(`/products/${product._id}`);
+                          }}
+                          className="pro"
+                          key={index + 1}
+                        >
+                          <img src={`${product?.images[0].url}`} alt="" />
+                          <div className="des">
+                            <span>{product?.categoryId?.name}</span>
+                            <h5>{product.name}</h5>
+                            <h4>
+                              {formatPrice(product.minPrice)} -{" "}
+                              {formatPrice(product.maxPrice)}
+                            </h4>
+                          </div>
+                          <Rate value={product?.raitings} disabled />
+                          <a>
+                            <i className="fab fa-opencart cart"></i>
+                          </a>
+                        </div>
+                      );
+                    })}
+                  </div>
+                  <Pagination
+                    defaultCurrent={page}
+                    total={productsNoPage?.length}
+                    onChange={(value) => setPage(value)}
+                    pageSize={4}
+                  />
+                </section>
+              </div>
+            </>
+          )}
+        </>
       )}
     </>
   );

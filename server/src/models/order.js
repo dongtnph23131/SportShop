@@ -138,6 +138,9 @@ const orderSchema = mongoose.Schema(
       require: true,
       ref: "Discount",
     },
+    discountCode: {
+      type: String,
+    },
   },
   { timestamps: true, versionKey: false }
 );

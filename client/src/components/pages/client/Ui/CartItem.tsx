@@ -6,7 +6,7 @@ import {
   useUpdateItemCartMutation,
 } from "../../../../api/cart";
 import Swal from "sweetalert2";
-import { InputNumber } from "antd";
+import { InputNumber, message } from "antd";
 const CartItem = ({ item }: any) => {
   const token = Cookies.get("token");
   const [addCart] = useAddItemCartMutation();
@@ -30,11 +30,15 @@ const CartItem = ({ item }: any) => {
         });
         return;
       } else {
-        await updateItemCart({
+        const data:any = await updateItemCart({
           productVariantIds: item?.productVariantIds?._id,
           quantity,
           token,
         });
+        if (data?.error) {
+          message.error(data?.error?.data?.message);
+        } else {
+        }
       }
     }
   };
@@ -46,7 +50,7 @@ const CartItem = ({ item }: any) => {
     } = {}
   ) {
     const { currency = "VND" } = options;
-  
+
     return new Intl.NumberFormat("vi", {
       style: "currency",
       currency,
@@ -67,23 +71,27 @@ const CartItem = ({ item }: any) => {
         </button>
       </td>
       <td>
-        <img src={`${item?.productIds?.images[0].url}`} alt="" />
+        <img src={`${item?.image}`} alt="" />
       </td>
       <td>
-        {item?.productIds?.name} -- {item?.productVariantIds?.name}
+        {item?.productName} -- {item?.productVariantName}
       </td>
-      <td>{formatPrice(item?.productVariantIds?.price)}</td>
+      <td>{formatPrice(item?.productVariantPrice)}</td>
 
       <td>
         <div className="box__crement">
           <button
             className="decrement__cart"
-            onClick={() =>
-              removeItemCart({
+            onClick={async () => {
+              const data: any = await removeItemCart({
                 productVariantIds: item?.productVariantIds?._id,
                 token,
-              })
-            }
+              });
+              if (data?.error) {
+                message.error(data?.error?.data?.message);
+              } else {
+              }
+            }}
           >
             -
           </button>
@@ -94,7 +102,7 @@ const CartItem = ({ item }: any) => {
           />
           <button
             className="increment__cart"
-            onClick={() => {
+            onClick={async () => {
               if (item.quantity === item?.productVariantIds?.inventory) {
                 Swal.fire({
                   icon: "error",
@@ -102,11 +110,16 @@ const CartItem = ({ item }: any) => {
                 });
                 return;
               } else {
-                addCart({
+                const data: any = await addCart({
                   productVariantIds: item?.productVariantIds?._id,
                   token,
+                  ...item,
                   quantity: 1,
                 });
+                if (data?.error) {
+                  message.error(data?.error?.data?.message);
+                } else {
+                }
               }
             }}
           >
@@ -117,7 +130,7 @@ const CartItem = ({ item }: any) => {
 
       <td>
         <div className="priceAll">
-          {formatPrice(item?.productVariantIds?.price * Number(item?.quantity))}
+          {formatPrice(item?.productVariantPrice * Number(item?.quantity))}
         </div>
       </td>
     </tr>

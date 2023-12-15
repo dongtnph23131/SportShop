@@ -12,7 +12,19 @@ export const create = async (req, res) => {
   try {
     const user = req.user;
     const body = req.body;
-
+    const checkItems = await Promise.all(
+      await body.items.map(async (element) => {
+        const productVariant = await ProductVariant.findById(
+          element.productVariantId
+        );
+        return productVariant;
+      })
+    );
+    if (checkItems.includes(null) || checkItems.includes(undefined)) {
+      return res.status(400).json({
+        message: "Đơn hàng có sản phẩm đã không tồn tại",
+      });
+    }
     const validatedBody = orderSchema.parse(body);
     const data = await User.find({
       role: { $in: ["staff", "shipper"] },
@@ -50,6 +62,12 @@ export const create = async (req, res) => {
 
     let order;
     if (body.discountId) {
+      const discountCheck = await Discount.findById(body.discountId);
+      if (!discountCheck) {
+        return res.status(400).json({
+          message: "Mã giảm giá không tồn tại",
+        });
+      }
       order = await Order.create({
         ...validatedBody,
         managerId: staffs[0]._id,
@@ -67,6 +85,7 @@ export const create = async (req, res) => {
             : 0,
         code: `DH-${generateRandomString()}`,
         discountId: body.discountId,
+        discountCode: discountCheck.code,
       });
       const discount = await Discount.findById(body.discountId);
       await Discount.findByIdAndUpdate(

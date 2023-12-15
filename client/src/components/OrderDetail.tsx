@@ -233,9 +233,12 @@ const OrderDetail = () => {
                     className="detail-order-status"
                     onClick={async () => {
                       if (confirm("Bạn có muốn hủy đơn hàng không ?")) {
-                        await cancelOrder({ token, id }).then(() => {
+                        const data: any = await cancelOrder({ token, id });
+                        if (data?.error) {
+                          message.error("Bạn không thể hủy đơn hàng");
+                        } else {
                           message.success("Hủy đơn hàng thành công");
-                        });
+                        }
                       }
                     }}
                   >

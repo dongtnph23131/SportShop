@@ -17,11 +17,28 @@ const cartApi = createApi({
       providesTags: ["Cart"],
     }),
     addItemCart: builder.mutation({
-      query: ({ productVariantIds, productId, token, quantity }) => {
+      query: ({
+        productVariantIds,
+        productId,
+        token,
+        quantity,
+        productName,
+        productVariantName,
+        productVariantPrice,
+        image,
+      }) => {
         return {
           url: "/add-to-cart",
           method: "POST",
-          body: { productVariantIds, productId, quantity },
+          body: {
+            productVariantIds,
+            productId,
+            quantity,
+            productName,
+            productVariantName,
+            productVariantPrice,
+            image,
+          },
           headers: {
             Authorization: `Bearer ${token}`,
           },

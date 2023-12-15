@@ -5,7 +5,7 @@ import * as yup from "yup";
 import { useForm } from "react-hook-form";
 import { yupResolver } from "@hookform/resolvers/yup";
 import { useCreateOrderMutation } from "../api/order";
-import { message } from "antd";
+import { Button, message } from "antd";
 import { useNavigate } from "react-router-dom";
 import { useEffect, useRef, useState } from "react";
 import { Modal } from "antd";
@@ -45,6 +45,8 @@ const Cart = () => {
   const { data: addresses } = useGetAddressByAcountQuery(token);
   const { data: carts, isLoading: isLoadingCart } =
     useGetCartOfUserQuery(token);
+  console.log(carts);
+
   const total = token
     ? carts?.reduce(
         (accumulator: any, currentValue: any) =>
@@ -64,15 +66,19 @@ const Cart = () => {
       });
       return;
     }
+    console.log();
+
     const items = carts.map((item: any) => {
       return {
-        productId: item.productIds._id,
-        productVariantId: item.productVariantIds._id,
+        productId: item.productIds ? item.productIds._id : undefined,
+        productVariantId: item.productVariantIds
+          ? item.productVariantIds._id
+          : undefined,
         quantity: item.quantity,
-        productVariantPrice: item.productVariantIds.price,
-        image: item.productIds.images[0].url,
-        productVariantName: item.productVariantIds.name,
-        productName: item.productIds.name,
+        productVariantPrice: item.productVariantPrice,
+        image: item.image,
+        productVariantName: item.productVariantName,
+        productName: item.productName,
       };
     });
     let order = {
@@ -95,11 +101,15 @@ const Cart = () => {
       }
       return;
     }
-    await createOrder({ token, order });
-    await removeCart(token).then(() => {
-      message.success("Đặt hàng thành công");
-      navigate("/OrderClient");
-    });
+    const response: any = await createOrder({ token, order });
+    if (response?.error) {
+      message.error(response?.error?.data?.message);
+    } else {
+      await removeCart(token).then(() => {
+        message.success("Đặt hàng thành công");
+        navigate("/OrderClient");
+      });
+    }
   };
 
   const [isAddressModalVisible, setAddressModalVisible] = useState(false);
@@ -465,7 +475,16 @@ const Cart = () => {
                         const data = await axios.get(
                           `http://localhost:8080/api/discounts/${code}`
                         );
-
+                        if (
+                          data?.data?.discount?.usageLimit >=
+                          data?.data?.discount?.usageCount
+                        ) {
+                          Swal.fire({
+                            icon: "error",
+                            title: `Mã giảm giá không tồn tại`,
+                          });
+                          return;
+                        }
                         if (
                           new Date(data?.data?.discount?.startAt) > new Date()
                         ) {
@@ -532,6 +551,18 @@ const Cart = () => {
                   >
                     Áp dụng
                   </button>
+                  <Button
+                    disabled={!discount}
+                    onClick={() => {
+                      setDiscount(undefined);
+                      setCouponPrice(0);
+                      setCode("");
+                      setIsUseDiscount(false);
+                    }}
+                    style={{ marginLeft: "20px" }}
+                  >
+                    Clear voucher
+                  </Button>
                 </div>
                 {isUseDiscount ? (
                   <p style={{ color: "green" }}>Mã giảm giá được áp dụng</p>

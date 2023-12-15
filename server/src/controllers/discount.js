@@ -3,7 +3,7 @@ export const searchDiscount = async (req, res) => {
   try {
     const code = req.params.code;
     const discount = await Discount.findOne({ code: code });
-    if (!discount) {
+    if (!discount || discount.usageLimit >= discount.usageCount) {
       return res.status(400).json({
         message: "Mã khuyến mại không tồn tại",
       });
@@ -32,4 +32,3 @@ export const getDiscount = async (req, res) => {
     });
   }
 };
-

@@ -144,6 +144,12 @@ export const MomoSuccess = async (req, res) => {
   const user = await Customer.findById(id);
   let order;
   if (body?.discountId) {
+    const discountCheck = await Discount.findById(body.discountId);
+    if (!discountCheck) {
+      return res.status(400).json({
+        message: "Mã giảm giá không tồn tại",
+      });
+    }
     order = await Order.create({
       ...body,
       typePayment: "Online",
