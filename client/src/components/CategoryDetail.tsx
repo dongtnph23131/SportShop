@@ -34,7 +34,7 @@ const CategoryDetail = () => {
       setCategory(data.data);
     });
   }, [sort, order, page]);
-  const formatPrice = (price:any) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -43,89 +43,102 @@ const CategoryDetail = () => {
   };
   return (
     <div>
-      <h4 className="brackham">
-        <span className="ctnr">
-          Danh mục / {`${category ? `${category?.name}` : ``}`}
-        </span>
-      </h4>
+      <div
+        style={{
+          background: "#cccccc52",
+        }}
+      >
+        <div
+          style={{ maxWidth: "1360px", padding: "8px 80px", margin: "auto" }}
+        >
+          <span>Danh mục / {`${category ? `${category?.name}` : ``}`}</span>
+        </div>
+      </div>
       {isLoading ? (
         <p style={{ textAlign: "center", marginTop: "20px" }}>Đang tải ...</p>
       ) : (
         <>
           {products?.length > 0 ? (
             <>
-              <div className="sort-shops ctnr">
-                <span onClick={handleSortClick}>Sắp xếp</span>
-                {ishandleSortVisible && (
-                  <div className="box-sort-shops">
-                    <div className="item-sort-shops">
-                      <ul className="items-sort-ul">
-                        <li
-                          onClick={() => {
-                            setSort("maxPrice");
-                            setOrder("asc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>Giá tăng dần</p>
-                        </li>
-                        <li
-                          onClick={() => {
-                            setSort("maxPrice");
-                            setOrder("desc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>Giá giảm dần</p>
-                        </li>
-                        <li
-                          onClick={() => {
-                            setSort("name");
-                            setOrder("asc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>A-Z</p>
-                        </li>
-                        <li
-                          onClick={() => {
-                            setSort("name");
-                            setOrder("desc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>Z-A</p>
-                        </li>
-                        <li
-                          onClick={() => {
-                            setSort("createdAt");
-                            setOrder("desc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>Mới nhất</p>
-                        </li>
-                        <li
-                          onClick={() => {
-                            setSort("createdAt");
-                            setOrder("asc");
-                            setIsSortVisible(false);
-                            setPage(1);
-                          }}
-                        >
-                          <p>Cũ nhất</p>
-                        </li>
-                      </ul>
-                    </div>
-                  </div>
-                )}
-              </div>
               <section id="product1" className="section-p1 ctnr">
+                <div
+                  className="sort-shops"
+                  style={{
+                    display: "flex",
+                    justifyContent: "start",
+                  }}
+                >
+                  <span onClick={handleSortClick}>Sắp xếp</span>
+                  {ishandleSortVisible && (
+                    <div className="box-sort-shops">
+                      <div className="item-sort-shops">
+                        <ul className="items-sort-ul">
+                          <li
+                            onClick={() => {
+                              setSort("maxPrice");
+                              setOrder("asc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>Giá tăng dần</p>
+                          </li>
+                          <li
+                            onClick={() => {
+                              setSort("maxPrice");
+                              setOrder("desc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>Giá giảm dần</p>
+                          </li>
+                          <li
+                            onClick={() => {
+                              setSort("name");
+                              setOrder("asc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>A-Z</p>
+                          </li>
+                          <li
+                            onClick={() => {
+                              setSort("name");
+                              setOrder("desc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>Z-A</p>
+                          </li>
+                          <li
+                            onClick={() => {
+                              setSort("createdAt");
+                              setOrder("desc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>Mới nhất</p>
+                          </li>
+                          <li
+                            onClick={() => {
+                              setSort("createdAt");
+                              setOrder("asc");
+                              setIsSortVisible(false);
+                              setPage(1);
+                            }}
+                          >
+                            <p>Cũ nhất</p>
+                          </li>
+                        </ul>
+                      </div>
+                    </div>
+                  )}
+                </div>
+
                 <div className="pro-container">
                   {products?.map((product: any, index: any) => {
                     return (
@@ -143,7 +156,9 @@ const CategoryDetail = () => {
                           <h4>
                             {product.minPrice === product.maxPrice
                               ? `${formatPrice(product.maxPrice)}`
-                              : `${formatPrice(product.minPrice)}-${formatPrice(product.maxPrice)}`}
+                              : `${formatPrice(product.minPrice)}-${formatPrice(
+                                  product.maxPrice
+                                )}`}
                           </h4>
                         </div>
                         <Rate value={product?.raitings} disabled />

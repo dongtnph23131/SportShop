@@ -14,7 +14,14 @@ const Detail = () => {
   const { data: product, isLoading } = useGetProductQuery(id);
   const [addItemToCart] = useAddItemCartMutation();
   const [selectedAttributes, setSelectedAttributes] = useState<any>({});
-  const [selectedImage, setSelectedImage] = useState<number>(0);
+  const [selectedImage, setSelectedImage] = useState<string>(
+    product?.images[0].url
+  );
+
+  useEffect(() => {
+    setSelectedImage(product?.images[0].url);
+  }, [isLoading, product?.images]);
+
   const [page, setPage] = useState<any>(1);
   const { data } = useGetAllCommentByProductQuery(id);
   const navigate = useNavigate();
@@ -22,6 +29,19 @@ const Detail = () => {
   const [productsNoPage, setProductsNoPage] = useState<any>([]);
   const [quantityProduct, setQuantityProduct] = useState<any>();
   const [isCheckQuantity, setIsCheckQuantity] = useState<any>(false);
+
+  const selectedVariant = product?.productVariantIds.find((item: any) =>
+    item.options.every((option: any) =>
+      Object.values(selectedAttributes).includes(option)
+    )
+  );
+
+  useEffect(() => {
+    if (selectedVariant?.image) {
+      setSelectedImage(selectedVariant.image);
+    }
+  }, [selectedVariant]);
+
   useEffect(() => {
     if (product) {
       getCategoryDetail(product.categoryId).then((data) => {
@@ -60,12 +80,6 @@ const Detail = () => {
     }
   }, [product, page, selectedAttributes]);
   const { data: carts } = useGetCartOfUserQuery(token);
-
-  const selectedVariant = product?.productVariantIds.find((item: any) =>
-    item.options.every((option: any) =>
-      Object.values(selectedAttributes).includes(option)
-    )
-  );
 
   const [quantity, setQuantity] = useState<any>(1);
   const handleAddToCart = async () => {
@@ -126,20 +140,19 @@ const Detail = () => {
       [attributeName]: value,
     });
   };
-  const handleImageClick = (index: number) => {
-    setSelectedImage(index);
-  };
 
   useEffect(() => {
     window.scrollTo(0, 0);
   }, [id]);
   const formatPrice = (price: any) => {
-    const formattedPrice = new Intl.NumberFormat("vi-VN", {
+    const formattedPrice = new Intl.NumberFormat("vi", {
       style: "currency",
       currency: "VND",
     }).format(price);
+
     return formattedPrice;
   };
+
   return (
     <>
       {isLoading ? (
@@ -147,20 +160,25 @@ const Detail = () => {
       ) : (
         <>
           {!product ? (
-            <p style={{textAlign:'center',padding:'20px'}}>Sản phẩm không tồn tại</p>
+            <p style={{ textAlign: "center", padding: "20px" }}>
+              Sản phẩm không tồn tại
+            </p>
           ) : (
             <>
               <div>
                 <section id="prodetails" className="section-p1 ctnr">
                   <div className="single-pro-image">
-                    <img
-                      src={`${
-                        product ? `${product.images[selectedImage].url}` : ``
-                      }`}
-                      width="100%"
-                      id="MainImg"
-                      alt=""
-                    />
+                    <div className="project-image-wrapper">
+                      <img
+                        src={
+                          selectedImage ? selectedImage : product.images[0].url
+                        }
+                        width="100%"
+                        id="MainImg"
+                        className="product-image"
+                        alt=""
+                      />
+                    </div>
 
                     <div className="small-img-group">
                       {product?.images?.map((item: any, index: any) => {
@@ -168,12 +186,15 @@ const Detail = () => {
                           <div
                             key={index + 1}
                             className="small-img-col"
-                            onClick={() => handleImageClick(index)}
+                            onClick={() => setSelectedImage(item.url)}
                           >
                             <img
                               src={`${item.url}`}
-                              width="100%"
-                              className="small-img"
+                              className={`small-img ${
+                                selectedImage === item.url
+                                  ? "small-img-active"
+                                  : ""
+                              }`}
                               alt=""
                             />
                           </div>
@@ -183,7 +204,10 @@ const Detail = () => {
                   </div>
 
                   <div className="single-pro-details">
-                    <h4>{product ? `${product.name}` : ``}</h4>
+                    <div style={{ fontWeight: 400, fontSize: "40px" }}>
+                      {product ? `${product.name}` : ``}
+                    </div>
+
                     <Rate
                       value={
                         data?.comments.reduce(
@@ -194,18 +218,19 @@ const Detail = () => {
                       }
                       disabled
                     />
-                    <h2 className="price-detail">
+
+                    <h5 className="price-detail">
                       {" "}
                       {selectedVariant
                         ? formatPrice(selectedVariant?.price)
                         : product
-                        ? formatPrice(product.minPrice === product.maxPrice)
+                        ? product.minPrice === product.maxPrice
                           ? formatPrice(product.minPrice)
-                          : `${formatPrice(product.minPrice)}-${formatPrice(
+                          : `${formatPrice(product.minPrice)} - ${formatPrice(
                               product.maxPrice
                             )}`
                         : ""}
-                    </h2>
+                    </h5>
                     {product?.options.map((productItem: any, index: any) => {
                       return (
                         <div key={index + 1} className="box-qlt">
@@ -238,17 +263,31 @@ const Detail = () => {
                         </div>
                       );
                     })}
-                    <p style={{ marginTop: "30px" }}>
-                      Số lượng còn: {quantityProduct}
-                    </p>
-                    {isCheckQuantity ? (
-                      <p className="error">
-                        Chỉ được mua tối đa {selectedVariant?.inventory} sản
-                        phẩm
-                      </p>
-                    ) : (
-                      ""
-                    )}
+
+                    <div
+                      style={{
+                        display: "flex",
+                        marginTop: "30px",
+                        alignItems: "center",
+                        gap: "10px",
+                      }}
+                    >
+                      <p>Số lượng còn: {quantityProduct}</p>
+                      {isCheckQuantity ? (
+                        <p
+                          style={{
+                            color: "#d0011b",
+                            fontStyle: "italic",
+                          }}
+                        >
+                          Chỉ được mua tối đa {selectedVariant?.inventory} sản
+                          phẩm
+                        </p>
+                      ) : (
+                        ""
+                      )}
+                    </div>
+
                     <div className="acticon__addtocart">
                       <div className="box__cremedetail">
                         <button
