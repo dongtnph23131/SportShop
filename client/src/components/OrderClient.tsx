@@ -12,7 +12,7 @@ const OrderClient = () => {
   useEffect(() => {
     setOrders(data?.orders.slice((page - 1) * 4, page * 4));
   }, [page, data]);
-  const formatPrice = (price:any) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -80,9 +80,7 @@ const OrderClient = () => {
                                                 {itemOrder?.productVariantName}
                                               </a>{" "}
                                               <div className="order-item-variant-label">
-                                                {
-                                                  itemOrder?.productVariantName
-                                                }
+                                                {itemOrder?.productVariantName}
                                               </div>{" "}
                                               <div className="order-item-quantity">
                                                 x {itemOrder.quantity}
@@ -117,14 +115,18 @@ const OrderClient = () => {
                   );
                 })}
               </div>
-              <div style={{ textAlign: "center", padding: "20px" }}>
-                <Pagination
-                  defaultCurrent={1}
-                  onChange={(value) => setPage(value)}
-                  total={data?.orders?.length}
-                  pageSize={4}
-                />
-              </div>
+              {orders?.length > 0 ? (
+                <div style={{ textAlign: "center", padding: "20px" }}>
+                  <Pagination
+                    defaultCurrent={1}
+                    onChange={(value) => setPage(value)}
+                    total={data?.orders?.length}
+                    pageSize={4}
+                  />
+                </div>
+              ) : (
+                <></>
+              )}
             </div>
           </div>
         </div>

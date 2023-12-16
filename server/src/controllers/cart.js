@@ -12,8 +12,10 @@ export const addCart = async (req, res) => {
       image,
     } = req.body;
     const user = req.user;
-    const productVariant = await ProductVariant.findById(productVariantIds);
-    if (!productVariant) {
+    const productVariant = await ProductVariant.findById(
+      productVariantIds
+    ).populate("productId");
+    if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
         message: "Sản phẩm không còn tồn tại",
       });
@@ -125,8 +127,8 @@ export const getCartOfUser = async (req, res) => {
 export const removeItem = async (req, res) => {
   try {
     const { productVariantIds } = req.body;
-    const productVariant = await ProductVariant.findById(productVariantIds);
-    if (!productVariant) {
+    const productVariant = await ProductVariant.findById(productVariantIds).populate('productId');
+    if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
         message: "Sản phẩm không còn tồn tại",
       });
@@ -177,8 +179,8 @@ export const removeItem = async (req, res) => {
 export const updateItem = async (req, res) => {
   try {
     const { productVariantIds, quantity } = req.body;
-    const productVariant = await ProductVariant.findById(productVariantIds);
-    if (!productVariant) {
+    const productVariant = await ProductVariant.findById(productVariantIds).populate('productId');
+    if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
         message: "Sản phẩm không còn tồn tại",
       });

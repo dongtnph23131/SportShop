@@ -90,7 +90,11 @@ const Cart = () => {
       email: Cookies.get("email"),
     };
     if (discount && !isUseGiftCard.current) {
-      order = { ...order, discountId: discount?._id };
+      order = {
+        ...order,
+        discountId: discount?._id,
+        discountCode: discount.code,
+      };
     } else {
       order = { ...order, giftCardId: discount?._id };
     }

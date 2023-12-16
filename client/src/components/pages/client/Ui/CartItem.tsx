@@ -113,7 +113,6 @@ const CartItem = ({ item }: any) => {
                 const data: any = await addCart({
                   productVariantIds: item?.productVariantIds?._id,
                   token,
-                  ...item,
                   quantity: 1,
                 });
                 if (data?.error) {

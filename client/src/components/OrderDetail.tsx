@@ -153,13 +153,13 @@ const OrderDetail = () => {
                         {data?.order?.typePayment}
                       </div>
                     </li>
-                    {data?.order?.discountId ? (
+                    {data?.order?.discountCode ? (
                       <li>
                         <div className="detail-order-info__title">
                           Mã giảm giá
                         </div>
                         <div className="detail-order-info__content">
-                          {data?.order?.discountId?.code}
+                          {data?.order?.discountCode}
                         </div>
                       </li>
                     ) : (
@@ -285,7 +285,7 @@ const OrderDetail = () => {
                           <td>{item?.productVariantName}</td>{" "}
                           <td>
                             {formatPrice(
-                              item?.quantity * item?.productVariantId?.price
+                              item?.quantity * item?.productVariantPrice
                             )}
                           </td>
                           {data?.order?.status === "Completed" ? (

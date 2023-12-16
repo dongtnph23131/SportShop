@@ -16,13 +16,21 @@ export const create = async (req, res) => {
       await body.items.map(async (element) => {
         const productVariant = await ProductVariant.findById(
           element.productVariantId
-        );
+        ).populate("productId");
         return productVariant;
       })
     );
     if (checkItems.includes(null) || checkItems.includes(undefined)) {
       return res.status(400).json({
         message: "Đơn hàng có sản phẩm đã không tồn tại",
+      });
+    }
+    const checkItemsActive = checkItems.map((item) => {
+      return item.productId.status === "Active";
+    });
+    if (checkItemsActive.includes(false)) {
+      return res.status(400).json({
+        message: "Đơn hàng có sản phẩm đã không còn hoạt động",
       });
     }
     const validatedBody = orderSchema.parse(body);
