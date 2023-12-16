@@ -17,6 +17,10 @@ export type OrderResponse = Omit<
     productId: Product;
     productVariantId: ProductVariant;
     quantity: number;
+    productName: string;
+    productVariantName: string;
+    productVariantPrice: number;
+    image: string;
     _id: string;
   }[];
   managerId?: User;

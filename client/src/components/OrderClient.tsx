@@ -4,6 +4,7 @@ import { useGetOrderByUserQuery } from "../api/order";
 import { NavLink } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Pagination } from "antd";
+import { translateOrderStatus } from "../utils";
 const OrderClient = () => {
   const token = Cookies.get("token");
   const [orders, setOrders] = useState<any>([]);
@@ -52,7 +53,9 @@ const OrderClient = () => {
                                   </div>{" "}
                                   <div className="order-status-badge order-status-badge-canceled">
                                     {" "}
-                                    <span>{item.status}</span>
+                                    <span>
+                                      {translateOrderStatus(item.status)}
+                                    </span>
                                   </div>
                                 </div>{" "}
                                 {item.items.map((itemOrder: any) => {

@@ -103,6 +103,10 @@ export interface Order {
   items: {
     productId: string;
     productVariantId: string;
+    productName: string;
+    productVariantName: string;
+    productVariantPrice: string;
+    image: number;
     quantity: number;
     _id: string;
   }[];

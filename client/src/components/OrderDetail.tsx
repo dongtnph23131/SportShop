@@ -8,6 +8,13 @@ import TextArea from "antd/es/input/TextArea";
 import { useCreateCommentMutation } from "../api/comment";
 import Swal from "sweetalert2";
 import { useForm } from "antd/es/form/Form";
+import {
+  tran,
+  translateOrderDeliveryStatus,
+  translateOrderPaymentStatus,
+  translateOrderStatus,
+  translateOrderStatusslateOrderStatus,
+} from "../utils";
 const sensitiveWords = ["clm", "Buồi", "dmm"];
 const OrderDetail = () => {
   const { id }: any = useParams();
@@ -96,21 +103,46 @@ const OrderDetail = () => {
       {isLoading ? (
         <div style={{ textAlign: "center", padding: "20px" }}>Đang tải...</div>
       ) : (
-        <div className="container">
+        <div className="container" style={{ marginTop: "20px" }}>
           <div className="account-page__content">
             <div id="detail-order">
               <div className="thank-box">
-                <div className="detail-order">
-                  <h1 className="detail-order-heading">
-                    Thông tin đơn hàng {data?.order?.code}
-                  </h1>
-                  <div className="detail-order-status">
-                    Trạng thái đơn hàng: {data?.order?.status}
+                <div className="detail-order-wrapper">
+                  <div className="detail-order">
+                    <h1
+                      className="detail-order-heading"
+                      style={{ margin: "0px" }}
+                    >
+                      Thông tin đơn hàng {data?.order?.code}
+                    </h1>
+                    <div className="detail-order-status">
+                      {translateOrderStatus(data?.order?.status)}
+                    </div>
                   </div>
-                  <div className="detail-order-status">
-                    Trạng thái thanh toán: {data?.order?.paymentStatus}
-                  </div>
+
+                  {data?.order?.deliveryStatus === "Shipping" ||
+                  data?.order?.status === "Completed" ||
+                  data?.order?.status === "Canceled" ? (
+                    ""
+                  ) : (
+                    <button
+                      className="order-cancel-button"
+                      onClick={async () => {
+                        if (confirm("Bạn có muốn hủy đơn hàng không ?")) {
+                          const data: any = await cancelOrder({ token, id });
+                          if (data?.error) {
+                            message.error("Bạn không thể hủy đơn hàng");
+                          } else {
+                            message.success("Hủy đơn hàng thành công");
+                          }
+                        }
+                      }}
+                    >
+                      Hủy đơn
+                    </button>
+                  )}
                 </div>
+
                 <div className="detail-order-info">
                   <ul className="detail-order-info__list">
                     <li>
@@ -167,10 +199,26 @@ const OrderDetail = () => {
                     )}
                     <li>
                       <div className="detail-order-info__title">
+                        Trạng thái thanh toán:
+                      </div>
+                      <div className="detail-order-info__content">
+                        <div className="detail-order-status">
+                          {translateOrderPaymentStatus(
+                            data?.order?.paymentStatus
+                          )}
+                        </div>
+                      </div>
+                    </li>
+                    <li>
+                      <div className="detail-order-info__title">
                         Trạng thái giao hàng:
                       </div>
                       <div className="detail-order-info__content">
-                        {data?.order?.deliveryStatus}
+                        <div className="detail-order-status">
+                          {translateOrderDeliveryStatus(
+                            data?.order?.deliveryStatus
+                          )}
+                        </div>
                       </div>
                     </li>
                     <li>
@@ -224,27 +272,7 @@ const OrderDetail = () => {
                     )}
                   </ul>
                 </div>
-                {data?.order?.deliveryStatus === "Shipping" ||
-                data?.order?.status === "Completed" ||
-                data?.order?.status === "Canceled" ? (
-                  ""
-                ) : (
-                  <button
-                    className="detail-order-status"
-                    onClick={async () => {
-                      if (confirm("Bạn có muốn hủy đơn hàng không ?")) {
-                        const data: any = await cancelOrder({ token, id });
-                        if (data?.error) {
-                          message.error("Bạn không thể hủy đơn hàng");
-                        } else {
-                          message.success("Hủy đơn hàng thành công");
-                        }
-                      }
-                    }}
-                  >
-                    Hủy đơn
-                  </button>
-                )}
+
                 <div className="grid detail-order-button">
                   <div className="grid__column">
                     <div className="order-date"></div>
@@ -253,9 +281,10 @@ const OrderDetail = () => {
                 <table className="table">
                   <thead>
                     <tr>
-                      <th>Tên sản phẩm</th> <th>Số lượng</th>
-                      <th>Giá niêm yết</th>
+                      <th>Tên sản phẩm</th>
                       <th>Biến thể</th>
+                      <th>Số lượng</th>
+                      <th>Giá niêm yết</th>
                       <th className="text-righted">Thành tiền</th>
                       {data?.order?.status === "Completed" ? (
                         <>
@@ -272,17 +301,23 @@ const OrderDetail = () => {
                         <tr>
                           <td className="text--left">
                             <div>
-                              <div className="detail-order-item__thumbnail">
-                                <img src={item?.image} />
+                              <div>
+                                <img
+                                  src={item?.image}
+                                  width={140}
+                                  height={140}
+                                />
                               </div>
-                              <div className="detail-order-item__title">
-                                {item?.productVariantName} <br />
+                              <div style={{ marginLeft: "8px" }}>
+                                <h4>
+                                  {item?.productName ?? item.productId.name}
+                                </h4>
                               </div>
                             </div>
                           </td>
+                          <td>{item?.productVariantName}</td>
                           <td>{item.quantity}</td>
                           <td>{formatPrice(item?.productVariantPrice)}</td>
-                          <td>{item?.productVariantName}</td>{" "}
                           <td>
                             {formatPrice(
                               item?.quantity * item?.productVariantPrice

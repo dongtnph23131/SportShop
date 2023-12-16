@@ -274,15 +274,23 @@ const Page: NextPageWithLayout = () => {
                 <TableBody>
                   {order.items.map((item) => (
                     <TableRow key={item._id}>
-                      <TableCell>{item.productId.name}</TableCell>
-                      <TableCell>{item.productVariantId.name}</TableCell>
+                      <TableCell>
+                        {item.productName ?? item.productId.name}
+                      </TableCell>
+                      <TableCell>
+                        {item.productVariantName ?? item.productVariantId.name}
+                      </TableCell>
                       <TableCell>{item.quantity}</TableCell>
                       <TableCell>
-                        {formatPrice(item.productVariantId.price)}
+                        {formatPrice(
+                          item.productVariantPrice ??
+                            item.productVariantId.price
+                        )}
                       </TableCell>
                       <TableCell>
                         {formatPrice(
-                          item.productVariantId.price * item.quantity
+                          (item.productVariantPrice ??
+                            item.productVariantId.price) * item.quantity
                         )}
                       </TableCell>
                     </TableRow>
