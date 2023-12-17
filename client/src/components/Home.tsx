@@ -10,7 +10,7 @@ import axios from "axios";
 const Home = () => {
   const { data: products } = useGetAllProductsQuery({
     sort: "purchases",
-    order: "asc",
+    order: "desc",
     dataCategories: [],
     page: 1,
     limit: 8,
@@ -103,7 +103,7 @@ const Home = () => {
 
     fetchBanners();
   }, []);
-  const formatPrice = (price:any) => {
+  const formatPrice = (price: any) => {
     const formattedPrice = new Intl.NumberFormat("vi-VN", {
       style: "currency",
       currency: "VND",
@@ -177,7 +177,9 @@ const Home = () => {
                               <span>
                                 {product.minPrice === product.maxPrice
                                   ? `${formatPrice(product.maxPrice)}`
-                                  : `${formatPrice(product.minPrice)} - ${formatPrice(product.maxPrice)} `}
+                                  : `${formatPrice(
+                                      product.minPrice
+                                    )} - ${formatPrice(product.maxPrice)} `}
                               </span>
                             </div>
                           </div>

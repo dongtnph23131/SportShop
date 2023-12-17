@@ -429,26 +429,29 @@ const Page: NextPageWithLayout = () => {
                   </Authorization>
 
                   <Authorization allowedRoles={[UserRole.SHIPPER]}>
-                    <Button
-                      variant={"destructive"}
-                      onClick={async () => {
-                        try {
-                          const res = await axiosClient.put(
-                            `/orders/${order._id}/refuse-ship`
-                          );
+                    {order.deliveryStatus ===
+                      OrderDeliveryStatus.NOT_SHIPPED && (
+                      <Button
+                        variant={"destructive"}
+                        onClick={async () => {
+                          try {
+                            const res = await axiosClient.put(
+                              `/orders/${order._id}/refuse-ship`
+                            );
 
-                          toast.success("Từ chối giao hàng thành công");
-                          router.push("/orders");
-                          queryClient.invalidateQueries({
-                            queryKey: ["orders"],
-                          });
-                        } catch (error) {
-                          toast.error("Something went wrong");
-                        }
-                      }}
-                    >
-                      Từ chối giao
-                    </Button>
+                            toast.success("Từ chối giao hàng thành công");
+                            router.push("/orders");
+                            queryClient.invalidateQueries({
+                              queryKey: ["orders"],
+                            });
+                          } catch (error) {
+                            toast.error("Something went wrong");
+                          }
+                        }}
+                      >
+                        Từ chối giao
+                      </Button>
+                    )}
                   </Authorization>
                   {order.deliveryStatus === OrderDeliveryStatus.NOT_SHIPPED && (
                     <Button

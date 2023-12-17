@@ -379,7 +379,7 @@ const Cart = () => {
               </div>
 
               <div id="subtotal">
-                <h3>Cart Totals</h3>
+                <h3>Thông tin thanh toán</h3>
                 <div onClick={showModal} className="btn__add__default__adress">
                   <div style={{ padding: "12px" }}>
                     <i className="fas fa-tags"></i>Vouchers
@@ -563,9 +563,13 @@ const Cart = () => {
                       setCode("");
                       setIsUseDiscount(false);
                     }}
-                    style={{ marginLeft: "20px" }}
+                    style={{
+                      marginLeft: "20px",
+                      backgroundColor: "#ccc",
+                      color: "#000",
+                    }}
                   >
-                    Clear voucher
+                    Bỏ áp dụng
                   </Button>
                 </div>
                 {isUseDiscount ? (

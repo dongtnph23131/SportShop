@@ -31,6 +31,7 @@ import {
   DropdownMenuShortcut,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import { CLIENT_URL } from "@/lib/contants";
 import { queryClient } from "@/lib/react-query";
 import { NextPageWithLayout } from "@/pages/_app";
 import { useProductDeleteMutation } from "@/services/products/product-delete-mutation";
@@ -156,7 +157,16 @@ const Page: NextPageWithLayout = () => {
               <DotsHorizontalIcon className="h-4 w-4" aria-hidden="true" />
             </Button>
           </DropdownMenuTrigger>
-          <DropdownMenuContent align="end" className="w-[160px]">
+          <DropdownMenuContent align="end" className="w-[200px]">
+            <DropdownMenuItem asChild>
+              <Link
+                href={`${CLIENT_URL}/products/${encodeURIComponent(
+                  row.original._id
+                )}`}
+              >
+                Xem trước trang sản phẩm
+              </Link>
+            </DropdownMenuItem>
             <DropdownMenuItem asChild>
               <Link
                 href={`/products/${encodeURIComponent(row.original.slug)}/edit`}

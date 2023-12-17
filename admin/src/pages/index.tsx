@@ -37,11 +37,8 @@ const Page: NextPageWithLayout = () => {
       <Separator />
 
       <div className="flex flex-col gap-6">
-        <div className="flex items-center justify-between space-y-2">
-          <h2 className="text-3xl font-bold tracking-tight">Thống kê</h2>
-          <div className="flex items-center space-x-2">
-            <DateRangePicker dayCount={30} className="!bg-white" />
-          </div>
+        <div className="flex items-center justify-end space-y-2">
+          <DateRangePicker dayCount={30} className="!bg-white" />
         </div>
 
         <SaleAnalytics sale={data?.sale} />
