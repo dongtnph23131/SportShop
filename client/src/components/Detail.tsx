@@ -60,7 +60,7 @@ const Detail = () => {
           })
         );
       });
-      if (Object.keys(selectedAttributes).length === 0) {
+      if (Object.keys(selectedAttributes).length !== product?.options.length) {
         setQuantityProduct(
           product?.productVariantIds.reduce(
             (total: any, variant: any) => total + variant.inventory,
@@ -76,12 +76,14 @@ const Detail = () => {
         if (selectedVariant) {
           setQuantityProduct(selectedVariant.inventory);
         }
+        else{
+          setQuantityProduct(0)
+        }
       }
     }
   }, [product, page, selectedAttributes]);
   const { data: carts } = useGetCartOfUserQuery(token);
-
-  const [quantity, setQuantity] = useState<any>(1);
+const [quantity, setQuantity] = useState<any>(1);
   const handleAddToCart = async () => {
     if (product) {
       if (selectedVariant) {
@@ -127,7 +129,15 @@ const Detail = () => {
           }
         } catch (error) {}
       } else {
-        message.error("Vui lòng chọn thuộc tính sản phẩm!");
+        if (Object.keys(selectedAttributes).length === 0) {
+          message.error("Vui lòng chọn thuộc tính của sản phẩm");
+        } else if (
+          product?.options?.length !== Object.keys(selectedAttributes).length
+        ) {
+          message.error("Vui lòng chọn đủ thuộc tính sản phẩm!");
+        } else {
+          message.error("Biến thể không tồn tại");
+        }
       }
     }
   };
@@ -171,7 +181,7 @@ const Detail = () => {
                     <div className="project-image-wrapper">
                       <img
                         src={
-                          selectedImage ? selectedImage : product.images[0].url
+selectedImage ? selectedImage : product.images[0].url
                         }
                         width="100%"
                         id="MainImg"
@@ -242,7 +252,7 @@ const Detail = () => {
                                   selectedAttributes[productItem.name] === item;
                                 return (
                                   <li
-                                    className={isSelected ? "selected" : ""}
+className={isSelected ? "selected" : ""}
                                     key={indexItem + 1}
                                   >
                                     <a
@@ -318,7 +328,7 @@ const Detail = () => {
                             }
                           }}
                         />
-                        <button
+<button
                           className="increment__cart"
                           onClick={() => {
                             if (quantity >= quantityProduct) {
@@ -383,7 +393,7 @@ const Detail = () => {
                                   {item.content}
                                 </div>
                               </div>
-                            </div>
+</div>
                           </div>
                         )
                       );
