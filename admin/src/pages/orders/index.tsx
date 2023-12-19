@@ -50,12 +50,15 @@ import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 import { useOrdersQuery } from "@/services/orders/orders-query";
 import { useStatisticOrdersQuery } from "@/services/orders/statistic-order-query";
 
-import { Order, OrderStatus, UserRole } from "@/types/base";
+import { OrderStatus, UserRole } from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
-import { CalendarIcon } from "lucide-react";
 import Link from "next/link";
 import { toast } from "sonner";
+import { Card as CardTremor, Text, Metric } from "@tremor/react";
+import { CircleEllipsis } from "lucide-react";
+import { DateSelect } from "@/components/date-select-range-picker";
+import Image from "next/image";
 
 const renderStatus = (status: OrderStatus) => {
   switch (status) {
@@ -80,92 +83,14 @@ const Page: NextPageWithLayout = () => {
     <>
       <div className="flex items-center justify-between space-y-2 mb-4">
         <h2 className="text-3xl font-bold tracking-tight">Đơn hàng</h2>
+        <DateSelect dayCount={30} />
       </div>
 
       <Authorization allowedRoles={[UserRole.ADMIN]}>
-        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-3 mb-4">
+        <div className="grid gap-4 md:grid-cols-2 lg:grid-cols-4 mb-4">
           <Card>
             <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Tổng đơn đã hủy
-              </CardTitle>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="h-6 w-6 bg-red-100 text-red-600 rounded-md p-1 cursor-pointer hover:bg-red-200 hover:text-red-700 transition-colors"
-              >
-                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
-                <path d="m15 9-6 6" />
-                <path d="m9 9 6 6" />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              {statisticOrders && (
-                <>
-                  <div className="text-2xl font-bold">
-                    {statisticOrders?.totalCanceled}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {(
-                      (statisticOrders?.totalCanceled /
-                        statisticOrders?.total) *
-                      100
-                    ).toFixed(2)}
-                    % trên tổng đơn
-                  </p>
-                </>
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
-                Tổng đơn đã hoàn thành
-              </CardTitle>
-              <svg
-                xmlns="http://www.w3.org/2000/svg"
-                width="24"
-                height="24"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-                stroke-linecap="round"
-                stroke-linejoin="round"
-                className="lucide lucide-check-square-2 h-6 w6 bg-green-100 text-green-600 rounded-md p-1 cursor-pointer hover:bg-green-200 hover:text-green-700 transition-colors"
-              >
-                <rect width="18" height="18" x="3" y="3" rx="2" />
-                <path d="m9 12 2 2 4-4" />
-              </svg>
-            </CardHeader>
-            <CardContent>
-              {statisticOrders && (
-                <>
-                  <div className="text-2xl font-bold">
-                    {statisticOrders.totalCompleted}
-                  </div>
-                  <p className="text-xs text-muted-foreground">
-                    {(
-                      (statisticOrders?.totalCompleted /
-                        statisticOrders?.total) *
-                      100
-                    ).toFixed(2)}
-                    % trên tổng đơn
-                  </p>
-                </>
-              )}
-            </CardContent>
-          </Card>
-          <Card>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
-              <CardTitle className="text-sm font-medium">
+              <CardTitle className="text-sm font-medium text-gray-600">
                 Tổng đơn hàng
               </CardTitle>
               <svg
@@ -189,9 +114,120 @@ const Page: NextPageWithLayout = () => {
             <CardContent>
               {statisticOrders && (
                 <>
-                  <div className="text-2xl font-bold">
+                  <div className="text-3xl font-bold">
                     {statisticOrders.total}
                   </div>
+                </>
+              )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Tổng đơn hàng đang xử lý
+              </CardTitle>
+              <CircleEllipsis className="lucide lucide-package-2 h-6 w6 bg-yellow-100 text-yellow-600 rounded-md p-1 cursor-pointer hover:bg-yellow-200 hover:text-yellow-700 transition-colors" />
+            </CardHeader>
+
+            <CardContent>
+              {statisticOrders && (
+                <>
+                  <div className="text-3xl font-bold">
+                    {statisticOrders?.totalPending}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {statisticOrders?.total
+                      ? (
+                          (statisticOrders?.totalPending /
+                            statisticOrders?.total) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % trên tổng đơn
+                  </p>
+                </>
+              )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Tổng đơn đã hủy
+              </CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="h-6 w-6 bg-red-100 text-red-600 rounded-md p-1 cursor-pointer hover:bg-red-200 hover:text-red-700 transition-colors"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" ry="2" />
+                <path d="m15 9-6 6" />
+                <path d="m9 9 6 6" />
+              </svg>
+            </CardHeader>
+            <CardContent>
+              {statisticOrders && (
+                <>
+                  <div className="text-3xl font-bold">
+                    {statisticOrders?.totalCanceled}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {statisticOrders?.total
+                      ? (
+                          (statisticOrders?.totalCanceled /
+                            statisticOrders?.total) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % trên tổng đơn
+                  </p>
+                </>
+              )}
+            </CardContent>
+          </Card>
+          <Card>
+            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2">
+              <CardTitle className="text-sm font-medium text-gray-600">
+                Tổng đơn đã hoàn thành
+              </CardTitle>
+              <svg
+                xmlns="http://www.w3.org/2000/svg"
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+                stroke-linecap="round"
+                stroke-linejoin="round"
+                className="lucide lucide-check-square-2 h-6 w6 bg-green-100 text-green-600 rounded-md p-1 cursor-pointer hover:bg-green-200 hover:text-green-700 transition-colors"
+              >
+                <rect width="18" height="18" x="3" y="3" rx="2" />
+                <path d="m9 12 2 2 4-4" />
+              </svg>
+            </CardHeader>
+            <CardContent>
+              {statisticOrders && (
+                <>
+                  <div className="text-3xl font-bold">
+                    {statisticOrders.totalCompleted}
+                  </div>
+                  <p className="text-xs text-muted-foreground">
+                    {statisticOrders?.total
+                      ? (
+                          (statisticOrders?.totalCompleted /
+                            statisticOrders?.total) *
+                          100
+                        ).toFixed(2)
+                      : 0}
+                    % trên tổng đơn
+                  </p>
                 </>
               )}
             </CardContent>
@@ -227,7 +263,6 @@ const Page: NextPageWithLayout = () => {
                 });
               }}
             />
-            <DateRangePicker dayCount={30} className="!bg-white" />
 
             <SwitchGroup
               defaultValue={searchParams.get("status") ?? "all"}
@@ -355,6 +390,23 @@ const Page: NextPageWithLayout = () => {
               })}
             </TableBody>
           </Table>
+
+          {orders?.docs.length === 0 && (
+            <div className="mb-12 flex flex-col items-center justify-center py-12">
+              <div className="z-10 text-xl font-semibold text-gray-700">
+                Không tìm thấy đơn hàng nào
+              </div>
+              <Image
+                alt="No links yet"
+                loading="lazy"
+                width="400"
+                height="400"
+                decoding="async"
+                data-nimg="1"
+                src="https://app.dub.co/_static/illustrations/call-waiting.svg"
+              />
+            </div>
+          )}
 
           <TablePagination tableData={orders} />
         </CardContent>

@@ -74,21 +74,75 @@ router.get("/", async (req, res) => {
 
 router.get("/statistic", async (req, res) => {
   try {
+    const { from, to } = req.query;
+
+    const formDay = from ? new Date(from) : undefined;
+
+    //subtract 7 hours because of timezone
+    const toDay = to
+      ? new Date(new Date(to).setDate(new Date(to).getDate() + 1)).setHours(
+          new Date(to).getHours() - 7
+        )
+      : undefined;
+
     const totalCanceled = await Order.countDocuments({})
       .where({
         status: "Canceled",
+        ...(formDay || toDay
+          ? {
+              createdAt: {
+                ...(formDay && { $gte: formDay }),
+                ...(toDay && { $lte: toDay }),
+              },
+            }
+          : {}),
       })
       .count();
 
     const totalCompleted = await Order.countDocuments({})
       .where({
         status: "Completed",
+        ...(formDay || toDay
+          ? {
+              createdAt: {
+                ...(formDay && { $gte: formDay }),
+                ...(toDay && { $lte: toDay }),
+              },
+            }
+          : {}),
       })
       .count();
 
-    const total = await Order.countDocuments({});
+    const totalPending = await Order.countDocuments({})
+      .where({
+        status: "Pending",
+        ...(formDay || toDay
+          ? {
+              createdAt: {
+                ...(formDay && { $gte: formDay }),
+                ...(toDay && { $lte: toDay }),
+              },
+            }
+          : {}),
+      })
+      .count();
 
-    return res.status(200).json({ totalCanceled, totalCompleted, total });
+    const total = await Order.countDocuments({})
+      .where({
+        ...(formDay || toDay
+          ? {
+              createdAt: {
+                ...(formDay && { $gte: formDay }),
+                ...(toDay && { $lte: toDay }),
+              },
+            }
+          : {}),
+      })
+      .count();
+
+    return res
+      .status(200)
+      .json({ totalCanceled, totalCompleted, totalPending, total });
   } catch (error) {
     return res.status(500).json({ message: error.message });
   }
