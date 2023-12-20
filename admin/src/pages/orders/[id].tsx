@@ -19,7 +19,14 @@ import {
   Table,
 } from "@/components/ui/table";
 import { useRouter } from "next/router";
-import { ArrowLeft, Download, Loader2, Send, Truck } from "lucide-react";
+import {
+  ArrowLeft,
+  CheckCircleIcon,
+  Download,
+  Loader2,
+  Send,
+  Truck,
+} from "lucide-react";
 import { useOrderQuery } from "@/services/orders/order-query";
 import { toast } from "sonner";
 
@@ -31,11 +38,15 @@ import { ChooseShipperDialog } from "@/components/create-shipper-dialog";
 import { Authorization } from "@/lib/authorization";
 import { useState } from "react";
 import is from "date-fns/esm/locale/is";
+import { renderDeliveryStatus, renderStatus } from ".";
+import { Callout } from "@tremor/react";
 
 const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const { data: order } = useOrderQuery({ id: router.query.id as string });
   const [isSendLoading, setIsSendLoading] = useState(false);
+
+  if (!order) return <div>Loading</div>;
 
   return (
     <>
@@ -106,6 +117,19 @@ const Page: NextPageWithLayout = () => {
           </Button>
         </div>
       </div>
+
+      {!order?.shipperId &&
+        order?.deliveryStatus !== OrderDeliveryStatus.SHIPPED && (
+          <Callout
+            className="my-2"
+            title="Chưa có nhân viên giao hàng"
+            icon={CheckCircleIcon}
+            color="rose"
+          >
+            Đơn hàng này hiện tại chưa chọn nhân viên giao hàng. Vui lòng chọn
+            nhân viên giao hàng.
+          </Callout>
+        )}
 
       {order ? (
         <>
@@ -180,17 +204,7 @@ const Page: NextPageWithLayout = () => {
                       Trạng thái:
                     </dt>
                     <dd className="mt-1 text-sm leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                      <Badge
-                        variant={
-                          order.status === OrderStatus.COMPLETED
-                            ? "success"
-                            : order.status === OrderStatus.CANCELED
-                            ? "destructive"
-                            : "default"
-                        }
-                      >
-                        {order.status}
-                      </Badge>
+                      {renderStatus(order.status)}
                     </dd>
                   </div>
                   <div className="px-4 py-4 sm:grid sm:grid-cols-3 sm:gap-4 sm:px-0">
@@ -381,11 +395,7 @@ const Page: NextPageWithLayout = () => {
                 <div className="mt-4 flex items-center justify-between text-sm mb-4">
                   <dt className="leading-6 text-gray-900">Trạng thái:</dt>
                   <dd className="leading-6 text-gray-700 sm:col-span-2 sm:mt-0">
-                    {order.deliveryStatus === OrderDeliveryStatus.SHIPPED ? (
-                      <Badge variant="success">Đã giao hàng</Badge>
-                    ) : (
-                      <Badge variant="default">{order.deliveryStatus}</Badge>
-                    )}
+                    {renderDeliveryStatus(order.deliveryStatus)}
                   </dd>
                 </div>
                 {order.shipperId && (
@@ -422,10 +432,11 @@ const Page: NextPageWithLayout = () => {
                       order.deliveryStatus !== OrderDeliveryStatus.SHIPPED && (
                         <ChooseShipperDialog title="Chọn NV giao" />
                       )}
-                    {order.deliveryStatus ===
-                      OrderDeliveryStatus.NOT_SHIPPED && (
-                      <ChooseShipperDialog title="Chọn NV giao khác" />
-                    )}
+                    {order.shipperId &&
+                      order.deliveryStatus ===
+                        OrderDeliveryStatus.NOT_SHIPPED && (
+                        <ChooseShipperDialog title="Chọn NV giao khác" />
+                      )}
                   </Authorization>
 
                   <Authorization allowedRoles={[UserRole.SHIPPER]}>

@@ -50,24 +50,63 @@ import { useAllOrdersQuery } from "@/services/orders/all-orders-query";
 import { useOrdersQuery } from "@/services/orders/orders-query";
 import { useStatisticOrdersQuery } from "@/services/orders/statistic-order-query";
 
-import { OrderStatus, UserRole } from "@/types/base";
+import {
+  OrderDeliveryStatus,
+  OrderPaymentStatus,
+  OrderStatus,
+  UserRole,
+} from "@/types/base";
 import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { format } from "date-fns";
 import Link from "next/link";
 import { toast } from "sonner";
 import { Card as CardTremor, Text, Metric } from "@tremor/react";
-import { CircleEllipsis } from "lucide-react";
+import { AlertCircle, CircleEllipsis, UserCircleIcon } from "lucide-react";
 import { DateSelect } from "@/components/date-select-range-picker";
 import Image from "next/image";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
-const renderStatus = (status: OrderStatus) => {
+export const renderStatus = (status: OrderStatus) => {
   switch (status) {
     case OrderStatus.CANCELED:
-      return <Badge variant={"destructive"}>{status}</Badge>;
+      return <Badge variant={"destructive"}>Đã Hủy</Badge>;
     case OrderStatus.COMPLETED:
-      return <Badge variant={"success"}>{status}</Badge>;
+      return <Badge variant={"success"}>Đã hoàn thành</Badge>;
     case OrderStatus.PENDING:
-      return <Badge variant={"pending"}>{status}</Badge>;
+      return <Badge variant={"pending"}>Đang xử lý</Badge>;
+    default:
+      return status;
+  }
+};
+
+export const renderDeliveryStatus = (status: OrderDeliveryStatus) => {
+  switch (status) {
+    case OrderDeliveryStatus.CANCELED:
+      return <Badge variant={"destructive"}>Đã Hủy</Badge>;
+    case OrderDeliveryStatus.NOT_SHIPPED:
+      return <Badge variant={"destructive"}>Chưa giao</Badge>;
+    case OrderDeliveryStatus.SHIPPING:
+      return <Badge variant={"pending"}>Đang giao</Badge>;
+    case OrderDeliveryStatus.SHIPPED:
+      return <Badge variant={"success"}>Đã giao</Badge>;
+    default:
+      return status;
+  }
+};
+
+export const renderPaymentStatus = (status: OrderPaymentStatus) => {
+  switch (status) {
+    case OrderPaymentStatus.CANCELED:
+      return <Badge variant={"destructive"}>Đã Hủy</Badge>;
+    case OrderPaymentStatus.NOT_PAID:
+      return <Badge variant={"pending"}>Chưa thanh toán</Badge>;
+    case OrderPaymentStatus.PAID:
+      return <Badge variant={"success"}>Đã thanh toán</Badge>;
+
     default:
       return status;
   }
@@ -298,6 +337,10 @@ const Page: NextPageWithLayout = () => {
                 <TableHead>Khách hàng</TableHead>
                 <TableHead>Số điện thoại</TableHead>
                 <TableHead>Trạng thái</TableHead>
+                <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
+                  <TableHead>Trạng thái thanh toán</TableHead>
+                </Authorization>
+                <TableHead>Trạng thái giao hàng</TableHead>
                 <TableHead>Tổng tiền</TableHead>
                 <TableHead></TableHead>
               </TableRow>
@@ -305,14 +348,47 @@ const Page: NextPageWithLayout = () => {
             <TableBody>
               {orders?.docs.map((order) => {
                 return (
-                  <TableRow key={order._id}>
-                    <TableHead>{order.code}</TableHead>
+                  <TableRow
+                    className={cn(
+                      !order.shipperId &&
+                        order.deliveryStatus !== OrderDeliveryStatus.SHIPPED &&
+                        "bg-yellow-100 hover:bg-yellow-200"
+                    )}
+                    key={order._id}
+                  >
+                    <TableHead>
+                      <div className="flex items-center gap-2">
+                        <span>{order.code}</span>
+                        {!order.shipperId &&
+                          order.deliveryStatus !==
+                            OrderDeliveryStatus.SHIPPED && (
+                            <Tooltip delayDuration={0}>
+                              <TooltipTrigger asChild>
+                                <AlertCircle className="text-red-500 h-4 w-4" />
+                              </TooltipTrigger>
+                              <TooltipContent>
+                                <p>Đơn hàng đang chưa có nhân viên giao hàng</p>
+                              </TooltipContent>
+                            </Tooltip>
+                          )}
+                      </div>
+                    </TableHead>
                     <TableHead>
                       {format(new Date(order.createdAt), "dd MMM yyyy hh:mm")}
                     </TableHead>
                     <TableHead>{order.fullName}</TableHead>
                     <TableHead>{order.phone}</TableHead>
                     <TableHead>{renderStatus(order.status)}</TableHead>
+                    <Authorization
+                      allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}
+                    >
+                      <TableHead>
+                        {renderPaymentStatus(order.paymentStatus)}
+                      </TableHead>
+                    </Authorization>
+                    <TableHead>
+                      {renderDeliveryStatus(order.deliveryStatus)}
+                    </TableHead>
                     <TableHead>{formatPrice(order.orderTotalPrice)}</TableHead>
                     <TableHead>
                       <DropdownMenu>

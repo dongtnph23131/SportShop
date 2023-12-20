@@ -1,6 +1,9 @@
 import { type ClassValue, clsx } from "clsx";
 import { twMerge } from "tailwind-merge";
 
+import { ReadonlyURLSearchParams } from "next/navigation";
+import { OurFileRouter } from "./uploadthing";
+
 import { generateComponents } from "@uploadthing/react";
 
 export const { UploadButton, UploadDropzone, Uploader } =
@@ -86,9 +89,6 @@ export function formatNumber(
 export function formatId(id: number) {
   return `#${id.toString().padStart(4, "0")}`;
 }
-
-import { ReadonlyURLSearchParams } from "next/navigation";
-import { OurFileRouter } from "./uploadthing";
 
 export const createUrl = (
   pathname: string,
