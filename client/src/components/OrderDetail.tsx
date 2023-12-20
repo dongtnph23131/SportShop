@@ -182,7 +182,9 @@ const OrderDetail = () => {
                         Phương thức thanh toán:
                       </div>
                       <div className="detail-order-info__content">
-                        {data?.order?.typePayment}
+                        {data?.order?.typePayment === "Direct" &&
+                          "Trực tiếp khi nhận hàng"}
+                        {data?.order?.typePayment === "Online" && "Online"}
                       </div>
                     </li>
                     {data?.order?.discountCode ? (

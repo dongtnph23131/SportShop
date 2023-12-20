@@ -5,7 +5,7 @@ export default function Document() {
     <Html lang="en">
       <Head>
         <link rel="icon" type="image/svg+xml" href="/logo.svg" />
-        <title>Sport Shop</title>
+        <title>Sport Shop - Admin</title>
       </Head>
       <body>
         <Main />

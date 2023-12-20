@@ -31,6 +31,7 @@ import {
   DropdownMenuSeparator,
   DropdownMenuTrigger,
 } from "@/components/ui/dropdown-menu";
+import axiosClient from "@/lib/axios-instance";
 import { queryClient } from "@/lib/react-query";
 import { formatPrice } from "@/lib/utils";
 import { NextPageWithLayout } from "@/pages/_app";
@@ -44,14 +45,10 @@ import { DotsHorizontalIcon } from "@radix-ui/react-icons";
 import { ColumnDef } from "@tanstack/react-table";
 import { format } from "date-fns";
 import Link from "next/link";
+import { toast } from "sonner";
 
 const Page: NextPageWithLayout = () => {
   const { data: customers } = useCustomersQuery();
-  const deleteProductMutation = useProductDeleteMutation({
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["products"] });
-    },
-  });
 
   const columns: ColumnDef<CustomersResponse>[] = [
     {
@@ -154,10 +151,22 @@ const Page: NextPageWithLayout = () => {
                     <AlertDialogFooter>
                       <AlertDialogCancel>Cancel</AlertDialogCancel>
                       <AlertDialogAction
-                        onClick={() => {
-                          deleteProductMutation.mutate({
-                            id: row.original._id,
-                          });
+                        onClick={async () => {
+                          try {
+                            const res = await axiosClient.delete(
+                              `/customers/${row.original._id}`
+                            );
+
+                            if (res.status === 200) {
+                              queryClient.invalidateQueries({
+                                queryKey: ["customers"],
+                              });
+
+                              toast.success("Xóa thành công");
+                            }
+                          } catch (error) {
+                            toast.error("Xóa thất bại");
+                          }
                         }}
                       >
                         Continue

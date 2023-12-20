@@ -37,7 +37,8 @@ const Cart = () => {
   });
   const [couponPrice, setCouponPrice] = useState<any>(0);
   const { data: discounts } = useGetDiscountsQuery();
-  const [createOrder] = useCreateOrderMutation();
+  const [createOrder, { isLoading: isCreateOrderLoading }] =
+    useCreateOrderMutation();
   const [isUseDiscount, setIsUseDiscount] = useState<any>(false);
   const token = Cookies.get("token");
   const [payMomo] = usePayMomoMutation();
@@ -66,7 +67,6 @@ const Cart = () => {
       });
       return;
     }
-    console.log();
 
     const items = carts.map((item: any) => {
       return {
@@ -84,7 +84,7 @@ const Cart = () => {
     let order = {
       ...data,
       totalPrice: Math.ceil(total),
-      shippingPrice: 0,
+      shippingPrice: 30000,
       couponPrice: Math.ceil(couponPrice),
       items,
       email: Cookies.get("email"),
@@ -370,9 +370,30 @@ const Cart = () => {
                 </table>
                 <div className="pro__checkout">
                   <button
-                    disabled={carts?.length === 0 || !token}
+                    disabled={
+                      carts?.length === 0 || !token || isCreateOrderLoading
+                    }
                     className="normal"
                   >
+                    {isCreateOrderLoading && (
+                      <svg
+                        xmlns="http://www.w3.org/2000/svg"
+                        width="24"
+                        height="24"
+                        viewBox="0 0 24 24"
+                        fill="none"
+                        stroke="currentColor"
+                        stroke-width="2"
+                        stroke-linecap="round"
+                        stroke-linejoin="round"
+                        className="lucide lucide-refresh-ccw"
+                      >
+                        <path d="M21 12a9 9 0 0 0-9-9 9.75 9.75 0 0 0-6.74 2.74L3 8" />
+                        <path d="M3 3v5h5" />
+                        <path d="M3 12a9 9 0 0 0 9 9 9.75 9.75 0 0 0 6.74-2.74L21 16" />
+                        <path d="M16 16h5v5" />
+                      </svg>
+                    )}
                     Thanh toán
                   </button>
                 </div>
@@ -382,7 +403,7 @@ const Cart = () => {
                 <h3>Thông tin thanh toán</h3>
                 <div onClick={showModal} className="btn__add__default__adress">
                   <div style={{ padding: "12px" }}>
-                    <i className="fas fa-tags"></i>Vouchers
+                    <i className="fas fa-tags"></i> Mã giảm giá
                   </div>
                 </div>
                 <Modal
@@ -584,7 +605,7 @@ const Cart = () => {
                   </tr>
                   <tr>
                     <td>Phí giao hàng</td>
-                    <td>{formatPrice(0)}</td>
+                    <td>{formatPrice(30000)}</td>
                   </tr>
                   <tr>
                     <td>Khuyến mại</td>
@@ -609,8 +630,8 @@ const Cart = () => {
                     <td>
                       <strong>
                         {formatPrice(
-                          total + 0 - couponPrice > 0
-                            ? total + 0 - couponPrice
+                          total + 30000 - couponPrice > 0
+                            ? total + 30000 - couponPrice
                             : 0
                         )}
                       </strong>

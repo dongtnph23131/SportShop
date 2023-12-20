@@ -156,9 +156,9 @@ const CategoryDetail = () => {
                           <h4>
                             {product.minPrice === product.maxPrice
                               ? `${formatPrice(product.maxPrice)}`
-                              : `${formatPrice(product.minPrice)}-${formatPrice(
-                                  product.maxPrice
-                                )}`}
+                              : `${formatPrice(
+                                  product.minPrice
+                                )} - ${formatPrice(product.maxPrice)}`}
                           </h4>
                         </div>
                         <Rate value={product?.raitings} disabled />

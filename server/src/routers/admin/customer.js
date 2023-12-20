@@ -36,6 +36,22 @@ router.get("/:id", async (req, res) => {
   }
 });
 
+router.delete("/:id", async (req, res) => {
+  try {
+    const customer = await Customer.findByIdAndDelete(req.params.id);
+
+    if (!customer) {
+      return res.status(404).send("Customer does not exist!");
+    }
+
+    return res.status(200).json("Deleted customer successfully!");
+  } catch (error) {
+    return res.status(500).json({
+      message: error.message,
+    });
+  }
+});
+
 router.post("/:id/gift", async (req, res) => {
   try {
     const { code, description, amountPrice, endAt } = req.body;

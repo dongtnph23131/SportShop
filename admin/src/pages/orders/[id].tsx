@@ -320,43 +320,41 @@ const Page: NextPageWithLayout = () => {
                 <CardHeader className="p-0">
                   <CardTitle>Thanh toán</CardTitle>
                 </CardHeader>
-                <Authorization allowedRoles={[UserRole.ADMIN, UserRole.STAFF]}>
-                  {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
-                    <div className="flex items-center gap-2">
-                      <div className="flex items-center">
-                        <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
-                        <span className="ml-2 text-sm">Chưa thanh toán</span>
-                      </div>
-                      <Button
-                        variant={"outline"}
-                        onClick={async () => {
-                          const res = await axiosClient.post(
-                            `/orders/${order._id}/pay`
-                          );
-
-                          if (res.status !== 200) {
-                            const error = res.data.message;
-                            toast.error(error);
-                            return;
-                          }
-
-                          toast.success("Successfully mask as paid");
-                          queryClient.invalidateQueries({
-                            queryKey: ["orders"],
-                          });
-                        }}
-                      >
-                        Đã thanh toán
-                      </Button>
-                    </div>
-                  )}
-                  {order.paymentStatus === OrderPaymentStatus.PAID && (
+                {order.paymentStatus === OrderPaymentStatus.NOT_PAID && (
+                  <div className="flex items-center gap-2">
                     <div className="flex items-center">
-                      <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
-                      <span className="ml-2 text-sm">Đã thanh toán</span>
+                      <div className="h-1.5 w-1.5 self-center rounded-full bg-red-400"></div>
+                      <span className="ml-2 text-sm">Chưa thanh toán</span>
                     </div>
-                  )}
-                </Authorization>
+                    <Button
+                      variant={"outline"}
+                      onClick={async () => {
+                        const res = await axiosClient.post(
+                          `/orders/${order._id}/pay`
+                        );
+
+                        if (res.status !== 200) {
+                          const error = res.data.message;
+                          toast.error(error);
+                          return;
+                        }
+
+                        toast.success("Successfully mask as paid");
+                        queryClient.invalidateQueries({
+                          queryKey: ["orders"],
+                        });
+                      }}
+                    >
+                      Đã thanh toán
+                    </Button>
+                  </div>
+                )}
+                {order.paymentStatus === OrderPaymentStatus.PAID && (
+                  <div className="flex items-center">
+                    <div className="h-1.5 w-1.5 self-center rounded-full bg-green-400"></div>
+                    <span className="ml-2 text-sm">Đã thanh toán</span>
+                  </div>
+                )}
               </div>
               <CardContent>
                 <div className="mt-4 flex items-center justify-between text-sm">

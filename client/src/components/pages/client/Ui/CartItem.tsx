@@ -30,7 +30,7 @@ const CartItem = ({ item }: any) => {
         });
         return;
       } else {
-        const data:any = await updateItemCart({
+        const data: any = await updateItemCart({
           productVariantIds: item?.productVariantIds?._id,
           quantity,
           token,
@@ -61,13 +61,35 @@ const CartItem = ({ item }: any) => {
       <td>
         <button
           className="remove__item__product"
+          style={{
+            cursor: "pointer",
+            outline: "none",
+            border: "none",
+            backgroundColor: "transparent",
+          }}
           onClick={async () => {
-            if (confirm("Bạn có muốn xóa sản phẩm này k ?")) {
+            if (confirm("Bạn có muốn xóa sản phẩm này không?")) {
               await removeItem({ cartItemId: item._id, token });
             }
           }}
         >
-          <i className="far fa-times-circle"></i>
+          <svg
+            xmlns="http://www.w3.org/2000/svg"
+            width="24"
+            height="24"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+            stroke-linecap="round"
+            stroke-linejoin="round"
+            className="lucide lucide-x-circle"
+            style={{ color: "#757474" }}
+          >
+            <circle cx="12" cy="12" r="10" />
+            <path d="m15 9-6 6" />
+            <path d="m9 9 6 6" />
+          </svg>
         </button>
       </td>
       <td>
@@ -81,6 +103,7 @@ const CartItem = ({ item }: any) => {
       <td>
         <div className="box__crement">
           <button
+            style={{ cursor: "pointer" }}
             className="decrement__cart"
             onClick={async () => {
               const data: any = await removeItemCart({
@@ -89,11 +112,24 @@ const CartItem = ({ item }: any) => {
               });
               if (data?.error) {
                 message.error(data?.error?.data?.message);
-              } else {
               }
             }}
           >
-            -
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style={{ cursor: "pointer", height: "20px", width: "16px" }}
+              className="lucide lucide-minus"
+            >
+              <path d="M5 12h14" />
+            </svg>
           </button>
           <InputNumber
             className="input__cart"
@@ -101,6 +137,7 @@ const CartItem = ({ item }: any) => {
             onChange={onChangeQuantity}
           />
           <button
+            style={{ cursor: "pointer" }}
             className="increment__cart"
             onClick={async () => {
               if (item.quantity === item?.productVariantIds?.inventory) {
@@ -117,12 +154,25 @@ const CartItem = ({ item }: any) => {
                 });
                 if (data?.error) {
                   message.error(data?.error?.data?.message);
-                } else {
                 }
               }
             }}
           >
-            +
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="24"
+              height="24"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              style={{ cursor: "pointer", height: "20px", width: "20px" }}
+            >
+              <path d="M5 12h14" />
+              <path d="M12 5v14" />
+            </svg>
           </button>
         </div>
       </td>

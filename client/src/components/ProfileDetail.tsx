@@ -818,11 +818,6 @@ const ProfileDetail = () => {
                                             <p>Không giới hạn ngày</p>
                                           )}
                                         </div>
-                                        <div className="buy__to__discount">
-                                          <button>
-                                            <a href="/shops">Sử dụng</a>
-                                          </button>
-                                        </div>
                                       </div>
                                     </div>
                                   </li>
