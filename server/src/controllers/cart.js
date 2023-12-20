@@ -15,10 +15,25 @@ export const addCart = async (req, res) => {
     const productVariant = await ProductVariant.findById(
       productVariantIds
     ).populate("productId");
-    if(productVariant.inventory<quantity){
+    if (typeof Number(quantity) !== "number") {
       return res.status(400).json({
-        message:`Bạn chỉ được mua tối đa ${productVariant.inventory} sản phẩm`
-      })
+        message: "Số lượng sản phẩm không hợp lí",
+      });
+    }
+    if (!Number.isInteger(Number(quantity))) {
+      return res.status(400).json({
+        message: "Số lượng sản phẩm là số nguyên",
+      });
+    }
+    if (quantity < 0) {
+      return res.status(400).json({
+        message: "Số lượng sản phẩm > 0",
+      });
+    }
+    if (productVariant.inventory < quantity) {
+      return res.status(400).json({
+        message: `Bạn chỉ được mua tối đa ${productVariant.inventory} sản phẩm`,
+      });
     }
     if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
@@ -76,10 +91,10 @@ export const addCart = async (req, res) => {
     );
 
     if (itemExistCart) {
-      if(itemExistCart.quantity+quantity>productVariant.inventory){
+      if (itemExistCart.quantity + quantity > productVariant.inventory) {
         return res.status(400).json({
-          message:`Quá số lượng tồn kho`
-        })
+          message: `Quá số lượng tồn kho`,
+        });
       }
       const cartItem = await CartItem.findOne({
         customerId: user._id,
@@ -102,7 +117,7 @@ export const addCart = async (req, res) => {
         productIds: productVariant.productId,
         customerId: user._id,
         productName,
-productVariantName,
+        productVariantName,
         productVariantPrice,
         image,
         quantity,
@@ -138,7 +153,9 @@ export const getCartOfUser = async (req, res) => {
 export const removeItem = async (req, res) => {
   try {
     const { productVariantIds } = req.body;
-    const productVariant = await ProductVariant.findById(productVariantIds).populate('productId');
+    const productVariant = await ProductVariant.findById(
+      productVariantIds
+    ).populate("productId");
     if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
         message: "Sản phẩm không còn tồn tại",
@@ -190,10 +207,22 @@ export const removeItem = async (req, res) => {
 export const updateItem = async (req, res) => {
   try {
     const { productVariantIds, quantity } = req.body;
-    const productVariant = await ProductVariant.findById(productVariantIds).populate('productId');
+    const productVariant = await ProductVariant.findById(
+      productVariantIds
+    ).populate("productId");
     if (!productVariant || productVariant.productId.status !== "Active") {
       return res.status(400).json({
         message: "Sản phẩm không còn tồn tại",
+      });
+    }
+    if (typeof Number(quantity) !== "number") {
+      return res.status(400).json({
+        message: "Số lượng sản phẩm không hợp lí",
+      });
+    }
+    if (!Number.isInteger(Number(quantity))) {
+      return res.status(400).json({
+        message: "Số lượng sản phẩm là số nguyên",
       });
     }
     if (quantity < 0) {
@@ -209,7 +238,7 @@ export const updateItem = async (req, res) => {
     const itemExistCart = await cart.items.find(
       (item) => item.productVariantIds == productVariantIds
     );
-if (!itemExistCart) {
+    if (!itemExistCart) {
       return res.status(400).json({
         message: "Không có sản phẩm này trong giỏ hàng",
       });
