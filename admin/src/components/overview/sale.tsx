@@ -37,16 +37,16 @@ export function SaleAnalytics({ sale }: { sale?: SaleAnalyticsType }) {
 
   const data = result.map((date) => {
     const dailySale = sale?.daily.find(
-      (dailySale) => getDate(date) === dailySale._id
+      (dailySale) => format(new Date(date), "yyyy-MM-dd") === dailySale._id
     );
     if (dailySale) {
       return {
-        name: format(date, "dd/MM"),
+        name: format(new Date(date), "dd/MM"),
         total: dailySale.total,
       };
     }
     return {
-      name: format(date, "dd/MM"),
+      name: format(new Date(date), "dd/MM"),
       total: 0,
     };
   });

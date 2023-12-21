@@ -36,7 +36,7 @@ export function OrderAnalytics({ orders }: { orders?: OrderAnalyticsType }) {
 
   const data = result.map((date) => {
     const dailySale = orders?.daily.find(
-      (dailySale) => getDate(date) === dailySale._id
+      (dailySale) => format(new Date(date), "yyyy-MM-dd") === dailySale._id
     );
     if (dailySale) {
       return {

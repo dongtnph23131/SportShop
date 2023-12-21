@@ -3,6 +3,7 @@ import { ExportCSVButton } from "@/components/export-button";
 import LayoutAdmin from "@/components/layouts";
 import { SwitchGroup, SwitchGroupItem } from "@/components/switch-group";
 import TablePagination from "@/components/table-pagination";
+import { Avatar, AvatarFallback, AvatarImage } from "@/components/ui/avatar";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import {
@@ -179,16 +180,28 @@ const Page: NextPageWithLayout = () => {
               {productVariants?.docs.map((item) => (
                 <TableRow key={item._id}>
                   <TableCell>
-                    <div>
-                      <Link
-                        href={`/products/${item.productId.slug}`}
-                        className="font-semibold hover:underline block w-56 truncate"
-                      >
-                        {item.productId.name}
-                      </Link>
-                      <Badge className="inline-block" variant={"secondary"}>
-                        {item.options.join(" / ")}
-                      </Badge>
+                    <div className="flex gap-4 items-center">
+                      <Avatar className="h-10 w-10 rounded-sm border border-gray-200">
+                        <AvatarImage
+                          src={
+                            item.image ??
+                            "https://static.vecteezy.com/system/resources/previews/005/337/799/original/icon-image-not-found-free-vector.jpg"
+                          }
+                          alt="Avatar"
+                        />
+                        <AvatarFallback>OM</AvatarFallback>
+                      </Avatar>
+                      <div>
+                        <Link
+                          href={`/products/${item.productId.slug}`}
+                          className="font-semibold hover:underline block w-56 truncate"
+                        >
+                          {item.productId.name}
+                        </Link>
+                        <Badge className="inline-block" variant={"secondary"}>
+                          {item.options.join(" / ")}
+                        </Badge>
+                      </div>
                     </div>
                   </TableCell>
                   <TableCell>

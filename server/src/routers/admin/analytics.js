@@ -52,7 +52,7 @@ router.get("/", async (req, res) => {
     },
     {
       $group: {
-        _id: { $dayOfMonth: "$createdAt" },
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
         total: { $sum: "$orderTotalPrice" },
       },
     },
@@ -70,7 +70,7 @@ router.get("/", async (req, res) => {
     },
     {
       $group: {
-        _id: { $dayOfMonth: "$createdAt" },
+        _id: { $dateToString: { format: "%Y-%m-%d", date: "$createdAt" } },
         total: { $sum: 1 },
       },
     },

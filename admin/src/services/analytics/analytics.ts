@@ -3,7 +3,7 @@ import { getQueryString } from "@/lib/utils";
 import { UseQueryOptions, useQuery } from "@tanstack/react-query";
 
 export interface DailyAnalytics {
-  _id: number;
+  _id: string;
   total: number;
 }
 
