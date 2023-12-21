@@ -39,6 +39,12 @@ import { OurFileRouter } from "@/lib/uploadthing";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import slugify from "@sindresorhus/slugify";
 import { productStatus } from "@/lib/contants";
+import dynamic from "next/dynamic";
+
+const NoSSRDescriptionGenerationAI = dynamic(
+  () => import("./description-generation-ai"),
+  { ssr: false }
+);
 
 const formSchema = z.object({
   name: z
@@ -188,10 +194,14 @@ export function AddProductForm() {
             </FormItem>
 
             <FormItem>
-              <FormLabel>Mô tả</FormLabel>
+              <div className="flex items-center gap-2">
+                <FormLabel>Mô tả</FormLabel>
+                <NoSSRDescriptionGenerationAI />
+              </div>
               <FormControl>
                 <Textarea
                   placeholder="Type product description here."
+                  rows={5}
                   {...form.register("description")}
                 />
               </FormControl>
@@ -278,8 +288,8 @@ export function AddProductForm() {
                       </SelectTrigger>
                       <SelectContent>
                         {productStatus.map((status) => (
-                          <SelectItem key={status} value={status}>
-                            {status}
+                          <SelectItem key={status.value} value={status.value}>
+                            {status.label}
                           </SelectItem>
                         ))}
                       </SelectContent>

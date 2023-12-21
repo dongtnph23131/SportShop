@@ -4,7 +4,16 @@ export const API_URL = "http://localhost:8080";
 
 export const CLIENT_URL = "http://localhost:5173";
 
-export const productStatus = [ProductStatus.ACTIVE, ProductStatus.DRAFT];
+export const productStatus = [
+  {
+    label: "Hoạt động",
+    value: ProductStatus.ACTIVE,
+  },
+  {
+    label: "Bản nháp",
+    value: ProductStatus.DRAFT,
+  },
+];
 
 export const roles = ["admin", "staff", "shipper"];
 
