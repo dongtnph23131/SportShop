@@ -66,6 +66,16 @@ const Page: NextPageWithLayout = () => {
         format(new Date(row.original.startAt), "dd MMM yyyy hh:mm a"),
     },
     {
+      id: "end_at",
+      header: ({ column }) => (
+        <DataTableColumnHeader column={column} title="Ngày giờ hết hạn" />
+      ),
+      cell: ({ row }) =>
+        row.original.endAt
+          ? format(new Date(row.original.endAt), "dd MMM yyyy hh:mm a")
+          : "Vô hạn",
+    },
+    {
       id: "type",
       accessorKey: "type",
       header: ({ column }) => (

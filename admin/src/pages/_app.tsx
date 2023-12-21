@@ -24,6 +24,7 @@ function App({
   return (
     <QueryClientProvider client={queryClient}>
       <TooltipProvider>
+        <title>Sport Shop - Admin</title>
         <Toaster />
         {getLayout(<Component {...pageProps} />)}
       </TooltipProvider>
