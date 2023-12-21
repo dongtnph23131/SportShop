@@ -11,18 +11,13 @@ const Footer = () => {
                     id="f-about"
                     className="footer-title def-funderline ftitle-about posr"
                   >
-                    <h5 className="active-about">About us</h5>
+                    <h5 className="active-about">Về chúng tôi</h5>
                   </div>
                   <div className="footer-text">
                     <p>
-                      Lorem ipsum dolor sit amet, consec tetuer adipis elit,
-                      aliquam eget nibh etlibura. Aenean commodo ligula eget
-                      dolor Aenean massa. Portals seize data-driven, tag
-                      expedite
+                      Là một cửa hàng chuyên cung cấp các phụ kiện bóng đá và thể thao 
                     </p>
-                    <div className="footer-readmore">
-                      <a href="about.html">Read more</a>
-                    </div>
+                   
                   </div>
 
                   <ul className="footer-social-icon">
@@ -61,34 +56,20 @@ const Footer = () => {
                   id="f-info"
                   className="footer-title def-funderline ftitle-info posr"
                 >
-                  <h5 className="active">Information</h5>
+                  <h5 className="active">Thông tin</h5>
                 </div>
                 <ul className="footer-list-text jscroll-info">
                   <li>
                     <a href="shop.html" title="New products">
-                      New products
+                     Sản phẩm mới
                     </a>
                   </li>
                   <li>
                     <a href="single-product.html" title="Best sellers">
-                      Best sellers
+                      Sản phẩm bán chạy
                     </a>
                   </li>
-                  <li>
-                    <a href="shop.html" title="Our stores">
-                      Our stores
-                    </a>
-                  </li>
-                  <li>
-                    <a href="contact.html" title="Contact us">
-                      Contact us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="index2.html" title="Sitemap">
-                      Sitemap
-                    </a>
-                  </li>
+                
                 </ul>
               </div>
             </div>
@@ -98,32 +79,18 @@ const Footer = () => {
                   id="f-myac"
                   className="footer-title def-funderline ftitle-myA posr"
                 >
-                  <h5 className="active">My account</h5>
+                  <h5 className="active">Tài khoản của tôi</h5>
                 </div>
                 <ul className="footer-list-text jscroll-myac">
                   <li>
-                    <a href="my-account.html" title="My orders">
-                      My orders{" "}
+                    <a href="/orderClient" title="My orders">
+                      Lịch sử đơn hàng{" "}
                     </a>
                   </li>
+                 
                   <li>
-                    <a href="my-account.html" title="My credit slips">
-                      My credit slips
-                    </a>
-                  </li>
-                  <li>
-                    <a href="index2.html" title="My addresses">
-                      My addresses
-                    </a>
-                  </li>
-                  <li>
-                    <a href="shop.html" title="Specials">
-                      Specials
-                    </a>
-                  </li>
-                  <li>
-                    <a href="my-account.html" title="My personal info">
-                      My personal info
+                    <a href="profileDetail" title="My addresses">
+                      Thông tin tài khoản
                     </a>
                   </li>
                 </ul>
@@ -135,32 +102,12 @@ const Footer = () => {
                   id="f-cussve"
                   className="footer-title def-funderline def-funderline2 ftitle-cus posr"
                 >
-                  <h5 className="active">Customer Service</h5>
+                  <h5 className="active">Dịch vụ khách hàng</h5>
                 </div>
                 <ul className="footer-list-text jscroll-cussrve">
                   <li>
                     <a href="contact.html" title="Contact us">
-                      Contact us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="index2.html" title="Discount">
-                      Discount
-                    </a>
-                  </li>
-                  <li>
-                    <a href="index2.html" title="Site map">
-                      Site map
-                    </a>
-                  </li>
-                  <li>
-                    <a href="about.html" title="About us">
-                      About us
-                    </a>
-                  </li>
-                  <li>
-                    <a href="contact.html" title="Custom service">
-                      Custom service
+                      Mã giảm giá
                     </a>
                   </li>
                 </ul>
