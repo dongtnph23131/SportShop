@@ -93,7 +93,7 @@ const [quantity, setQuantity] = useState<any>(1);
           productVariantName: selectedVariant.name,
           productName: product.name,
           productVariantPrice: selectedVariant.price,
-          image: product.images[0].url,
+          image: selectedVariant.image,
           quantity,
         };
         try {
@@ -343,7 +343,7 @@ className={isSelected ? "selected" : ""}
                           +
                         </button>
                       </div>
-                      <button className="normal" onClick={handleAddToCart}>
+                      <button disabled={!selectedVariant} className="normal" onClick={handleAddToCart}>
                         Thêm vào giỏ hàng{" "}
                       </button>
                     </div>
