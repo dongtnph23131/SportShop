@@ -44,6 +44,11 @@ export const CreateDiscountDialog = () => {
             const startAt = (e.target as HTMLFormElement)["start-at"].value;
             const endAt = (e.target as HTMLFormElement)["end-at"].value;
 
+            if (Date.parse(endAt) <= Date.parse(startAt)) {
+              alert("Ngày kết thúc phải sau ngày bắt đầu!");
+              return;
+            }
+
             try {
               setIsLoading(true);
               const res = await axiosClient.post(`/discounts`, {

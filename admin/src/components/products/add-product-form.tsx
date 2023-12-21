@@ -52,27 +52,24 @@ const formSchema = z.object({
         return val.trim().length > 0;
       },
       { message: "Must not be empty" }
-    )
-    .refine(
-      (val) => {
-        const regex = /^[a-zA-Z0-9 ]*$/;
-        return regex.test(val);
-      },
-      {
-        message: "Must not contain special characters",
-      }
     ),
   description: z.string(),
   status: z.string(),
   collectionId: z.string().min(1, {
     message: "Must be at least 1 character",
   }),
-  productCode: z.string().min(1, { message: "Must be at least 1 character" }),
+  productCode: z
+    .string()
+    .trim()
+    .min(1, { message: "Must be at least 1 character" }),
   images: z.unknown(),
   options: z.array(
     z.object({
-      name: z.string().min(1, { message: "Must be at least 1 character" }),
-      values: z.array(z.string()).min(1, {
+      name: z
+        .string()
+        .trim()
+        .min(1, { message: "Must be at least 1 character" }),
+      values: z.array(z.string().trim()).min(1, {
         message: "Please add at least one option value",
       }),
     })
@@ -80,7 +77,7 @@ const formSchema = z.object({
   variants: z
     .array(
       z.object({
-        name: z.string(),
+        name: z.string().trim(),
         price: z.number().refine((val) => val >= 0, {
           message: "Price must be greater than or equal to 0",
         }),
@@ -88,7 +85,7 @@ const formSchema = z.object({
           message: "Inventory must be greater than or equal to 0",
         }),
         options: z.array(z.object({ name: z.string(), value: z.string() })),
-        sku: z.string(),
+        sku: z.string().trim(),
         image: z.string(),
       })
     )
