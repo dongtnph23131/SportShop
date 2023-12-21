@@ -205,9 +205,22 @@ router.get("/:id/invoice/send-email", async (req, res) => {
       "items.productId items.productVariantId"
     );
 
+    const htmlContent = `
+    <div style="display: flex; justify-content: center; color: black;">
+    <div style="color: black; margin: auto;">
+      <img src="https://i.imgur.com/QKplh0e.jpg" alt="Logo" style="max-width: 250px; max-height: 250px; margin: auto; display: block;">
+      <h3 style="color: black;">Hi ${order.fullName},</h3>
+      <p style="color: black;">Cảm ơn bạn đã đặt hàng! Đơn hàng của bạn đã được ghi nhận.</p>
+      <p style="color: black;">Cửa hàng gửi bạn hóa đơn cho đơn hàng ${order.code}.</p>
+      <p style="color: black;">Vui lòng tìm hóa đơn được đính kèm ở email.</p>
+      <p style="color: black;">Xin cảm ơn!</p>
+      <p style="color: black;">Sport shop,</p>
+    </div>
+    </div>
+    `;
+
     const doc = generateInvoice(order);
 
-    //Nam: Thiết kế một email gửi hóa đơn đơn giản
     let buffers = [];
     doc.on("data", buffers.push.bind(buffers));
     doc.on("end", () => {
@@ -224,8 +237,8 @@ router.get("/:id/invoice/send-email", async (req, res) => {
       let mailOptions = {
         from: "tranngocdong2042003@gmail.com",
         to: order.email,
-        subject: "Invoice",
-        text: "Please find attached the invoice for your recent purchase.",
+        subject: "Sport Shop - Hóa đơn đơn hàng của bạn",
+        html: htmlContent,
         attachments: [
           {
             filename: "invoice.pdf",

@@ -1,5 +1,5 @@
 import PDFDocument from "pdfkit";
-import { formatPrice } from "./utils";
+import { formatPrice, toNonAccentVietnamese } from "./utils";
 
 export const generateInvoice = (order) => {
   const doc = new PDFDocument({ size: "A4", margin: 50 });
@@ -11,8 +11,8 @@ export const generateInvoice = (order) => {
     .fontSize(20)
     .text("Sport Shop", 110, 57)
     .fontSize(10)
-    .text("123 Main Street", 200, 65, { align: "right" })
-    .text("New York, NY, 10025", 200, 80, { align: "right" })
+    .text("Trinh Van Bo", 200, 65, { align: "right" })
+    .text("Ha Noi, Viet Nam", 200, 80, { align: "right" })
     .moveDown();
 
   doc.fillColor("#444444").fontSize(20).text("Invoice", 50, 160);
@@ -40,7 +40,11 @@ export const generateInvoice = (order) => {
     .text(order.fullName, 300, customerInformationTop)
     .font("Helvetica")
     .text(order.phone, 300, customerInformationTop + 15)
-    .text(order.address, 300, customerInformationTop + 30)
+    .text(
+      toNonAccentVietnamese(order.address),
+      300,
+      customerInformationTop + 30
+    )
     .moveDown();
 
   generateHr(doc, 252);
@@ -69,7 +73,6 @@ function generateInvoiceTable(doc, invoice) {
     doc,
     invoiceTableTop,
     "Item",
-    "Variant",
     "Price",
     "Quantity",
     "Line Total"
@@ -84,14 +87,16 @@ function generateInvoiceTable(doc, invoice) {
     generateTableRow(
       doc,
       position,
-      item.productId.name,
-      item.productVariantId.name,
+      toNonAccentVietnamese(item.productId.name) +
+        "\n" +
+        toNonAccentVietnamese(item.productVariantId.name) +
+        "\n",
       formatPrice(item.productVariantId.price),
       item.quantity,
       formatPrice(item.productVariantId.price * item.quantity)
     );
 
-    generateHr(doc, position + 20);
+    generateHr(doc, position + 22);
   }
 
   const subtotalPosition = invoiceTableTop + (i + 1) * 30;
@@ -101,7 +106,6 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Subtotal",
-    "",
     formatPrice(invoice.totalPrice)
   );
 
@@ -112,7 +116,6 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Discount",
-    "",
     formatPrice(invoice.couponPrice)
   );
 
@@ -123,7 +126,6 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Shipping",
-    "",
     formatPrice(invoice.shippingPrice)
   );
 
@@ -135,28 +137,18 @@ function generateInvoiceTable(doc, invoice) {
     "",
     "",
     "Total",
-    "",
     formatPrice(invoice.orderTotalPrice)
   );
   doc.font("Helvetica");
 }
 
-function generateTableRow(
-  doc,
-  y,
-  item,
-  description,
-  unitCost,
-  quantity,
-  lineTotal
-) {
+function generateTableRow(doc, y, item, unitCost, quantity, lineTotal) {
   doc
     .fontSize(10)
     .text(item, 50, y)
-    .text(description, 150, y)
-    .text(unitCost, 280, y, { width: 90, align: "right" })
-    .text(quantity, 370, y, { width: 90, align: "right" })
-    .text(lineTotal, 0, y, { align: "right" });
+    .text(unitCost, 280, y)
+    .text(quantity, 370, y)
+    .text(lineTotal, 460, y);
 }
 
 function generateHr(doc, y) {
