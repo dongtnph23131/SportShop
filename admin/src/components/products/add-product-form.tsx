@@ -41,9 +41,27 @@ import slugify from "@sindresorhus/slugify";
 import { productStatus } from "@/lib/contants";
 
 const formSchema = z.object({
-  name: z.string().min(1, {
-    message: "Must be at least 1 character",
-  }),
+  name: z
+    .string()
+    .min(1, {
+      message: "Must be at least 1 character",
+    })
+    .max(50, { message: "Must be less than 50 characters" })
+    .refine(
+      (val) => {
+        return val.trim().length > 0;
+      },
+      { message: "Must not be empty" }
+    )
+    .refine(
+      (val) => {
+        const regex = /^[a-zA-Z0-9 ]*$/;
+        return regex.test(val);
+      },
+      {
+        message: "Must not contain special characters",
+      }
+    ),
   description: z.string(),
   status: z.string(),
   collectionId: z.string().min(1, {
@@ -54,19 +72,29 @@ const formSchema = z.object({
   options: z.array(
     z.object({
       name: z.string().min(1, { message: "Must be at least 1 character" }),
-      values: z.array(z.string()),
+      values: z.array(z.string()).min(1, {
+        message: "Please add at least one option value",
+      }),
     })
   ),
-  variants: z.array(
-    z.object({
-      name: z.string(),
-      price: z.number(),
-      inventory: z.number(),
-      options: z.array(z.object({ name: z.string(), value: z.string() })),
-      sku: z.string(),
-      image: z.string(),
-    })
-  ),
+  variants: z
+    .array(
+      z.object({
+        name: z.string(),
+        price: z.number().refine((val) => val >= 0, {
+          message: "Price must be greater than or equal to 0",
+        }),
+        inventory: z.number().refine((val) => val >= 0, {
+          message: "Inventory must be greater than or equal to 0",
+        }),
+        options: z.array(z.object({ name: z.string(), value: z.string() })),
+        sku: z.string(),
+        image: z.string(),
+      })
+    )
+    .min(1, {
+      message: "Please add at least one option value",
+    }),
 });
 
 export type Inputs = z.infer<typeof formSchema> & { images: string[] };
@@ -175,7 +203,7 @@ export function AddProductForm() {
               />
             </FormItem>
 
-            <div className="flex gap-2 items-end">
+            <div className="flex gap-2">
               <FormItem className="flex-1">
                 <FormLabel>Mã sản phẩm</FormLabel>
                 <FormControl>
@@ -190,9 +218,11 @@ export function AddProductForm() {
                 />
               </FormItem>
               <Button
+                className="mt-8"
                 type="button"
                 onClick={() => {
                   form.setValue("productCode", `SP-${generateRandomString()}`);
+                  form.clearErrors("productCode");
                 }}
               >
                 Tạo mã ngẫu nhiên

@@ -76,7 +76,7 @@ const formSchema = z.object({
   ),
 });
 
-type Inputs = z.infer<typeof formSchema> & { images: File[] };
+type Inputs = z.infer<typeof formSchema>;
 
 interface UpdateProductFormProps {
   product: Product;
@@ -121,6 +121,7 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
         name: option.name,
         values: option.values,
       })),
+      images: product.images,
       productCode: product.code,
       variants: product.productVariantIds.map((variant) => ({
         id: variant._id,
@@ -164,26 +165,20 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
       productCode: data.productCode,
       categoryId: data.collectionId,
       images:
-        newFiles.length > 0
-          ? images
-            ? [
-                ...product.images.map((item) => ({
-                  publicId: item.publicId,
-                  name: item.name,
-                  url: item.url,
-                })),
-                ...images,
-              ].map((image) => ({
-                name: image.name,
-                url: image.url,
-                publicId: image.publicId,
-              }))
-            : product.images
-          : data.images.map((image) => ({
+        newFiles.length > 0 && images
+          ? [
+              ...product.images.map((item) => ({
+                publicId: item.publicId,
+                name: item.name,
+                url: item.url,
+              })),
+              ...images,
+            ].map((image) => ({
               name: image.name,
-              url: `https://utfs.io/f/${image.name}`,
-              publicId: image.name,
-            })),
+              url: image.url,
+              publicId: image.publicId,
+            }))
+          : product.images,
       options: data.options,
       variants: data.variants,
     });

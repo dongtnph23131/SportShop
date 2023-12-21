@@ -17,7 +17,7 @@ const Page: NextPageWithLayout = () => {
   const router = useRouter();
   const slug = router.query.slug as string;
 
-  const { data: product } = useProductQuery({ slug });
+  const { data: product, isFetching } = useProductQuery({ slug });
 
   return (
     <>
@@ -35,7 +35,7 @@ const Page: NextPageWithLayout = () => {
           <CardTitle>Cập nhật sản phẩm</CardTitle>
         </CardHeader>
         <CardContent>
-          {product ? (
+          {product && !isFetching ? (
             <UpdateProductForm product={product} />
           ) : (
             <p>Loading...</p>

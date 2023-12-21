@@ -121,7 +121,7 @@ router.post("/", async (req, res) => {
     for (const variant of variants) {
       let image = variant.image;
 
-      if (variant.image) {
+      if (variant.image.length > 0) {
         const { secure_url } = await cloudinary.uploader.upload(image, {
           public_id: variant.name,
           folder: "products",
@@ -132,7 +132,7 @@ router.post("/", async (req, res) => {
         image = secure_url;
       }
 
-      if (!imageSet.has(variant.image)) {
+      if (!imageSet.has(variant.image) && variant.image.length > 0) {
         await Product.findByIdAndUpdate(
           product._id,
           {
@@ -253,12 +253,12 @@ router.put("/:id", async (req, res) => {
       });
     }
 
-    const imageSet = new Set();
+    const imageSet = new Set(data.images.map((image) => image.url));
 
     for (const variant of variants) {
       let image = variant.image;
 
-      if (variant.image) {
+      if (variant.image.length > 0) {
         const { secure_url } = await cloudinary.uploader.upload(image, {
           public_id: variant.name,
           folder: "products",
@@ -269,7 +269,7 @@ router.put("/:id", async (req, res) => {
         image = secure_url;
       }
 
-      if (!imageSet.has(variant.image)) {
+      if (!imageSet.has(variant.image) && variant.image.length > 0) {
         await Product.findByIdAndUpdate(
           req.params.id,
           {

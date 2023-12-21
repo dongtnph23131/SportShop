@@ -66,26 +66,6 @@ export const CreateProductVariantDialog = ({
     }
   }, [formState]);
 
-  const onChangePicture = useCallback((e) => {
-    const file = e.target.files[0];
-    if (file) {
-      if (file.size / 1024 / 1024 > 2) {
-        toast.error("File size too big (max 2MB)");
-      } else if (file.type !== "image/png" && file.type !== "image/jpeg") {
-        toast.error("File type not supported (.png or .jpg only)");
-      } else {
-        const reader = new FileReader();
-        reader.onload = (e) => {
-          setFormState((prev) => ({
-            ...prev,
-            image: e.target?.result as string,
-          }));
-        };
-        reader.readAsDataURL(file);
-      }
-    }
-  }, []);
-
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogContent>
@@ -177,7 +157,30 @@ export const CreateProductVariantDialog = ({
                 type="file"
                 accept="image/*"
                 className="sr-only"
-                onChange={onChangePicture}
+                onChange={(e) => {
+                  const file = e.target.files?.[0];
+                  if (file) {
+                    if (file.size / 1024 / 1024 > 50) {
+                      toast.error("File size too big (max 50MB)");
+                    } else if (
+                      file.type !== "image/png" &&
+                      file.type !== "image/jpeg"
+                    ) {
+                      toast.error(
+                        "File type not supported (.png or .jpg only)"
+                      );
+                    } else {
+                      const reader = new FileReader();
+                      reader.onload = (e) => {
+                        setFormState((prev) => ({
+                          ...prev,
+                          image: e.target?.result as string,
+                        }));
+                      };
+                      reader.readAsDataURL(file);
+                    }
+                  }
+                }}
               />
             </div>
           </div>
@@ -251,6 +254,7 @@ export const CreateProductVariantDialog = ({
             <FormControl>
               <Input
                 type="number"
+                min={0}
                 inputMode="numeric"
                 placeholder="Type product price here."
                 onChange={(e) =>
@@ -268,6 +272,7 @@ export const CreateProductVariantDialog = ({
               <Input
                 type="number"
                 inputMode="numeric"
+                min={0}
                 placeholder="Type product inventory here."
                 onChange={(e) =>
                   setFormState((prev) => ({

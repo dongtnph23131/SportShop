@@ -10,11 +10,14 @@ import {
   FormField,
   FormItem,
   FormMessage,
+  UncontrolledFormMessage,
 } from "@/components/ui/form";
 
-import { Trash2, UploadCloud } from "lucide-react";
+import { AlertCircle, Trash2, UploadCloud } from "lucide-react";
 import { CreateProductVariantDialog } from "./create-product-variant-dialog";
 import { toast } from "sonner";
+import { cn } from "@/lib/utils";
+import { Tooltip, TooltipContent, TooltipTrigger } from "../ui/tooltip";
 
 export const ProductVariants = () => {
   const form = useFormContext<Inputs>();
@@ -88,8 +91,8 @@ export const ProductVariants = () => {
                           onChange={(e) => {
                             const file = e.target.files?.[0];
                             if (file) {
-                              if (file.size / 1024 / 1024 > 2) {
-                                toast.error("File size too big (max 2MB)");
+                              if (file.size / 1024 / 1024 > 50) {
+                                toast.error("File size too big (max 50MB)");
                               } else if (
                                 file.type !== "image/png" &&
                                 file.type !== "image/jpeg"
@@ -131,27 +134,78 @@ export const ProductVariants = () => {
               <div className="flex items-center">
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="number"
-                      {...form.register(`variants.${index}.price`, {
-                        valueAsNumber: true,
-                      })}
-                      placeholder="Price..."
-                    />
+                    <Tooltip
+                      open={
+                        !!form.formState.errors.variants?.[index]?.price
+                          ?.message
+                      }
+                    >
+                      <TooltipTrigger asChild>
+                        <Input
+                          type="number"
+                          {...form.register(`variants.${index}.price`, {
+                            valueAsNumber: true,
+                          })}
+                          min={0}
+                          className={cn(
+                            form.formState.errors.variants?.[index]?.price
+                              ?.message &&
+                              "border-red-500 focus-visible:ring-red-500"
+                          )}
+                          placeholder="Price..."
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="mb-2 bg-white border border-gray-200 shadow-md">
+                        <div className="flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4 text-red-500" />
+                          <UncontrolledFormMessage
+                            message={
+                              form.formState.errors.variants?.[index]?.price
+                                ?.message
+                            }
+                          />
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               </div>
               <div className="flex items-center">
                 <FormItem>
                   <FormControl>
-                    <Input
-                      type="number"
-                      {...form.register(`variants.${index}.inventory`, {
-                        valueAsNumber: true,
-                      })}
-                      placeholder="Price..."
-                    />
+                    <Tooltip
+                      open={
+                        !!form.formState.errors.variants?.[index]?.inventory
+                          ?.message
+                      }
+                    >
+                      <TooltipTrigger asChild>
+                        <Input
+                          type="number"
+                          {...form.register(`variants.${index}.inventory`, {
+                            valueAsNumber: true,
+                          })}
+                          min={0}
+                          className={cn(
+                            form.formState.errors.variants?.[index]?.inventory
+                              ?.message &&
+                              "border-red-500 focus-visible:ring-red-500"
+                          )}
+                          placeholder="Price..."
+                        />
+                      </TooltipTrigger>
+                      <TooltipContent className="mb-2 bg-white border border-gray-200 shadow-md">
+                        <div className="flex items-center gap-2">
+                          <AlertCircle className="h-4 w-4 text-red-500" />
+                          <UncontrolledFormMessage
+                            message={
+                              form.formState.errors.variants?.[index]?.inventory
+                                ?.message
+                            }
+                          />
+                        </div>
+                      </TooltipContent>
+                    </Tooltip>
                   </FormControl>
                   <FormMessage />
                 </FormItem>
@@ -193,6 +247,11 @@ export const ProductVariants = () => {
       >
         Thêm biến thể
       </Button>
+
+      <UncontrolledFormMessage
+        className="mt-2 text-center"
+        message={form.formState.errors.variants?.message}
+      />
 
       {open && (
         <CreateProductVariantDialog

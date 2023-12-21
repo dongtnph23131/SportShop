@@ -20,6 +20,7 @@ export const useProductQuery = <TData = ProductData>(
   return useQuery<ProductData, any, TData>({
     queryKey: ["products", slug],
     queryFn: () => getProduct({ slug }),
+    enabled: !!slug,
     ...options,
   });
 };
