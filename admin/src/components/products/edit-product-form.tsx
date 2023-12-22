@@ -44,6 +44,7 @@ import { Product } from "@/types/base";
 import { useCategoriesQuery } from "@/services/categories/categories-query";
 import { useProductUpdateMutation } from "@/services/products/product-update-mutation";
 import slugify from "@sindresorhus/slugify";
+import DescriptionGenerationAI from "./description-generation-ai";
 
 const { useUploadThing } = generateReactHelpers<OurFileRouter>();
 
@@ -215,10 +216,14 @@ export function UpdateProductForm({ product }: UpdateProductFormProps) {
             </FormItem>
 
             <FormItem>
-              <FormLabel>Mô tả</FormLabel>
+              <div className="flex items-center gap-1">
+                <FormLabel>Mô tả</FormLabel>
+                <DescriptionGenerationAI />
+              </div>
               <FormControl>
                 <Textarea
                   placeholder="Type product description here."
+                  rows={5}
                   {...form.register("description")}
                   defaultValue={product.description ?? ""}
                 />

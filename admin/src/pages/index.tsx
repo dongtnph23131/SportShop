@@ -9,6 +9,7 @@ import { useTopAnalyticsQuery } from "@/services/analytics/top-analytics-query";
 import { TopProducts } from "@/components/overview/top-products";
 import { Separator } from "@/components/ui/separator";
 import { TopCustomers } from "@/components/overview/top-customers";
+import { DateSelect } from "@/components/date-select-range-picker";
 
 const Page: NextPageWithLayout = () => {
   const searchParams = useSearchParams();
@@ -38,7 +39,7 @@ const Page: NextPageWithLayout = () => {
 
       <div className="flex flex-col gap-6">
         <div className="flex items-center justify-end space-y-2">
-          <DateRangePicker dayCount={30} className="!bg-white" />
+          <DateSelect dayCount={30} />
         </div>
 
         <SaleAnalytics sale={data?.sale} />
