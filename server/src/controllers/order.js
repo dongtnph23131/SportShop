@@ -3,7 +3,7 @@ import Product from "../models/product";
 import ProductVariant from "../models/productVariant";
 import { orderSchema } from "../validators/order";
 import Customer from "../models/customer";
-import { generateRandomString } from "../libs/utils";
+import { formatPrice, generateRandomString } from "../libs/utils";
 import { sendEmail } from "./sendMail";
 import User from "../models/user";
 import Discount from "../models/discount";
@@ -216,9 +216,9 @@ export const generateOrderHtmlContent = async (order) => {
           <p style="color: black"><strong>Số lượng:</strong> ${
             item.quantity
           }</p>
-          <p style="color: black"><strong>Giá:</strong> ${totalPrice.toFixed(
-            2
-          )} $</p>
+          <p style="color: black"><strong>Giá:</strong> ${formatPrice(
+            totalPrice
+          )}</p>
         </div>
         `;
       } else {
@@ -230,9 +230,9 @@ export const generateOrderHtmlContent = async (order) => {
   const orderHtmlContent = `
     <h4 style="color: black">Chi tiết đơn hàng:</h4>
     ${itemsHtml.join("")}
-    <p style="color: black"><strong>Tổng cộng:</strong> ${order.orderTotalPrice.toFixed(
-      2
-    )} $</p>
+    <p style="color: black"><strong>Tổng cộng:</strong> ${formatPrice(
+      order.orderTotalPrice
+    )}</p>
   `;
 
   return orderHtmlContent;
