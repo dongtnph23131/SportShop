@@ -654,30 +654,45 @@ const Cart = () => {
                       </svg>
                       <span>Phương Thức Thanh Toán</span>
                     </h2>
-                    <div className="infomation-content">
-                      <div className="delivery-type-item">
+                    <div>
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "4px",
+                          alignItems: "center",
+                        }}
+                      >
                         <input
+                          id="a1"
                           value={"Direct"}
                           {...register("typePayment")}
                           type="radio"
                           className="ng-untouched ng-pristine ng-valid"
                         />
-                        <label>
+                        <label htmlFor="a1">
                           <span className="delivery-title">
                             Thanh toán khi nhận hàng
                           </span>
                         </label>
                       </div>
-                      <div className="delivery-type-item">
+                      <div
+                        style={{
+                          display: "flex",
+                          gap: "4px",
+                          alignItems: "center",
+                          marginTop: "10px",
+                        }}
+                      >
                         <input
+                          id="b2"
                           value={"Online"}
                           {...register("typePayment")}
                           type="radio"
                           className="ng-untouched ng-pristine ng-valid"
                         />
-                        <label>
+                        <label htmlFor="b2">
                           <span className="delivery-title">
-                            Thanh toán online
+                            Thanh toán qua MOMO
                           </span>
                         </label>
                       </div>

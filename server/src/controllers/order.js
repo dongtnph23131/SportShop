@@ -83,11 +83,11 @@ export const create = async (req, res) => {
         customerId: user._id,
         couponPrice: body.couponPrice,
         orderTotalPrice:
-          validatedBody.totalPrice -
+          validatedBody.totalPrice +
             validatedBody.shippingPrice -
             body.couponPrice >
           0
-            ? validatedBody.totalPrice -
+            ? validatedBody.totalPrice +
               validatedBody.shippingPrice -
               body.couponPrice
             : 0,
@@ -112,11 +112,11 @@ export const create = async (req, res) => {
         couponPrice: body.couponPrice,
 
         orderTotalPrice:
-          validatedBody.totalPrice -
+          validatedBody.totalPrice +
             validatedBody.shippingPrice -
             body.couponPrice >
           0
-            ? validatedBody.totalPrice -
+            ? validatedBody.totalPrice +
               validatedBody.shippingPrice -
               body.couponPrice
             : 0,

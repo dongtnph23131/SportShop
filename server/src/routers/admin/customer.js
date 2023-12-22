@@ -90,7 +90,7 @@ router.post("/:id/gift", async (req, res) => {
     let mailOptions = {
       from: "tranngocdong2042003@gmail.com",
       to: customer.email,
-      subject: "Invoice",
+      subject: "Sport Shop - Tri ân khách hàng",
       text: `Mã khuyến mại: ${gift.code} \n Mô tả: ${
         gift.description
       } \n Số tiền: ${formatPrice(gift.amountPrice)} \n Hạn sử dụng: ${

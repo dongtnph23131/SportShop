@@ -132,6 +132,7 @@ const CartItem = ({ item }: any) => {
             </svg>
           </button>
           <InputNumber
+            min={1}
             className="input__cart"
             value={item.quantity}
             onChange={onChangeQuantity}
